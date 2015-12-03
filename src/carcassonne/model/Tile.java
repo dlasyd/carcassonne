@@ -54,13 +54,13 @@ public class Tile {
     public void addProperty(Property property, TileDirections mandatoryDirection, TileDirections... directions) {
         TileDirections[] completeDirections = new TileDirections[directions.length + 1];
         completeDirections[0] = mandatoryDirection;
-        for (int i = 0; i < directions.length; i++) {
-            completeDirections[i + 1] = directions[i];
-        }
+        System.arraycopy(directions, 0, completeDirections, 1, directions.length);
+
         for (TileDirections direction: completeDirections) {
             if (propertyMap.containsKey(direction))
                 throw new RuntimeException("Cannot rewrite objects of property on tile");
         }
+
         if (completeDirections.length == 1) {
             propertyMap.put(completeDirections[0], property);
             if (completeDirections[0] == TileDirections.CENTER)
