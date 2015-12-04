@@ -2,10 +2,9 @@ package carcassonne.model;
 
 /**
  * Created by Andrey on 02/12/15.
- * Property in the sense of something that can be own, as a legal term. Not "property" in the sense
- * of important characteristics of something.
+ * Features of tile are roads, cities, land and cloisters
  */
-class Property {
+class Feature {
     private boolean followerPlaced = false;
     private Follower follower;
 
@@ -15,7 +14,7 @@ class Property {
 
     void setFollower(Follower follower) {
         if (isFollowerPlaced())
-            throw new RuntimeException("Trying to place follower on property element that already has one");
+            throw new RuntimeException("Trying to place follower on feature element that already has one");
         this.follower = follower;
     }
 }

@@ -9,4 +9,8 @@ class Follower {
     Follower(Player player) {
         this.player = player;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

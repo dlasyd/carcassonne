@@ -114,11 +114,11 @@ public class GameTest {
     public void ifFollowerConfirmedPlayerOwnsOneMoreProperty() {
         game.nextPlayer();
         Player player = game.getCurrentPlayer();
-        assertEquals ("\n Number of property objects in the beginning", 0, player.getNumberOfProperties());
+        assertEquals ("\n Number of feature objects in the beginning", 0, player.getNumberOfProperties());
         game.confirmCurrentTile(1,1);
         game.setFollowerFriendly(true);
         game.confirmFollower();
-        assertEquals ("\n Number of property objects after 1 placed follower", 1, player.getNumberOfProperties());
+        assertEquals ("\n Number of feature objects after 1 placed follower", 1, player.getNumberOfProperties());
     }
 
     @Test

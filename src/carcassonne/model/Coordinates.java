@@ -1,5 +1,7 @@
 package carcassonne.model;
 
+import java.util.HashSet;
+
 class Coordinates {
     private int x, y;
     private Rotation rotation;
@@ -43,6 +45,21 @@ class Coordinates {
         rotation = rotation.turnRight();
     }
 
+    public static HashSet<Coordinates> getAround(HashSet<Coordinates> coordinatesSet) {
+        HashSet<Coordinates> result = new HashSet<>();
+        for (Coordinates coordinate: coordinatesSet) {
+            result.add(new Coordinates(coordinate.getX() - 1, coordinate.getY()));
+            result.add(new Coordinates(coordinate.getX() + 1, coordinate.getY()));
+            result.add(new Coordinates(coordinate.getX(), coordinate.getY() - 1));
+            result.add(new Coordinates(coordinate.getX(), coordinate.getY() + 1));
+        }
+        result.removeAll(coordinatesSet);
+        return result;
+    }
+
+    public String toString() {
+        return "(" + getX()+", " + getY()+")";
+    }
     public enum Rotation {
         DEG_0, DEG_90, DEG_180, DEG_270;
         Rotation turnRight() {

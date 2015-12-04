@@ -1,14 +1,19 @@
 package carcassonne.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Tile {
     private Coordinates coordinates;
-    private boolean noFollowers = true;
-    private HashMap<TileDirections, Property> propertyMap = new HashMap<>();
+    private boolean noFollower = true;
+    private Feature occupiedFeature = null;
+    private Follower follower;
+    private HashSet<Feature> features = new HashSet<>();
+    private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
+
     /*
-     * A property can "connect" one TileDirections with the other. For example, a road from EAST to WEST
+     * A feature can "connect" one TileDirections with the other. For example, a road from EAST to WEST
      */
     private HashMap<TileDirections, TileDirections[]> propertyConnectionMap = new HashMap<>();
 
@@ -35,34 +40,38 @@ public class Tile {
     }
 
     Coordinates getCoordinates() {
-        // TODO Auto-generated method stub
         return coordinates;
     }
 
-    public boolean isNoFollowers() {
-        return noFollowers;
+    public boolean isNoFollower() {
+        return noFollower;
     }
 
-    public void placeFollower() {
-        noFollowers = false;
+    public void placeFollower(Player player, Feature feature) {
+        noFollower = false;
+        occupiedFeature = feature;
+        follower = new Follower(player);
+        player.placeFollower();
     }
 
     public TileDirections[] getDestinations(TileDirections dir) {
         return propertyConnectionMap.get(dir);
     }
 
-    public void addProperty(Property property, TileDirections mandatoryDirection, TileDirections... directions) {
+    public void addProperty(Feature feature, TileDirections mandatoryDirection, TileDirections... directions) {
         TileDirections[] completeDirections = new TileDirections[directions.length + 1];
         completeDirections[0] = mandatoryDirection;
         System.arraycopy(directions, 0, completeDirections, 1, directions.length);
 
+        features.add(feature);
+
         for (TileDirections direction: completeDirections) {
             if (propertyMap.containsKey(direction))
-                throw new RuntimeException("Cannot rewrite objects of property on tile");
+                throw new RuntimeException("Cannot rewrite objects of feature on tile");
         }
 
         if (completeDirections.length == 1) {
-            propertyMap.put(completeDirections[0], property);
+            propertyMap.put(completeDirections[0], feature);
             if (completeDirections[0] == TileDirections.CENTER)
                 propertyConnectionMap.put(completeDirections[0], new TileDirections[] {TileDirections.CENTER});
             else
@@ -70,9 +79,11 @@ public class Tile {
             return;
         }
         for (TileDirections direction: completeDirections) {
-            propertyMap.put(direction, property);
+            propertyMap.put(direction, feature);
             propertyConnectionMap.put(direction, completeDirections);
         }
+
+
     }
 
     public boolean hasCloister() {
@@ -94,5 +105,23 @@ public class Tile {
                 return true;
         }
         return false;
+    }
+
+    public HashSet<Feature> getFeatures() {
+        return features;
+    }
+
+    public Feature getOccupiedFeature() {
+        if (noFollower == true)
+            throw new RuntimeException("Trying to get feature containing follower from tile with no follower");
+        return occupiedFeature;
+    }
+
+    public void returnFollower() {
+        if (isNoFollower())
+            throw new RuntimeException("Trying to return follower from tile that hasn't got one");
+        follower.getPlayer().returnFollower();
+        follower = null;
+        noFollower = true;
     }
 }
