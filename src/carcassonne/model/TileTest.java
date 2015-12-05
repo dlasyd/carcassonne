@@ -74,8 +74,10 @@ public class TileTest {
     @Test
     public void ifHorizontalRoadTileThenRoadConnectsEastAndWest() {
         tile.addProperty(new Feature(), TileDirections.EAST, TileDirections.WEST);
-        assertTrue("Horizontal road is connected", Arrays.asList(tile.getDestinations(TileDirections.WEST)).contains(TileDirections.EAST));
-        assertTrue("Horizontal road is connected", Arrays.asList(tile.getDestinations(TileDirections.EAST)).contains(TileDirections.WEST));
+        assertTrue("Horizontal road is connected west to east",
+                tile.getDestinations(TileDirections.WEST).contains(TileDirections.EAST));
+        assertTrue("Horizontal road is connected east to west",
+                tile.getDestinations(TileDirections.EAST).contains(TileDirections.WEST));
     }
 
     @Test
@@ -85,10 +87,11 @@ public class TileTest {
         tile.addProperty(new Feature(), TileDirections.NORTH);
         tile.addProperty(new Feature(), TileDirections.SOUTH);
 
+        System.out.println(tile.getDestinations(TileDirections.WEST));
         assertTrue("Crossroad leads WEST to END",
-                    Arrays.asList(tile.getDestinations(TileDirections.WEST)).contains(TileDirections.END));
+                    tile.getDestinations(TileDirections.WEST).contains(TileDirections.END));
         assertFalse("Crossroad does not connect EAST and WEST",
-                Arrays.asList(tile.getDestinations(TileDirections.WEST)).contains(TileDirections.EAST));
+                tile.getDestinations(TileDirections.WEST).contains(TileDirections.EAST));
     }
 
     @Test
@@ -103,7 +106,7 @@ public class TileTest {
         tile.addProperty(new Feature(),TileDirections.WWN, TileDirections.NNW, TileDirections.NNE, TileDirections.EEN);
 
         assertTrue("Land connects WWN and EEN",
-                Arrays.asList(tile.getDestinations(TileDirections.WWN)).contains(TileDirections.EEN));
+                tile.getDestinations(TileDirections.WWN).contains(TileDirections.EEN));
     }
 
     @Test
@@ -116,9 +119,9 @@ public class TileTest {
     @Test
     public void cloisterShouldNotConnectAnything() {
         tile.addProperty(new Feature(), TileDirections.CENTER);
-        assertEquals("Cloister connects itself to one TileDirection", 1, tile.getDestinations(TileDirections.CENTER).length);
+        assertEquals("Cloister connects itself to one TileDirection", 1, tile.getDestinations(TileDirections.CENTER).size());
         assertTrue("Cloister connects itself to itself",
-                Arrays.asList(tile.getDestinations(TileDirections.CENTER)).contains(TileDirections.CENTER));
+                tile.getDestinations(TileDirections.CENTER).contains(TileDirections.CENTER));
     }
 
     @Test

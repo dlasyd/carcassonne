@@ -10,14 +10,13 @@ public class Tile {
     private boolean noFollower = true;
     private Feature occupiedFeature = null;
     private Follower follower;
-    private HashSet<Feature> features = new HashSet<>();
-    private HashMap<Feature,HashSet<TileDirections>> featureToTileDirections = new HashMap<>();
+    private HashMap<Feature,Set<TileDirections>> featureToTileDirections = new HashMap<>();
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
 
     /*
      * A feature can "connect" one TileDirections with the other. For example, a road from EAST to WEST
      */
-    private HashMap<TileDirections, TileDirections[]> propertyConnectionMap = new HashMap<>();
+    private HashMap<TileDirections, Set<TileDirections>> propertyConnectionMap = new HashMap<>();
 
     Tile() {}
 
@@ -58,46 +57,43 @@ public class Tile {
         player.placeFollower();
     }
 
-    public TileDirections[] getDestinations(TileDirections dir) {
+    public Set<TileDirections> getDestinations(TileDirections dir) {
         return propertyConnectionMap.get(dir);
     }
 
-    public void addProperty(Feature feature, TileDirections mandatoryDirection, TileDirections... directions) {
-        TileDirections[] completeDirections = new TileDirections[directions.length + 1];
-        completeDirections[0] = mandatoryDirection;
-        System.arraycopy(directions, 0, completeDirections, 1, directions.length);
+    public void addProperty(Feature feature, TileDirections direction) {
+        checkIfDirectionIsNotOccupied(direction);
 
-        features.add(feature);
+        featureToTileDirections.put(feature, new HashSet<>(Arrays.asList(new TileDirections[]{direction})));
+        propertyMap.put(direction, feature);
 
-        for (TileDirections direction: completeDirections) {
+        if (direction == TileDirections.CENTER) {
+            propertyConnectionMap.put(direction, new HashSet<>(Arrays.asList( new TileDirections[]{TileDirections.CENTER})));
+        } else {
+            propertyConnectionMap.put(direction, new HashSet<>(Arrays.asList( new TileDirections[]{TileDirections.END})));
+        }
+    }
+
+    public void addProperty(Feature feature, TileDirections... directions) {
+        checkIfDirectionIsNotOccupied(directions);
+
+        featureToTileDirections.put(feature, new HashSet<>(Arrays.asList(directions)));
+
+        for (TileDirections direction: directions) {
+            propertyMap.put(direction, feature);
+            propertyConnectionMap.put(direction, new HashSet<>(Arrays.asList(directions)));
+        }
+    }
+
+    private void checkIfDirectionIsNotOccupied(TileDirections... directions) {
+        for (TileDirections direction: directions) {
             if (propertyMap.containsKey(direction))
                 throw new RuntimeException("Cannot rewrite objects of feature on tile");
         }
-
-        featureToTileDirections.put(feature, new HashSet<TileDirections>(Arrays.asList(completeDirections)));
-        if (completeDirections.length == 1) {
-            propertyMap.put(completeDirections[0], feature);
-            if (completeDirections[0] == TileDirections.CENTER) {
-                propertyConnectionMap.put(completeDirections[0], new TileDirections[]{TileDirections.CENTER});
-            } else {
-                propertyConnectionMap.put(completeDirections[0], new TileDirections[]{TileDirections.END});
-            }
-            return;
-        }
-
-        for (TileDirections direction: completeDirections) {
-            propertyMap.put(direction, feature);
-            propertyConnectionMap.put(direction, completeDirections);
-        }
-
-
     }
 
     public boolean hasCloister() {
-        if (propertyMap.containsKey(TileDirections.CENTER))
-            return true;
-        else
-            return false;
+        return propertyMap.containsKey(TileDirections.CENTER);
     }
 
     public boolean isComplete() {
@@ -114,12 +110,12 @@ public class Tile {
         return false;
     }
 
-    public HashSet<Feature> getFeatures() {
-        return features;
+    public Set<Feature> getFeatures() {
+        return featureToTileDirections.keySet();
     }
 
     public Feature getOccupiedFeature() {
-        if (noFollower == true)
+        if (isNoFollower())
             throw new RuntimeException("Trying to get feature containing follower from tile with no follower");
         return occupiedFeature;
     }
@@ -139,7 +135,7 @@ public class Tile {
             return true;
     }
 
-    public HashSet<TileDirections> getOccupiedFeatureDirections() {
+    public Set<TileDirections> getOccupiedFeatureDirections() {
         return featureToTileDirections.get(getOccupiedFeature());
     }
 }
