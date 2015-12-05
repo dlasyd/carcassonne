@@ -1,5 +1,6 @@
 package carcassonne.model;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +11,7 @@ public class Tile {
     private Feature occupiedFeature = null;
     private Follower follower;
     private HashSet<Feature> features = new HashSet<>();
+    private HashMap<Feature,HashSet<TileDirections>> featureToTileDirections = new HashMap<>();
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
 
     /*
@@ -40,6 +42,8 @@ public class Tile {
     }
 
     Coordinates getCoordinates() {
+        if (coordinates == null)
+            throw new RuntimeException("Tile has no coordinates");
         return coordinates;
     }
 
@@ -70,14 +74,17 @@ public class Tile {
                 throw new RuntimeException("Cannot rewrite objects of feature on tile");
         }
 
+        featureToTileDirections.put(feature, new HashSet<TileDirections>(Arrays.asList(completeDirections)));
         if (completeDirections.length == 1) {
             propertyMap.put(completeDirections[0], feature);
-            if (completeDirections[0] == TileDirections.CENTER)
-                propertyConnectionMap.put(completeDirections[0], new TileDirections[] {TileDirections.CENTER});
-            else
-                propertyConnectionMap.put(completeDirections[0], new TileDirections[] {TileDirections.END});
+            if (completeDirections[0] == TileDirections.CENTER) {
+                propertyConnectionMap.put(completeDirections[0], new TileDirections[]{TileDirections.CENTER});
+            } else {
+                propertyConnectionMap.put(completeDirections[0], new TileDirections[]{TileDirections.END});
+            }
             return;
         }
+
         for (TileDirections direction: completeDirections) {
             propertyMap.put(direction, feature);
             propertyConnectionMap.put(direction, completeDirections);
@@ -123,5 +130,16 @@ public class Tile {
         follower.getPlayer().returnFollower();
         follower = null;
         noFollower = true;
+    }
+
+    public boolean hasCoordinates() {
+        if (coordinates == null)
+            return false;
+        else
+            return true;
+    }
+
+    public HashSet<TileDirections> getOccupiedFeatureDirections() {
+        return featureToTileDirections.get(getOccupiedFeature());
     }
 }

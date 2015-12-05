@@ -37,6 +37,19 @@ public class TileTest {
     }
 
     @Test
+    public void ifGetCoordinatesNullThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        tile.getCoordinates();
+    }
+
+    @Test
+    public void hasCoordinates() {
+        assertFalse(tile.hasCoordinates());
+        tile.setCoordinates(0, 0);
+        assertTrue(tile.hasCoordinates());
+    }
+
+    @Test
     public void coordinatesEqualsAndHashCodeTest() {
         Coordinates c1 = new Coordinates(1, 1);
         Coordinates c2 = new Coordinates(1, 1);
@@ -236,6 +249,21 @@ public class TileTest {
         assertTrue("There are no followers", tile.isNoFollower());
         exception.expect(RuntimeException.class);
         tile.returnFollower();
+    }
+
+    @Test
+    public void getOccupiedFeature() {
+        Feature feature = new Feature();
+        tile.addProperty(feature, TileDirections.WEST);
+        tile.addProperty(new Feature(), TileDirections.SOUTH);
+        tile.addProperty(new Feature(), TileDirections.NORTH);
+        tile.addProperty(new Feature(), TileDirections.WWN, TileDirections.NNW);
+        tile.placeFollower(player, feature);
+        HashSet<TileDirections> directionsSet = new HashSet<>();
+        directionsSet.add(TileDirections.WEST);
+        System.out.println(directionsSet);
+        System.out.println(tile.getOccupiedFeatureDirections());
+        assertTrue("Returns tileDirection set of follower containing feature", directionsSet.equals(tile.getOccupiedFeatureDirections()));
     }
 }
 

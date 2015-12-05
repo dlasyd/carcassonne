@@ -1,6 +1,7 @@
 package carcassonne.model;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Andrey on 04/12/15.
@@ -8,19 +9,51 @@ import java.util.HashSet;
 public class RealEstate {
     private HashSet<Tile> tiles = new HashSet<>();
 
+    public RealEstate(Tile tile) {
+        if (tile.isNoFollower())
+            throw new RuntimeException("Cannot create real estate from tile without a follower");
+        addTile(tile);
+    }
+
+    /*
+     * TODO: remove no args constructor
+     */
+    public RealEstate() {}
+
     public void addTile(Tile tile) {
         if (tile.getCoordinates() == null)
             throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
         if (! tile.isComplete())
             throw new RuntimeException("Incomplete tile cannot be part of real estate");
         if (! validCoordinates(tile))
-            throw new RuntimeException("Real estate trying to add tile with duplicate coordinates");
+            throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
+        //if (! addedFeatureUnoccupied(tile))
+       //     throw new RuntimeException("Trying to add occupied feature to existing real estate");
 
         tiles.add(tile);
 
     }
+/*
+    private boolean addedFeatureUnoccupied(Tile newTile) {
+        for (Tile existingTile: tiles)
+        {
+            if (existingTile.isNoFollower())
+                return true;
 
+            TileDirections existingDirection = existingTile.getOccupiedFeatureDirections();
+            TileDirections shouldBeUnoccupied = existingDirection.getNeighbour();
+
+            if (newTile.getOccupiedFeatureDirections() == shouldBeUnoccupied)
+                return false;
+
+
+        }
+        return true;
+    }
+*/
     private boolean validCoordinates(Tile tile) {
+        if (tiles.size() == 0)
+            return true;
         for (Tile rsTile: tiles) {
             if (rsTile.getCoordinates().equals(tile.getCoordinates()))
                 return false;
@@ -36,5 +69,9 @@ public class RealEstate {
             result.add(tile.getCoordinates());
         }
         return result;
+    }
+
+    public Set<Tile> getTileSet() {
+        return tiles;
     }
 }
