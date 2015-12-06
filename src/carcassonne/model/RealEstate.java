@@ -28,6 +28,9 @@ public class RealEstate {
     }
 
     public void addTile(Tile tile) {
+        /*
+         * TODO refactor this
+         */
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
             Set<TileDirections> featureDirections = tile.getOccupiedFeatureDirections();
