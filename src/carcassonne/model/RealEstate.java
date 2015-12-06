@@ -8,18 +8,8 @@ import java.util.Set;
  */
 public class RealEstate {
     private HashSet<Tile> tiles = new HashSet<>();
-    private Table table;
+    private final Table table;
 
-    public RealEstate(Tile tile) {
-        if (tile.isNoFollower())
-            throw new RuntimeException("Cannot create real estate from tile without a follower");
-        addTile(tile);
-    }
-
-    /*
-     * TODO: remove no args constructor
-     */
-    public RealEstate() {}
     public RealEstate(Tile tile, Table table) {
         this.table = table;
         if (tile.isNoFollower())
@@ -34,14 +24,11 @@ public class RealEstate {
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
             Set<TileDirections> featureDirections = tile.getOccupiedFeatureDirections();
-            if (table != null) {
-                System.out.println("feature directions" + featureDirections);
-                featureDirections.stream().forEach(tileDirections -> {
-                    Tile t = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
-                    if (! t.isNull())
-                        adjacentTiles.add(t);
-                });
-            }
+            featureDirections.stream().forEach(tileDirections -> {
+                Tile t = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
+                if (! t.isNull())
+                    adjacentTiles.add(t);
+            });
         }
 
         if (tile.getCoordinates() == null)

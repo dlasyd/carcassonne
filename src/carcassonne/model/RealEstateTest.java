@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class RealEstateTest {
     public Tile tile;
-    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0;
+    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, completeCrossroads_0_0;
     public RealEstate realEstate;
     public Table table;
 
@@ -53,13 +53,16 @@ public class RealEstateTest {
 
     @Before
     public void setUp() {
-        realEstate = new RealEstate();
+        completeCrossroads_0_0 = Tile.getInstance(0, 0);
+        table = new Table();
+        completeCrossroads(completeCrossroads_0_0);
+        completeCrossroads_0_0.placeFollower(new Player(), TileDirections.WEST);
+        realEstate = new RealEstate(completeCrossroads_0_0, table);
         tile_0_0 = Tile.getInstance(0 ,0);
         tile_1_0 = Tile.getInstance(1 ,0);
         tile_2_0 = Tile.getInstance(2 ,0);
         tile_3_0 = Tile.getInstance(3, 0);
         tile_1_1 = Tile.getInstance(1 ,1);
-        table = new Table();
     }
 
     @Test
@@ -109,7 +112,7 @@ public class RealEstateTest {
     public void createRealEstateFistTileHasFollowerOrException() {
         exception.expect(RuntimeException.class);
         completeCrossroads(tile_0_0);
-        new RealEstate(tile_0_0);
+        new RealEstate(tile_0_0, table);
     }
 
     @Test
@@ -117,7 +120,7 @@ public class RealEstateTest {
         completeCrossroads(tile_0_0);
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
         completeCrossroads(tile_1_0);
-        RealEstate realEstate = new RealEstate(tile_0_0);
+        RealEstate realEstate = new RealEstate(tile_0_0, table);
         realEstate.addTile(tile_1_0);
 
         Set<Tile> expectedSet = new HashSet<>();
@@ -131,7 +134,7 @@ public class RealEstateTest {
         completeCrossroads(tile_0_0);
         completeCrossroads(tile_1_0);
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
-        RealEstate realEstate = new RealEstate(tile_0_0);
+        RealEstate realEstate = new RealEstate(tile_0_0, table);
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
 
         realEstate.addTile(tile_1_0);
@@ -147,7 +150,7 @@ public class RealEstateTest {
         exception.expect(RuntimeException.class);
         completeCrossroads(tile_0_0);
         tile_0_0.placeFollower(new Player(), TileDirections.WEST);
-        RealEstate realEstate = new RealEstate(tile_0_0);
+        RealEstate realEstate = new RealEstate(tile_0_0, table);
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
 
         realEstate.addTile(tile_1_0);
@@ -164,7 +167,7 @@ public class RealEstateTest {
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
         simpleRoad(tile_1_0);
         simpleRoad(tile_2_0);
-        realEstate = new RealEstate(tile_0_0);
+        realEstate = new RealEstate(tile_0_0, table);
         realEstate.addTile(tile_1_0);
         realEstate.addTile(tile_2_0);
 
@@ -174,15 +177,15 @@ public class RealEstateTest {
 
     @Test
     public void addThirdTileToPropertyFollowerOnSecond() {
-        completeCrossroads(tile_0_0);
-        simpleRoad(tile_1_0);
-        tile_1_0.placeFollower(new Player(), TileDirections.EAST);
+        completeCrossroads(tile_1_0);
         simpleRoad(tile_2_0);
-        realEstate = new RealEstate(tile_1_0);
-        realEstate.addTile(tile_0_0);
-        realEstate.addTile(tile_2_0);
+        tile_2_0.placeFollower(new Player(), TileDirections.EAST);
+        simpleRoad(tile_3_0);
+        realEstate = new RealEstate(tile_2_0, table);
+        realEstate.addTile(tile_1_0);
+        realEstate.addTile(tile_3_0);
 
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_0_0, tile_1_0, tile_2_0));
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
         assertTrue("Three tiles are added", expected.equals(realEstate.getTileSet()));
     }
 
