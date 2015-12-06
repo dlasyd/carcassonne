@@ -27,30 +27,31 @@ public class RealEstate {
             throw new RuntimeException("Incomplete tile cannot be part of real estate");
         if (! validCoordinates(tile))
             throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
-        //if (! addedFeatureUnoccupied(tile))
-       //     throw new RuntimeException("Trying to add occupied feature to existing real estate");
+        if (! addedFeatureUnoccupied(tile))
+            throw new RuntimeException("Trying to add occupied feature to existing real estate");
 
         tiles.add(tile);
 
     }
-/*
+
     private boolean addedFeatureUnoccupied(Tile newTile) {
-        for (Tile existingTile: tiles)
-        {
-            if (existingTile.isNoFollower())
-                return true;
+        if (!newTile.isNoFollower()) {
+            for (Tile existingTile : tiles) {
+                if (existingTile.isNoFollower())
+                    return true;
 
-            TileDirections existingDirection = existingTile.getOccupiedFeatureDirections();
-            TileDirections shouldBeUnoccupied = existingDirection.getNeighbour();
-
-            if (newTile.getOccupiedFeatureDirections() == shouldBeUnoccupied)
-                return false;
-
-
+                Set<TileDirections> existingDirections = existingTile.getOccupiedFeatureDirections();
+                for (TileDirections existing : existingDirections) {
+                    TileDirections shouldBeUnoccupied = existing.getNeighbour();
+                    Set<TileDirections> occupiedFeature = newTile.getOccupiedFeatureDirections();
+                    if (newTile.getOccupiedFeatureDirections().contains(shouldBeUnoccupied))
+                        return false;
+                }
+            }
         }
         return true;
     }
-*/
+
     private boolean validCoordinates(Tile tile) {
         if (tiles.size() == 0)
             return true;

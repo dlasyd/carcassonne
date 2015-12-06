@@ -10,4 +10,19 @@ public enum TileDirections {
      * etc
      */
     SOUTH, NORTH, EAST, WEST, END, WWN, NNW, NNE, EEN, CENTER, SSE, SSW, WWS, EES;
+
+    public TileDirections getNeighbour() {
+        switch (this) {
+            case SOUTH:
+                return NORTH;
+            case NORTH:
+                return SOUTH;
+            case EAST:
+                return WEST;
+            case WEST:
+                return EAST;
+        }
+        assert (false);
+        return CENTER;
+    }
 }

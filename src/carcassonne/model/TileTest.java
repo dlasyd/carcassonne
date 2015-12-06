@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 public class TileTest {
     public Tile tile;
@@ -87,7 +88,6 @@ public class TileTest {
         tile.addProperty(new Feature(), TileDirections.NORTH);
         tile.addProperty(new Feature(), TileDirections.SOUTH);
 
-        System.out.println(tile.getDestinations(TileDirections.WEST));
         assertTrue("Crossroad leads WEST to END",
                     tile.getDestinations(TileDirections.WEST).contains(TileDirections.END));
         assertFalse("Crossroad does not connect EAST and WEST",
@@ -186,10 +186,38 @@ public class TileTest {
     }
 
     @Test
-    public void propertyWithTileDirectionExistsWhenAddindThenRuntimeException() {
+    public void propertyWithTileDirectionExistsWhenAddingThenRuntimeException() {
         exception.expect(RuntimeException.class);
         tile.addProperty(new Feature(), TileDirections.WEST);
         tile.addProperty(new Feature(), TileDirections.WEST);
+    }
+
+    @Test
+    public void propertyWithTileDirectionExistsLongFunctionSameWhenAddingThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        tile.addProperty(new Feature(), TileDirections.WEST, TileDirections.EAST);
+        tile.addProperty(new Feature(), TileDirections.WEST, TileDirections.EAST);
+    }
+
+    @Test
+    public void propertyWithTileDirectionExistsLongFunctionDifferentWhenAddingThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        tile.addProperty(new Feature(), TileDirections.WEST, TileDirections.EAST);
+        tile.addProperty(new Feature(), TileDirections.WEST, TileDirections.NORTH);
+    }
+
+    @Test
+    public void propertyWithTileDirectionExistsLongFunctionDifferentFunctionWhenAddingThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        tile.addProperty(new Feature(), TileDirections.WEST, TileDirections.EAST);
+        tile.addProperty(new Feature(), TileDirections.WEST);
+    }
+
+    @Test
+    public void propertyWithTileDirectionExistsLongFunctionDifferentFunction2WhenAddingThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        tile.addProperty(new Feature(), TileDirections.WEST);
+        tile.addProperty(new Feature(), TileDirections.WEST, TileDirections.EAST);
     }
 
     @Test
@@ -264,9 +292,26 @@ public class TileTest {
         tile.placeFollower(player, feature);
         HashSet<TileDirections> directionsSet = new HashSet<>();
         directionsSet.add(TileDirections.WEST);
-        System.out.println(directionsSet);
-        System.out.println(tile.getOccupiedFeatureDirections());
         assertTrue("Returns tileDirection set of follower containing feature", directionsSet.equals(tile.getOccupiedFeatureDirections()));
+    }
+
+    @Test
+    public void placeFollowerOnTileDirectionNoFeatureThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        tile.placeFollower(new Player(), TileDirections.WEST);
+    }
+
+    @Test
+    public void placeFollowerOnDirectionCorrectTileDirection() {
+        assertTrue("Tile has no followers", tile.isNoFollower());
+        Feature feature = new Feature();
+        tile.addProperty(feature, TileDirections.WEST);
+        tile.placeFollower(new Player(), TileDirections.WEST);
+        assertFalse("Tile has a follower", tile.isNoFollower());
+
+        Set<TileDirections> expected = new HashSet<>();
+        expected.add(TileDirections.WEST);
+        assertTrue("TileDirection of feature with follower", expected.equals(tile.getOccupiedFeatureDirections()));
     }
 }
 

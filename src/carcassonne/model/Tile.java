@@ -57,6 +57,12 @@ public class Tile {
         player.placeFollower();
     }
 
+    public void placeFollower(Player player, TileDirections direction) {
+        if (propertyMap.get(direction) == null)
+            throw new RuntimeException("Cannot place follower using tileDirection because there is no corresponding feature");
+        placeFollower(player, propertyMap.get(direction));
+    }
+
     public Set<TileDirections> getDestinations(TileDirections dir) {
         return propertyConnectionMap.get(dir);
     }
