@@ -17,11 +17,14 @@ public class RealEstateTest {
     public Tile tile;
     public RealEstate realEstate;
 
-    public Feature completeCrossroads(Tile tile, boolean... returnEast) {
-        Feature resultWEST = new Feature();
-        Feature resultEAST = new Feature();
-        tile.addProperty(resultEAST, TileDirections.EAST);
-        tile.addProperty(resultWEST, TileDirections.WEST);
+    /*
+     * w|w
+     * -o-
+     * w|w
+     */
+    public void completeCrossroads(Tile tile) {
+        tile.addProperty(new Feature(), TileDirections.EAST);
+        tile.addProperty(new Feature(), TileDirections.WEST);
         tile.addProperty(new Feature(), TileDirections.SOUTH);
         tile.addProperty(new Feature(), TileDirections.NORTH);
         tile.addProperty(new Feature(), TileDirections.CENTER);
@@ -29,9 +32,15 @@ public class RealEstateTest {
         tile.addProperty(new Feature(), TileDirections.NNE, TileDirections.EEN);
         tile.addProperty(new Feature(), TileDirections.WWS, TileDirections.SSW);
         tile.addProperty(new Feature(), TileDirections.EES, TileDirections.SSE);
-        if (returnEast.length > 0)
-            return resultEAST;
-        return resultWEST;
+    }
+
+    /*
+     * www
+     * ---
+     * www
+     */
+    public void simpleRoad(Tile tile) {
+
     }
 
     @Rule
@@ -99,8 +108,8 @@ public class RealEstateTest {
     public void addTileIfNoFollowerOnRealEstateFeature() {
         Tile tile1 = new Tile(0, 0);
         Tile tile2 = new Tile(1, 0);
-        Feature feature = completeCrossroads(tile1);
-        tile1.placeFollower(new Player(), feature);
+        completeCrossroads(tile1);
+        tile1.placeFollower(new Player(), TileDirections.EAST);
         completeCrossroads(tile2);
         RealEstate realEstate = new RealEstate(tile1);
         realEstate.addTile(tile2);
@@ -115,11 +124,11 @@ public class RealEstateTest {
     public void addTileIfFollowerOnUnconnectedRealEstateFeature() {
         Tile tile1 = new Tile(0, 0);
         Tile tile2 = new Tile(1, 0);
-        Feature feature1 = completeCrossroads(tile1);
-        tile1.placeFollower(new Player(), feature1);
-        Feature feature2 = completeCrossroads(tile2);
+        completeCrossroads(tile1);
+        completeCrossroads(tile2);
+        tile1.placeFollower(new Player(), TileDirections.EAST);
         RealEstate realEstate = new RealEstate(tile1);
-        tile2.placeFollower(new Player(),feature2);
+        tile2.placeFollower(new Player(), TileDirections.EAST);
 
         realEstate.addTile(tile2);
 
@@ -134,11 +143,10 @@ public class RealEstateTest {
         exception.expect(RuntimeException.class);
         Tile tile1 = new Tile(0, 0);
         Tile tile2 = new Tile(1, 0);
-        Feature feature1 = completeCrossroads(tile1, true);
-        tile1.placeFollower(new Player(), feature1);
-        Feature feature2 = completeCrossroads(tile2);
+        completeCrossroads(tile1);
+        tile1.placeFollower(new Player(), TileDirections.WEST);
         RealEstate realEstate = new RealEstate(tile1);
-        tile2.placeFollower(new Player(),feature2);
+        tile2.placeFollower(new Player(), TileDirections.EAST);
 
         realEstate.addTile(tile2);
 
@@ -147,4 +155,5 @@ public class RealEstateTest {
         expectedSet.add(tile2);
         assertEquals("Added tiles, first has follower, second does not", expectedSet, realEstate.getTileSet());
     }
+
 }
