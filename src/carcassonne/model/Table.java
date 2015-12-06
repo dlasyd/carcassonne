@@ -30,7 +30,10 @@ public class Table {
 
     Tile getTile(int i, int j) {
         Coordinates coord = new Coordinates(i, j);
-        return placedTiles.get(coord);
+        if (placedTiles.get(coord) != null)
+            return placedTiles.get(coord);
+        else
+            return Tile.getNullInstance();
     }
 
     void placeTile(Tile currentTile) {
@@ -57,5 +60,27 @@ public class Table {
 
     HashMap<Coordinates,Tile> getPlacedTiles() {
         return placedTiles;
+    }
+
+    public Tile getNeighbouringTile(int x, int y, TileDirections direction) {
+        switch (direction) {
+            case NNE:
+            case NNW:
+            case NORTH:
+                return getTile(x, y - 1);
+            case SSE:
+            case SSW:
+            case SOUTH:
+                return getTile(x, y + 1);
+            case WWN:
+            case WWS:
+            case WEST:
+                return getTile(x - 1, y);
+            case EEN:
+            case EES:
+            case EAST:
+                return getTile(x + 1, y);
+        }
+        return Tile.getNullInstance();
     }
 }

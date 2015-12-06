@@ -8,10 +8,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class TableTest {
-    public TilePile tilePile;
     public Table table;
 
     @Rule
@@ -82,6 +80,26 @@ public class TableTest {
         assertTrue ("Tiles that were placed on table", passedTiles.equals(table.getPlacedTiles()));
     }
 
+    @Test
+    public void getNeighbourByTileDirections() {
+        Table table = Table.getInstance();
+        Tile expected = Tile.getInstance(1, 0);
+        table.placeTile(expected);
+        table.placeTile(Tile.getInstance(2,0));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(2, 0, TileDirections.WEST));
+        table.placeTile(Tile.getInstance(1,1));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, 1, TileDirections.NORTH));
+        table.placeTile(Tile.getInstance(1,-1));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, -1, TileDirections.SOUTH));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(0, 0, TileDirections.EAST));
+    }
+
+    @Test
+    public void getNeighbourNotExistThenNullTile() {
+        assertTrue("If neighbour does not exist then return NullTile",
+                table.getNeighbouringTile(0, 0, TileDirections.EEN) instanceof NullTile);
+
+    }
 }
 
 

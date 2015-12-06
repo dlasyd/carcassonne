@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Tile {
+    public static Tile getNullInstance() {
+        return new NullTile();
+    }
+
     public abstract boolean isNull();
     abstract Coordinates getCoordinates();
     abstract int getX();

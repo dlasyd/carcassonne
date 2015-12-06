@@ -8,7 +8,7 @@ import java.util.Set;
 public class NullTile extends Tile{
     @Override
     public boolean isNull() {
-        return false;
+        return true;
     }
 
     @Override

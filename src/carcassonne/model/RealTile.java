@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * This is a part of Carcassonne project.
+ * The project is created for learning and practicing java
+ * and not intended for distribution.
  * Created by Andrey on 06/12/15.
  */
 public class RealTile extends Tile {
@@ -114,10 +117,7 @@ public class RealTile extends Tile {
         Set keys = propertyMap.keySet();
         switch (keys.size()) {
             case 12:
-                if (keys.contains(TileDirections.CENTER))
-                    return false;
-                else
-                    return true;
+                return !keys.contains(TileDirections.CENTER);
             case 13:
                 return true;
         }
@@ -143,10 +143,7 @@ public class RealTile extends Tile {
     }
 
     public boolean hasCoordinates() {
-        if (coordinates == null)
-            return false;
-        else
-            return true;
+        return coordinates != null;
     }
 
     public Set<TileDirections> getOccupiedFeatureDirections() {

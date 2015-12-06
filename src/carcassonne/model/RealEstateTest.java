@@ -16,8 +16,9 @@ import static org.junit.Assert.*;
  */
 public class RealEstateTest {
     public Tile tile;
-    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1;
+    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0;
     public RealEstate realEstate;
+    public Table table;
 
     /*
      * w|w
@@ -56,7 +57,9 @@ public class RealEstateTest {
         tile_0_0 = Tile.getInstance(0 ,0);
         tile_1_0 = Tile.getInstance(1 ,0);
         tile_2_0 = Tile.getInstance(2 ,0);
+        tile_3_0 = Tile.getInstance(3, 0);
         tile_1_1 = Tile.getInstance(1 ,1);
+        table = new Table();
     }
 
     @Test
@@ -188,11 +191,16 @@ public class RealEstateTest {
      */
     @Test
     public void createPropertyFromMiddleTile() {
-        simpleRoad(tile_1_0);
-        tile_1_0.placeFollower(new Player(), TileDirections.EAST);
-        realEstate.addTile(tile_1_0);
+        completeCrossroads(tile_1_0);
+        completeCrossroads(tile_3_0);
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_3_0);
+        simpleRoad(tile_2_0);
+        tile_2_0.placeFollower(new Player(), TileDirections.EAST);
 
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_0_0, tile_1_0, tile_2_0));
+        RealEstate realEstate = new RealEstate(tile_2_0, table);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
         assertTrue("Three tiles are added", expected.equals(realEstate.getTileSet()));
 
     }
