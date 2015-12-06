@@ -81,6 +81,7 @@ public class TableTest {
         table.placeTile(tile);
         assertTrue ("Tiles that were placed on table", passedTiles.equals(table.getPlacedTiles()));
     }
+
 }
 
 

@@ -67,7 +67,7 @@ public class Tile {
         return propertyConnectionMap.get(dir);
     }
 
-    public void addProperty(Feature feature, TileDirections direction) {
+    public void addFeature(Feature feature, TileDirections direction) {
         checkIfDirectionIsNotOccupied(direction);
 
         featureToTileDirections.put(feature, new HashSet<>(Arrays.asList(new TileDirections[]{direction})));
@@ -80,7 +80,7 @@ public class Tile {
         }
     }
 
-    public void addProperty(Feature feature, TileDirections... directions) {
+    public void addFeature(Feature feature, TileDirections... directions) {
         checkIfDirectionIsNotOccupied(directions);
 
         featureToTileDirections.put(feature, new HashSet<>(Arrays.asList(directions)));

@@ -21,6 +21,8 @@ public class RealEstate {
     public RealEstate() {}
 
     public void addTile(Tile tile) {
+   //     Set<Coordinates> surrounding = Coordinates.getAround(tile.getCoordinates());
+
         if (tile.getCoordinates() == null)
             throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
         if (! tile.isComplete())
