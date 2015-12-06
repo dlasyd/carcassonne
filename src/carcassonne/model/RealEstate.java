@@ -4,7 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Andrey on 04/12/15.
+ * RealEstate is a class that creates abstract objects from features of several tiles that are connected
+ * to each other. Represents Land, Roads, Castles and Cloisters from the rules of Carcassonne.
  */
 public class RealEstate {
     private HashSet<Tile> tiles = new HashSet<>();
@@ -18,19 +19,6 @@ public class RealEstate {
     }
 
     public void addTile(Tile tile) {
-        /*
-         * TODO refactor this
-         */
-        Set<Tile> adjacentTiles = new HashSet<>();
-        if (! tile.isNoFollower()) {
-            Set<TileDirections> featureDirections = tile.getOccupiedFeatureDirections();
-            featureDirections.stream().forEach(tileDirections -> {
-                Tile t = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
-                if (! t.isNull())
-                    adjacentTiles.add(t);
-            });
-        }
-
         if (tile.getCoordinates() == null)
             throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
         if (! tile.isComplete())
@@ -41,6 +29,16 @@ public class RealEstate {
             throw new RuntimeException("Trying to add occupied feature to existing real estate");
 
         tiles.add(tile);
+
+        Set<Tile> adjacentTiles = new HashSet<>();
+        if (! tile.isNoFollower()) {
+            Set<TileDirections> featureDirections = tile.getOccupiedFeatureDirections();
+            featureDirections.stream().forEach(tileDirections -> {
+                Tile t = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
+                if (! t.isNull())
+                    adjacentTiles.add(t);
+            });
+        }
 
         adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
 
@@ -55,7 +53,6 @@ public class RealEstate {
                 Set<TileDirections> existingDirections = existingTile.getOccupiedFeatureDirections();
                 for (TileDirections existing : existingDirections) {
                     TileDirections shouldBeUnoccupied = existing.getNeighbour();
-                    Set<TileDirections> occupiedFeature = newTile.getOccupiedFeatureDirections();
                     if (newTile.getOccupiedFeatureDirections().contains(shouldBeUnoccupied))
                         return false;
                 }
@@ -71,16 +68,12 @@ public class RealEstate {
             if (rsTile.getCoordinates().equals(tile.getCoordinates()))
                 return false;
         }
-        if (! Coordinates.getAround(extractCoordinatesSet(tiles)).contains(tile.getCoordinates()))
-            return false;
-        return true;
+        return Coordinates.getAround(extractCoordinatesSet(tiles)).contains(tile.getCoordinates());
     }
 
     private HashSet<Coordinates> extractCoordinatesSet(HashSet<Tile> tiles) {
         HashSet<Coordinates> result = new HashSet<>();
-        for (Tile tile: tiles) {
-            result.add(tile.getCoordinates());
-        }
+        for (Tile tile: tiles) result.add(tile.getCoordinates());
         return result;
     }
 
