@@ -53,16 +53,16 @@ public class RealEstateTest {
     @Before
     public void setUp() {
         realEstate = new RealEstate();
-        tile_0_0 = new Tile(0, 0);
-        tile_1_0 = new Tile(1, 0);
-        tile_2_0 = new Tile(2, 0);
-        tile_1_1 = new Tile(1, 1);
+        tile_0_0 = Tile.getInstance(0 ,0);
+        tile_1_0 = Tile.getInstance(1 ,0);
+        tile_2_0 = Tile.getInstance(2 ,0);
+        tile_1_1 = Tile.getInstance(1 ,1);
     }
 
     @Test
     public void addTileNoCoordinatesThenException() {
         exception.expect(RuntimeException.class);
-        Tile tile = new Tile();
+        Tile tile = Tile.getInstance();
         completeCrossroads(tile);
         realEstate.addTile(tile);
     }
@@ -70,7 +70,7 @@ public class RealEstateTest {
     @Test
     public void addTileIncompleteThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        Tile tile = new Tile(1, 1);
+        Tile tile = Tile.getInstance(1 ,1);
         tile.addFeature(new Feature(), TileDirections.WEST);
         tile.addFeature(new Feature(), TileDirections.SOUTH);
 
@@ -85,8 +85,8 @@ public class RealEstateTest {
     @Test
     public void addTileSameCoordinatesThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        Tile tile1 = new Tile(0, 0);
-        Tile tile2 = new Tile(0, 0);
+        Tile tile1 = Tile.getInstance(0 ,0);
+        Tile tile2 = Tile.getInstance(0 ,0);
         completeCrossroads(tile1);
         completeCrossroads(tile2);
         realEstate.addTile(tile1);

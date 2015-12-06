@@ -19,7 +19,7 @@ public class TileTest {
 
     @Before
     public void initialize() {
-        tile = new Tile();
+        tile = Tile.getInstance();
     }
 
     @Test
@@ -31,7 +31,7 @@ public class TileTest {
 
     @Test
     public void coordinateConstructorTest() {
-        Tile tile = new Tile(0, 0);
+        Tile tile = Tile.getInstance(0 ,0);
         assertEquals(0, tile.getX());
         assertEquals(0, tile.getY());
     }

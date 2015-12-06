@@ -24,9 +24,9 @@ public class GameTest {
         game.setTable(table);
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
-        game.getTilePile().addTile(new Tile());
-        game.getTilePile().addTile(new Tile());
-        game.getTilePile().addTile(new Tile());
+        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addTile(Tile.getInstance());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class GameTest {
 
     @Test
     public void confirmTilePlacementPlacesTileOnTable() {
-        Tile currentTile = new Tile(1, 0);
+        Tile currentTile = Tile.getInstance(1, 0);
         currentTile.setCoordinates(1, 0);
         table.placeTile(currentTile);
         assertEquals (currentTile, table.getTile(1,0));

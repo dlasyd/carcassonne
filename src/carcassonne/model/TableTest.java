@@ -44,16 +44,16 @@ public class TableTest {
     @Test
     public void ifPlacedOnOccupiedPositionThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        Tile tile1 = new Tile(1, 1);
-        Tile tile2 = new Tile(1, 1);
+        Tile tile1 = Tile.getInstance(1, 1);
+        Tile tile2 = Tile.getInstance(1, 1);
         table.placeTile(tile1);
         table.placeTile(tile2);
     }
 
     @Test
     public void placedTilesAmount() {
-        Tile tile1 = new Tile(1, 1);
-        Tile tile2 = new Tile(2, 1);
+        Tile tile1 = Tile.getInstance(1, 1);
+        Tile tile2 = Tile.getInstance(2, 1);
         table.placeTile(tile1);
         table.placeTile(tile2);
         assertEquals(3, table.placedTilesAmount());
@@ -76,7 +76,7 @@ public class TableTest {
          */
         passedTiles.put(new Coordinates(0, 0), table.getFirstTile());
 
-        Tile tile = new Tile(1, 0);
+        Tile tile = Tile.getInstance(1, 0);
         passedTiles.put(tile.getCoordinates(), tile);
         table.placeTile(tile);
         assertTrue ("Tiles that were placed on table", passedTiles.equals(table.getPlacedTiles()));

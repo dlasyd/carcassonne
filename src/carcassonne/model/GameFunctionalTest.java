@@ -21,9 +21,9 @@ public class GameFunctionalTest {
         game.setTable(table);
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
-        game.getTilePile().addTile(new Tile());
-        game.getTilePile().addTile(new Tile());
-        game.getTilePile().addTile(new Tile());
+        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addTile(Tile.getInstance());
     }
 
     @Test

@@ -11,7 +11,7 @@ public class Table {
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
-    private final Tile firstTile = new Tile(0, 0);
+    private final Tile firstTile = Tile.getInstance(0, 0);
     private HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
 
     Table() {
@@ -48,7 +48,7 @@ public class Table {
     }
 
     public void dragNewCurrentTile() {
-        currentTile = new Tile();
+        currentTile = Tile.getInstance();
     }
 
     void setCurrentTile(Tile currentTile) {

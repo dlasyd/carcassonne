@@ -31,14 +31,14 @@ public class TilePileTest {
     @Test
     public void ifTileAddedNumberOfTilesIncreases() {
         assertEquals (0, tilePile.getNumberOfTiles());
-        tilePile.addTile(new Tile());
+        tilePile.addTile(Tile.getInstance());
         assertEquals (1, tilePile.getNumberOfTiles());
     }
 
     @Test
     public void ifTileDraggedThenNumberOfTilesDecreases() {
         assertEquals (0, tilePile.getNumberOfTiles());
-        tilePile.addTile(new Tile());
+        tilePile.addTile(Tile.getInstance());
         assertEquals (1, tilePile.getNumberOfTiles());
         Tile t2 = tilePile.dragTile();
         assertEquals (0, tilePile.getNumberOfTiles());
@@ -50,10 +50,10 @@ public class TilePileTest {
 
     @Test
     public void countRemainingTiles() {
-        tilePile.addTile(new Tile());
-        tilePile.addTile(new Tile());
-        tilePile.addTile(new Tile());
-        tilePile.addTile(new Tile());
+        tilePile.addTile(Tile.getInstance());
+        tilePile.addTile(Tile.getInstance());
+        tilePile.addTile(Tile.getInstance());
+        tilePile.addTile(Tile.getInstance());
         tilePile.dragTile();
         assertEquals ("Number of tiles before +1 = n of t after", 3, tilePile.getNumberOfTiles());
         tilePile.dragTile();
@@ -69,7 +69,7 @@ public class TilePileTest {
     @Test
     public void hasTiles() {
         assertEquals ("There are no tiles", tilePile.hasTiles(), false);
-        tilePile.addTile(new Tile());
+        tilePile.addTile(Tile.getInstance());
         assertEquals ("There are tiles", tilePile.hasTiles(), true);
     }
 }

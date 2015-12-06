@@ -113,9 +113,9 @@ public class Game {
      * This function was not tested with JUnit
      */
     public void loadTestTiles() {
-        game.getTilePile().addTile(new Tile());
-        game.getTilePile().addTile(new Tile());
-        game.getTilePile().addTile(new Tile());
+        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addTile(Tile.getInstance());
     }
 
     public String getCurrentPlayerName() {
