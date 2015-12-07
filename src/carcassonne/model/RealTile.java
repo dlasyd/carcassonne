@@ -75,7 +75,7 @@ public class RealTile extends Tile {
     }
 
     public Set<TileDirections> getDestinations(TileDirections dir) {
-        return propertyConnectionMap.get(dir);
+        return new HashSet<TileDirections>(propertyConnectionMap.get(dir));
     }
 
     public void addFeature(Feature feature, TileDirections direction) {
@@ -125,7 +125,7 @@ public class RealTile extends Tile {
     }
 
     public Set<Feature> getFeatures() {
-        return featureToTileDirections.keySet();
+        return new HashSet<Feature>(featureToTileDirections.keySet());
     }
 
     public Feature getOccupiedFeature() {
@@ -147,7 +147,7 @@ public class RealTile extends Tile {
     }
 
     public Set<TileDirections> getOccupiedFeatureDirections() {
-        return featureToTileDirections.get(getOccupiedFeature());
+        return new HashSet<TileDirections>(featureToTileDirections.get(getOccupiedFeature()));
     }
 
     public String toString() {
