@@ -149,4 +149,8 @@ public class RealTile extends Tile {
     public Set<TileDirections> getOccupiedFeatureDirections() {
         return featureToTileDirections.get(getOccupiedFeature());
     }
+
+    public String toString() {
+        return "T(" + getX() + "," + getY() + ")";
+    }
 }

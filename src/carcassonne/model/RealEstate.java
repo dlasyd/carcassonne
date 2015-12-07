@@ -30,16 +30,43 @@ public class RealEstate {
 
         tiles.add(tile);
 
+        /*
+         * decide if you need to go to one more tile
+         *
+         */
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
             Set<TileDirections> featureDirections = tile.getOccupiedFeatureDirections();
             featureDirections.stream().forEach(tileDirections -> {
                 Tile t = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
-                if (! t.isNull())
+                if (! t.isNull()) {
                     adjacentTiles.add(t);
+                    Set<TileDirections> spanningFeatureDirections = t.getDestinations(tileDirections.getNeighbour());
+                    if ( !spanningFeatureDirections.contains(TileDirections.END)) {
+                        /*
+                         * 1) remove TileDirection that leads to previous tile
+                         * 2) add current tile to adjacent tiles
+                         * 3) repeat operation for the next tile
+                         */
+                        assert spanningFeatureDirections.remove(tileDirections.getNeighbour());
+                        spanningFeatureDirections.stream().forEach(direction -> {
+                            Tile t2 = table.getNeighbouringTile(t.getX(), t.getY(), tileDirections);
+                            if (! t2.isNull())
+                                adjacentTiles.add(t2);
+                        });
+                    }
+                }
             });
-        }
 
+            /*
+             * Second wave of adding tiles
+             * Which features of tile are part of real estate?
+             * 1) select features of real estate
+             * 2) same cycle as above for each tile
+             */
+
+
+        }
         adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
 
     }

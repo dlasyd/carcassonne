@@ -12,11 +12,11 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 /**
- * Created by Andrey on 04/12/15.
+ * This test class tests a lot of real game situations to make sure that RealEstate class behaves properly
  */
 public class RealEstateTest {
     public Tile tile;
-    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, completeCrossroads_0_0;
+    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0;
     public RealEstate realEstate;
     public Table table;
 
@@ -62,6 +62,8 @@ public class RealEstateTest {
         tile_1_0 = Tile.getInstance(1 ,0);
         tile_2_0 = Tile.getInstance(2 ,0);
         tile_3_0 = Tile.getInstance(3, 0);
+        tile_4_0 = Tile.getInstance(4, 0);
+        tile_5_0 = Tile.getInstance(5, 0);
         tile_1_1 = Tile.getInstance(1 ,1);
     }
 
@@ -190,7 +192,7 @@ public class RealEstateTest {
     }
 
     /*
-     * tile_0_0 and tile_2_0 are on the table before we put tile_1_0 and create a real estate
+     * tile_1_0 and tile_3_0 are on the table before we put tile_2_0 and create a real estate
      */
     @Test
     public void createPropertyFromMiddleTile() {
@@ -206,6 +208,29 @@ public class RealEstateTest {
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
         assertTrue("Three tiles are added", expected.equals(realEstate.getTileSet()));
 
+    }
+
+    /*
+     * tile_1_0, tile_2_0, tile_4_0, tile_5_0 are on the table before we put tile_3_0 and create real estate
+     * Real estate in test is a 5 - tile long horizontal road
+     */
+    @Test
+    public void createPropertyFromManyPreviouslyPlacedTiles() {
+        completeCrossroads(tile_1_0);
+        completeCrossroads(tile_5_0);
+        simpleRoad(tile_2_0);
+        simpleRoad(tile_3_0);
+        simpleRoad(tile_4_0);
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_4_0);
+        table.placeTile(tile_5_0);
+
+        tile_3_0.placeFollower(new Player(), TileDirections.EAST);
+        RealEstate realEstate = new RealEstate(tile_3_0, table);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0, tile_5_0));
+        assertEquals("Five tiles are added to real estate", expected, realEstate.getTileSet());
     }
 
 }
