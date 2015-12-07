@@ -41,23 +41,18 @@ public class RealEstate {
     }
 
     private Set<Tile> findAdjacentTiles(Tile tile, TileDirections searchDirection) {
-        if (! tile.isNull()) {
-            Set<TileDirections> spanningFeatureDirections = tile.getDestinations( searchDirection.getNeighbour());
-            if (! spanningFeatureDirections.contains(TileDirections.END)) {
-                assert spanningFeatureDirections.remove( searchDirection.getNeighbour());
-                for(TileDirections direction: spanningFeatureDirections) {
-                    Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  searchDirection);
+        Set<TileDirections> spanningFeatureDirections = tile.getDestinations( searchDirection.getNeighbour());
+        if (! spanningFeatureDirections.contains(TileDirections.END)) {
+            assert spanningFeatureDirections.remove( searchDirection.getNeighbour());
+            for(TileDirections direction: spanningFeatureDirections) {
+                Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  searchDirection);
 
-                    Set<Tile> result = new HashSet<Tile>();
-                    if (! neighbour.isNull()) {
-                        result.add(neighbour);
-                        result.addAll(findAdjacentTiles(neighbour, direction));
-                    }
-                    return result;
+                Set<Tile> result = new HashSet<Tile>();
+                if (! neighbour.isNull()) {
+                    result.add(neighbour);
+                    result.addAll(findAdjacentTiles(neighbour, direction));
                 }
-
-            } else {
-                return new HashSet<Tile>();
+                return result;
             }
         }
         return new HashSet<>();
