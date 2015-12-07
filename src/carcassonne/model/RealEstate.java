@@ -67,17 +67,27 @@ public class RealEstate {
                 }
             });
 
-            /*
-             * Second wave of adding tiles
-             * Which features of tile are part of real estate?
-             * 1) select features of real estate
-             * 2) same cycle as above for each tile
-             */
 
-
+            addAdjacentTiles(tile, TileDirections.WEST);
+            addAdjacentTiles(tile, TileDirections.EAST);
         }
         adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
+    }
 
+    private void addAdjacentTiles(Tile tile, TileDirections innerBorder) {
+        if (! tile.isNull()) {
+            Set<TileDirections> spanningFeatureDirections = tile.getDestinations(innerBorder.getNeighbour());
+            if (! spanningFeatureDirections.contains(TileDirections.END)) {
+                assert spanningFeatureDirections.remove(innerBorder.getNeighbour());
+                spanningFeatureDirections.stream().forEach(direction -> {
+                    Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), innerBorder);
+                    System.out.println("Adding " + neighbour);
+                    addAdjacentTiles(neighbour, direction);
+                });
+            } else {
+                return;
+            }
+        }
     }
 
     private boolean addedFeatureUnoccupied(Tile newTile) {
