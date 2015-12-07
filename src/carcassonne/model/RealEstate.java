@@ -35,12 +35,12 @@ public class RealEstate {
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
             tile.getOccupiedFeatureDirections().stream().forEach(tileDirections ->
-                    adjacentTiles.addAll(addAdjacentTiles(tile, tileDirections)));
+                    adjacentTiles.addAll(findAdjacentTiles(tile, tileDirections)));
         }
         adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
     }
 
-    private Set<Tile> addAdjacentTiles(Tile tile, TileDirections searchDirection) {
+    private Set<Tile> findAdjacentTiles(Tile tile, TileDirections searchDirection) {
         if (! tile.isNull()) {
             Set<TileDirections> spanningFeatureDirections = tile.getDestinations( searchDirection.getNeighbour());
             if (! spanningFeatureDirections.contains(TileDirections.END)) {
@@ -51,7 +51,7 @@ public class RealEstate {
                     Set<Tile> result = new HashSet<Tile>();
                     if (! neighbour.isNull()) {
                         result.add(neighbour);
-                        result.addAll(addAdjacentTiles(neighbour, direction));
+                        result.addAll(findAdjacentTiles(neighbour, direction));
                     }
                     return result;
                 }
