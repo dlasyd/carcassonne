@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class RealEstateTest {
     public Tile tile;
-    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0;
+    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
     public RealEstate realEstate;
     public Table table;
 
@@ -64,6 +64,7 @@ public class RealEstateTest {
         tile_3_0 = Tile.getInstance(3, 0);
         tile_4_0 = Tile.getInstance(4, 0);
         tile_5_0 = Tile.getInstance(5, 0);
+        tile_6_0 = Tile.getInstance(6, 0);
         tile_1_1 = Tile.getInstance(1 ,1);
     }
 
@@ -233,4 +234,27 @@ public class RealEstateTest {
         assertEquals("Five tiles are added to real estate", expected, realEstate.getTileSet());
     }
 
+    /*
+     * Same as above but three tiles to the left when creating real estate (tile_0_0 does not count)
+     */
+    @Test
+    public void createPropertyFromPreviousThreeToTheLeft() {
+        completeCrossroads(tile_1_0);
+        completeCrossroads(tile_6_0);
+        simpleRoad(tile_2_0);
+        simpleRoad(tile_3_0);
+        simpleRoad(tile_4_0);
+        simpleRoad(tile_5_0);
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_3_0);
+        table.placeTile(tile_5_0);
+        table.placeTile(tile_6_0);
+
+        tile_4_0.placeFollower(new Player(), TileDirections.EAST);
+        RealEstate realEstate = new RealEstate(tile_4_0, table);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0, tile_5_0, tile_6_0));
+        assertEquals("Five tiles are added to real estate", expected, realEstate.getTileSet());
+    }
 }

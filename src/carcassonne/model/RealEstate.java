@@ -42,7 +42,7 @@ public class RealEstate {
                 if (! t.isNull()) {
                     adjacentTiles.add(t);
                     Set<TileDirections> spanningFeatureDirections = t.getDestinations(tileDirections.getNeighbour());
-                    if ( !spanningFeatureDirections.contains(TileDirections.END)) {
+                    if (! spanningFeatureDirections.contains(TileDirections.END)) {
                         /*
                          * 1) remove TileDirection that leads to previous tile
                          * 2) add current tile to adjacent tiles
@@ -53,6 +53,15 @@ public class RealEstate {
                             Tile t2 = table.getNeighbouringTile(t.getX(), t.getY(), tileDirections);
                             if (! t2.isNull())
                                 adjacentTiles.add(t2);
+                                Set<TileDirections> spanningFeatureDirections2 = t2.getDestinations(tileDirections.getNeighbour());
+                                if (! spanningFeatureDirections2.contains(TileDirections.END)) {
+                                    assert spanningFeatureDirections2.remove(tileDirections.getNeighbour());
+                                    spanningFeatureDirections.stream().forEach(direction2 -> {
+                                        Tile t3 = table.getNeighbouringTile(t2.getX(), t2.getY(), tileDirections);
+                                        if (! t3.isNull())
+                                            adjacentTiles.add(t3);
+                                    });
+                                }
                         });
                     }
                 }
