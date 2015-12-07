@@ -112,6 +112,16 @@ public class RealEstateTest {
     }
 
     @Test
+    public void addNullTileThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        Tile nullTile = Tile.getNullInstance();
+        completeCrossroads(tile_0_0);
+        tile_0_0.placeFollower(new Player(), TileDirections.EAST);
+        RealEstate realEstate = new RealEstate(tile_0_0, table);
+        realEstate.addTile(nullTile);
+    }
+
+    @Test
     public void createRealEstateFistTileHasFollowerOrException() {
         exception.expect(RuntimeException.class);
         completeCrossroads(tile_0_0);

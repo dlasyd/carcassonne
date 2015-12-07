@@ -13,86 +13,95 @@ public class NullTile extends Tile{
 
     @Override
     Coordinates getCoordinates() {
-        return null;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     int getX() {
-        return 0;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     int getY() {
-        return 0;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     void setCoordinates(int x, int y) {
 
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     boolean isNoFollower() {
-        return false;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     boolean isComplete() {
-        return false;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     boolean hasCoordinates() {
-        return false;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     boolean hasCloister() {
-        return false;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     void placeFollower(Player player, Feature feature) {
 
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     void placeFollower(Player player, TileDirections direction) {
 
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     void addFeature(Feature feature, TileDirections direction) {
 
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     void addFeature(Feature feature, TileDirections... directions) {
 
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     Set<TileDirections> getDestinations(TileDirections tileDirection) {
-        return null;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     Set<TileDirections> getOccupiedFeatureDirections() {
-        return null;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     Set<Feature> getFeatures() {
-        return null;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     Feature getOccupiedFeature() {
-        return null;
+        throw new RuntimeException("The tile is Null");
     }
 
     @Override
     void returnFollower() {
+        throw new RuntimeException("The tile is Null");
+    }
 
+    private void throwRuntimeException() {
+        throw new RuntimeException("The tile is Null");
     }
 }

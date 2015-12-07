@@ -19,6 +19,8 @@ public class RealEstate {
     }
 
     public void addTile(Tile tile) {
+        if (tile.isNull())
+            throw new RuntimeException("Trying to add a NULL tile");
         if (tile.getCoordinates() == null)
             throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
         if (! tile.isComplete())
@@ -30,64 +32,35 @@ public class RealEstate {
 
         tiles.add(tile);
 
-        /*
-         * decide if you need to go to one more tile
-         *
-         */
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
-            Set<TileDirections> featureDirections = tile.getOccupiedFeatureDirections();
-            featureDirections.stream().forEach(tileDirections -> {
-                Tile t = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
-                if (! t.isNull()) {
-                    adjacentTiles.add(t);
-                    Set<TileDirections> spanningFeatureDirections = t.getDestinations(tileDirections.getNeighbour());
-                    if (! spanningFeatureDirections.contains(TileDirections.END)) {
-                        /*
-                         * 1) remove TileDirection that leads to previous tile
-                         * 2) add current tile to adjacent tiles
-                         * 3) repeat operation for the next tile
-                         */
-                        assert spanningFeatureDirections.remove(tileDirections.getNeighbour());
-                        spanningFeatureDirections.stream().forEach(direction -> {
-                            Tile t2 = table.getNeighbouringTile(t.getX(), t.getY(), tileDirections);
-                            if (! t2.isNull())
-                                adjacentTiles.add(t2);
-                                Set<TileDirections> spanningFeatureDirections2 = t2.getDestinations(tileDirections.getNeighbour());
-                                if (! spanningFeatureDirections2.contains(TileDirections.END)) {
-                                    assert spanningFeatureDirections2.remove(tileDirections.getNeighbour());
-                                    spanningFeatureDirections.stream().forEach(direction2 -> {
-                                        Tile t3 = table.getNeighbouringTile(t2.getX(), t2.getY(), tileDirections);
-                                        if (! t3.isNull())
-                                            adjacentTiles.add(t3);
-                                    });
-                                }
-                        });
-                    }
-                }
-            });
-
-
-            addAdjacentTiles(tile, TileDirections.WEST);
-            addAdjacentTiles(tile, TileDirections.EAST);
+            tile.getOccupiedFeatureDirections().stream().forEach(tileDirections ->
+                    adjacentTiles.addAll(addAdjacentTiles(tile, tileDirections)));
         }
         adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
     }
 
-    private void addAdjacentTiles(Tile tile, TileDirections innerBorder) {
+    private Set<Tile> addAdjacentTiles(Tile tile, TileDirections searchDirection) {
         if (! tile.isNull()) {
-            Set<TileDirections> spanningFeatureDirections = tile.getDestinations(innerBorder.getNeighbour());
+            Set<TileDirections> spanningFeatureDirections = tile.getDestinations( searchDirection.getNeighbour());
             if (! spanningFeatureDirections.contains(TileDirections.END)) {
-                assert spanningFeatureDirections.remove(innerBorder.getNeighbour());
-                spanningFeatureDirections.stream().forEach(direction -> {
-                    Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), innerBorder);
-                    System.out.println("Adding " + neighbour);
-                    addAdjacentTiles(neighbour, direction);
-                });
+                assert spanningFeatureDirections.remove( searchDirection.getNeighbour());
+                for(TileDirections direction: spanningFeatureDirections) {
+                    Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  searchDirection);
+
+                    Set<Tile> result = new HashSet<Tile>();
+                    if (! neighbour.isNull()) {
+                        result.add(neighbour);
+                        result.addAll(addAdjacentTiles(neighbour, direction));
+                    }
+                    return result;
+                }
+
             } else {
-                return;
+                return new HashSet<Tile>();
             }
         }
+        return new HashSet<>();
     }
 
     private boolean addedFeatureUnoccupied(Tile newTile) {
