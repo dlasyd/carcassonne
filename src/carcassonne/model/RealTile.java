@@ -102,9 +102,12 @@ public class RealTile extends Tile {
         }
     }
 
+    /*
+     * Ignores END direction, because several features may have END within one tile
+     */
     private void checkIfDirectionIsNotOccupied(TileDirections... directions) {
         for (TileDirections direction: directions) {
-            if (propertyMap.containsKey(direction))
+            if (propertyMap.containsKey(direction) && direction != TileDirections.END)
                 throw new RuntimeException("Cannot rewrite objects of feature on tile");
         }
     }

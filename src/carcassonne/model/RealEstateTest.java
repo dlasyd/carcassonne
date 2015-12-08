@@ -351,7 +351,9 @@ public class RealEstateTest {
         bottomRightAngleCastle(tile_2_m2);
         horizontalTCastle(tile_3_m2);
 
+        tile_1_0.placeFollower(new Player(), TileDirections.NORTH);
+        RealEstate realEstate = new RealEstate(tile_1_0, table);
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2));
-        //assertEquals("Six tiles are added to real estate", expected, realEstate.getTileSet());
+        assertEquals("Six tiles are added to real estate", expected, realEstate.getTileSet());
     }
 }
