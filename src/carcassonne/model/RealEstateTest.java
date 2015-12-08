@@ -358,6 +358,7 @@ public class RealEstateTest {
     }
 
     /*
+     * Applies to next two tests
      * This test of a complex real estate, both x and y change, one of the tile has more than 1 direction,
      * several TileDirections that characterise feature belong to one side of a tile
      */

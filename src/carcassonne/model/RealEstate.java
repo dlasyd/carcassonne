@@ -63,7 +63,9 @@ public class RealEstate {
             return result;
         }
 
-        assert currentTileFeatureDirections.remove(searchDirection);    //removes TileDirection that leads back
+        /*
+         * removes TileDirections that lead back
+         */
         currentTileFeatureDirections.removeAll(searchDirection.getEdge());
         for (TileDirections direction: currentTileFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  direction);
