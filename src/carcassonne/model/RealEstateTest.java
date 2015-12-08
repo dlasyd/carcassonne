@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static carcassonne.model.TileDirections.*;
 
 /**
  * This test class tests a lot of real game situations to make sure that RealEstate class behaves properly
@@ -17,13 +18,14 @@ import static org.junit.Assert.*;
 public class RealEstateTest {
     public Tile tile;
     public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
+    public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2;
     public RealEstate realEstate;
     public Table table;
 
     /*
-     * w|w
-     * -o-
-     * w|w
+     *   |
+     * - o -
+     *   |
      */
     public void completeCrossroads(Tile tile) {
         tile.addFeature(new Feature(), TileDirections.EAST);
@@ -38,9 +40,72 @@ public class RealEstateTest {
     }
 
     /*
-     * www
-     * ---
-     * www
+     * #   #
+     * # # #
+     * #   #
+     */
+    public void horizontalTCastle(Tile tile) {
+        tile.addFeature(new Feature(), WWN, WEST, WWS, EAST, EEN, EES);
+        tile.addFeature(new Feature(), NNW, NORTH, NNE, END);
+        tile.addFeature(new Feature(), SSW, SOUTH, SSE, END);
+    }
+
+    /*
+     * # # #
+     *   # #
+     * # # #
+     */
+    public void threeSideCastleWithWestLand(Tile tile) {
+        tile.addFeature(new Feature(), WEST, WWN, WWS, END);
+        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+    }
+
+    /*
+     * # # #
+     *   #
+     * # # #
+     */
+    public void verticalTCastle(Tile tile) {
+        tile.addFeature(new Feature(), EAST, EEN, EES, END );
+        tile.addFeature(new Feature(), WEST, WWN, WWS, END);
+        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+    }
+
+    /*
+     *     #
+     *   # #
+     * # # #
+     */
+    public void bottomRightAngleCastle(Tile tile) {
+        tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
+        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+    }
+
+    /*
+     * # # #
+     * # #
+     * #
+     */
+    public void topLeftAngleCastle(Tile tile) {
+        tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
+        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+    }
+
+
+    /*
+     * # # #
+     *
+     *
+     */
+    public void topCap(Tile tile) {
+        tile.addFeature(new Feature(), NNW, NORTH, NNE, END);
+        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+    }
+
+    /*
+     *
+     * - - -
+     *
      */
     public void simpleRoad(Tile tile) {
         tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW, TileDirections.NORTH, TileDirections.NNE, TileDirections.EEN);
@@ -66,6 +131,11 @@ public class RealEstateTest {
         tile_5_0 = Tile.getInstance(5, 0);
         tile_6_0 = Tile.getInstance(6, 0);
         tile_1_1 = Tile.getInstance(1 ,1);
+        tile_1_m1 = Tile.getInstance(1, -1);
+        tile_1_m2 = Tile.getInstance(1, -2);
+        tile_2_m1 = Tile.getInstance(2, -1);
+        tile_2_m2 = Tile.getInstance(2, -2);
+        tile_3_m2 = Tile.getInstance(3, -2);
     }
 
     @Test
@@ -266,5 +336,22 @@ public class RealEstateTest {
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0, tile_5_0, tile_6_0));
         assertEquals("Five tiles are added to real estate", expected, realEstate.getTileSet());
+    }
+
+    /*
+     * This test of a complex real estate, both x and y change, one of the tile has more than 1 direction,
+     * several TileDirections that characterise feature belong to one side of a tile
+     */
+    @Test
+    public void createPropertyFromComplexPreviousTilePlacement() {
+        topCap(tile_1_0);
+        threeSideCastleWithWestLand(tile_1_m1);
+        verticalTCastle(tile_1_m2);
+        topLeftAngleCastle(tile_2_m1);
+        bottomRightAngleCastle(tile_2_m2);
+        horizontalTCastle(tile_3_m2);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2));
+        //assertEquals("Six tiles are added to real estate", expected, realEstate.getTileSet());
     }
 }

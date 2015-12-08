@@ -142,6 +142,20 @@ public class RealTile extends Tile {
         noFollower = true;
     }
 
+    @Override
+    /*
+     * returns unoccupied directions. END and CENTER are excluded from return because they are not needed in
+     * the context of use of the method (the method is created to be used in RealEstateTest)
+     */
+    public TileDirections[] getUnoccupiedDirections() {
+        Set<TileDirections> result = new HashSet<>();
+        result.addAll(Arrays.asList(TileDirections.values()));
+        result.remove(TileDirections.END);
+        result.remove(TileDirections.CENTER);
+        result.removeAll(propertyMap.keySet());
+        return result.toArray(new TileDirections[result.size()]);
+    }
+
     public boolean hasCoordinates() {
         return coordinates != null;
     }

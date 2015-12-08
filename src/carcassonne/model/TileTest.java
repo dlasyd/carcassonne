@@ -1,5 +1,7 @@
 package carcassonne.model;
 
+import static carcassonne.model.TileDirections.*;
+import static carcassonne.model.TileDirections.END;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -7,6 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -311,6 +314,37 @@ public class TileTest {
         Set<TileDirections> expected = new HashSet<>();
         expected.add(TileDirections.WEST);
         assertTrue("TileDirection of feature with follower", expected.equals(tile.getOccupiedFeatureDirections()));
+    }
+
+    @Test
+    public void getUnoccupiedDirections() {
+        tile.addFeature(new Feature(), TileDirections.EAST, TileDirections.NNW, TileDirections.SSE, TileDirections.EEN);
+        Set<TileDirections> expected = new HashSet<>();
+        expected.add(TileDirections.NORTH);
+        expected.add(TileDirections.NNE);
+        expected.add(TileDirections.EES);
+        expected.add(TileDirections.SOUTH);
+        expected.add(TileDirections.SSW);
+        expected.add(TileDirections.WEST);
+        expected.add(TileDirections.WWS);
+        expected.add(TileDirections.WWN);
+        TileDirections[] expectedArray = expected.toArray(new TileDirections[expected.size()]);
+        assertEquals("Unoccupied directions excluding END and CENTER", new HashSet(Arrays.asList(expectedArray)),
+                new HashSet(Arrays.asList(tile.getUnoccupiedDirections())));
+    }
+
+
+    @Test
+    public void usingEndDirectionMoreThenOnce() {
+        Feature feature1, feature2, feature3;
+        feature1 = new Feature();
+        feature2 = new Feature();
+        feature3 = new Feature();
+        tile.addFeature(feature1, EAST, EEN, EES, END );
+        tile.addFeature(feature2, WEST, WWN, WWS, END);
+        tile.addFeature(feature3, tile.getUnoccupiedDirections());
+        Set<Feature> expected = new HashSet<>(Arrays.asList(feature1, feature2, feature3));
+        assertEquals("Tile features", expected, tile.getFeatures());
     }
 }
 

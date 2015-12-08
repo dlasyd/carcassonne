@@ -36,5 +36,11 @@ public abstract class Tile {
     public static Tile getInstance(int x, int y) {
         return new RealTile(x, y);
     }
+
+    /*
+     * This method is created to make creating test Tiles easier. Should not be used in real Tile creation
+     * that will be developed later.
+     */
+    public abstract TileDirections[] getUnoccupiedDirections();
 }
 

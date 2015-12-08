@@ -101,6 +101,11 @@ public class NullTile extends Tile{
         throw new RuntimeException("The tile is Null");
     }
 
+    @Override
+    public TileDirections[] getUnoccupiedDirections() {
+        throw new RuntimeException("The tile is Null");
+    }
+
     private void throwRuntimeException() {
         throw new RuntimeException("The tile is Null");
     }
