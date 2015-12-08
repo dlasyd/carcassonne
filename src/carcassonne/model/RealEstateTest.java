@@ -18,7 +18,7 @@ import static carcassonne.model.TileDirections.*;
 public class RealEstateTest {
     public Tile tile;
     public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
-    public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2;
+    public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2;
     public RealEstate realEstate;
     public Table table;
 
@@ -136,6 +136,9 @@ public class RealEstateTest {
         tile_2_m1 = Tile.getInstance(2, -1);
         tile_2_m2 = Tile.getInstance(2, -2);
         tile_3_m2 = Tile.getInstance(3, -2);
+
+        tile_0_1 = Tile.getInstance(0, 1);
+        tile_0_2 = Tile.getInstance(0, 2);
     }
 
     @Test
@@ -336,6 +339,22 @@ public class RealEstateTest {
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0, tile_5_0, tile_6_0));
         assertEquals("Five tiles are added to real estate", expected, realEstate.getTileSet());
+    }
+
+    /*
+     * Finding adjacent tiles when they are placed vertically
+     */
+    @Test
+    public void verticalTest() {
+        completeCrossroads(tile_0_1);
+        completeCrossroads(tile_0_2);
+        table.placeTile(tile_0_2);
+        tile_0_1.placeFollower(new Player(), SOUTH);
+        RealEstate realEstate = new RealEstate(tile_0_1, table);
+        Set<Tile> expected = new HashSet<>();
+        expected.add(tile_0_1);
+        expected.add(tile_0_2);
+        assertEquals("Real estate tiles", expected, realEstate.getTileSet());
     }
 
     /*
