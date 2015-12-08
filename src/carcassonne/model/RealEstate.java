@@ -34,26 +34,44 @@ public class RealEstate {
 
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
-            tile.getOccupiedFeatureDirections().stream().forEach(tileDirections ->
-                    adjacentTiles.addAll(findAdjacentTiles(tile, tileDirections)));
+            tile.getOccupiedFeatureDirections().stream().forEach(tileDirections -> {
+                Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
+                if (! neighbour.isNull()) {
+                    adjacentTiles.add(neighbour);
+                    adjacentTiles.addAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour()));
+                }
+            });
         }
         adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
     }
 
+    /*
+     * Method uses recursion
+     * Bad termination condition. Currently it goes no further if tile has an END destination.
+     * This is bad if there is an END in the first tile
+     * This problem is solved by looped method invocation
+     */
     private Set<Tile> findAdjacentTiles(Tile tile, TileDirections searchDirection) {
-        Set<TileDirections> spanningFeatureDirections = tile.getDestinations( searchDirection.getNeighbour());
-        if (! spanningFeatureDirections.contains(TileDirections.END)) {
-            assert spanningFeatureDirections.remove( searchDirection.getNeighbour());
-            for(TileDirections direction: spanningFeatureDirections) {
-                Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  searchDirection);
+        Set<Tile> result = new HashSet<Tile>();
 
-                Set<Tile> result = new HashSet<Tile>();
-                if (! neighbour.isNull()) {
-                    result.add(neighbour);
-                    result.addAll(findAdjacentTiles(neighbour, direction));
-                }
-                return result;
+        /*
+         * Set of all Directions within tile that a Feature occupies
+         */
+        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(searchDirection.getNeighbour());
+        if(currentTileFeatureDirections.contains(TileDirections.END)) {
+            result.add(tile);
+            return result;
+        }
+
+        assert currentTileFeatureDirections.remove(searchDirection);    //removes TileDirection that leads back
+        for (TileDirections direction: currentTileFeatureDirections) {
+            Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  direction);
+
+            if (! neighbour.isNull()) {
+                result.add(neighbour);
+                result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour()));
             }
+            return result;
         }
         return new HashSet<>();
     }
