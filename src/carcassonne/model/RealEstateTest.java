@@ -362,6 +362,23 @@ public class RealEstateTest {
      * several TileDirections that characterise feature belong to one side of a tile
      */
     @Test
+    public void createPropertyFromLessComplexPreviousTilePlacement() {
+        topCap(tile_1_0);
+        threeSideCastleWithWestLand(tile_1_m1);
+        verticalTCastle(tile_1_m2);
+        topLeftAngleCastle(tile_2_m1);
+        bottomRightAngleCastle(tile_2_m2);
+        horizontalTCastle(tile_3_m2);
+
+        table.placeTile(tile_1_m1);
+        table.placeTile(tile_1_m2);
+        tile_1_0.placeFollower(new Player(), TileDirections.NORTH);
+        RealEstate realEstate = new RealEstate(tile_1_0, table);
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2));
+        assertEquals("Six tiles are added to real estate", expected, realEstate.getTileSet());
+    }
+
+    @Test
     public void createPropertyFromComplexPreviousTilePlacement() {
         topCap(tile_1_0);
         threeSideCastleWithWestLand(tile_1_m1);
@@ -370,6 +387,11 @@ public class RealEstateTest {
         bottomRightAngleCastle(tile_2_m2);
         horizontalTCastle(tile_3_m2);
 
+        table.placeTile(tile_1_m1);
+        table.placeTile(tile_1_m2);
+        table.placeTile(tile_2_m1);
+        table.placeTile(tile_2_m2);
+        table.placeTile(tile_3_m2);
         tile_1_0.placeFollower(new Player(), TileDirections.NORTH);
         RealEstate realEstate = new RealEstate(tile_1_0, table);
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2));

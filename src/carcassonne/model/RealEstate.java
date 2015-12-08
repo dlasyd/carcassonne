@@ -64,14 +64,15 @@ public class RealEstate {
         }
 
         assert currentTileFeatureDirections.remove(searchDirection);    //removes TileDirection that leads back
+        currentTileFeatureDirections.removeAll(searchDirection.getEdge());
         for (TileDirections direction: currentTileFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  direction);
 
             if (! neighbour.isNull()) {
                 result.add(neighbour);
                 result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour()));
+                return result;
             }
-            return result;
         }
         return new HashSet<>();
     }
