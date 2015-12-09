@@ -57,7 +57,7 @@ public class RealEstate {
         /*
          * Set of all Directions within tile that a Feature occupies
          */
-        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(searchDirection.getNeighbour());
+        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(searchDirection);
         if(currentTileFeatureDirections.contains(TileDirections.END)) {
             result.add(tile);
             return result;
@@ -72,11 +72,11 @@ public class RealEstate {
 
             if (! neighbour.isNull()) {
                 result.add(neighbour);
+                //TODO there is a logical error in recursive function invocation
                 result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour()));
-                return result;
             }
         }
-        return new HashSet<>();
+        return result;
     }
 
     private boolean addedFeatureUnoccupied(Tile newTile) {
