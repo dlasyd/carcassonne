@@ -52,7 +52,7 @@ public class RealEstate {
      * loopBreakingTile is a tile that is used to create RealEstate(in constructor)
      */
     private Set<Tile> findAdjacentTiles(Tile tile, TileDirections directionWithFeature, Tile loopBreakingTile) {
-        Set<Tile> result = new HashSet<Tile>();
+        Set<Tile> result = new HashSet<>();
 
         if (tile == loopBreakingTile) {
             return result;
