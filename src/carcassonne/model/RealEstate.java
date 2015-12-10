@@ -39,7 +39,7 @@ public class RealEstate {
                 Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
                 if (! neighbour.isNull()) {
                     adjacentTiles.add(neighbour);
-                    adjacentTiles.addAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour()));
+                    adjacentTiles.addAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
                 }
             }
         }
@@ -51,9 +51,15 @@ public class RealEstate {
      * Bad termination condition. Currently it goes no further if tile has an END destination.
      * This is bad if there is an END in the first tile
      * This problem is solved by looped method invocation
+     *
+     * loopBreakingTile is a tile that is used to create RealEstate(in constructor)
      */
-    private Set<Tile> findAdjacentTiles(Tile tile, TileDirections searchDirection) {
+    private Set<Tile> findAdjacentTiles(Tile tile, TileDirections searchDirection, Tile loopBreakingTile) {
         Set<Tile> result = new HashSet<Tile>();
+
+        if (tile == loopBreakingTile) {
+            return result;
+        }
 
         /*
          * Set of all Directions within tile that a Feature occupies
@@ -73,8 +79,7 @@ public class RealEstate {
 
             if (! neighbour.isNull()) {
                 result.add(neighbour);
-                //TODO there is a logical error in recursive function invocation
-                result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour()));
+                result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour(),loopBreakingTile));
             }
         }
         return result;
