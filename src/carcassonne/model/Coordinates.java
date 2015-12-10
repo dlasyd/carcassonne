@@ -41,10 +41,6 @@ class Coordinates {
         return rotation;
     }
 
-    public void turnRight() {
-        rotation = rotation.turnRight();
-    }
-
     public static HashSet<Coordinates> getAround(HashSet<Coordinates> coordinatesSet) {
         HashSet<Coordinates> result = new HashSet<>();
         for (Coordinates coordinate: coordinatesSet) {
@@ -60,10 +56,5 @@ class Coordinates {
     public String toString() {
         return "(" + getX()+", " + getY()+")";
     }
-    public enum Rotation {
-        DEG_0, DEG_90, DEG_180, DEG_270;
-        Rotation turnRight() {
-            return Rotation.values()[(this.ordinal() + 1) % Rotation.values().length];
-        }
-    }
+
 }

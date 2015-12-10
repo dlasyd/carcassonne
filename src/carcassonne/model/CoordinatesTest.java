@@ -16,20 +16,7 @@ public class CoordinatesTest {
 
     @Test
     public void noRotationByDefault() {
-        assertEquals ("Rotation by default", Coordinates.Rotation.DEG_0, coordinates.getRotation());
-    }
-
-    @Test
-    public void turnRightChangesEnum() {
-        coordinates.turnRight();
-        assertEquals ("Tile is turned 90 clockwise", Coordinates.Rotation.DEG_90, coordinates.getRotation());
-    }
-
-    @Test
-    public void turnRightIsCyclical() {
-        for (int i = 0; i < 4; i++)
-            coordinates.turnRight();
-        assertEquals ("Tile is turned clockwise 4 times", Coordinates.Rotation.DEG_0, coordinates.getRotation());
+        assertEquals ("Rotation by default", Rotation.DEG_0, coordinates.getRotation());
     }
 
     @Test

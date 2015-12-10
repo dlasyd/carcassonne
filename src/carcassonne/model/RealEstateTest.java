@@ -18,7 +18,7 @@ import static carcassonne.model.TileDirections.*;
 public class RealEstateTest {
     public Tile tile;
     public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
-    public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2;
+    public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2, tile_2_1;
     public RealEstate realEstate;
     public Table table;
 
@@ -113,6 +113,17 @@ public class RealEstateTest {
         tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW, TileDirections.SOUTH, TileDirections.SSE, TileDirections.EES);
     }
 
+    /*
+     * w w w
+     * w + -
+     * w | w
+     */
+    public void roadTurn(Tile tile) {
+        tile.addFeature(new Feature(), SOUTH, EAST);
+        tile.addFeature(new Feature(), EES, SSE);
+        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+    }
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -131,6 +142,7 @@ public class RealEstateTest {
         tile_5_0 = Tile.getInstance(5, 0);
         tile_6_0 = Tile.getInstance(6, 0);
         tile_1_1 = Tile.getInstance(1 ,1);
+        tile_2_1 = Tile.getInstance(2, 1);
         tile_1_m1 = Tile.getInstance(1, -1);
         tile_1_m2 = Tile.getInstance(1, -2);
         tile_2_m1 = Tile.getInstance(2, -1);
@@ -284,6 +296,7 @@ public class RealEstateTest {
         completeCrossroads(tile_3_0);
         table.placeTile(tile_1_0);
         table.placeTile(tile_3_0);
+        table.placeTile(tile_2_0);
         simpleRoad(tile_2_0);
         tile_2_0.placeFollower(new Player(), TileDirections.EAST);
 
@@ -310,6 +323,7 @@ public class RealEstateTest {
         table.placeTile(tile_4_0);
         table.placeTile(tile_5_0);
 
+        table.placeTile(tile_3_0);
         tile_3_0.placeFollower(new Player(), TileDirections.EAST);
         RealEstate realEstate = new RealEstate(tile_3_0, table);
 
@@ -334,6 +348,8 @@ public class RealEstateTest {
         table.placeTile(tile_5_0);
         table.placeTile(tile_6_0);
 
+        table.placeTile(tile_4_0);
+
         tile_4_0.placeFollower(new Player(), TileDirections.EAST);
         RealEstate realEstate = new RealEstate(tile_4_0, table);
 
@@ -349,6 +365,7 @@ public class RealEstateTest {
         completeCrossroads(tile_0_1);
         completeCrossroads(tile_0_2);
         table.placeTile(tile_0_2);
+        table.placeTile(tile_0_1);
         tile_0_1.placeFollower(new Player(), SOUTH);
         RealEstate realEstate = new RealEstate(tile_0_1, table);
         Set<Tile> expected = new HashSet<>();
@@ -373,6 +390,7 @@ public class RealEstateTest {
 
         table.placeTile(tile_1_m1);
         table.placeTile(tile_1_m2);
+        table.placeTile(tile_1_0);
         tile_1_0.placeFollower(new Player(), TileDirections.NORTH);
         RealEstate realEstate = new RealEstate(tile_1_0, table);
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2));
@@ -393,9 +411,34 @@ public class RealEstateTest {
         table.placeTile(tile_2_m1);
         table.placeTile(tile_2_m2);
         table.placeTile(tile_3_m2);
+        table.placeTile(tile_1_0);
         tile_1_0.placeFollower(new Player(), TileDirections.NORTH);
         RealEstate realEstate = new RealEstate(tile_1_0, table);
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2));
         assertEquals("Six tiles are added to real estate", expected, realEstate.getTileSet());
     }
+
+    @Test
+    public void loopedRoadProperty() {
+        roadTurn(tile_1_0);
+        roadTurn(tile_1_1);
+        roadTurn(tile_2_0);
+        roadTurn(tile_2_1);
+
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_2_1.turnRight(Rotation.DEG_180);
+        tile_1_1.turnRight(Rotation.DEG_270);
+
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_1_1);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_2_1);
+
+        tile_1_0.placeFollower(new Player(), EAST);
+        RealEstate realEstate = new RealEstate(tile_1_0, table);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_1, tile_2_0, tile_2_1));
+        assertEquals("Road loop added to real estate", expected, realEstate.getTileSet());
+    }
+
 }

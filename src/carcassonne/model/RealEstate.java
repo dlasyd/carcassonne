@@ -34,13 +34,14 @@ public class RealEstate {
 
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
-            tile.getOccupiedFeatureDirections().stream().forEach(tileDirections -> {
+            Set<TileDirections> occupiedFeatureDirections = tile.getOccupiedFeatureDirections();
+            for (TileDirections tileDirections: occupiedFeatureDirections) {
                 Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
                 if (! neighbour.isNull()) {
                     adjacentTiles.add(neighbour);
                     adjacentTiles.addAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour()));
                 }
-            });
+            }
         }
         adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
     }

@@ -1,8 +1,6 @@
 package carcassonne.model;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Andrey on 03/12/15.
@@ -71,5 +69,36 @@ public enum TileDirections {
                 break;
         }
         return result;
+    }
+
+    TileDirections turnRight(Rotation angle) {
+        List<TileDirections> congruentNorth = new ArrayList<>(Arrays.asList(NORTH, EAST, SOUTH, WEST));
+        List<TileDirections> congruentNNE   = new ArrayList<>(Arrays.asList(NNE, EES, SSW, WWN));
+        List<TileDirections> congruentNNW   = new ArrayList<>(Arrays.asList(NNW, EEN, SSE, WWS));
+
+        int numberOf90Rotations = angle.getNumberOf90Rotations();
+
+        switch (this) {
+            case SOUTH:
+            case NORTH:
+            case EAST:
+            case WEST:
+                return congruentNorth.get((congruentNorth.indexOf(this) + numberOf90Rotations) % congruentNorth.size());
+            case NNE:
+            case EES:
+            case SSW:
+            case WWN:
+                return congruentNNE.get((congruentNNE.indexOf(this) + numberOf90Rotations) % congruentNNE.size());
+            case NNW:
+            case EEN:
+            case SSE:
+            case WWS:
+                return congruentNNW.get((congruentNNW.indexOf(this) + numberOf90Rotations) % congruentNNW.size());
+            case END:
+            case CENTER:
+                return this;
+        }
+        assert false;
+        return TileDirections.END;
     }
 }

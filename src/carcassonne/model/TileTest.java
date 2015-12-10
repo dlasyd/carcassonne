@@ -346,6 +346,69 @@ public class TileTest {
         Set<Feature> expected = new HashSet<>(Arrays.asList(feature1, feature2, feature3));
         assertEquals("Tile features", expected, tile.getFeatures());
     }
+
+    @Test
+    public void rotationTestFeatureToTileDirections() {
+        Feature feature = new Feature();
+        Tile tile = Tile.getInstance(0, 0);
+        tile.addFeature(feature, EAST,EEN, NNE, NORTH);
+        tile.placeFollower(new Player(), EAST);
+        tile.turnRight(Rotation.DEG_90);
+        Set<TileDirections> expected = new HashSet<>(Arrays.asList(SOUTH, SSE, EES, EAST));
+        assertEquals("TileDirection of rotated tile", expected, tile.getOccupiedFeatureDirections());
+    }
+
+    @Test
+    public void rotate270Degrees() {
+        Feature feature = new Feature();
+        Tile tile = Tile.getInstance(0, 0);
+        tile.addFeature(feature, EAST,EEN, NNE, NORTH);
+        tile.placeFollower(new Player(), EAST);
+        tile.turnRight(Rotation.DEG_270);
+        Set<TileDirections> expected = new HashSet<>(Arrays.asList(NORTH, WWN, NNW, WEST));
+        assertEquals("TileDirection of rotated tile", expected, tile.getOccupiedFeatureDirections());
+    }
+
+    @Test
+    public void rotateENDandCENTER() {
+        Feature feature = new Feature();
+        Tile tile = Tile.getInstance(0, 0);
+        tile.addFeature(feature, END,CENTER);
+        tile.placeFollower(new Player(), CENTER);
+        tile.turnRight(Rotation.DEG_270);
+        Set<TileDirections> expected = new HashSet<>(Arrays.asList(END, CENTER));
+        assertEquals("TileDirection of rotating CENTER and END", expected, tile.getOccupiedFeatureDirections());
+    }
+
+    @Test
+    public void rotationTestFeatureGetDestinations() {
+        Feature feature = new Feature();
+        Tile tile = Tile.getInstance(0, 0);
+        tile.addFeature(feature, EAST,EEN, NNE, NORTH);
+        tile.turnRight(Rotation.DEG_90);
+        Set<TileDirections> expected = new HashSet<>(Arrays.asList(SOUTH, SSE, EES, EAST));
+        assertEquals("TileDirection of rotated tile", expected, tile.getDestinations(SOUTH));
+    }
+
+    @Test
+    public void rotateRoadTurn() {
+        Feature feature1, feature2, feature3;
+        feature1 = new Feature();
+        feature2 = new Feature();
+        feature3 = new Feature();
+        Tile roadTile = Tile.getInstance(1, 0);
+        roadTile.addFeature(feature1, SOUTH, EAST);
+        roadTile.addFeature(feature2, EES, SSE);
+        roadTile.addFeature(feature3, roadTile.getUnoccupiedDirections());
+        roadTile.turnRight(Rotation.DEG_90);
+
+        Tile expectedTile = Tile.getInstance(2,0);
+        expectedTile.addFeature(feature1, SOUTH, WEST);
+        expectedTile.addFeature(feature2, SSW, WWS);
+        expectedTile.addFeature(feature3, expectedTile.getUnoccupiedDirections());
+
+        assertTrue("Road is turned", expectedTile.featureEqual(roadTile));
+    }
 }
 
 

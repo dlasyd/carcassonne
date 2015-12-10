@@ -1,8 +1,5 @@
 package carcassonne.model;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Tile {
@@ -42,5 +39,9 @@ public abstract class Tile {
      * that will be developed later.
      */
     public abstract TileDirections[] getUnoccupiedDirections();
+
+    public abstract void turnRight(Rotation angle);
+
+    public abstract boolean featureEqual(Tile roadTile);
 }
 

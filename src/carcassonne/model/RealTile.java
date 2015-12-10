@@ -30,8 +30,46 @@ public class RealTile extends Tile {
         setCoordinates(x, y);
     }
 
-    void turnRight() {
-        coordinates.turnRight();
+    public void turnRight(Rotation angle) {
+        rotateValueSet(featureToTileDirections, angle);
+        rotateKeys(propertyConnectionMap, angle);
+        rotateValueSet(propertyConnectionMap, angle);
+        rotateKeys(propertyMap, angle);
+
+    }
+
+    @Override
+    public boolean featureEqual(Tile tile) {
+        RealTile otherTile = (RealTile) tile;
+        if (this.featureToTileDirections.equals(otherTile.featureToTileDirections) &
+                this.propertyMap.equals(otherTile.propertyMap) &
+                this.propertyConnectionMap.equals(otherTile.propertyConnectionMap))
+            return true;
+        return false;
+    }
+
+    private <T> void rotateKeys(HashMap<TileDirections, T> map, Rotation angle) {
+        Set<TileDirections> keySet = new HashSet<>(map.keySet());
+        HashMap<TileDirections, T> resultMap = new HashMap<>();
+
+        for (TileDirections direction: keySet) {
+            resultMap.put(direction.turnRight(angle), map.get(direction));
+        }
+        map.keySet().removeAll(map.keySet());
+        map.putAll(resultMap);
+    }
+
+    private <T> void rotateValueSet(HashMap<T, Set<TileDirections>> map, Rotation angle) {
+        Set<T> keySet = new HashSet<>(map.keySet());
+        for (T type: keySet) {
+            Set<TileDirections> directionsToRotate = map.get(type);
+            map.remove(type);
+            Set<TileDirections> rotatedDirections = new HashSet<>();
+            for (TileDirections direction: directionsToRotate) {
+                rotatedDirections.add(direction.turnRight(angle));
+            }
+            map.put(type, rotatedDirections);
+        }
     }
 
     void setCoordinates(int x, int y) {

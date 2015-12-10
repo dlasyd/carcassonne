@@ -106,6 +106,17 @@ public class NullTile extends Tile{
         throw new RuntimeException("The tile is Null");
     }
 
+    @Override
+    public void turnRight(Rotation angle) {
+        throw new RuntimeException("The tile is Null");
+
+    }
+
+    @Override
+    public boolean featureEqual(Tile roadTile) {
+        return false;
+    }
+
     private void throwRuntimeException() {
         throw new RuntimeException("The tile is Null");
     }
