@@ -48,13 +48,10 @@ public class RealEstate {
 
     /*
      * Method uses recursion
-     * Bad termination condition. Currently it goes no further if tile has an END destination.
-     * This is bad if there is an END in the first tile
-     * This problem is solved by looped method invocation
      *
      * loopBreakingTile is a tile that is used to create RealEstate(in constructor)
      */
-    private Set<Tile> findAdjacentTiles(Tile tile, TileDirections searchDirection, Tile loopBreakingTile) {
+    private Set<Tile> findAdjacentTiles(Tile tile, TileDirections directionWithFeature, Tile loopBreakingTile) {
         Set<Tile> result = new HashSet<Tile>();
 
         if (tile == loopBreakingTile) {
@@ -64,7 +61,7 @@ public class RealEstate {
         /*
          * Set of all Directions within tile that a Feature occupies
          */
-        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(searchDirection);
+        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(directionWithFeature);
         if(currentTileFeatureDirections.contains(TileDirections.END)) {
             result.add(tile);
             return result;
@@ -73,13 +70,13 @@ public class RealEstate {
         /*
          * removes TileDirections that lead back
          */
-        currentTileFeatureDirections.removeAll(searchDirection.getEdge());
+        currentTileFeatureDirections.removeAll(directionWithFeature.getEdge());
         for (TileDirections direction: currentTileFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  direction);
 
             if (! neighbour.isNull()) {
                 result.add(neighbour);
-                result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour(),loopBreakingTile));
+                result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour(), loopBreakingTile));
             }
         }
         return result;
