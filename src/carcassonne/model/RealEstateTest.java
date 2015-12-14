@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static carcassonne.model.TileName.*;
 import static org.junit.Assert.*;
 import static carcassonne.model.TileDirections.*;
 
@@ -22,107 +23,7 @@ public class RealEstateTest {
     public RealEstate realEstate;
     public Table table;
 
-    /*
-     *   |
-     * - o -
-     *   |
-     */
-    public void completeCrossroads(Tile tile) {
-        tile.addFeature(new Feature(), TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.CENTER);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
-        tile.addFeature(new Feature(), TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW);
-        tile.addFeature(new Feature(), TileDirections.EES, TileDirections.SSE);
-    }
 
-    /*
-     * #   #
-     * # # #
-     * #   #
-     */
-    public void horizontalTCastle(Tile tile) {
-        tile.addFeature(new Feature(), WWN, WEST, WWS, EAST, EEN, EES);
-        tile.addFeature(new Feature(), NNW, NORTH, NNE, END);
-        tile.addFeature(new Feature(), SSW, SOUTH, SSE, END);
-    }
-
-    /*
-     * # # #
-     *   # #
-     * # # #
-     */
-    public void threeSideCastleWithWestLand(Tile tile) {
-        tile.addFeature(new Feature(), WEST, WWN, WWS, END);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     * # # #
-     *   #
-     * # # #
-     */
-    public void verticalTCastle(Tile tile) {
-        tile.addFeature(new Feature(), EAST, EEN, EES, END );
-        tile.addFeature(new Feature(), WEST, WWN, WWS, END);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     *     #
-     *   # #
-     * # # #
-     */
-    public void bottomRightAngleCastle(Tile tile) {
-        tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     * # # #
-     * # #
-     * #
-     */
-    public void topLeftAngleCastle(Tile tile) {
-        tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-
-    /*
-     * # # #
-     *
-     *
-     */
-    public void topCap(Tile tile) {
-        tile.addFeature(new Feature(), NNW, NORTH, NNE, END);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     *
-     * - - -
-     *
-     */
-    public void simpleRoad(Tile tile) {
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW, TileDirections.NORTH, TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WEST, TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW, TileDirections.SOUTH, TileDirections.SSE, TileDirections.EES);
-    }
-
-    /*
-     * w w w
-     * w + -
-     * w | w
-     */
-    public void roadTurn(Tile tile) {
-        tile.addFeature(new Feature(), SOUTH, EAST);
-        tile.addFeature(new Feature(), EES, SSE);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -131,7 +32,7 @@ public class RealEstateTest {
     public void setUp() {
         completeCrossroads_0_0 = Tile.getInstance(0, 0);
         table = new Table();
-        completeCrossroads(completeCrossroads_0_0);
+        completeCrossroads_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         completeCrossroads_0_0.placeFollower(new Player(), TileDirections.WEST);
         realEstate = new RealEstate(completeCrossroads_0_0, table);
         tile_0_0 = Tile.getInstance(0 ,0);
@@ -157,7 +58,7 @@ public class RealEstateTest {
     public void addTileNoCoordinatesThenException() {
         exception.expect(RuntimeException.class);
         Tile tile = Tile.getInstance();
-        completeCrossroads(tile);
+        tile.copyFeatures(TilePile.getReferenceTile(ROAD4));
         realEstate.addTile(tile);
     }
 
@@ -181,8 +82,8 @@ public class RealEstateTest {
         exception.expect(RuntimeException.class);
         Tile tile1 = Tile.getInstance(0 ,0);
         Tile tile2 = Tile.getInstance(0 ,0);
-        completeCrossroads(tile1);
-        completeCrossroads(tile2);
+        tile1.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile2.copyFeatures(TilePile.getReferenceTile(ROAD4));
         realEstate.addTile(tile1);
         realEstate.addTile(tile2);
     }
@@ -190,8 +91,8 @@ public class RealEstateTest {
     @Test
     public void addTileDisjointThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        completeCrossroads(tile_0_0);
-        completeCrossroads(tile_1_1);
+        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(ROAD4));
         realEstate.addTile(tile_0_0);
         realEstate.addTile(tile_1_1);
     }
@@ -200,7 +101,7 @@ public class RealEstateTest {
     public void addNullTileThenRuntimeException() {
         exception.expect(RuntimeException.class);
         Tile nullTile = Tile.getNullInstance();
-        completeCrossroads(tile_0_0);
+        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
         RealEstate realEstate = new RealEstate(tile_0_0, table);
         realEstate.addTile(nullTile);
@@ -209,15 +110,15 @@ public class RealEstateTest {
     @Test
     public void createRealEstateFistTileHasFollowerOrException() {
         exception.expect(RuntimeException.class);
-        completeCrossroads(tile_0_0);
+        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         new RealEstate(tile_0_0, table);
     }
 
     @Test
     public void addTileIfNoFollowerOnRealEstateFeature() {
-        completeCrossroads(tile_0_0);
+        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
-        completeCrossroads(tile_1_0);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         RealEstate realEstate = new RealEstate(tile_0_0, table);
         realEstate.addTile(tile_1_0);
 
@@ -229,8 +130,8 @@ public class RealEstateTest {
 
     @Test
     public void addTileIfFollowerOnUnconnectedRealEstateFeature() {
-        completeCrossroads(tile_0_0);
-        completeCrossroads(tile_1_0);
+        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
         RealEstate realEstate = new RealEstate(tile_0_0, table);
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
@@ -246,7 +147,7 @@ public class RealEstateTest {
     @Test
     public void addTileIfFollowerOnConnectedRealEstateFeatureThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        completeCrossroads(tile_0_0);
+        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirections.WEST);
         RealEstate realEstate = new RealEstate(tile_0_0, table);
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
@@ -261,10 +162,12 @@ public class RealEstateTest {
 
     @Test
     public void addThirdTileToPropertyFollowerOnFirst() {
-        completeCrossroads(tile_0_0);
+        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
-        simpleRoad(tile_1_0);
-        simpleRoad(tile_2_0);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_1_0.turnRight(Rotation.DEG_90);
+        tile_2_0.turnRight(Rotation.DEG_90);
         realEstate = new RealEstate(tile_0_0, table);
         realEstate.addTile(tile_1_0);
         realEstate.addTile(tile_2_0);
@@ -275,10 +178,12 @@ public class RealEstateTest {
 
     @Test
     public void addThirdTileToPropertyFollowerOnSecond() {
-        completeCrossroads(tile_1_0);
-        simpleRoad(tile_2_0);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
         tile_2_0.placeFollower(new Player(), TileDirections.EAST);
-        simpleRoad(tile_3_0);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_3_0.turnRight(Rotation.DEG_90);
         realEstate = new RealEstate(tile_2_0, table);
         realEstate.addTile(tile_1_0);
         realEstate.addTile(tile_3_0);
@@ -292,12 +197,13 @@ public class RealEstateTest {
      */
     @Test
     public void createPropertyFromMiddleTile() {
-        completeCrossroads(tile_1_0);
-        completeCrossroads(tile_3_0);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         table.placeTile(tile_1_0);
         table.placeTile(tile_3_0);
         table.placeTile(tile_2_0);
-        simpleRoad(tile_2_0);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
         tile_2_0.placeFollower(new Player(), TileDirections.EAST);
 
         RealEstate realEstate = new RealEstate(tile_2_0, table);
@@ -313,11 +219,14 @@ public class RealEstateTest {
      */
     @Test
     public void createPropertyFromManyPreviouslyPlacedTiles() {
-        completeCrossroads(tile_1_0);
-        completeCrossroads(tile_5_0);
-        simpleRoad(tile_2_0);
-        simpleRoad(tile_3_0);
-        simpleRoad(tile_4_0);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_5_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_3_0.turnRight(Rotation.DEG_90);
+        tile_4_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_4_0.turnRight(Rotation.DEG_90);
         table.placeTile(tile_1_0);
         table.placeTile(tile_2_0);
         table.placeTile(tile_4_0);
@@ -336,12 +245,16 @@ public class RealEstateTest {
      */
     @Test
     public void createPropertyFromPreviousThreeToTheLeft() {
-        completeCrossroads(tile_1_0);
-        completeCrossroads(tile_6_0);
-        simpleRoad(tile_2_0);
-        simpleRoad(tile_3_0);
-        simpleRoad(tile_4_0);
-        simpleRoad(tile_5_0);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_6_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_3_0.turnRight(Rotation.DEG_90);
+        tile_4_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_4_0.turnRight(Rotation.DEG_90);
+        tile_5_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_5_0.turnRight(Rotation.DEG_90);
         table.placeTile(tile_1_0);
         table.placeTile(tile_2_0);
         table.placeTile(tile_3_0);
@@ -362,8 +275,8 @@ public class RealEstateTest {
      */
     @Test
     public void verticalTest() {
-        completeCrossroads(tile_0_1);
-        completeCrossroads(tile_0_2);
+        tile_0_1.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_0_2.copyFeatures(TilePile.getReferenceTile(ROAD4));
         table.placeTile(tile_0_2);
         table.placeTile(tile_0_1);
         tile_0_1.placeFollower(new Player(), SOUTH);
@@ -381,12 +294,13 @@ public class RealEstateTest {
      */
     @Test
     public void createPropertyFromLessComplexPreviousTilePlacement() {
-        topCap(tile_1_0);
-        threeSideCastleWithWestLand(tile_1_m1);
-        verticalTCastle(tile_1_m2);
-        topLeftAngleCastle(tile_2_m1);
-        bottomRightAngleCastle(tile_2_m2);
-        horizontalTCastle(tile_3_m2);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1));
+        tile_1_m1.copyFeatures(TilePile.getReferenceTile(CITY3));
+        tile_1_m1.turnRight(Rotation.DEG_90);
+        tile_1_m2.copyFeatures(TilePile.getReferenceTile(CITY2WE));
+        tile_1_m2.turnRight(Rotation.DEG_90);
+        tile_2_m1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_2_m2.copyFeatures(TilePile.getReferenceTile(CITY2NW));
 
         table.placeTile(tile_1_m1);
         table.placeTile(tile_1_m2);
@@ -399,12 +313,15 @@ public class RealEstateTest {
 
     @Test
     public void createPropertyFromComplexPreviousTilePlacement() {
-        topCap(tile_1_0);
-        threeSideCastleWithWestLand(tile_1_m1);
-        verticalTCastle(tile_1_m2);
-        topLeftAngleCastle(tile_2_m1);
-        bottomRightAngleCastle(tile_2_m2);
-        horizontalTCastle(tile_3_m2);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1));
+        tile_1_m1.copyFeatures(TilePile.getReferenceTile(CITY3));
+        tile_1_m1.turnRight(Rotation.DEG_90);
+        tile_1_m2.copyFeatures(TilePile.getReferenceTile(CITY2WE));
+        tile_1_m2.turnRight(Rotation.DEG_90);
+        tile_2_m1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_2_m2.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_2_m2.turnRight(Rotation.DEG_180);
+        tile_3_m2.copyFeatures(TilePile.getReferenceTile(CITY2WE));
 
         table.placeTile(tile_1_m1);
         table.placeTile(tile_1_m2);
@@ -420,14 +337,13 @@ public class RealEstateTest {
 
     @Test
     public void loopedRoadProperty() {
-        roadTurn(tile_1_0);
-        roadTurn(tile_1_1);
-        roadTurn(tile_2_0);
-        roadTurn(tile_2_1);
-
-        tile_2_0.turnRight(Rotation.DEG_90);
-        tile_2_1.turnRight(Rotation.DEG_180);
-        tile_1_1.turnRight(Rotation.DEG_270);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0.turnRight(Rotation.DEG_270);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_1.turnRight(Rotation.DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_2_1.turnRight(Rotation.DEG_90);
 
         table.placeTile(tile_1_0);
         table.placeTile(tile_1_1);

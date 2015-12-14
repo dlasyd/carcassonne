@@ -117,6 +117,17 @@ public class NullTile extends Tile{
         return false;
     }
 
+    @Override
+    public boolean directionsEqual(Tile referenceTile) {
+        throw new RuntimeException("The tile is Null");
+    }
+
+    @Override
+    public void copyFeatures(Tile referenceTile) {
+        throw new RuntimeException("The tile is Null");
+
+    }
+
     private void throwRuntimeException() {
         throw new RuntimeException("The tile is Null");
     }

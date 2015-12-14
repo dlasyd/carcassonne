@@ -409,6 +409,13 @@ public class TileTest {
 
         assertTrue("Road is turned", expectedTile.featureEqual(roadTile));
     }
+
+    @Test
+    public void copyFeatures() {
+        Tile tile = Tile.getInstance();
+        tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        assertTrue("New tile is feature equal", tile.directionsEqual(TilePile.getReferenceTile(TileName.ROAD4)));
+    }
 }
 
 

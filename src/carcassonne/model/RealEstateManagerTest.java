@@ -24,30 +24,13 @@ public class RealEstateManagerTest {
     public Feature feature = new Feature();
     public Table table;
 
-    /*
-     *   |
-     * - o -
-     *   |
-     */
-    public void completeCrossroads(Tile tile) {
-        tile.addFeature(new Feature(), TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.CENTER);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
-        tile.addFeature(new Feature(), TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW);
-        tile.addFeature(new Feature(), TileDirections.EES, TileDirections.SSE);
-    }
-
     @Before
     public void setUp() {
         table = new Table();
-        completeCrossroads(tile_1_0);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
         tile_1_0.placeFollower(anton, TileDirections.EAST);
         realEstate = new RealEstate(tile_1_0, table);
-        completeCrossroads(tile_2_0);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
         tile_2_0.placeFollower(anton, TileDirections.EAST);
         realEstate2 = new RealEstate(tile_2_0, table);
     }

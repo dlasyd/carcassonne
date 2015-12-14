@@ -43,5 +43,9 @@ public abstract class Tile {
     public abstract void turnRight(Rotation angle);
 
     public abstract boolean featureEqual(Tile roadTile);
+
+    public abstract boolean directionsEqual(Tile referenceTile);
+
+    public abstract void copyFeatures(Tile referenceTile);
 }
 

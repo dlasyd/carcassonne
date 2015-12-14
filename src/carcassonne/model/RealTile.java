@@ -48,6 +48,21 @@ public class RealTile extends Tile {
         return false;
     }
 
+    @Override
+    public boolean directionsEqual(Tile referenceTile) {
+        if (this.propertyConnectionMap.equals( ((RealTile)referenceTile).propertyConnectionMap) )
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public void copyFeatures(Tile referenceTile) {
+        featureToTileDirections = ((RealTile) referenceTile).featureToTileDirections;
+        propertyMap = ((RealTile) referenceTile).propertyMap;
+        propertyConnectionMap = ((RealTile) referenceTile).propertyConnectionMap;
+    }
+
     private <T> void rotateKeys(HashMap<TileDirections, T> map, Rotation angle) {
         Set<TileDirections> keySet = new HashSet<>(map.keySet());
         HashMap<TileDirections, T> resultMap = new HashMap<>();
