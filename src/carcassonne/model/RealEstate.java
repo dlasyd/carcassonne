@@ -118,4 +118,35 @@ public class RealEstate {
     public Set<Tile> getTileSet() {
         return tiles;
     }
+
+    void update(Tile tile) {
+        if (canBeConnectedToRealEstate(tile))
+            addTile(tile);
+    }
+
+    private boolean canBeConnectedToRealEstate(Tile tile) {
+        /*
+         * find out if tiles around tile belong to real estate
+         */
+        Set<Tile> tilesAround = new HashSet<>();
+        int[][] aroundCoordinates = {{tile.getX(), tile.getY() - 1}, {tile.getX(), tile.getY() + 1},
+                {tile.getX() - 1, tile.getY()}, {tile.getX() + 1, tile.getY()}};
+        TileDirections[] neighbourDirection = {TileDirections.NORTH, TileDirections.SOUTH, TileDirections.WEST,
+        TileDirections.EAST};
+        for (int i = 0; i < 4; i++) {
+            Tile t = table.getTile(aroundCoordinates[i][0], aroundCoordinates[i][1]);
+            if (! t.isNull()) {
+                tilesAround.add(t);
+            }
+        }
+
+        if (tilesAround.isEmpty())
+            return false;
+
+        for (Tile tileAround: tilesAround) {
+
+        }
+
+        return false;
+    }
 }

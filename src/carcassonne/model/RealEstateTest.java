@@ -357,4 +357,49 @@ public class RealEstateTest {
         assertEquals("Road loop added to real estate", expected, realEstate.getTileSet());
     }
 
+    /*
+     * When tile is placed on the table, it should be added to all real estate object that are appropriate.
+     */
+    @Test
+    public void addingTileToRealEstate() {
+        RealEstateManager manager = new RealEstateManager();
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_2_0.placeFollower(new Player(), TileDirections.EAST);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_3_0.turnRight(Rotation.DEG_90);
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        realEstate = new RealEstate(tile_2_0, table);
+        manager.addAsset(new Player(), realEstate);
+        table.placeTile(tile_3_0);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
+        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
+    }
+
+    @Test
+    public void addToTableDoNotAddToRealEstate() {
+        RealEstateManager manager = new RealEstateManager();
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_2_0.placeFollower(new Player(), TileDirections.EAST);
+        tile_2_m1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_m1.turnRight(Rotation.DEG_90);
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        realEstate = new RealEstate(tile_2_0, table);
+        manager.addAsset(new Player(), realEstate);
+        table.placeTile(tile_2_m1);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0));
+        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
+
+    }
 }

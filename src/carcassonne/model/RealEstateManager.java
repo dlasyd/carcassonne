@@ -21,4 +21,14 @@ public class RealEstateManager {
             assetsList.put(player, new HashSet<>(Arrays.asList(realEstate)));
         }
     }
+
+    void update(Tile tile) {
+        Set<Player> keySet = assetsList.keySet();
+        for (Player player: keySet) {
+            Set<RealEstate> realEstateSet = assetsList.get(player);
+            for (RealEstate realEstate: realEstateSet) {
+                realEstate.update(tile);
+            }
+        }
+    }
 }

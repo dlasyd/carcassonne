@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Table {
     private static Table table;
     private Tile currentTile;
+    private RealEstateManager realEstateManager;
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
@@ -40,6 +41,7 @@ public class Table {
         if (placedTiles.containsKey(currentTile.getCoordinates()))
             throw new RuntimeException("Trying to place tile on an occupied space");
         placedTiles.put(currentTile.getCoordinates(), currentTile);
+        notifyObservers(currentTile);
     }
 
     public int placedTilesAmount() {
@@ -82,5 +84,15 @@ public class Table {
                 return getTile(x + 1, y);
         }
         return Tile.getNullInstance();
+    }
+
+    void setRealEstateManager(RealEstateManager realEstateManager) {
+        this.realEstateManager = realEstateManager;
+    }
+
+    private void notifyObservers(Tile tile) {
+        //TODO refactor me!
+        if (realEstateManager != null)
+            realEstateManager.update(tile);
     }
 }
