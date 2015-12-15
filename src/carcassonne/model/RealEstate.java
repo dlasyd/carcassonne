@@ -1,6 +1,8 @@
 package carcassonne.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Set;
  */
 public class RealEstate {
     private HashSet<Tile> tiles = new HashSet<>();
+    private Map<Tile, Set<TileDirections>> tileDirections = new HashMap<Tile, Set<TileDirections>>();
     private final Table table;
 
     public RealEstate(Tile tile, Table table) {
@@ -31,6 +34,9 @@ public class RealEstate {
             throw new RuntimeException("Trying to add occupied feature to existing real estate");
 
         tiles.add(tile);
+        // TODO this is not acceptable. tileDirections should have elements for all tiles
+        if (!tile.isNoFollower())
+            tileDirections.put(tile, tile.getOccupiedFeatureDirections());
 
         Set<Tile> adjacentTiles = new HashSet<>();
         if (! tile.isNoFollower()) {
@@ -122,30 +128,32 @@ public class RealEstate {
     void update(Tile tile) {
         if (canBeConnectedToRealEstate(tile))
             addTile(tile);
+            System.out.println("tile added");
     }
 
     private boolean canBeConnectedToRealEstate(Tile tile) {
-        /*
-         * find out if tiles around tile belong to real estate
-         */
         Set<Tile> tilesAround = new HashSet<>();
         int[][] aroundCoordinates = {{tile.getX(), tile.getY() - 1}, {tile.getX(), tile.getY() + 1},
                 {tile.getX() - 1, tile.getY()}, {tile.getX() + 1, tile.getY()}};
         TileDirections[] neighbourDirection = {TileDirections.NORTH, TileDirections.SOUTH, TileDirections.WEST,
         TileDirections.EAST};
+
         for (int i = 0; i < 4; i++) {
             Tile t = table.getTile(aroundCoordinates[i][0], aroundCoordinates[i][1]);
             if (! t.isNull()) {
-                tilesAround.add(t);
+                Set<TileDirections> directions = tileDirections.get(t);
+                Set<TileDirections> targetEdge = neighbourDirection[i].getNeighbour().getEdge();
+                for (TileDirections edge: targetEdge)
+                {
+                    if (directions.contains(edge)) {
+                        return true;
+                    }
+                }
             }
         }
 
         if (tilesAround.isEmpty())
             return false;
-
-        for (Tile tileAround: tilesAround) {
-
-        }
 
         return false;
     }
