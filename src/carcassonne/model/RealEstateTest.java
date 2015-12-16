@@ -19,7 +19,8 @@ import static carcassonne.model.TileDirections.*;
 public class RealEstateTest {
     public Tile tile;
     public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
-    public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2, tile_2_1;
+    public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2, tile_2_1, tile_1_2, tile_3_2;
+    public Tile tile_2_2, tile_3_1;
     public RealEstate realEstate;
     public Table table;
 
@@ -49,6 +50,11 @@ public class RealEstateTest {
         tile_2_m1 = Tile.getInstance(2, -1);
         tile_2_m2 = Tile.getInstance(2, -2);
         tile_3_m2 = Tile.getInstance(3, -2);
+
+        tile_1_2 = Tile.getInstance(1, 2);
+        tile_3_2 = Tile.getInstance(3, 2);
+        tile_2_2 = Tile.getInstance(2, 2);
+        tile_3_1 = Tile.getInstance(3, 1);
 
         tile_0_1 = Tile.getInstance(0, 1);
         tile_0_2 = Tile.getInstance(0, 2);
@@ -359,6 +365,7 @@ public class RealEstateTest {
 
     /*
      * When tile is placed on the table, it should be added to all real estate object that are appropriate.
+     * This is relevant for next few tests
      */
     @Test
     public void addingTileToRealEstate() {
@@ -400,6 +407,95 @@ public class RealEstateTest {
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0));
         assertEquals("Three tiles are added", expected, realEstate.getTileSet());
-
     }
+
+    @Test
+    public void addingTileToRealEstateNotNearCreationTile() {
+        RealEstateManager manager = new RealEstateManager();
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0.placeFollower(new Player(), TileDirections.EAST);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_3_0.turnRight(Rotation.DEG_90);
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        realEstate = new RealEstate(tile_1_0, table);
+        manager.addAsset(new Player(), realEstate);
+        table.placeTile(tile_3_0);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
+        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
+    }
+
+    @Test
+    public void addingTileToRealEstateFarFromCreationTile() {
+        RealEstateManager manager = new RealEstateManager();
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0.placeFollower(new Player(), TileDirections.EAST);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_3_0.turnRight(Rotation.DEG_90);
+        tile_4_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_4_0.turnRight(Rotation.DEG_90);
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_3_0);
+        realEstate = new RealEstate(tile_1_0, table);
+        manager.addAsset(new Player(), realEstate);
+        table.placeTile(tile_4_0);
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0));
+        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
+    }
+
+    @Test
+    public void addingTileToRealEstateLoopedRoadProperty() {
+        /*
+         * 3x3 road square cycle
+         */
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0.turnRight(Rotation.DEG_270);
+        tile_1_2.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_2.turnRight(Rotation.DEG_180);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_3_2.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_3_2.turnRight(Rotation.DEG_90);
+
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_3_1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_2_2.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_2.turnRight(Rotation.DEG_90);
+
+        table.placeTile(tile_1_0);
+        tile_1_0.placeFollower(new Player(), EAST);
+        RealEstate realEstate = new RealEstate(tile_1_0, table);
+
+        RealEstateManager manager = new RealEstateManager();
+        manager.addAsset(new Player(), realEstate);
+        table.setRealEstateManager(manager);
+
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_3_0);
+        table.placeTile(tile_3_1);
+        table.placeTile(tile_3_2);
+        table.placeTile(tile_2_2);
+        table.placeTile(tile_1_2);
+        table.placeTile(tile_1_1);
+
+
+
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_1, tile_1_2, tile_2_0, tile_2_2,
+                tile_3_0, tile_3_1, tile_3_2));
+        assertEquals("Road loop added to real estate", expected, realEstate.getTileSet());
+    }
+
 }

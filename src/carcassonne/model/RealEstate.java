@@ -1,9 +1,6 @@
 package carcassonne.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * RealEstate is a class that creates abstract objects from features of several tiles that are connected
@@ -38,18 +35,22 @@ public class RealEstate {
         if (!tile.isNoFollower())
             tileDirections.put(tile, tile.getOccupiedFeatureDirections());
 
-        Set<Tile> adjacentTiles = new HashSet<>();
+        Map<Tile, Set<TileDirections>> adjacentTiles = new HashMap<>();
         if (! tile.isNoFollower()) {
             Set<TileDirections> occupiedFeatureDirections = tile.getOccupiedFeatureDirections();
             for (TileDirections tileDirections: occupiedFeatureDirections) {
                 Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
                 if (! neighbour.isNull()) {
-                    adjacentTiles.add(neighbour);
-                    adjacentTiles.addAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
+                    adjacentTiles.put(neighbour,neighbour.getDestinations(tileDirections));
+                    adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
                 }
             }
         }
-        adjacentTiles.stream().forEach(neighbour -> tiles.add(neighbour));
+        Set<Tile> adjacentTilesSet = adjacentTiles.keySet();
+        for (Tile adjacentTile: adjacentTilesSet) {
+            tiles.add(adjacentTile);
+        }
+        tileDirections.putAll(adjacentTiles);
     }
 
     /*
@@ -57,8 +58,8 @@ public class RealEstate {
      *
      * loopBreakingTile is a tile that is used to create RealEstate(in constructor)
      */
-    private Set<Tile> findAdjacentTiles(Tile tile, TileDirections directionWithFeature, Tile loopBreakingTile) {
-        Set<Tile> result = new HashSet<>();
+    private Map<Tile, Set<TileDirections>> findAdjacentTiles(Tile tile, TileDirections directionWithFeature, Tile loopBreakingTile) {
+        Map<Tile, Set<TileDirections>> result = new HashMap<>();
 
         if (tile == loopBreakingTile) {
             return result;
@@ -69,7 +70,7 @@ public class RealEstate {
          */
         Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(directionWithFeature);
         if(currentTileFeatureDirections.contains(TileDirections.END)) {
-            result.add(tile);
+            result.put(tile, new HashSet<>(Arrays.asList(TileDirections.END)));
             return result;
         }
 
@@ -81,8 +82,8 @@ public class RealEstate {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  direction);
 
             if (! neighbour.isNull()) {
-                result.add(neighbour);
-                result.addAll(findAdjacentTiles(neighbour, direction.getNeighbour(), loopBreakingTile));
+                result.put(neighbour, neighbour.getDestinations(direction));
+                result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), loopBreakingTile));
             }
         }
         return result;
@@ -126,9 +127,8 @@ public class RealEstate {
     }
 
     void update(Tile tile) {
-        if (canBeConnectedToRealEstate(tile))
-            addTile(tile);
-            System.out.println("tile added");
+        canBeConnectedToRealEstate(tile);
+            //addTile(tile);
     }
 
     private boolean canBeConnectedToRealEstate(Tile tile) {
@@ -146,6 +146,8 @@ public class RealEstate {
                 for (TileDirections edge: targetEdge)
                 {
                     if (directions.contains(edge)) {
+                        addTile(tile);
+                        tileDirections.put(tile, tile.getDestinations(edge.getNeighbour()));
                         return true;
                     }
                 }
