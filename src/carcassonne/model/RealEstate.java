@@ -65,15 +65,15 @@ public class RealEstate {
         Map<Tile, Set<TileDirections>> adjacentTiles = new HashMap<>();
         Set<TileDirections> occupiedFeatureDirections = tilesAndFeatureTileDitections.get(tile);
         assert(occupiedFeatureDirections != null);
-        if (! tile.isNoFollower()) {
+        //if (! tile.isNoFollower()) {
             for (TileDirections tileDirections : occupiedFeatureDirections) {
                 Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
-                if (!neighbour.isNull()) {
+                if (!neighbour.isNull() && !tilesAndFeatureTileDitections.containsKey(neighbour)) {
                     adjacentTiles.put(neighbour, neighbour.getDestinations(tileDirections));
                     adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
                 }
             }
-        }
+        //}
         tilesAndFeatureTileDitections.putAll(adjacentTiles);
     }
 
