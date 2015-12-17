@@ -7,7 +7,7 @@ import java.util.*;
  * to each other. Represents Land, Roads, Castles and Cloisters from the rules of Carcassonne.
  */
 public class RealEstate {
-    private Map<Tile, Set<TileDirections>> tilesAndFeatureTileDitections = new HashMap<Tile, Set<TileDirections>>();
+    private final Map<Tile, Set<TileDirections>> tilesAndFeatureTileDirections = new HashMap<>();
     private final Table table;
 
     public RealEstate(Tile tile, Table table) {
@@ -29,15 +29,15 @@ public class RealEstate {
         if (! addedFeatureUnoccupied(tile))
             throw new RuntimeException("Trying to add occupied feature to existing real estate");
 
-        if (tilesAndFeatureTileDitections.isEmpty()) {
-            tilesAndFeatureTileDitections.put(tile, tile.getOccupiedFeatureDirections());
+        if (tilesAndFeatureTileDirections.isEmpty()) {
+            tilesAndFeatureTileDirections.put(tile, tile.getOccupiedFeatureDirections());
         } else {
             Set<Tile> neighbourRealEstateTiles = getNeighbourRealEstateTiles(tile);
 
             for (Tile neighbour: neighbourRealEstateTiles) {
                 Set<TileDirections> featureDirections = getNeighbourFeaturesContinuation(neighbour, tile);
                 if (!featureDirections.isEmpty()) {
-                    tilesAndFeatureTileDitections.put(tile, featureDirections);
+                    tilesAndFeatureTileDirections.put(tile, featureDirections);
                     break;
                 }
             }
@@ -55,7 +55,7 @@ public class RealEstate {
                 {tile.getX() - 1, tile.getY()}, {tile.getX() + 1, tile.getY()}};
         for (int i = 0; i < 4; i++) {
             Tile neighbour = table.getTile(aroundCoordinates[i][0], aroundCoordinates[i][1]);
-            if (!neighbour.isNull() && tilesAndFeatureTileDitections.containsKey(neighbour))
+            if (!neighbour.isNull() && tilesAndFeatureTileDirections.containsKey(neighbour))
                 result.add(neighbour);
         }
         return result;
@@ -63,18 +63,18 @@ public class RealEstate {
 
     private void addAdjacentTiles(Tile tile) {
         Map<Tile, Set<TileDirections>> adjacentTiles = new HashMap<>();
-        Set<TileDirections> occupiedFeatureDirections = tilesAndFeatureTileDitections.get(tile);
+        Set<TileDirections> occupiedFeatureDirections = tilesAndFeatureTileDirections.get(tile);
         assert(occupiedFeatureDirections != null);
-        //if (! tile.isNoFollower()) {
-            for (TileDirections tileDirections : occupiedFeatureDirections) {
-                Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
-                if (!neighbour.isNull() && !tilesAndFeatureTileDitections.containsKey(neighbour)) {
-                    adjacentTiles.put(neighbour, neighbour.getDestinations(tileDirections));
-                    adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
-                }
+
+        for (TileDirections tileDirections : occupiedFeatureDirections) {
+            Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
+            if (!neighbour.isNull() && !tilesAndFeatureTileDirections.containsKey(neighbour)) {
+                adjacentTiles.put(neighbour, neighbour.getDestinations(tileDirections));
+                adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
             }
-        //}
-        tilesAndFeatureTileDitections.putAll(adjacentTiles);
+        }
+
+        tilesAndFeatureTileDirections.putAll(adjacentTiles);
     }
 
     /*
@@ -94,7 +94,7 @@ public class RealEstate {
          */
         Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(directionWithFeature);
         if(currentTileFeatureDirections.contains(TileDirections.END)) {
-            result.put(tile, new HashSet<>(Arrays.asList(TileDirections.END)));
+            result.put(tile, new HashSet<>(Collections.singletonList(TileDirections.END)));
             return result;
         }
 
@@ -114,7 +114,7 @@ public class RealEstate {
     }
 
     private boolean addedFeatureUnoccupied(Tile newTile) {
-        Set<Tile> tiles = new HashSet<>(tilesAndFeatureTileDitections.keySet());
+        Set<Tile> tiles = new HashSet<>(tilesAndFeatureTileDirections.keySet());
         if (!newTile.isNoFollower()) {
             for (Tile existingTile : tiles) {
                 if (existingTile.isNoFollower())
@@ -132,7 +132,7 @@ public class RealEstate {
     }
 
     private boolean validCoordinates(Tile tile) {
-        Set<Tile> tiles = new HashSet<>(tilesAndFeatureTileDitections.keySet());
+        Set<Tile> tiles = new HashSet<>(tilesAndFeatureTileDirections.keySet());
         if (tiles.size() == 0)
             return true;
         for (Tile rsTile: tiles) {
@@ -149,16 +149,14 @@ public class RealEstate {
     }
 
     public Set<Tile> getTileSet() {
-        Set<Tile> tiles = new HashSet<>(tilesAndFeatureTileDitections.keySet());
-        return tiles;
+        return new HashSet<>(tilesAndFeatureTileDirections.keySet());
     }
 
     void update(Tile tile) {
         addIfCanBeConnectedToRealEstate(tile);
     }
 
-    private boolean addIfCanBeConnectedToRealEstate(Tile tile) {
-        Set<Tile> tilesAround = new HashSet<>();
+    private void addIfCanBeConnectedToRealEstate(Tile tile) {
         int[][] aroundCoordinates = {{tile.getX(), tile.getY() - 1}, {tile.getX(), tile.getY() + 1},
                 {tile.getX() - 1, tile.getY()}, {tile.getX() + 1, tile.getY()}};
         TileDirections[] neighbourDirection = {TileDirections.NORTH, TileDirections.SOUTH, TileDirections.WEST,
@@ -166,24 +164,17 @@ public class RealEstate {
 
         for (int i = 0; i < 4; i++) {
             Tile t = table.getTile(aroundCoordinates[i][0], aroundCoordinates[i][1]);
-            if (! t.isNull() && tilesAndFeatureTileDitections.containsKey(t)) {
-                Set<TileDirections> directions = tilesAndFeatureTileDitections.get(t);
+            if (! t.isNull() && tilesAndFeatureTileDirections.containsKey(t)) {
+                Set<TileDirections> directions = tilesAndFeatureTileDirections.get(t);
                 Set<TileDirections> targetEdge = neighbourDirection[i].getNeighbour().getEdge();
                 for (TileDirections edge: targetEdge) {
                     if (directions.contains(edge)) {
-                        //addTile(tile);
-                        tilesAndFeatureTileDitections.put(tile, tile.getDestinations(edge.getNeighbour()));
+                        tilesAndFeatureTileDirections.put(tile, tile.getDestinations(edge.getNeighbour()));
                         addAdjacentTiles(tile);
-                        return true;
                     }
                 }
             }
         }
-
-        if (tilesAround.isEmpty())
-            return false;
-
-        return false;
     }
 
     private Set<TileDirections> getNeighbourFeaturesContinuation(Tile neighbour, Tile recipient) {
@@ -210,7 +201,7 @@ public class RealEstate {
             throw new RuntimeException("Trying to get continuation of feature from illegally placed tiles");
         }
 
-        Set<TileDirections> neighbourFeatureDirections = tilesAndFeatureTileDitections.get(neighbour);
+        Set<TileDirections> neighbourFeatureDirections = tilesAndFeatureTileDirections.get(neighbour);
         Set<TileDirections> edge = recipientBorder.getNeighbour().getEdge();
 
         neighbourFeatureDirections.retainAll(edge);
