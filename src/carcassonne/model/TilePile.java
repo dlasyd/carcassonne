@@ -49,6 +49,13 @@ public class TilePile {
                 tile.addFeature(new Feature(), SOUTH, SSW, SSE, END);
                 tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
                 break;
+            case CITY1RWE:
+                tile.addFeature(new Feature(), NORTH, NNW, NNE, END);
+                tile.addFeature(new Feature(), EEN, WWN);
+                tile.addFeature(new Feature(), EAST, WEST);
+                tile.addFeature(new Feature(), EES, WWS);
+
+                break;
             default:
                 throw new RuntimeException("Not supported yet");
         }

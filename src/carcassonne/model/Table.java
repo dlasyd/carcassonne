@@ -16,6 +16,7 @@ public class Table {
     private HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
 
     Table() {
+        firstTile.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
         placeTile(firstTile);
     }
 

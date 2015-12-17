@@ -559,4 +559,22 @@ public class RealEstateTest {
         assertEquals("Road loop added to real estate", expected, realEstate.getTileSet());
     }
 
+    @Test
+    public void realEstateIncludesFirstTile(){
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
+        tile_1_0.turnRight(Rotation.DEG_90);
+
+        /*
+         * TODO next four lines should be one function
+         */
+        RealEstateManager manager = new RealEstateManager();
+        Player andrey = new Player();
+        tile_1_0.placeFollower(andrey, TileDirections.SOUTH);
+        table.placeTile(tile_1_0);
+        realEstate = new RealEstate(tile_1_0, table);
+        manager.addAsset(andrey, realEstate);
+
+
+
+        }
 }
