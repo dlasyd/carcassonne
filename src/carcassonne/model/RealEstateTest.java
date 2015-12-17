@@ -560,7 +560,7 @@ public class RealEstateTest {
     }
 
     @Test
-    public void realEstateIncludesFirstTile(){
+    public void realEstateIncludesFirstTile() {
         tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
         tile_1_0.turnRight(Rotation.DEG_90);
 
@@ -573,8 +573,33 @@ public class RealEstateTest {
         table.placeTile(tile_1_0);
         realEstate = new RealEstate(tile_1_0, table);
         manager.addAsset(andrey, realEstate);
+    }
 
+    @Test
+    public void sameWhenUnion() {
+        RealEstateManager manager = new RealEstateManager();
+        table.setRealEstateManager(manager);
+        RealEstate realEstate2;
+        Player andrey = new Player();
+        Player anton = new Player();
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0.turnRight(Rotation.DEG_90);
+        tile_1_0.placeFollower(andrey, TileDirections.EAST);
+        table.placeTile(tile_1_0);
+        realEstate = new RealEstate(tile_1_0, table);
+        manager.addAsset(andrey, realEstate);
 
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_3_0.turnRight(Rotation.DEG_90);
+        tile_3_0.placeFollower(anton, TileDirections.EAST);
+        table.placeTile(tile_3_0);
+        realEstate2 = new RealEstate(tile_3_0, table);
+        manager.addAsset(andrey, realEstate2);
 
-        }
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_2_0.turnRight(Rotation.DEG_90);
+        table.placeTile(tile_2_0);
+        assertEquals("Should consist of same tile set", realEstate.getTileSet(), realEstate2.getTileSet());
+    }
+
 }
