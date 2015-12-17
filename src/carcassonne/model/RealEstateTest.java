@@ -122,31 +122,39 @@ public class RealEstateTest {
 
     @Test
     public void addTileIfNoFollowerOnRealEstateFeature() {
-        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_0_0.placeFollower(new Player(), TileDirections.EAST);
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        RealEstate realEstate = new RealEstate(tile_0_0, table);
-        realEstate.addTile(tile_1_0);
+        tile_1_0.placeFollower(new Player(), TileDirections.EAST);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        RealEstate realEstate = new RealEstate(tile_1_0, table);
+        table.placeTile(tile_1_0);
+        RealEstateManager manager = new RealEstateManager();
+        manager.addAsset(new Player(), realEstate);
+        table.setRealEstateManager(manager);
+        table.placeTile(tile_2_0);
 
         Set<Tile> expectedSet = new HashSet<>();
-        expectedSet.add(tile_0_0);
         expectedSet.add(tile_1_0);
+        expectedSet.add(tile_2_0);
         assertEquals("Added tiles, first has follower, second does not", expectedSet, realEstate.getTileSet());
     }
 
     @Test
     public void addTileIfFollowerOnUnconnectedRealEstateFeature() {
-        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_0_0.placeFollower(new Player(), TileDirections.EAST);
-        RealEstate realEstate = new RealEstate(tile_0_0, table);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
+        RealEstate realEstate = new RealEstate(tile_1_0, table);
+        table.placeTile(tile_1_0);
+        RealEstateManager manager = new RealEstateManager();
+        manager.addAsset(new Player(), realEstate);
+        table.setRealEstateManager(manager);
+        tile_2_0.placeFollower(new Player(), TileDirections.EAST);
 
-        realEstate.addTile(tile_1_0);
+        table.placeTile(tile_2_0);
 
         Set<Tile> expectedSet = new HashSet<>();
-        expectedSet.add(tile_0_0);
         expectedSet.add(tile_1_0);
+        expectedSet.add(tile_2_0);
         assertEquals("Added tiles, first has follower, second does not", expectedSet, realEstate.getTileSet());
     }
 
@@ -168,17 +176,21 @@ public class RealEstateTest {
 
     @Test
     public void addThirdTileToPropertyFollowerOnFirst() {
-        tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_0_0.placeFollower(new Player(), TileDirections.EAST);
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0.placeFollower(new Player(), TileDirections.EAST);
         tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_1_0.turnRight(Rotation.DEG_90);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_2_0.turnRight(Rotation.DEG_90);
-        realEstate = new RealEstate(tile_0_0, table);
-        realEstate.addTile(tile_1_0);
-        realEstate.addTile(tile_2_0);
+        tile_3_0.turnRight(Rotation.DEG_90);
+        realEstate = new RealEstate(tile_1_0, table);
+        table.placeTile(tile_1_0);
+        RealEstateManager manager = new RealEstateManager();
+        manager.addAsset(new Player(), realEstate);
+        table.setRealEstateManager(manager);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_3_0);
 
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_0_0, tile_1_0, tile_2_0));
+        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
         assertTrue("Three tiles are added", expected.equals(realEstate.getTileSet()));
     }
 
@@ -190,12 +202,18 @@ public class RealEstateTest {
         tile_2_0.placeFollower(new Player(), TileDirections.EAST);
         tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_3_0.turnRight(Rotation.DEG_90);
+        table.placeTile(tile_2_0);
         realEstate = new RealEstate(tile_2_0, table);
-        realEstate.addTile(tile_1_0);
-        realEstate.addTile(tile_3_0);
+
+        RealEstateManager manager = new RealEstateManager();
+        manager.addAsset(new Player(), realEstate);
+        table.setRealEstateManager(manager);
+
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_3_0);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
-        assertTrue("Three tiles are added", expected.equals(realEstate.getTileSet()));
+        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
     }
 
     /*
@@ -432,8 +450,6 @@ public class RealEstateTest {
 
     @Test
     public void addingTileToRealEstateFarFromCreationTile() {
-        RealEstateManager manager = new RealEstateManager();
-        table.setRealEstateManager(manager);
 
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
@@ -443,10 +459,12 @@ public class RealEstateTest {
         tile_3_0.turnRight(Rotation.DEG_90);
         tile_4_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_4_0.turnRight(Rotation.DEG_90);
-        table.placeTile(tile_1_0);
-        table.placeTile(tile_2_0);
         table.placeTile(tile_3_0);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_1_0);
         realEstate = new RealEstate(tile_1_0, table);
+        RealEstateManager manager = new RealEstateManager();
+        table.setRealEstateManager(manager);
         manager.addAsset(new Player(), realEstate);
         table.placeTile(tile_4_0);
 

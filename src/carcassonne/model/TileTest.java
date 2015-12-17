@@ -416,6 +416,7 @@ public class TileTest {
         tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
         assertTrue("New tile is feature equal", tile.directionsEqual(TilePile.getReferenceTile(TileName.ROAD4)));
     }
+
 }
 
 

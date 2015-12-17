@@ -1,6 +1,7 @@
 package carcassonne.model;
 
 import java.util.HashSet;
+import java.util.Set;
 
 class Coordinates {
     private int x, y;
@@ -41,8 +42,8 @@ class Coordinates {
         return rotation;
     }
 
-    public static HashSet<Coordinates> getAround(HashSet<Coordinates> coordinatesSet) {
-        HashSet<Coordinates> result = new HashSet<>();
+    public static Set<Coordinates> getAround(Set<Coordinates> coordinatesSet) {
+        Set<Coordinates> result = new HashSet<>();
         for (Coordinates coordinate: coordinatesSet) {
             result.add(new Coordinates(coordinate.getX() - 1, coordinate.getY()));
             result.add(new Coordinates(coordinate.getX() + 1, coordinate.getY()));
