@@ -78,6 +78,10 @@ public class RealEstateManagerTest {
 
     @Test
     public void assetUnion() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
         tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
         tile_1_0.turnRight(Rotation.DEG_180);
         tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
@@ -89,6 +93,7 @@ public class RealEstateManagerTest {
         table.placeTile(tile_3_0);
         table.placeFollower(andrey, TileDirections.WEST);
 
+        Set<RealEstate> antonAssets = manager.getAssets(anton);
         assertEquals("Different players have same property list of one shared property", manager.getAssets(anton),
                 manager.getAssets(andrey));
     }
