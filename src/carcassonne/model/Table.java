@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Table {
     private static Table table;
     private Tile currentTile;
+    private Tile tilePlacedLast;
     private RealEstateManager realEstateManager;
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
@@ -43,6 +44,7 @@ public class Table {
             throw new RuntimeException("Trying to place tile on an occupied space");
         placedTiles.put(currentTile.getCoordinates(), currentTile);
         notifyObservers(currentTile);
+        tilePlacedLast = currentTile;
     }
 
     public int placedTilesAmount() {
@@ -95,5 +97,10 @@ public class Table {
         //TODO refactor me!
         if (realEstateManager != null)
             realEstateManager.update(tile);
+    }
+
+    public void placeFollower(Player player, TileDirections direction) {
+        tilePlacedLast.placeFollower(player, direction);
+        realEstateManager.createAsset(player, tilePlacedLast);
     }
 }
