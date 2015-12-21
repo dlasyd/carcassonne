@@ -6,7 +6,7 @@ import java.util.*;
  *
  */
 public class RealEstateManager {
-    private Map<Player, Set<RealEstate.ImmutableRealEstate>> assetsList = new HashMap<>();
+    private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToRealEstateSetMap = new HashMap<>();
     private Map<RealEstate.ImmutableRealEstate, Set<Player>> realEstateMap = new HashMap<>();
     private final int MAXIMUM_UNION_PER_TILE = 4;
     // TODO make it final
@@ -20,30 +20,32 @@ public class RealEstateManager {
 
     Set<RealEstate> getAssets(Player player) {
         Set<RealEstate> result = new HashSet<>();
-        for (RealEstate.ImmutableRealEstate realEstate: assetsList.get(player)) {
+        for (RealEstate.ImmutableRealEstate realEstate: playerToRealEstateSetMap.get(player)) {
             result.add(realEstate.getRealEstate());
         }
         return result;
     }
 
+    /*
+     * used for testing purposes only
+     */
     void addAsset(Player player, RealEstate realEstate) {
-        if (assetsList.containsKey(player)) {
-            Set<RealEstate.ImmutableRealEstate> assets = assetsList.get(player);
+        if (playerToRealEstateSetMap.containsKey(player)) {
+            Set<RealEstate.ImmutableRealEstate> assets = playerToRealEstateSetMap.get(player);
             assets.add(realEstate.getImmutableRealEstate());
         } else {
-            assetsList.put(player, new HashSet<>(Arrays.asList(realEstate.getImmutableRealEstate())));
+            playerToRealEstateSetMap.put(player, new HashSet<>(Arrays.asList(realEstate.getImmutableRealEstate())));
         }
-
         realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
     }
 
     void createAsset(Player player, Tile tile) {
         RealEstate realEstate = new RealEstate(tile, table);
-        if (assetsList.containsKey(player)) {
-            Set<RealEstate.ImmutableRealEstate> assets = assetsList.get(player);
+        if (playerToRealEstateSetMap.containsKey(player)) {
+            Set<RealEstate.ImmutableRealEstate> assets = playerToRealEstateSetMap.get(player);
             assets.add(realEstate.getImmutableRealEstate());
         } else {
-            assetsList.put(player, new HashSet<>(Collections.singletonList(realEstate.getImmutableRealEstate())));
+            playerToRealEstateSetMap.put(player, new HashSet<>(Collections.singletonList(realEstate.getImmutableRealEstate())));
         }
 
         realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
@@ -53,7 +55,7 @@ public class RealEstateManager {
         for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
             realEstate.getRealEstate().update(tile);
         }
-        checkRealEstateUnion();
+        realEstateUnion();
     }
 
     Map<RealEstate.ImmutableRealEstate, Set<Player>> getRealEstateMap() {
@@ -64,9 +66,8 @@ public class RealEstateManager {
         return new HashSet<>(realEstateMap.keySet());
     }
 
-    private void checkRealEstateUnion() {
-        ArrayList<RealEstate.ImmutableRealEstate> allRealEstateObjects = new ArrayList<>(realEstateMap.keySet());
-
+    private void realEstateUnion() {
+        ArrayList<RealEstate.ImmutableRealEstate> allRealEstateObjects;
         Set<RealEstate.ImmutableRealEstate> duplicateRealEstate = new HashSet<>();
 
         for (int i = 0; i < MAXIMUM_UNION_PER_TILE; i++) {
@@ -74,30 +75,28 @@ public class RealEstateManager {
             if (!(allRealEstateObjects.size() > i))
                     break;
 
-            RealEstate.ImmutableRealEstate realEstate = allRealEstateObjects.get(i);
+            RealEstate.ImmutableRealEstate checkedRealEstate = allRealEstateObjects.get(i);
 
             for (RealEstate.ImmutableRealEstate realEstateToCompare: allRealEstateObjects) {
-                if (realEstate.getRealEstate().equals(realEstateToCompare.getRealEstate())) {
-                    duplicateRealEstate.add(realEstate);
+                if (checkedRealEstate.getRealEstate().equals(realEstateToCompare.getRealEstate())) {
+                    duplicateRealEstate.add(checkedRealEstate);
                     duplicateRealEstate.add(realEstateToCompare);
                 }
             }
-            // TODO remove duplicate real estate
-            Set<Player> owners = new HashSet<>();
+
+            Set<Player> ownersOfDuplicateRealEstate = new HashSet<>();
             for (RealEstate.ImmutableRealEstate sameRealEstate: duplicateRealEstate) {
-                owners.addAll(realEstateMap.get(sameRealEstate));
+                ownersOfDuplicateRealEstate.addAll(realEstateMap.get(sameRealEstate));
             }
 
             boolean added = false;
             /*
-             * masterRealEstate - the one that will replace copies in assetsList
-             * TODO rename assetsList
+             * masterRealEstate - the one that will replace copies in playerToRealEstateSetMap
              */
             RealEstate.ImmutableRealEstate masterRealEstate = null;
-
             for (RealEstate.ImmutableRealEstate sameRealEstate: duplicateRealEstate) {
                 if (added == false) {
-                    realEstateMap.put(sameRealEstate, owners);
+                    realEstateMap.put(sameRealEstate, ownersOfDuplicateRealEstate);
                     masterRealEstate = sameRealEstate;
                     added = true;
                 } else {
@@ -108,10 +107,10 @@ public class RealEstateManager {
             assert (masterRealEstate != null);
             duplicateRealEstate.remove(masterRealEstate);
 
-            for (Player player: assetsList.keySet()) {
+            for (Player player: playerToRealEstateSetMap.keySet()) {
                 for (RealEstate.ImmutableRealEstate toRemove: duplicateRealEstate) {
-                    if (assetsList.get(player).contains(toRemove)) {
-                        Set<RealEstate.ImmutableRealEstate> set = assetsList.get(player);
+                    if (playerToRealEstateSetMap.get(player).contains(toRemove)) {
+                        Set<RealEstate.ImmutableRealEstate> set = playerToRealEstateSetMap.get(player);
                         set.remove(toRemove);
                         set.add(masterRealEstate);
                     }
