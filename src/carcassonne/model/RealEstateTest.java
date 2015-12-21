@@ -5,9 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static carcassonne.model.TileName.*;
 import static org.junit.Assert.*;
@@ -582,24 +580,56 @@ public class RealEstateTest {
         RealEstate realEstate2;
         Player andrey = new Player();
         Player anton = new Player();
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
         tile_1_0.turnRight(Rotation.DEG_90);
         tile_1_0.placeFollower(andrey, TileDirections.EAST);
         table.placeTile(tile_1_0);
         realEstate = new RealEstate(tile_1_0, table);
         manager.addAsset(andrey, realEstate);
 
-        tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
         tile_3_0.turnRight(Rotation.DEG_90);
         tile_3_0.placeFollower(anton, TileDirections.EAST);
         table.placeTile(tile_3_0);
         realEstate2 = new RealEstate(tile_3_0, table);
         manager.addAsset(andrey, realEstate2);
 
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
         tile_2_0.turnRight(Rotation.DEG_90);
         table.placeTile(tile_2_0);
         assertEquals("Should consist of same tile set", realEstate.getTileSet(), realEstate2.getTileSet());
+    }
+
+    @Test
+    public void checkTileDirectionsOfRealEstate() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+
+        table.placeTile(tile_1_0);
+        table.placeFollower(new Player(), TileDirections.EAST);
+        table.placeTile(tile_3_0);
+        table.placeTile(tile_2_0);
+
+        Set<RealEstate.ImmutableRealEstate> keys = manager.getRealEstateImmutableSet();
+        Map<Tile, Set<TileDirections>> realResult = new HashMap<>();
+        for (RealEstate.ImmutableRealEstate key: keys) {
+            realResult = key.getRealEstate().getTilesAndFeatureTileDirections();
+            break;
+        }
+
+        Map<Tile, Set<TileDirections>> expected = new HashMap<>();
+        expected.put(tile_1_0, new HashSet<>(Arrays.asList(NORTH, EAST)));
+        expected.put(tile_3_0, new HashSet<>(Arrays.asList(WEST, SOUTH)));
+        expected.put(tile_2_0, new HashSet<>(Arrays.asList(WEST, EAST)));
+
+        assertEquals("Tiles and tile directions", expected, realResult);
     }
 
 }

@@ -9,12 +9,18 @@ import java.util.*;
 public class RealEstate {
     private final Map<Tile, Set<TileDirections>> tilesAndFeatureTileDirections = new HashMap<>();
     private final Table table;
+    private final ImmutableRealEstate immutableRealEstate;
 
     public RealEstate(Tile tile, Table table) {
+        immutableRealEstate = new ImmutableRealEstate(this, tile);
         this.table = table;
         if (tile.isNoFollower())
             throw new RuntimeException("Cannot create real estate from tile without a follower");
         addTile(tile);
+    }
+
+    public ImmutableRealEstate getImmutableRealEstate() {
+        return immutableRealEstate;
     }
 
     public void addTile(Tile tile) {
@@ -69,7 +75,7 @@ public class RealEstate {
         for (TileDirections tileDirections : occupiedFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
             if (!neighbour.isNull() && !tilesAndFeatureTileDirections.containsKey(neighbour)) {
-                adjacentTiles.put(neighbour, neighbour.getDestinations(tileDirections));
+                adjacentTiles.put(neighbour, neighbour.getDestinations(tileDirections.getNeighbour()));
                 adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
             }
         }
@@ -162,6 +168,7 @@ public class RealEstate {
         TileDirections[] neighbourDirection = {TileDirections.NORTH, TileDirections.SOUTH, TileDirections.WEST,
         TileDirections.EAST};
 
+        outer:
         for (int i = 0; i < 4; i++) {
             Tile t = table.getTile(aroundCoordinates[i][0], aroundCoordinates[i][1]);
             if (! t.isNull() && tilesAndFeatureTileDirections.containsKey(t)) {
@@ -171,6 +178,7 @@ public class RealEstate {
                     if (directions.contains(edge)) {
                         tilesAndFeatureTileDirections.put(tile, tile.getDestinations(edge.getNeighbour()));
                         addAdjacentTiles(tile);
+                        break outer;
                     }
                 }
             }
@@ -217,4 +225,47 @@ public class RealEstate {
 
         return result;
     }
+
+    static class ImmutableRealEstate {
+        private final RealEstate realEstate;
+        private final Tile firstTile;
+
+        ImmutableRealEstate(RealEstate realEstate, Tile firstTile) {
+            this.realEstate = realEstate;
+            this.firstTile = firstTile;
+        }
+
+        public RealEstate getRealEstate() {
+            return realEstate;
+        }
+
+        public int hashCode() {
+            return (firstTile.hashCode() * 13) % 7 ;
+        }
+    }
+
+    public boolean equals(Object o) {
+        RealEstate realEstate = (RealEstate) o;
+        if (!this.tilesAndFeatureTileDirections.keySet().equals(((RealEstate) o).tilesAndFeatureTileDirections.keySet()))
+            return false;
+        for (Tile thisTile: tilesAndFeatureTileDirections.keySet()) {
+            if (! this.tilesAndFeatureTileDirections.get(thisTile).
+                    equals(((RealEstate) o).tilesAndFeatureTileDirections.get(thisTile)))
+                return false;
+        }
+        return true;
+    }
+
+    public int hashCode() {
+        int hashCode = 1043;
+        for(Tile tile: tilesAndFeatureTileDirections.keySet()) {
+           hashCode += 10 * tile.hashCode();
+        }
+        return hashCode;
+    }
+
+    Map<Tile, Set<TileDirections>> getTilesAndFeatureTileDirections() {
+        return tilesAndFeatureTileDirections;
+    }
+
 }

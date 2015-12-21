@@ -53,7 +53,7 @@ public class TilePile {
                 tile.addFeature(new Feature(), NORTH, NNW, NNE, END);
                 tile.addFeature(new Feature(), EEN, WWN);
                 tile.addFeature(new Feature(), EAST, WEST);
-                tile.addFeature(new Feature(), EES, WWS);
+                tile.addFeature(new Feature(), EES, WWS, SSE, SSW, SOUTH);
 
                 break;
             default:
