@@ -19,7 +19,7 @@ public class RealEstateTest {
     public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
     public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2, tile_2_1, tile_1_2, tile_3_2;
     public Tile tile_2_2, tile_3_1;
-    public RealEstate realEstate;
+    public RealEstate realEstate, realEstate2;
     public Table table;
 
 
@@ -577,24 +577,23 @@ public class RealEstateTest {
     public void sameWhenUnion() {
         RealEstateManager manager = new RealEstateManager();
         table.setRealEstateManager(manager);
-        RealEstate realEstate2;
         Player andrey = new Player();
         Player anton = new Player();
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_1_0.turnRight(Rotation.DEG_90);
         tile_1_0.placeFollower(andrey, TileDirections.EAST);
         table.placeTile(tile_1_0);
         realEstate = new RealEstate(tile_1_0, table);
         manager.addAsset(andrey, realEstate);
 
-        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_3_0.turnRight(Rotation.DEG_90);
         tile_3_0.placeFollower(anton, TileDirections.EAST);
         table.placeTile(tile_3_0);
         realEstate2 = new RealEstate(tile_3_0, table);
         manager.addAsset(andrey, realEstate2);
 
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_2_0.turnRight(Rotation.DEG_90);
         table.placeTile(tile_2_0);
         assertEquals("Should consist of same tile set", realEstate.getTileSet(), realEstate2.getTileSet());

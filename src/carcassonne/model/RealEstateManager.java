@@ -33,6 +33,8 @@ public class RealEstateManager {
         } else {
             assetsList.put(player, new HashSet<>(Arrays.asList(realEstate.getImmutableRealEstate())));
         }
+
+        realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
     }
 
     void createAsset(Player player, Tile tile) {
@@ -48,12 +50,8 @@ public class RealEstateManager {
     }
 
     void update(Tile tile) {
-        Set<Player> keySet = assetsList.keySet();
-        for (Player player: keySet) {
-            Set<RealEstate.ImmutableRealEstate> realEstateSet = assetsList.get(player);
-            for (RealEstate.ImmutableRealEstate realEstate: realEstateSet) {
-                realEstate.getRealEstate().update(tile);
-            }
+        for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
+            realEstate.getRealEstate().update(tile);
         }
         checkRealEstateUnion();
     }
