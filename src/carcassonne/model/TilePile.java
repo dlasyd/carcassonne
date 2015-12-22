@@ -20,6 +20,12 @@ public class TilePile {
                 tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
                 tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
                 break;
+            case CITY2NWR:
+                tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
+                tile.addFeature(new Feature(), EAST, SOUTH);
+                tile.addFeature(new Feature(), SSW, EEN);
+                tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+                break;
             case ROAD4:
                 tile.addFeature(new Feature(), EAST, END);
                 tile.addFeature(new Feature(), WEST, END);

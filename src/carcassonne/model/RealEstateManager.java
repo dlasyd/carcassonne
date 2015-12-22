@@ -68,10 +68,12 @@ public class RealEstateManager {
 
     private void realEstateUnion() {
         ArrayList<RealEstate.ImmutableRealEstate> allRealEstateObjects;
-        Set<RealEstate.ImmutableRealEstate> duplicateRealEstate = new HashSet<>();
+        Set<RealEstate.ImmutableRealEstate> duplicateRealEstate;
 
         for (int i = 0; i < MAXIMUM_UNION_PER_TILE; i++) {
             allRealEstateObjects = new ArrayList<>(realEstateMap.keySet());
+            duplicateRealEstate = new HashSet<>();
+
             if (!(allRealEstateObjects.size() > i))
                     break;
 

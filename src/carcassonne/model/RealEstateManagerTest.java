@@ -26,6 +26,7 @@ public class RealEstateManagerTest {
     public Tile tile_0_1 = Tile.getInstance(0, 1);
     public Tile tile_1_1 = Tile.getInstance(1, 1);
     public Tile tile_2_1 = Tile.getInstance(2, 1);
+    public Tile tile_2_m1 = Tile.getInstance(2, -1);
     public RealEstate realEstate;
     public RealEstate realEstate2;
     public Feature feature = new Feature();
@@ -140,9 +141,6 @@ public class RealEstateManagerTest {
         assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
     }
 
-    /*
-     * TODO test threesome step by step (place 2_1 last)
-     */
     @Test
     public void assetUnionThreesomeStepByStep() {
         Table table = new Table();
@@ -177,4 +175,34 @@ public class RealEstateManagerTest {
         assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
     }
 
+    @Test
+    public void doubleUnionWhenTilePlaced() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
+        tile_1_0.turnRight(Rotation.DEG_90);
+        tile_2_m1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_2_m1.turnRight(Rotation.DEG_180);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_2_1.turnRight(Rotation.DEG_90);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
+        tile_3_0.turnRight(Rotation.DEG_270);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NWR));
+        tile_2_0.turnRight(Rotation.DEG_90);
+
+        table.placeTile(tile_1_0);
+        table.placeFollower(anton, TileDirections.EAST);
+        table.placeTile(tile_2_m1);
+        table.placeFollower(anton, TileDirections.SOUTH);
+        table.placeTile(tile_2_1);
+        table.placeFollower(andrey, TileDirections.NORTH);
+        table.placeTile(tile_3_0);
+        table.placeFollower(andrey, TileDirections.WEST);
+
+        table.placeTile(tile_2_0);      // union tile
+
+        assertEquals ("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
+    }
 }
