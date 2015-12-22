@@ -558,22 +558,6 @@ public class RealEstateTest {
     }
 
     @Test
-    public void realEstateIncludesFirstTile() {
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
-        tile_1_0.turnRight(Rotation.DEG_90);
-
-        /*
-         * TODO next four lines should be one function
-         */
-        RealEstateManager manager = new RealEstateManager();
-        Player andrey = new Player();
-        tile_1_0.placeFollower(andrey, TileDirections.SOUTH);
-        table.placeTile(tile_1_0);
-        realEstate = new RealEstate(tile_1_0, table);
-        manager.addAsset(andrey, realEstate);
-    }
-
-    @Test
     public void sameWhenUnion() {
         RealEstateManager manager = new RealEstateManager();
         table.setRealEstateManager(manager);
@@ -631,4 +615,28 @@ public class RealEstateTest {
         assertEquals("Tiles and tile directions", expected, realResult);
     }
 
+    @Test
+    public void completeRealEstateAddedProperly() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+
+        table.setRealEstateManager(manager);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        table.placeFollower(new Player(), WEST);
+
+        Map<Tile, Set<TileDirections>> expected = new HashMap();
+        expected.put(tile_1_0, new HashSet<>(Arrays.asList(END, EAST)));
+        expected.put(tile_2_0, new HashSet<>(Arrays.asList(END, WEST)));
+
+        Map<Tile, Set<TileDirections>> tileToTileDirections = new HashMap();
+
+        for (RealEstate.ImmutableRealEstate realEstate: manager.getRealEstateImmutableSet()) {
+            tileToTileDirections = realEstate.getRealEstate().getTilesAndFeatureTileDirections();
+        }
+        assertEquals ("Tile consist of correct tileDirections", expected, tileToTileDirections);
+    }
 }

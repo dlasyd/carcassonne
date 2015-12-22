@@ -170,7 +170,8 @@ public class RealTile extends Tile {
     }
 
     public boolean isComplete() {
-        Set keys = propertyMap.keySet();
+        Set keys = new HashSet(propertyMap.keySet());
+        keys.remove(TileDirections.END);
         switch (keys.size()) {
             case 12:
                 return !keys.contains(TileDirections.CENTER);

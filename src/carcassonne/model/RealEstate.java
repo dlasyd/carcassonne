@@ -98,8 +98,7 @@ public class RealEstate {
         /*
          * Set of all Directions within tile that a Feature occupies
          */
-        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(directionWithFeature);
-        if(currentTileFeatureDirections.contains(TileDirections.END)) {
+        /*if(currentTileFeatureDirections.contains(TileDirections.END)) {
             result.put(tile, new HashSet<>(Collections.singletonList(TileDirections.END)));
             return result;
         }
@@ -107,12 +106,13 @@ public class RealEstate {
         /*
          * removes TileDirections that lead back
          */
+        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(directionWithFeature);
         currentTileFeatureDirections.removeAll(directionWithFeature.getEdge());
         for (TileDirections direction: currentTileFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  direction);
 
             if (! neighbour.isNull()) {
-                result.put(neighbour, neighbour.getDestinations(direction));
+                result.put(neighbour, neighbour.getDestinations(direction.getNeighbour()));
                 result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), loopBreakingTile));
             }
         }

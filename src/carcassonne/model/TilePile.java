@@ -21,11 +21,11 @@ public class TilePile {
                 tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
                 break;
             case ROAD4:
-                tile.addFeature(new Feature(), EAST);
-                tile.addFeature(new Feature(), WEST);
-                tile.addFeature(new Feature(), SOUTH);
-                tile.addFeature(new Feature(), NORTH);
-                tile.addFeature(new Feature(), CENTER);
+                tile.addFeature(new Feature(), EAST, END);
+                tile.addFeature(new Feature(), WEST, END);
+                tile.addFeature(new Feature(), SOUTH, END);
+                tile.addFeature(new Feature(), NORTH, END);
+                tile.addFeature(new Feature(), CENTER ,END);
                 tile.addFeature(new Feature(), WWN, NNW);
                 tile.addFeature(new Feature(), NNE, EEN);
                 tile.addFeature(new Feature(), WWS, SSW);

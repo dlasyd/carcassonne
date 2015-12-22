@@ -77,6 +77,7 @@ public class RealEstateManager {
 
             RealEstate.ImmutableRealEstate checkedRealEstate = allRealEstateObjects.get(i);
 
+            // TODO remove checkedRealEstate from set allRealEstateObjects
             for (RealEstate.ImmutableRealEstate realEstateToCompare: allRealEstateObjects) {
                 if (checkedRealEstate.getRealEstate().equals(realEstateToCompare.getRealEstate())) {
                     duplicateRealEstate.add(checkedRealEstate);
@@ -124,5 +125,13 @@ public class RealEstateManager {
 
     private void removeDuplicateRealEstate(Set<RealEstate.ImmutableRealEstate> immutableRealEstateSet) {
 
+    }
+
+    public static boolean assetSetContainsRealEstateWithTileSet(Set<RealEstate> assets, HashSet<Tile> tiles) {
+        for (RealEstate realEstate: assets) {
+            if (realEstate.getTileSet().equals(tiles))
+                return true;
+        }
+        return false;
     }
 }
