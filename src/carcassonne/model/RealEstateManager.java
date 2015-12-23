@@ -79,7 +79,6 @@ public class RealEstateManager {
 
             RealEstate.ImmutableRealEstate checkedRealEstate = allRealEstateObjects.get(i);
 
-            // TODO remove checkedRealEstate from set allRealEstateObjects
             for (RealEstate.ImmutableRealEstate realEstateToCompare: allRealEstateObjects) {
                 if (checkedRealEstate.getRealEstate().equals(realEstateToCompare.getRealEstate())) {
                     duplicateRealEstate.add(checkedRealEstate);
@@ -136,4 +135,9 @@ public class RealEstateManager {
         }
         return false;
     }
+
+    Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToRealEstateSetMap() {
+        return playerToRealEstateSetMap;
+    }
+
 }
