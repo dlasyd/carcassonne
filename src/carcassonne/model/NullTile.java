@@ -102,6 +102,11 @@ public class NullTile extends Tile{
     }
 
     @Override
+    Player getFollowerOwner() {
+        throw new RuntimeException("The tile is Null");
+    }
+
+    @Override
     public TileDirections[] getUnoccupiedDirections() {
         throw new RuntimeException("The tile is Null");
     }

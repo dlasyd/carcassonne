@@ -68,10 +68,9 @@ public class RealEstateManager {
 
     private void realEstateUnion() {
         ArrayList<RealEstate.ImmutableRealEstate> allRealEstateObjects;
-        Set<RealEstate.ImmutableRealEstate> duplicateRealEstate;
-
+        HashSet<RealEstate.ImmutableRealEstate> duplicateRealEstate;
+        allRealEstateObjects = new ArrayList<>(realEstateMap.keySet());
         for (int i = 0; i < MAXIMUM_UNION_PER_TILE; i++) {
-            allRealEstateObjects = new ArrayList<>(realEstateMap.keySet());
             duplicateRealEstate = new HashSet<>();
 
             if (!(allRealEstateObjects.size() > i))
@@ -86,10 +85,9 @@ public class RealEstateManager {
                 }
             }
 
-            Set<Player> ownersOfDuplicateRealEstate = new HashSet<>();
-            for (RealEstate.ImmutableRealEstate sameRealEstate: duplicateRealEstate) {
-                ownersOfDuplicateRealEstate.addAll(realEstateMap.get(sameRealEstate));
-            }
+            // TODO create function to get any item of HashSet and use it
+            Set<Player> ownersOfDuplicateRealEstate = new ArrayList<>(duplicateRealEstate)
+                    .get(0).getRealEstate().getLegitimateOwners();
 
             boolean added = false;
             /*
@@ -109,12 +107,17 @@ public class RealEstateManager {
             assert (masterRealEstate != null);
             duplicateRealEstate.remove(masterRealEstate);
 
-            for (Player player: playerToRealEstateSetMap.keySet()) {
+            for (Player player: new HashSet<>(playerToRealEstateSetMap.keySet())) {
                 for (RealEstate.ImmutableRealEstate toRemove: duplicateRealEstate) {
                     if (playerToRealEstateSetMap.get(player).contains(toRemove)) {
-                        Set<RealEstate.ImmutableRealEstate> set = playerToRealEstateSetMap.get(player);
-                        set.remove(toRemove);
-                        set.add(masterRealEstate);
+                        Set<RealEstate.ImmutableRealEstate> playersRealEstate = playerToRealEstateSetMap.get(player);
+                        playersRealEstate.remove(toRemove);
+
+                        //TODO only add if a player owns it
+                        if (ownersOfDuplicateRealEstate.contains(player))
+                            playersRealEstate.add(masterRealEstate);
+                        if (playersRealEstate.isEmpty())
+                            playerToRealEstateSetMap.remove(player);
                     }
                 }
             }

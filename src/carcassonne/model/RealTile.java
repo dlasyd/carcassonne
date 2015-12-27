@@ -200,6 +200,12 @@ public class RealTile extends Tile {
     }
 
     @Override
+    Player getFollowerOwner() {
+        assert (follower != null);
+        return follower.getPlayer();
+    }
+
+    @Override
     /*
      * returns unoccupied directions. END and CENTER are excluded from return because they are not needed in
      * the context of use of the method (the method is created to be used in RealEstateTest)

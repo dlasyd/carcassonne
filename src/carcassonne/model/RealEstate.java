@@ -226,6 +226,32 @@ public class RealEstate {
         return result;
     }
 
+    Set<Player> getLegitimateOwners() {
+        Map<Player, Integer> numberOfPlacedFollowers = new HashMap<>();
+        int maximumPlayerPresence = 1;
+        for (Tile tile: tilesAndFeatureTileDirections.keySet()) {
+            if (!tile.isNoFollower()) {
+                Player player = tile.getFollowerOwner();
+                if (numberOfPlacedFollowers.containsKey(player)) {
+                    int count = numberOfPlacedFollowers.get(player);
+                    count++;
+                    if (count > maximumPlayerPresence)
+                        maximumPlayerPresence = count;
+                    numberOfPlacedFollowers.put(player, count);
+                } else {
+                    numberOfPlacedFollowers.put(player, 1);
+                }
+            }
+        }
+
+        Set<Player> result = new HashSet<>();
+        for (Player player: numberOfPlacedFollowers.keySet()) {
+            if (numberOfPlacedFollowers.get(player) == maximumPlayerPresence)
+                result.add(player);
+        }
+        return result;
+    }
+
     static class ImmutableRealEstate {
         private final RealEstate realEstate;
         private final Tile firstTile;

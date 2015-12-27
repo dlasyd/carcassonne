@@ -3,6 +3,7 @@ package carcassonne.model;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.*;
 
 import static carcassonne.model.TileDirections.*;
@@ -15,9 +16,9 @@ import static org.junit.Assert.*;
  * Created by Andrey on 10/12/15.
  */
 public class RealEstateManagerTest {
-    public Player anton = new Player();
-    public Player andrey = new Player();
-    public Player lena = new Player();
+    public Player anton = new Player("anton", Color.RED);
+    public Player andrey = new Player("andrey", Color.YELLOW);
+    public Player lena = new Player("lena", Color.GREEN);
     public Tile tile_1_0 = Tile.getInstance(1, 0);
     public Tile tile_2_0 = Tile.getInstance(2, 0);
     public Tile tile_3_0 = Tile.getInstance(3, 0);
@@ -38,12 +39,14 @@ public class RealEstateManagerTest {
         tile_1_0.placeFollower(anton, EAST);
         realEstate = new RealEstate(tile_1_0, table);
         tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
-        tile_2_0.placeFollower(anton, EAST);
-        realEstate2 = new RealEstate(tile_2_0, table);
+        //tile_2_0.placeFollower(anton, EAST);
+        //realEstate2 = new RealEstate(tile_2_0, table);
     }
 
     @Test
     public void playerHasRealEstate() {
+        tile_2_0.placeFollower(anton, EAST);
+        realEstate2 = new RealEstate(tile_2_0, table);
         Set<RealEstate> expectedSet = new HashSet<>();
         expectedSet.add(realEstate);
         expectedSet.add(realEstate2);

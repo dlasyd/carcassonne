@@ -25,6 +25,7 @@ public abstract class Tile {
     abstract Set<Feature> getFeatures();
     abstract Feature getOccupiedFeature();
     abstract void returnFollower();
+    abstract Player getFollowerOwner();
 
     public static Tile getInstance() {
         return new RealTile();
