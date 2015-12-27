@@ -107,6 +107,16 @@ public class NullTile extends Tile{
     }
 
     @Override
+    boolean containsEND() {
+        return false;
+    }
+
+    @Override
+    boolean isCompleteCity() {
+        return false;
+    }
+
+    @Override
     public TileDirections[] getUnoccupiedDirections() {
         throw new RuntimeException("The tile is Null");
     }

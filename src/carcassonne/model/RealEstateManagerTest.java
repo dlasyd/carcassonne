@@ -38,7 +38,7 @@ public class RealEstateManagerTest {
         table = new Table();
         tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
         tile_1_0.placeFollower(anton, EAST);
-        realEstate = new RealEstate(tile_1_0, table);
+        realEstate = RealEstate.getInstance(tile_1_0, table);
         tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
         //tile_2_0.placeFollower(anton, EAST);
         //realEstate2 = new RealEstate(tile_2_0, table);
@@ -47,7 +47,7 @@ public class RealEstateManagerTest {
     @Test
     public void playerHasRealEstate() {
         tile_2_0.placeFollower(anton, EAST);
-        realEstate2 = new RealEstate(tile_2_0, table);
+        realEstate2 = RealEstate.getInstance(tile_2_0, table);
         Set<RealEstate> expectedSet = new HashSet<>();
         expectedSet.add(realEstate);
         expectedSet.add(realEstate2);
@@ -225,7 +225,9 @@ public class RealEstateManagerTest {
         tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
         tile_1_0.turnRight(Rotation.DEG_180);
         tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        table.placeFollower(anton, NORTH);
+        table.placeTile(tile_1_0);
+        table.placeFollower(anton, SOUTH);
+        table.placeTile(tile_1_1);
         assertEquals("4 points for smallest finished castle", 4, anton.getCurrentPoints());
     }
 

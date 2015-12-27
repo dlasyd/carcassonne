@@ -8,6 +8,7 @@ import java.util.*;
 public class RealEstateManager {
     private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToRealEstateSetMap = new HashMap<>();
     private Map<RealEstate.ImmutableRealEstate, Set<Player>> realEstateMap = new HashMap<>();
+    private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToFinishedRealEstate = new HashMap();
     private final int MAXIMUM_UNION_PER_TILE = 4;
     // TODO make it final
     private Table table;
@@ -40,7 +41,7 @@ public class RealEstateManager {
     }
 
     void createAsset(Player player, Tile tile) {
-        RealEstate realEstate = new RealEstate(tile, table);
+        RealEstate realEstate = RealEstate.getInstance(tile, table);
         if (playerToRealEstateSetMap.containsKey(player)) {
             Set<RealEstate.ImmutableRealEstate> assets = playerToRealEstateSetMap.get(player);
             assets.add(realEstate.getImmutableRealEstate());
@@ -65,25 +66,28 @@ public class RealEstateManager {
      * 2) RE is added to playerToFinishedRealEstateSetMap
      * 3) The number of points is counted
      * 4) All owners current points increase by that number
-     * 5) Placed followers return to players hands
+     * TODO 5) Placed followers return to players hands
      */
     private void finishedRealEstate() {
         /*
          * Finished conditions:
          * 1) Tiles around monastery
          * 2) Road has 2 ends
-         * 3) Each tile of a castle has an end or a CITY4
+         * 3) Each tile of a castle has an end or a CITY4 - wrong
          */
 
-        //TODO implement all 3. Now only CITY logic without CITY4
         Set<RealEstate.ImmutableRealEstate> allRealEstate = new HashSet<>(realEstateMap.keySet());
         for (RealEstate.ImmutableRealEstate currentImmutableRE: allRealEstate) {
             if (currentImmutableRE.getRealEstate().isFinished()) {
-                // remove it
-                // add current score
+                int points = currentImmutableRE.getRealEstate().getPoints();
+                for (Player player: realEstateMap.get(currentImmutableRE)) {
+                    Util.addSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
+                    Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
+                    player.increaseCurrentPoints(points);
+                }
+                realEstateMap.remove(currentImmutableRE);
             }
         }
-
     }
 
     Map<RealEstate.ImmutableRealEstate, Set<Player>> getRealEstateMap() {

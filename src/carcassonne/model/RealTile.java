@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import static carcassonne.model.TileDirections.*;
+
 /**
  * This is a part of Carcassonne project.
  * The project is created for learning and practicing java
@@ -203,6 +205,16 @@ public class RealTile extends Tile {
     Player getFollowerOwner() {
         assert (follower != null);
         return follower.getPlayer();
+    }
+
+    @Override
+    boolean containsEND() {
+        return propertyMap.keySet().contains(END);
+    }
+
+    @Override
+    boolean isCompleteCity() {
+        return propertyMap.keySet().equals(new HashSet<>(Arrays.asList(NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE,SSW, WEST, WWN, WWS)));
     }
 
     @Override

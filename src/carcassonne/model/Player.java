@@ -58,4 +58,8 @@ final class Player {
     public int getCurrentPoints() {
         return currentPoints;
     }
+
+    public void increaseCurrentPoints(int points) {
+        this.currentPoints +=  points;
+    }
 }

@@ -6,9 +6,9 @@ import java.util.*;
  * RealEstate is a class that creates abstract objects from features of several tiles that are connected
  * to each other. Represents Land, Roads, Castles and Cloisters from the rules of Carcassonne.
  */
-public class RealEstate {
-    private final Map<Tile, Set<TileDirections>> tilesAndFeatureTileDirections = new HashMap<>();
-    private final Table table;
+public abstract class RealEstate {
+    final Map<Tile, Set<TileDirections>> tilesAndFeatureTileDirections = new HashMap<>();
+    final Table table;
     private final ImmutableRealEstate immutableRealEstate;
 
     public RealEstate(Tile tile, Table table) {
@@ -17,6 +17,12 @@ public class RealEstate {
         if (tile.isNoFollower())
             throw new RuntimeException("Cannot create real estate from tile without a follower");
         addTile(tile);
+    }
+
+    public abstract boolean isFinished();
+
+    static RealEstate getInstance(Tile tile, Table table) {
+        return new Castle(tile, table);
     }
 
     public ImmutableRealEstate getImmutableRealEstate() {
@@ -252,8 +258,8 @@ public class RealEstate {
         return result;
     }
 
-    public boolean isFinished() {
-        return false;
+    public int getPoints() {
+        return 4;
     }
 
     static class ImmutableRealEstate {
