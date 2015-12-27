@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  * Created by Andrey on 10/12/15.
  */
 public class RealEstateManagerTest {
-    public Player anton = new Player("anton", Color.RED);
-    public Player andrey = new Player("andrey", Color.YELLOW);
-    public Player lena = new Player("lena", Color.GREEN);
+    public Player anton = new Player("anton", null);
+    public Player andrey = new Player("andrey", null);
+    public Player lena = new Player("lena", null);
     public Tile tile_1_0 = Tile.getInstance(1, 0);
     public Tile tile_2_0 = Tile.getInstance(2, 0);
     public Tile tile_3_0 = Tile.getInstance(3, 0);
@@ -26,6 +26,7 @@ public class RealEstateManagerTest {
     public Tile tile_1_1 = Tile.getInstance(1, 1);
     public Tile tile_2_1 = Tile.getInstance(2, 1);
     public Tile tile_2_m1 = Tile.getInstance(2, -1);
+    public Tile tile_1_2 = Tile.getInstance(1, 2);
     public RealEstate realEstate;
     public RealEstate realEstate2;
     public Feature feature = new Feature();
@@ -216,6 +217,19 @@ public class RealEstateManagerTest {
     }
 
     @Test
+    public void smallCastleScore() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        table.placeFollower(anton, NORTH);
+        assertEquals("4 points for smallest finished castle", 4, anton.getCurrentPoints());
+    }
+
+    @Test
     public void completeRealEstateSmallRoad() {
         //assertEquals("No incomplete assets");
     }
@@ -262,6 +276,37 @@ public class RealEstateManagerTest {
 
         assertEquals("Anton has specific asset", expectedRealEstate, antonRealEstate);
         assertEquals("Andrey has no assets", false, manager.getPlayerToRealEstateSetMap().containsKey(andrey));
+
+    }
+
+    @Test
+    public void realEstateChangeOwner3vs1() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_1_2.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_0_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_0_1.turnRight(Rotation.DEG_90);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_2_1.turnRight(Rotation.DEG_270);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY4));
+
+
+        table.placeTile(tile_1_0);
+        table.placeFollower(andrey, SOUTH);
+        table.placeTile(tile_1_2);
+        table.placeFollower(anton, NORTH);
+        table.placeTile(tile_0_1);
+        table.placeFollower(anton, EAST);
+        table.placeTile(tile_2_1);
+        table.placeFollower(anton, WEST);
+        table.placeTile(tile_1_1);
+
+        assertEquals("Andrey has no assets", false, manager.getPlayerToRealEstateSetMap().containsKey(andrey));
+        assertEquals("Anton has assets", true, manager.getPlayerToRealEstateSetMap().containsKey(anton));
 
     }
 }

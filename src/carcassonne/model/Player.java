@@ -7,6 +7,7 @@ final class Player {
     private Color color;
     private int numberOfFollowers = 7;
     private int numberOfProperties;
+    private int currentPoints = 0;
 
     Player(String name, Color color) {
         this.color = color;
@@ -52,5 +53,9 @@ final class Player {
             return true;
         else
             return false;
+    }
+
+    public int getCurrentPoints() {
+        return currentPoints;
     }
 }

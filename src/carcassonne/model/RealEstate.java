@@ -252,6 +252,10 @@ public class RealEstate {
         return result;
     }
 
+    public boolean isFinished() {
+        return false;
+    }
+
     static class ImmutableRealEstate {
         private final RealEstate realEstate;
         private final Tile firstTile;

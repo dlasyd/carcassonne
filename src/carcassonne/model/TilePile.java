@@ -60,7 +60,9 @@ public class TilePile {
                 tile.addFeature(new Feature(), EEN, WWN);
                 tile.addFeature(new Feature(), EAST, WEST);
                 tile.addFeature(new Feature(), EES, WWS, SSE, SSW, SOUTH);
-
+                break;
+            case CITY4:
+                tile.addFeature(new Feature(), NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE,SSW, WEST, WWN, WWS);
                 break;
             default:
                 throw new RuntimeException("Not supported yet");

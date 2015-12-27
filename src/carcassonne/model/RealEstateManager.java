@@ -56,6 +56,34 @@ public class RealEstateManager {
             realEstate.getRealEstate().update(tile);
         }
         realEstateUnion();
+        finishedRealEstate();
+    }
+
+    /*
+     * If real estate is finished the following happens:
+     * 1) Real estate is removed from playerToRealEstateSetMap and realEstateMap
+     * 2) RE is added to playerToFinishedRealEstateSetMap
+     * 3) The number of points is counted
+     * 4) All owners current points increase by that number
+     * 5) Placed followers return to players hands
+     */
+    private void finishedRealEstate() {
+        /*
+         * Finished conditions:
+         * 1) Tiles around monastery
+         * 2) Road has 2 ends
+         * 3) Each tile of a castle has an end or a CITY4
+         */
+
+        //TODO implement all 3. Now only CITY logic without CITY4
+        Set<RealEstate.ImmutableRealEstate> allRealEstate = new HashSet<>(realEstateMap.keySet());
+        for (RealEstate.ImmutableRealEstate currentImmutableRE: allRealEstate) {
+            if (currentImmutableRE.getRealEstate().isFinished()) {
+                // remove it
+                // add current score
+            }
+        }
+
     }
 
     Map<RealEstate.ImmutableRealEstate, Set<Player>> getRealEstateMap() {
@@ -109,7 +137,7 @@ public class RealEstateManager {
 
             for (Player player: new HashSet<>(playerToRealEstateSetMap.keySet())) {
                 for (RealEstate.ImmutableRealEstate toRemove: duplicateRealEstate) {
-                    if (playerToRealEstateSetMap.get(player).contains(toRemove)) {
+                    if (playerToRealEstateSetMap.containsKey(player) && playerToRealEstateSetMap.get(player).contains(toRemove)) {
                         Set<RealEstate.ImmutableRealEstate> playersRealEstate = playerToRealEstateSetMap.get(player);
                         playersRealEstate.remove(toRemove);
 
