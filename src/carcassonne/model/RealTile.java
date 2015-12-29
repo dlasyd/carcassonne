@@ -1,9 +1,6 @@
 package carcassonne.model;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static carcassonne.model.TileDirections.*;
 
@@ -139,10 +136,11 @@ public class RealTile extends Tile {
         featureToTileDirections.put(feature, new HashSet<>(Arrays.asList(new TileDirections[]{direction})));
         propertyMap.put(direction, feature);
 
+        //TODO what is this? why?
         if (direction == TileDirections.CENTER) {
             propertyConnectionMap.put(direction, new HashSet<>(Arrays.asList( new TileDirections[]{TileDirections.CENTER})));
         } else {
-            propertyConnectionMap.put(direction, new HashSet<>(Arrays.asList( new TileDirections[]{TileDirections.END})));
+            propertyConnectionMap.put(direction, new HashSet<>(Collections.singletonList(direction)));
         }
     }
 
@@ -162,7 +160,7 @@ public class RealTile extends Tile {
      */
     private void checkIfDirectionIsNotOccupied(TileDirections... directions) {
         for (TileDirections direction: directions) {
-            if (propertyMap.containsKey(direction) && direction != TileDirections.END)
+            if (propertyMap.containsKey(direction))
                 throw new RuntimeException("Cannot rewrite objects of feature on tile");
         }
     }
@@ -173,7 +171,6 @@ public class RealTile extends Tile {
 
     public boolean isComplete() {
         Set keys = new HashSet(propertyMap.keySet());
-        keys.remove(TileDirections.END);
         switch (keys.size()) {
             case 12:
                 return !keys.contains(TileDirections.CENTER);
@@ -207,11 +204,13 @@ public class RealTile extends Tile {
         return follower.getPlayer();
     }
 
+    //TODO remove
     @Override
     boolean containsEND() {
-        return propertyMap.keySet().contains(END);
+        return false;
     }
 
+    //TODO remove
     @Override
     boolean isCompleteCity() {
         return propertyMap.keySet().equals(new HashSet<>(Arrays.asList(NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE,SSW, WEST, WWN, WWS)));
@@ -225,7 +224,6 @@ public class RealTile extends Tile {
     public TileDirections[] getUnoccupiedDirections() {
         Set<TileDirections> result = new HashSet<>();
         result.addAll(Arrays.asList(TileDirections.values()));
-        result.remove(TileDirections.END);
         result.remove(TileDirections.CENTER);
         result.removeAll(propertyMap.keySet());
         return result.toArray(new TileDirections[result.size()]);

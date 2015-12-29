@@ -629,8 +629,8 @@ public class RealEstateTest {
         table.placeFollower(new Player(), WEST);
 
         Map<Tile, Set<TileDirections>> expected = new HashMap();
-        expected.put(tile_1_0, new HashSet<>(Arrays.asList(END, EAST)));
-        expected.put(tile_2_0, new HashSet<>(Arrays.asList(END, WEST)));
+        expected.put(tile_1_0, new HashSet<>(Collections.singletonList(EAST)));
+        expected.put(tile_2_0, new HashSet<>(Collections.singletonList(WEST)));
 
         Map<Tile, Set<TileDirections>> tileToTileDirections = new HashMap();
 

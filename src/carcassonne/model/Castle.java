@@ -21,7 +21,6 @@ class Castle extends RealEstate{
         outer:
         for (Tile tile: tiles) {
             Set<TileDirections> directions = tilesAndFeatureTileDirections.get(tile);
-            directions.remove(TileDirections.END);
             for (TileDirections direction: directions) {
                 Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), direction);
                 if (!tilesAndFeatureTileDirections.containsKey(neighbour)) {

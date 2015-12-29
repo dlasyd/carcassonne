@@ -11,7 +11,7 @@ public enum TileDirections {
      * NNW = NORTH NORTH WEST
      * etc
      */
-    SOUTH, NORTH, EAST, WEST, END, WWN, NNW, NNE, EEN, CENTER, SSE, SSW, WWS, EES;
+    SOUTH, NORTH, EAST, WEST, WWN, NNW, NNE, EEN, CENTER, SSE, SSW, WWS, EES;
 
     public TileDirections getNeighbour() {
         switch (this) {
@@ -94,11 +94,10 @@ public enum TileDirections {
             case SSE:
             case WWS:
                 return congruentNNW.get((congruentNNW.indexOf(this) + numberOf90Rotations) % congruentNNW.size());
-            case END:
             case CENTER:
                 return this;
         }
         assert false;
-        return TileDirections.END;
+        return TileDirections.CENTER;
     }
 }

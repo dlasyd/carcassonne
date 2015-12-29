@@ -1,7 +1,6 @@
 package carcassonne.model;
 
 import static carcassonne.model.TileDirections.*;
-import static carcassonne.model.TileDirections.END;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -90,8 +90,6 @@ public class TileTest {
         tile.addFeature(new Feature(), TileDirections.NORTH);
         tile.addFeature(new Feature(), TileDirections.SOUTH);
 
-        assertTrue("Crossroad leads WEST to END",
-                    tile.getDestinations(TileDirections.WEST).contains(TileDirections.END));
         assertFalse("Crossroad does not connect EAST and WEST",
                 tile.getDestinations(TileDirections.WEST).contains(TileDirections.EAST));
     }
@@ -340,8 +338,8 @@ public class TileTest {
         feature1 = new Feature();
         feature2 = new Feature();
         feature3 = new Feature();
-        tile.addFeature(feature1, EAST, EEN, EES, END );
-        tile.addFeature(feature2, WEST, WWN, WWS, END);
+        tile.addFeature(feature1, EAST, EEN, EES);
+        tile.addFeature(feature2, WEST, WWN, WWS);
         tile.addFeature(feature3, tile.getUnoccupiedDirections());
         Set<Feature> expected = new HashSet<>(Arrays.asList(feature1, feature2, feature3));
         assertEquals("Tile features", expected, tile.getFeatures());
@@ -373,10 +371,10 @@ public class TileTest {
     public void rotateENDandCENTER() {
         Feature feature = new Feature();
         Tile tile = Tile.getInstance(0, 0);
-        tile.addFeature(feature, END,CENTER);
+        tile.addFeature(feature, CENTER);
         tile.placeFollower(new Player(), CENTER);
         tile.turnRight(Rotation.DEG_270);
-        Set<TileDirections> expected = new HashSet<>(Arrays.asList(END, CENTER));
+        Set<TileDirections> expected = new HashSet<>(Collections.singletonList(CENTER));
         assertEquals("TileDirection of rotating CENTER and END", expected, tile.getOccupiedFeatureDirections());
     }
 

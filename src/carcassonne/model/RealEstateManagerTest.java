@@ -247,7 +247,7 @@ public class RealEstateManagerTest {
 
         Set<RealEstate> expected = new HashSet<>();
         Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
-        expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(END, SOUTH, SSE, SSW )));
+        expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(SOUTH, SSE, SSW )));
         expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(SSW, SSE, SOUTH, EES, EEN, EAST)));
         expectedRealEstate.put(tile_0_1, new HashSet<>(Arrays.asList(SSW, SSE, SOUTH, EES, EEN, EAST)));
         expectedRealEstate.put(tile_1_1, new HashSet<>(Arrays.asList(NNE, NNW, NORTH, WWN, WWS, WEST, EEN, EES, EAST)));
