@@ -26,8 +26,6 @@ public abstract class Tile {
     abstract Feature getOccupiedFeature();
     abstract void returnFollower();
     abstract Player getFollowerOwner();
-    abstract boolean containsEND();
-    abstract boolean isCompleteCity();
 
     public static Tile getInstance() {
         return new RealTile();

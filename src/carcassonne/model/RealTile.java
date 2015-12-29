@@ -131,17 +131,7 @@ public class RealTile extends Tile {
     }
 
     public void addFeature(Feature feature, TileDirections direction) {
-        checkIfDirectionIsNotOccupied(direction);
-
-        featureToTileDirections.put(feature, new HashSet<>(Arrays.asList(new TileDirections[]{direction})));
-        propertyMap.put(direction, feature);
-
-        //TODO what is this? why?
-        if (direction == TileDirections.CENTER) {
-            propertyConnectionMap.put(direction, new HashSet<>(Arrays.asList( new TileDirections[]{TileDirections.CENTER})));
-        } else {
-            propertyConnectionMap.put(direction, new HashSet<>(Collections.singletonList(direction)));
-        }
+        addFeature(feature, new TileDirections[]{direction});
     }
 
     public void addFeature(Feature feature, TileDirections... directions) {
@@ -204,21 +194,9 @@ public class RealTile extends Tile {
         return follower.getPlayer();
     }
 
-    //TODO remove
-    @Override
-    boolean containsEND() {
-        return false;
-    }
-
-    //TODO remove
-    @Override
-    boolean isCompleteCity() {
-        return propertyMap.keySet().equals(new HashSet<>(Arrays.asList(NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE,SSW, WEST, WWN, WWS)));
-    }
-
     @Override
     /*
-     * returns unoccupied directions. END and CENTER are excluded from return because they are not needed in
+     * returns unoccupied directions. CENTER is excluded from return because they are not needed in
      * the context of use of the method (the method is created to be used in RealEstateTest)
      */
     public TileDirections[] getUnoccupiedDirections() {
