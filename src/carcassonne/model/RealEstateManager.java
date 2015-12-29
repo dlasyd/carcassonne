@@ -137,23 +137,14 @@ public class RealEstateManager {
             }
 
             assert (masterRealEstate != null);
-            duplicateRealEstate.remove(masterRealEstate);
 
             for (Player player: new HashSet<>(playerToRealEstateSetMap.keySet())) {
                 for (RealEstate.ImmutableRealEstate toRemove: duplicateRealEstate) {
-                    if (playerToRealEstateSetMap.containsKey(player) && playerToRealEstateSetMap.get(player).contains(toRemove)) {
-                        Set<RealEstate.ImmutableRealEstate> playersRealEstate = playerToRealEstateSetMap.get(player);
-                        playersRealEstate.remove(toRemove);
-
-                        //TODO only add if a player owns it
-                        if (ownersOfDuplicateRealEstate.contains(player))
-                            playersRealEstate.add(masterRealEstate);
-                        if (playersRealEstate.isEmpty())
-                            playerToRealEstateSetMap.remove(player);
-                    }
+                    Util.removeSetElement(playerToRealEstateSetMap, player, toRemove);
                 }
             }
-
+            for (Player player: ownersOfDuplicateRealEstate)
+                Util.addSetElement(playerToRealEstateSetMap, player, masterRealEstate);
         }
 
 

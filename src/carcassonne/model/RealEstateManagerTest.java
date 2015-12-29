@@ -236,9 +236,6 @@ public class RealEstateManagerTest {
         //assertEquals("No incomplete assets");
     }
 
-    /*
-     * TODO use current score to finish this test
-     */
     @Test
     public void realEstateChangeOwner2to1() {
         Table table = new Table();
