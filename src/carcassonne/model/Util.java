@@ -29,4 +29,14 @@ public class Util {
                 map.remove(key);
         }
     }
+
+    public static <T> T any(Set<T> set) {
+        if (set.isEmpty())
+            throw new RuntimeException("Cannot return element of empty set");
+        for (T t: set) {
+            return t;
+        }
+        assert false;
+        return null;
+    }
 }

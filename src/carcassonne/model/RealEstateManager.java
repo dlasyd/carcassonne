@@ -99,56 +99,60 @@ public class RealEstateManager {
     }
 
     private void realEstateUnion() {
-        ArrayList<RealEstate.ImmutableRealEstate> allRealEstateObjects;
-        HashSet<RealEstate.ImmutableRealEstate> duplicateRealEstate;
-        allRealEstateObjects = new ArrayList<>(realEstateMap.keySet());
-        for (int i = 0; i < MAXIMUM_UNION_PER_TILE; i++) {
-            duplicateRealEstate = new HashSet<>();
+        Set<RealEstate.ImmutableRealEstate> allRealEstateObjects = new HashSet<>(realEstateMap.keySet());
 
-            if (!(allRealEstateObjects.size() > i))
-                    break;
+        if (allRealEstateObjects.isEmpty())
+            return;
 
-            RealEstate.ImmutableRealEstate checkedRealEstate = allRealEstateObjects.get(i);
+        Set<Set<RealEstate.ImmutableRealEstate>> duplicatesSets = findDuplicatesInSet(allRealEstateObjects);
 
-            for (RealEstate.ImmutableRealEstate realEstateToCompare: allRealEstateObjects) {
-                if (checkedRealEstate.getRealEstate().equals(realEstateToCompare.getRealEstate())) {
-                    duplicateRealEstate.add(checkedRealEstate);
-                    duplicateRealEstate.add(realEstateToCompare);
-                }
-            }
-
-            // TODO create function to get any item of HashSet and use it
-            Set<Player> ownersOfDuplicateRealEstate = new ArrayList<>(duplicateRealEstate)
-                    .get(0).getRealEstate().getLegitimateOwners();
-
-            boolean added = false;
-            /*
-             * masterRealEstate - the one that will replace copies in playerToRealEstateSetMap
-             */
-            RealEstate.ImmutableRealEstate masterRealEstate = null;
-            for (RealEstate.ImmutableRealEstate sameRealEstate: duplicateRealEstate) {
-                if (added == false) {
-                    realEstateMap.put(sameRealEstate, ownersOfDuplicateRealEstate);
-                    masterRealEstate = sameRealEstate;
-                    added = true;
-                } else {
-                    realEstateMap.remove(sameRealEstate);
-                }
-            }
-
-            assert (masterRealEstate != null);
-
-            for (Player player: new HashSet<>(playerToRealEstateSetMap.keySet())) {
-                for (RealEstate.ImmutableRealEstate toRemove: duplicateRealEstate) {
-                    Util.removeSetElement(playerToRealEstateSetMap, player, toRemove);
-                }
-            }
-            for (Player player: ownersOfDuplicateRealEstate)
-                Util.addSetElement(playerToRealEstateSetMap, player, masterRealEstate);
+        for (Set<RealEstate.ImmutableRealEstate> set: duplicatesSets) {
+            mergeRealEstate(set);
         }
 
-
     }
+
+    private void mergeRealEstate(Set<RealEstate.ImmutableRealEstate> duplicateRealEstate) {
+        Set<Player> ownersOfDuplicateRealEstate = Util.any(duplicateRealEstate).getRealEstate().getLegitimateOwners();
+        RealEstate.ImmutableRealEstate masterRealEstate = Util.any(duplicateRealEstate).getRealEstate().getImmutableRealEstate();
+
+        realEstateMap.keySet().removeAll(duplicateRealEstate);
+        realEstateMap.put(masterRealEstate, ownersOfDuplicateRealEstate);
+
+        for (Player player: new HashSet<>(playerToRealEstateSetMap.keySet())) {
+            for (RealEstate.ImmutableRealEstate toRemove: duplicateRealEstate) {
+                Util.removeSetElement(playerToRealEstateSetMap, player, toRemove);
+            }
+        }
+
+        for (Player player: ownersOfDuplicateRealEstate)
+            Util.addSetElement(playerToRealEstateSetMap, player, masterRealEstate);
+    }
+
+    private Set<Set<RealEstate.ImmutableRealEstate>> findDuplicatesInSet(Set<RealEstate.ImmutableRealEstate> data) {
+        Set<Set<RealEstate.ImmutableRealEstate>> result = new HashSet<>();
+        Set<RealEstate.ImmutableRealEstate> duplicatesFound = new HashSet<>();
+        for (RealEstate.ImmutableRealEstate comparedRealEstate: data) {
+            for (RealEstate.ImmutableRealEstate someRealEstate: data) {
+                if (comparedRealEstate.getRealEstate().equals(someRealEstate.getRealEstate()))
+                    duplicatesFound.add(someRealEstate);
+            }
+            if (duplicatesFound.size() > 1)
+                break;
+            else
+                duplicatesFound.clear();
+        }
+        if (duplicatesFound.isEmpty()) {
+            return result;
+        } else {
+            Set<RealEstate.ImmutableRealEstate> newData = new HashSet<>(data);
+            newData.removeAll(duplicatesFound);
+            result.add(duplicatesFound);
+            result.addAll(findDuplicatesInSet(newData));
+            return result;
+        }
+    }
+
 
     private void removeDuplicateRealEstate(Set<RealEstate.ImmutableRealEstate> immutableRealEstateSet) {
 

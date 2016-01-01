@@ -206,6 +206,7 @@ public class RealEstateManagerTest {
         table.placeTile(tile_2_0);      // union tile
 
         assertEquals ("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
+        assertEquals ("Anton has 2 real estates", 2, manager.getAssets(anton).size());
     }
 
 
@@ -289,7 +290,7 @@ public class RealEstateManagerTest {
         tile_1_2.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
         tile_0_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
         tile_0_1.turnRight(Rotation.DEG_90);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY4));
         tile_2_1.turnRight(Rotation.DEG_270);
         tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY4));
 
