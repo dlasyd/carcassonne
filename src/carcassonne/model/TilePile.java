@@ -2,6 +2,7 @@ package carcassonne.model;
 
 import java.util.ArrayList;
 
+import static carcassonne.model.FeatureType.*;
 import static carcassonne.model.TileDirections.*;
 
 public class TilePile {
@@ -12,56 +13,56 @@ public class TilePile {
         Tile tile = Tile.getInstance();
         switch (tileName) {
             case CITY2WE:
-                tile.addFeature(new Feature(), WWN, WEST, WWS, EAST, EEN, EES);
-                tile.addFeature(new Feature(), NNW, NORTH, NNE);
-                tile.addFeature(new Feature(), SSW, SOUTH, SSE);
+                tile.addFeature(Feature.createFeature(CITY), WWN, WEST, WWS, EAST, EEN, EES);
+                tile.addFeature(Feature.createFeature(LAND), NNW, NORTH, NNE);
+                tile.addFeature(Feature.createFeature(LAND), SSW, SOUTH, SSE);
                 break;
             case CITY2NW:
-                tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
-                tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+                tile.addFeature(Feature.createFeature(CITY), NNW, NNE, NORTH, WWN, WWS, WEST);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             case CITY2NWR:
-                tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
-                tile.addFeature(new Feature(), EAST, SOUTH);
-                tile.addFeature(new Feature(), SSW, EEN);
-                tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+                tile.addFeature(Feature.createFeature(CITY), NNW, NNE, NORTH, WWN, WWS, WEST);
+                tile.addFeature(Feature.createFeature(ROAD), EAST, SOUTH);
+                tile.addFeature(Feature.createFeature(LAND), SSW, EEN);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             case ROAD4:
-                tile.addFeature(new Feature(), EAST);
-                tile.addFeature(new Feature(), WEST);
-                tile.addFeature(new Feature(), SOUTH);
-                tile.addFeature(new Feature(), NORTH);
-                tile.addFeature(new Feature(), WWN, NNW);
-                tile.addFeature(new Feature(), NNE, EEN);
-                tile.addFeature(new Feature(), WWS, SSW);
-                tile.addFeature(new Feature(), EES, SSE);
+                tile.addFeature(Feature.createFeature(ROAD), EAST);
+                tile.addFeature(Feature.createFeature(ROAD), WEST);
+                tile.addFeature(Feature.createFeature(ROAD), SOUTH);
+                tile.addFeature(Feature.createFeature(ROAD), NORTH);
+                tile.addFeature(Feature.createFeature(LAND), WWN, NNW);
+                tile.addFeature(Feature.createFeature(LAND), NNE, EEN);
+                tile.addFeature(Feature.createFeature(LAND), WWS, SSW);
+                tile.addFeature(Feature.createFeature(LAND), EES, SSE);
                 break;
             case CITY1:
-                tile.addFeature(new Feature(), NNW, NORTH, NNE);
-                tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+                tile.addFeature(Feature.createFeature(CITY), NNW, NORTH, NNE);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             case ROAD2NS:
-                tile.addFeature(new Feature(), WEST, WWN, WWS, SSW, NNW);
-                tile.addFeature(new Feature(), NORTH, SOUTH);
-                tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+                tile.addFeature(Feature.createFeature(LAND), WEST, WWN, WWS, SSW, NNW);
+                tile.addFeature(Feature.createFeature(ROAD), NORTH, SOUTH);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             case ROAD2SW:
-                tile.addFeature(new Feature(), SOUTH, WEST);
-                tile.addFeature(new Feature(), WWS, SSW);
-                tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+                tile.addFeature(Feature.createFeature(ROAD), SOUTH, WEST);
+                tile.addFeature(Feature.createFeature(LAND), WWS, SSW);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             case CITY3:
-                tile.addFeature(new Feature(), SOUTH, SSW, SSE);
-                tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
+                tile.addFeature(Feature.createFeature(LAND), SOUTH, SSW, SSE);
+                tile.addFeature(Feature.createFeature(CITY), tile.getUnoccupiedDirections());
                 break;
             case CITY1RWE:
-                tile.addFeature(new Feature(), NORTH, NNW, NNE);
-                tile.addFeature(new Feature(), EEN, WWN);
-                tile.addFeature(new Feature(), EAST, WEST);
-                tile.addFeature(new Feature(), EES, WWS, SSE, SSW, SOUTH);
+                tile.addFeature(Feature.createFeature(CITY), NORTH, NNW, NNE);
+                tile.addFeature(Feature.createFeature(LAND), EEN, WWN);
+                tile.addFeature(Feature.createFeature(ROAD), EAST, WEST);
+                tile.addFeature(Feature.createFeature(LAND), EES, WWS, SSE, SSW, SOUTH);
                 break;
             case CITY4:
-                tile.addFeature(new Feature(), NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE,SSW, WEST, WWN, WWS);
+                tile.addFeature(Feature.createFeature(CITY), NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE,SSW, WEST, WWN, WWS);
                 break;
             default:
                 throw new RuntimeException("Not supported yet");

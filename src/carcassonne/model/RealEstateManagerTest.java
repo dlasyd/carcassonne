@@ -3,7 +3,6 @@ package carcassonne.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.util.*;
 
 import static carcassonne.model.TileDirections.*;
@@ -29,7 +28,7 @@ public class RealEstateManagerTest {
     public Tile tile_1_2 = Tile.getInstance(1, 2);
     public RealEstate realEstate;
     public RealEstate realEstate2;
-    public Feature feature = new Feature();
+    public Feature feature = Feature.createFeature(FeatureType.CITY);
     public Table table = new Table();
     public RealEstateManager manager = new RealEstateManager(table);
 

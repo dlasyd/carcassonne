@@ -70,14 +70,14 @@ public class RealEstateTest {
     public void addTileIncompleteThenRuntimeException() {
         exception.expect(RuntimeException.class);
         Tile tile = Tile.getInstance(1 ,1);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
 
-        tile.addFeature(new Feature(), TileDirections.CENTER);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
-        tile.addFeature(new Feature(), TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW);
-        tile.addFeature(new Feature(), TileDirections.EES, TileDirections.SSE);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.CENTER);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NNE, TileDirections.EEN);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWS, TileDirections.SSW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EES, TileDirections.SSE);
         realEstate.addTile(tile);
     }
 
@@ -660,5 +660,28 @@ public class RealEstateTest {
             tileToTileDirections = realEstate.getRealEstate().getTilesAndFeatureTileDirections();
         }
         assertEquals ("Tile consist of correct tileDirections", expected, tileToTileDirections);
+    }
+
+    @Test
+    public void roadIsFinishedWhenLoop() {
+
+    }
+
+    @Test
+    public void roadIsFinishedWhenTwoEnds() {
+        Player anton = new Player();
+
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        table.placeFollower(anton, WEST);
+
+        assertEquals ("Player has no unfinished real estate", 0, manager.getAssets(anton).size());
     }
 }

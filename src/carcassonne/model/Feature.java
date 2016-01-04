@@ -4,9 +4,16 @@ package carcassonne.model;
  * Created by Andrey on 02/12/15.
  * Features of tile are roads, cities, land and cloisters
  */
-class Feature {
+public class Feature {
+    Feature() {
+    }
+
     private boolean followerPlaced = false;
     private Follower follower;
+
+    static Feature createFeature(FeatureType type) {
+        return new Feature();
+    }
 
     boolean isFollowerPlaced() {
         return follower == null ? false : true;

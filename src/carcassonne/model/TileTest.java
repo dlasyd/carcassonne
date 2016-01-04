@@ -70,13 +70,13 @@ public class TileTest {
 
     @Test
     public void ifFollowerPlacedThenNoFollowersFalse() {
-        tile.placeFollower(player, new Feature());
+        tile.placeFollower(player, Feature.createFeature(FeatureType.CITY));
         assertEquals("Follower is placed on tile", false, tile.isNoFollower());
     }
 
     @Test
     public void ifHorizontalRoadTileThenRoadConnectsEastAndWest() {
-        tile.addFeature(new Feature(), TileDirections.EAST, TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EAST, TileDirections.WEST);
         assertTrue("Horizontal road is connected west to east",
                 tile.getDestinations(TileDirections.WEST).contains(TileDirections.EAST));
         assertTrue("Horizontal road is connected east to west",
@@ -85,10 +85,10 @@ public class TileTest {
 
     @Test
     public void crossroadsIsNodConnecting() {
-        tile.addFeature(new Feature(), TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
 
         assertFalse("Crossroad does not connect EAST and WEST",
                 tile.getDestinations(TileDirections.WEST).contains(TileDirections.EAST));
@@ -99,11 +99,11 @@ public class TileTest {
         /*
          * The road
          */
-        tile.addFeature(new Feature(), TileDirections.EAST, TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EAST, TileDirections.WEST);
         /*
          * The land
          */
-        tile.addFeature(new Feature(),TileDirections.WWN, TileDirections.NNW, TileDirections.NNE, TileDirections.EEN);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY),TileDirections.WWN, TileDirections.NNW, TileDirections.NNE, TileDirections.EEN);
 
         assertTrue("Land connects WWN and EEN",
                 tile.getDestinations(TileDirections.WWN).contains(TileDirections.EEN));
@@ -112,13 +112,13 @@ public class TileTest {
     @Test
     public void testCloister() {
         assertFalse("The tile doesn't have a cloister on it", tile.hasCloister());
-        tile.addFeature(new Feature(), TileDirections.CENTER);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.CENTER);
         assertTrue("The tile has a cloister on it", tile.hasCloister());
     }
 
     @Test
     public void cloisterShouldNotConnectAnything() {
-        tile.addFeature(new Feature(), TileDirections.CENTER);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.CENTER);
         assertEquals("Cloister connects itself to one TileDirection", 1, tile.getDestinations(TileDirections.CENTER).size());
         assertTrue("Cloister connects itself to itself",
                 tile.getDestinations(TileDirections.CENTER).contains(TileDirections.CENTER));
@@ -131,56 +131,56 @@ public class TileTest {
 
     @Test
     public void completeTileNoCloisterThenFalse() {
-        tile.addFeature(new Feature(), TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
-        tile.addFeature(new Feature(), TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW);
-        tile.addFeature(new Feature(), TileDirections.EES, TileDirections.SSE);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NNE, TileDirections.EEN);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWS, TileDirections.SSW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EES, TileDirections.SSE);
 
         assertTrue("Tile is complete", tile.isComplete());
     }
 
     @Test
     public void completeTileThenTrue() {
-        tile.addFeature(new Feature(), TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.CENTER);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
-        tile.addFeature(new Feature(), TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW);
-        tile.addFeature(new Feature(), TileDirections.EES, TileDirections.SSE);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.CENTER);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NNE, TileDirections.EEN);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWS, TileDirections.SSW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EES, TileDirections.SSE);
 
         assertTrue("Tile is complete", tile.isComplete());
     }
 
     @Test
     public void incompleteTileNoThenFalse() {
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.CENTER);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
-        tile.addFeature(new Feature(), TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW);
-        tile.addFeature(new Feature(), TileDirections.EES, TileDirections.SSE);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.CENTER);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NNE, TileDirections.EEN);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWS, TileDirections.SSW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EES, TileDirections.SSE);
 
         assertFalse("Tile is incomplete", tile.isComplete());
     }
 
     @Test
     public void incompleteTileNoCloisterThenFalse() {
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
-        tile.addFeature(new Feature(), TileDirections.NNE, TileDirections.EEN);
-        tile.addFeature(new Feature(), TileDirections.WWS, TileDirections.SSW);
-        tile.addFeature(new Feature(), TileDirections.EES, TileDirections.SSE);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NNE, TileDirections.EEN);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWS, TileDirections.SSW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EES, TileDirections.SSE);
 
         assertFalse("Tile is incomplete", tile.isComplete());
     }
@@ -188,42 +188,42 @@ public class TileTest {
     @Test
     public void propertyWithTileDirectionExistsWhenAddingThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
     }
 
     @Test
     public void propertyWithTileDirectionExistsLongFunctionSameWhenAddingThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        tile.addFeature(new Feature(), TileDirections.WEST, TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST, TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST, TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST, TileDirections.EAST);
     }
 
     @Test
     public void propertyWithTileDirectionExistsLongFunctionDifferentWhenAddingThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        tile.addFeature(new Feature(), TileDirections.WEST, TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST, TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST, TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST, TileDirections.NORTH);
     }
 
     @Test
     public void propertyWithTileDirectionExistsLongFunctionDifferentFunctionWhenAddingThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        tile.addFeature(new Feature(), TileDirections.WEST, TileDirections.EAST);
-        tile.addFeature(new Feature(), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST, TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
     }
 
     @Test
     public void propertyWithTileDirectionExistsLongFunctionDifferentFunction2WhenAddingThenRuntimeException() {
         exception.expect(RuntimeException.class);
-        tile.addFeature(new Feature(), TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.WEST, TileDirections.EAST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WEST, TileDirections.EAST);
     }
 
     @Test
     public void getPropertiesReturnsProperties() {
         HashSet<Feature> expected = new HashSet<>();
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
          /*
          * The road
          */
@@ -232,7 +232,7 @@ public class TileTest {
         /*
          * The land
          */
-        feature = new Feature();
+        feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WWN, TileDirections.NNW, TileDirections.NNE, TileDirections.EEN);
         expected.add(feature);
 
@@ -249,11 +249,11 @@ public class TileTest {
 
     @Test
     public void followerIsPlacedOnASpecificProperty() {
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
         tile.placeFollower(player, feature);
         assertEquals("Feature object that follower is placed on", feature, tile.getOccupiedFeature());
     }
@@ -264,9 +264,9 @@ public class TileTest {
      * realization: players follower counter changes. Follower objects only exist when they are placed on tile
      */
     public void returnFollowerReturnsFollowerToThePlayer() {
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
         tile.placeFollower(player, feature);
         assertEquals("Number of followers a player has", 6, player.getNumberOfFollowers());
         assertFalse("Tile has a follower", tile.isNoFollower());
@@ -284,11 +284,11 @@ public class TileTest {
 
     @Test
     public void getOccupiedFeature() {
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WEST);
-        tile.addFeature(new Feature(), TileDirections.SOUTH);
-        tile.addFeature(new Feature(), TileDirections.NORTH);
-        tile.addFeature(new Feature(), TileDirections.WWN, TileDirections.NNW);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
         tile.placeFollower(player, feature);
         HashSet<TileDirections> directionsSet = new HashSet<>();
         directionsSet.add(TileDirections.WEST);
@@ -304,7 +304,7 @@ public class TileTest {
     @Test
     public void placeFollowerOnDirectionCorrectTileDirection() {
         assertTrue("Tile has no followers", tile.isNoFollower());
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WEST);
         tile.placeFollower(new Player(), TileDirections.WEST);
         assertFalse("Tile has a follower", tile.isNoFollower());
@@ -316,7 +316,7 @@ public class TileTest {
 
     @Test
     public void getUnoccupiedDirections() {
-        tile.addFeature(new Feature(), TileDirections.EAST, TileDirections.NNW, TileDirections.SSE, TileDirections.EEN);
+        tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.EAST, TileDirections.NNW, TileDirections.SSE, TileDirections.EEN);
         Set<TileDirections> expected = new HashSet<>();
         expected.add(TileDirections.NORTH);
         expected.add(TileDirections.NNE);
@@ -335,9 +335,9 @@ public class TileTest {
     @Test
     public void usingEndDirectionMoreThenOnce() {
         Feature feature1, feature2, feature3;
-        feature1 = new Feature();
-        feature2 = new Feature();
-        feature3 = new Feature();
+        feature1 = Feature.createFeature(FeatureType.CITY);
+        feature2 = Feature.createFeature(FeatureType.CITY);
+        feature3 = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature1, EAST, EEN, EES);
         tile.addFeature(feature2, WEST, WWN, WWS);
         tile.addFeature(feature3, tile.getUnoccupiedDirections());
@@ -347,7 +347,7 @@ public class TileTest {
 
     @Test
     public void rotationTestFeatureToTileDirections() {
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
         tile.placeFollower(new Player(), EAST);
@@ -358,7 +358,7 @@ public class TileTest {
 
     @Test
     public void rotate270Degrees() {
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
         tile.placeFollower(new Player(), EAST);
@@ -369,7 +369,7 @@ public class TileTest {
 
     @Test
     public void rotateENDandCENTER() {
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, CENTER);
         tile.placeFollower(new Player(), CENTER);
@@ -380,7 +380,7 @@ public class TileTest {
 
     @Test
     public void rotationTestFeatureGetDestinations() {
-        Feature feature = new Feature();
+        Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
         tile.turnRight(Rotation.DEG_90);
@@ -391,9 +391,9 @@ public class TileTest {
     @Test
     public void rotateRoadTurn() {
         Feature feature1, feature2, feature3;
-        feature1 = new Feature();
-        feature2 = new Feature();
-        feature3 = new Feature();
+        feature1 = Feature.createFeature(FeatureType.CITY);
+        feature2 = Feature.createFeature(FeatureType.CITY);
+        feature3 = Feature.createFeature(FeatureType.CITY);
         Tile roadTile = Tile.getInstance(1, 0);
         roadTile.addFeature(feature1, SOUTH, EAST);
         roadTile.addFeature(feature2, EES, SSE);

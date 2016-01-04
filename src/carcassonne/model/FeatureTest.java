@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  * Created by Andrey on 03/12/15.
  */
 public class FeatureTest {
-    Feature feature = new Feature();
+    Feature feature = Feature.createFeature(FeatureType.CITY);
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
