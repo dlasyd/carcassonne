@@ -298,13 +298,6 @@ public class RealEstateManagerTest {
     }
 
     @Test
-    public void scoreByLength() {
-        Set<Integer> expected = new HashSet<>(Collections.singletonList(3));
-        Set<Integer> antonPointsSet = null;
-        assertEquals("Player real estate worth 3 points", expected, antonPointsSet);
-    }
-
-    @Test
     public void smallCastleScore() {
         Table table = new Table();
         RealEstateManager manager = new RealEstateManager(table);
@@ -346,6 +339,16 @@ public class RealEstateManagerTest {
 
     @Test
     public void completeRealEstateSmallRoad() {
-        //assertEquals("No incomplete assets");
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+
+        table.placeTile(tile_1_0);
+        table.placeTile(tile_2_0);
+        table.placeFollower(anton, WEST);
+        assertEquals ("Finished road that consists of two tiles is 2 points", 2, anton.getCurrentPoints());
     }
 }
