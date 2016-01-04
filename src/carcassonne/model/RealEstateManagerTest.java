@@ -82,7 +82,6 @@ public class RealEstateManagerTest {
         assertEquals("Players assets set", expected, resultingRETiles);
     }
 
-
     @Test
     public void assetUnionThenOnlyOneRealEstate() {
         Table table = new Table();
@@ -209,34 +208,6 @@ public class RealEstateManagerTest {
         assertEquals ("Anton has 2 real estates", 2, manager.getAssets(anton).size());
     }
 
-
-    @Test
-    public void scoreByLength() {
-        Set<Integer> expected = new HashSet<>(Collections.singletonList(3));
-        Set<Integer> antonPointsSet = null;
-        assertEquals("Player real estate worth 3 points", expected, antonPointsSet);
-    }
-
-    @Test
-    public void smallCastleScore() {
-        Table table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        table.placeTile(tile_1_0);
-        table.placeFollower(anton, SOUTH);
-        table.placeTile(tile_1_1);
-        assertEquals("4 points for smallest finished castle", 4, anton.getCurrentPoints());
-    }
-
-    @Test
-    public void completeRealEstateSmallRoad() {
-        //assertEquals("No incomplete assets");
-    }
-
     @Test
     public void realEstateChangeOwner2to1() {
         Table table = new Table();
@@ -308,5 +279,57 @@ public class RealEstateManagerTest {
         assertEquals("Andrey has no assets", false, manager.getPlayerToRealEstateSetMap().containsKey(andrey));
         assertEquals("Anton has assets", true, manager.getPlayerToRealEstateSetMap().containsKey(anton));
 
+    }
+
+    @Test
+    public void scoreByLength() {
+        Set<Integer> expected = new HashSet<>(Collections.singletonList(3));
+        Set<Integer> antonPointsSet = null;
+        assertEquals("Player real estate worth 3 points", expected, antonPointsSet);
+    }
+
+    @Test
+    public void smallCastleScore() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        table.placeTile(tile_1_0);
+        table.placeFollower(anton, SOUTH);
+        table.placeTile(tile_1_1);
+        assertEquals("4 points for smallest finished castle", 4, anton.getCurrentPoints());
+    }
+
+    @Test
+    public void diamondCastleScore() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
+        tile_1_1.turnRight(Rotation.DEG_90);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
+        tile_2_0.turnRight(Rotation.DEG_270);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
+        table.placeTile(tile_1_0);
+        table.placeFollower(anton, SOUTH);
+        table.placeTile(tile_1_1);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_2_1);
+        assertEquals("8 points for smallest finished castle", 8, anton.getCurrentPoints());
+    }
+
+
+
+
+
+    @Test
+    public void completeRealEstateSmallRoad() {
+        //assertEquals("No incomplete assets");
     }
 }

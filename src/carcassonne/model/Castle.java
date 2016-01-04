@@ -16,19 +16,31 @@ class Castle extends RealEstate{
 
     @Override
     public boolean isFinished() {
-        boolean finished = true;
-        Set<Tile> tiles = super.getTileSet();
-        outer:
-        for (Tile tile: tiles) {
-            Set<TileDirections> directions = tilesAndFeatureTileDirections.get(tile);
-            for (TileDirections direction: directions) {
-                Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), direction);
-                if (!tilesAndFeatureTileDirections.containsKey(neighbour)) {
-                    finished = false;
-                    break outer;
+        if (super.finished == false) {
+            boolean finished = true;
+            Set<Tile> tiles = super.getTileSet();
+            outer:
+            for (Tile tile : tiles) {
+                Set<TileDirections> directions = tilesAndFeatureTileDirections.get(tile);
+                for (TileDirections direction : directions) {
+                    Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), direction);
+                    if (!tilesAndFeatureTileDirections.containsKey(neighbour)) {
+                        finished = false;
+                        break outer;
+                    }
                 }
             }
+            super.finished = finished;
+            return finished;
+        } else {
+            return true;
         }
-        return finished;
+    }
+
+    int getPoints() {
+        if (isFinished())
+            return tilesAndFeatureTileDirections.size() * 2;
+        else
+            return tilesAndFeatureTileDirections.size();
     }
 }

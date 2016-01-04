@@ -173,6 +173,28 @@ public class RealEstateTest {
     }
 
     @Test
+    public void followerOnOccupiedRealEstateThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
+        tile_2_0.turnRight(Rotation.DEG_90);
+
+        table.placeTile(tile_1_0);
+        table.placeFollower(new Player(), EAST);
+        table.placeTile(tile_2_0);
+        table.placeTile(tile_3_0);
+        table.placeFollower(new Player(), WEST);
+
+    }
+
+
+    @Test
     public void addThirdTileToPropertyFollowerOnFirst() {
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);

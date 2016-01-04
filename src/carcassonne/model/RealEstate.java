@@ -10,6 +10,7 @@ public abstract class RealEstate {
     final Map<Tile, Set<TileDirections>> tilesAndFeatureTileDirections = new HashMap<>();
     final Table table;
     private final ImmutableRealEstate immutableRealEstate;
+    boolean finished = false;
 
     public RealEstate(Tile tile, Table table) {
         immutableRealEstate = new ImmutableRealEstate(this, tile);
@@ -258,7 +259,7 @@ public abstract class RealEstate {
         return result;
     }
 
-    public int getPoints() {
+    int getPoints() {
         return 4;
     }
 
