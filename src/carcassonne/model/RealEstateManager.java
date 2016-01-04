@@ -170,4 +170,13 @@ public class RealEstateManager {
         return playerToRealEstateSetMap;
     }
 
+    public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
+        boolean result = false;
+        for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
+            result = iRealEstate.getRealEstate().contains(tilePlacedLast, direction);
+            if (result == true)
+                break;
+        }
+        return result;
+    }
 }

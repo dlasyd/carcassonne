@@ -83,6 +83,22 @@ public class RealEstateManagerTest {
     }
 
     @Test
+    public void isPartOfRealEstate() {
+        Table table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0.turnRight(Rotation.DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+
+        table.placeTile(tile_1_0);
+        table.placeFollower(anton, EAST);
+        table.placeTile(tile_2_0);
+        assertTrue("Part of real estate", manager.isPartOfRealEstate(tile_2_0, WEST));
+        assertFalse("Part of real estate", manager.isPartOfRealEstate(tile_2_0, EAST));
+    }
+
+    @Test
     public void assetUnionThenOnlyOneRealEstate() {
         Table table = new Table();
         RealEstateManager manager = new RealEstateManager(table);

@@ -100,6 +100,9 @@ public class Table {
     }
 
     public void placeFollower(Player player, TileDirections direction) {
+        // if tilePlacedLast direction is not part of existing real estate
+        if (realEstateManager.isPartOfRealEstate(tilePlacedLast, direction))
+            throw new RuntimeException("Cannot place follower on existing real estate");
         tilePlacedLast.placeFollower(player, direction);
         realEstateManager.createAsset(player, tilePlacedLast);
     }

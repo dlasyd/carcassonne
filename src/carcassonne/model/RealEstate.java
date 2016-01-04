@@ -94,19 +94,12 @@ public abstract class RealEstate {
      * Method uses recursion
      *
      * loopBreakingTile is a tile that is used to create RealEstate(in constructor)
+     * example of importance: looped road
      */
     private Map<Tile, Set<TileDirections>> findAdjacentTiles(Tile tile, TileDirections directionWithFeature, Tile loopBreakingTile) {
         Map<Tile, Set<TileDirections>> result = new HashMap<>();
 
         if (tile == loopBreakingTile) {
-            return result;
-        }
-
-        /*
-         * Set of all Directions within tile that a Feature occupies
-         */
-        /*if(currentTileFeatureDirections.contains(TileDirections.END)) {
-            result.put(tile, new HashSet<>(Collections.singletonList(TileDirections.END)));
             return result;
         }
 
@@ -261,6 +254,18 @@ public abstract class RealEstate {
 
     int getPoints() {
         return 4;
+    }
+
+    public boolean contains(Tile tilePlacedLast, TileDirections direction) {
+        boolean result = false;
+        for (Tile tile: tilesAndFeatureTileDirections.keySet()) {
+            if (tile.equals(tilePlacedLast)) {
+                result = tilesAndFeatureTileDirections.get(tile).contains(direction);
+            }
+            if (result == true)
+                break;
+        }
+        return result;
     }
 
     static class ImmutableRealEstate {
