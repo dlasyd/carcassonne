@@ -15,6 +15,12 @@ public class Feature {
         switch (type) {
             case ROAD:
                 return new RoadPiece();
+            case CLOISTER:
+                return new CloisterPiece();
+            case LAND:
+                return new LandPiece();
+            case CITY:
+                return new CityPiece();
         }
         return new Feature();
     }

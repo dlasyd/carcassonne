@@ -27,6 +27,9 @@ public abstract class RealEstate {
             return new Road(tile, table);
         if (tile.getOccupiedFeature() instanceof  CloisterPiece)
             return new Cloister(tile, table);
+        if (tile.getOccupiedFeature() instanceof  LandPiece)
+            return new Land (tile, table);
+
         return new Castle(tile, table);
     }
 

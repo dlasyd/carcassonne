@@ -12,6 +12,10 @@ class Cloister extends RealEstate {
     }
 
     boolean isFinished() {
-        return false;
+        return true;
+    }
+
+    int getPoints() {
+        return 9;
     }
 }
