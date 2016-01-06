@@ -20,9 +20,13 @@ public abstract class RealEstate {
         addTile(tile);
     }
 
-    public abstract boolean isFinished();
+    abstract boolean isFinished();
 
     static RealEstate getInstance(Tile tile, Table table) {
+        if (tile.getOccupiedFeature() instanceof RoadPiece)
+            return new Road(tile, table);
+        if (tile.getOccupiedFeature() instanceof  CloisterPiece)
+            return new Cloister(tile, table);
         return new Castle(tile, table);
     }
 

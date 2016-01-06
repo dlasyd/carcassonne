@@ -5,7 +5,9 @@ import org.junit.Test;
 
 import java.util.*;
 
+import static carcassonne.model.Rotation.*;
 import static carcassonne.model.TileDirections.*;
+import static carcassonne.model.TileName.*;
 import static org.junit.Assert.*;
 
 /**
@@ -35,10 +37,11 @@ public class RealEstateManagerTest {
     @Before
     public void setUp() {
         table = new Table();
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.placeFollower(anton, EAST);
         realEstate = RealEstate.getInstance(tile_1_0, table);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        table.setRealEstateManager(manager);
         //tile_2_0.placeFollower(anton, EAST);
         //realEstate2 = new RealEstate(tile_2_0, table);
     }
@@ -64,9 +67,9 @@ public class RealEstateManagerTest {
         Table table = new Table();
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0.turnRight(DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
 
         table.placeTile(tile_1_0);
         table.placeTile(tile_2_0);
@@ -86,9 +89,9 @@ public class RealEstateManagerTest {
         Table table = new Table();
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0.turnRight(DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
 
         table.placeTile(tile_1_0);
         table.placeFollower(anton, EAST);
@@ -103,11 +106,11 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
-        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0.turnRight(DEG_180);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0.turnRight(DEG_90);
 
         table.placeTile(tile_1_0);
         table.placeFollower(anton, EAST);
@@ -127,14 +130,14 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_2_0.turnRight(Rotation.DEG_180);
-        tile_0_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_0_1.turnRight(Rotation.DEG_180);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY3));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0.turnRight(DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_2_0.turnRight(DEG_180);
+        tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_0_1.turnRight(DEG_180);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
         table.placeTile(tile_1_0);
         table.placeFollower(anton, SOUTH);
         table.placeTile(tile_2_0);
@@ -163,14 +166,14 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_2_0.turnRight(Rotation.DEG_180);
-        tile_0_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_0_1.turnRight(Rotation.DEG_180);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY3));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0.turnRight(DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_2_0.turnRight(DEG_180);
+        tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_0_1.turnRight(DEG_180);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
         table.placeTile(tile_1_0);
         table.placeFollower(anton, SOUTH);
         table.placeTile(tile_0_1);
@@ -197,16 +200,16 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
-        tile_1_0.turnRight(Rotation.DEG_90);
-        tile_2_m1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_2_m1.turnRight(Rotation.DEG_180);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_2_1.turnRight(Rotation.DEG_90);
-        tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_3_0.turnRight(Rotation.DEG_270);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NWR));
-        tile_2_0.turnRight(Rotation.DEG_90);
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_1_0.turnRight(DEG_90);
+        tile_2_m1.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_2_m1.turnRight(DEG_180);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_2_1.turnRight(DEG_90);
+        tile_3_0.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_3_0.turnRight(DEG_270);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY2NWR));
+        tile_2_0.turnRight(DEG_90);
 
         table.placeTile(tile_1_0);
         table.placeFollower(anton, EAST);
@@ -237,14 +240,14 @@ public class RealEstateManagerTest {
         expectedRealEstate.put(tile_1_1, new HashSet<>(Arrays.asList(NNE, NNW, NORTH, WWN, WWS, WEST, EEN, EES, EAST)));
         expectedRealEstate.put(tile_2_1, new HashSet<>(Arrays.asList(NNE, NNW, NORTH, WWN, WWS, WEST)));
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NWR));
-        tile_2_0.turnRight(Rotation.DEG_180);
-        tile_0_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_0_1.turnRight(Rotation.DEG_180);
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY3));
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0.turnRight(DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY2NWR));
+        tile_2_0.turnRight(DEG_180);
+        tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_0_1.turnRight(DEG_180);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
 
         table.placeTile(tile_1_0);
         table.placeFollower(andrey, SOUTH);
@@ -271,14 +274,14 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_1_2.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_0_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_0_1.turnRight(Rotation.DEG_90);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY4));
-        tile_2_1.turnRight(Rotation.DEG_270);
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY4));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0.turnRight(DEG_180);
+        tile_1_2.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_0_1.turnRight(DEG_90);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY4));
+        tile_2_1.turnRight(DEG_270);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY4));
 
 
         table.placeTile(tile_1_0);
@@ -302,9 +305,9 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0.turnRight(DEG_180);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
         table.placeTile(tile_1_0);
         table.placeFollower(anton, SOUTH);
         table.placeTile(tile_1_1);
@@ -317,13 +320,13 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_1_1.turnRight(Rotation.DEG_90);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
-        tile_2_0.turnRight(Rotation.DEG_270);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(TileName.CITY2NW));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_1_0.turnRight(DEG_180);
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_1_1.turnRight(DEG_90);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_2_0.turnRight(DEG_270);
+        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
         table.placeTile(tile_1_0);
         table.placeFollower(anton, SOUTH);
         table.placeTile(tile_1_1);
@@ -332,22 +335,46 @@ public class RealEstateManagerTest {
         assertEquals("8 points for smallest finished castle", 8, anton.getCurrentPoints());
     }
 
-
-
-
-
     @Test
     public void completeRealEstateSmallRoad() {
         Table table = new Table();
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
-        tile_1_0.turnRight(Rotation.DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0.turnRight(DEG_180);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
 
         table.placeTile(tile_1_0);
         table.placeTile(tile_2_0);
         table.placeFollower(anton, WEST);
         assertEquals ("Finished road that consists of two tiles is 2 points", 2, anton.getCurrentPoints());
     }
+
+    @Test
+    public void completeCloister9Points() {
+        placeTile(1, 1, CITY1, DEG_0);
+        placeTile(2, 1, CITY1, DEG_0);
+        placeTile(3, 1, CITY1, DEG_0);
+        placeTile(1, 2, CITY1, DEG_270);
+        placeTile(2, 2, CLOISTER, DEG_0, anton, CENTER);
+        placeTile(3, 2, CITY1, DEG_90);
+        placeTile(1, 3, CITY1, DEG_180);
+        placeTile(2, 3, CITY1, DEG_180);
+        placeTile(3, 3, CITY1, DEG_180);
+        assertEquals("9 points for finished cloister", 9, anton.getCurrentPoints());
+    }
+
+    public void placeTile(int x, int y, TileName tileName, Rotation rotation) {
+        Tile tile = Tile.getInstance(x, y);
+        tile.copyFeatures(TilePile.getReferenceTile(tileName));
+        tile.turnRight(DEG_0);
+        table.placeTile(tile);
+
+    }
+
+    public void placeTile(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirections tileDirection) {
+        placeTile(x, y, tileName, rotation);
+        table.placeFollower(player, tileDirection);
+    }
+
 }

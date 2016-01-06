@@ -19,6 +19,10 @@ public class RealEstateManager {
         this.table = table;
     }
 
+    boolean playerHasAssets(Player player) {
+        return playerToRealEstateSetMap.containsKey(player);
+    }
+
     Set<RealEstate> getAssets(Player player) {
         Set<RealEstate> result = new HashSet<>();
         for (RealEstate.ImmutableRealEstate realEstate: playerToRealEstateSetMap.get(player)) {
@@ -27,6 +31,10 @@ public class RealEstateManager {
         return result;
     }
 
+
+    Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToFinishedRealEstate() {
+        return new HashMap<Player, Set<RealEstate.ImmutableRealEstate>>(playerToFinishedRealEstate);
+    }
     /*
      * used for testing purposes only
      */
@@ -50,6 +58,8 @@ public class RealEstateManager {
         }
 
         realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
+        realEstateUnion();
+        finishedRealEstate();
     }
 
     void update(Tile tile) {

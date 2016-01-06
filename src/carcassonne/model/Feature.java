@@ -12,6 +12,10 @@ public class Feature {
     private Follower follower;
 
     static Feature createFeature(FeatureType type) {
+        switch (type) {
+            case ROAD:
+                return new RoadPiece();
+        }
         return new Feature();
     }
 

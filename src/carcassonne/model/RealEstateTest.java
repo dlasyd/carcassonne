@@ -656,8 +656,13 @@ public class RealEstateTest {
 
         Map<Tile, Set<TileDirections>> tileToTileDirections = new HashMap();
 
-        for (RealEstate.ImmutableRealEstate realEstate: manager.getRealEstateImmutableSet()) {
-            tileToTileDirections = realEstate.getRealEstate().getTilesAndFeatureTileDirections();
+        /*
+         * TODO refactor this ugly thing
+         */
+        for (Player player: manager.getPlayerToFinishedRealEstate().keySet()) {
+            for (RealEstate.ImmutableRealEstate realEstate: manager.getPlayerToFinishedRealEstate().get(player)) {
+                tileToTileDirections = realEstate.getRealEstate().getTilesAndFeatureTileDirections();
+            }
         }
         assertEquals ("Tile consist of correct tileDirections", expected, tileToTileDirections);
     }
@@ -682,6 +687,6 @@ public class RealEstateTest {
         table.placeTile(tile_2_0);
         table.placeFollower(anton, WEST);
 
-        assertEquals ("Player has no unfinished real estate", 0, manager.getAssets(anton).size());
+        assertEquals ("Player has no unfinished real estate", false, manager.playerHasAssets(anton));
     }
 }
