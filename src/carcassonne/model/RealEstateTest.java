@@ -21,8 +21,21 @@ public class RealEstateTest {
     public Tile tile_2_2, tile_3_1;
     public RealEstate realEstate, realEstate2;
     public Table table;
+    public RealEstateManager manager;
+    public Player anton = new Player();
 
+    public void placeTile(int x, int y, TileName tileName, Rotation rotation) {
+        Tile tile = Tile.getInstance(x, y);
+        tile.copyFeatures(TilePile.getReferenceTile(tileName));
+        tile.turnRight(rotation);
+        table.placeTile(tile);
 
+    }
+
+    public void placeTile(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirections tileDirection) {
+        placeTile(x, y, tileName, rotation);
+        table.placeFollower(player, tileDirection);
+    }
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -56,6 +69,10 @@ public class RealEstateTest {
 
         tile_0_1 = Tile.getInstance(0, 1);
         tile_0_2 = Tile.getInstance(0, 2);
+
+        table = new Table();
+        manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
     }
 
     @Test
@@ -718,5 +735,39 @@ public class RealEstateTest {
         expectedSet.add(tile_2_2);
 
         assertEquals("Cloister has correct tiles", expectedSet, realEstate.getTileSet());
+    }
+
+    @Test
+    public void landNoFinishedCity() {
+        placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
+        manager.addPointsForUnfinishedRealEstate();
+        assertEquals("Player has no poinst", 0, anton.getCurrentPoints());
+    }
+
+    @Test
+    public void landFinishedAndUnfinishedCity() {
+        placeTile(1, 1, TileName.CITY1, Rotation.DEG_180);
+        placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
+        placeTile(1, 3, TileName.CITY1, Rotation.DEG_180);
+        manager.addPointsForUnfinishedRealEstate();
+        assertEquals("Player has no poinst", 3, anton.getCurrentPoints());
+    }
+
+    @Test
+    public void landFinishedCity() {
+        placeTile(1, 1, TileName.CITY1, Rotation.DEG_180);
+        placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
+        manager.addPointsForUnfinishedRealEstate();
+        assertEquals("Player has no poinst", 3, anton.getCurrentPoints());
+    }
+
+    @Test
+    public void land2FinishedCities() {
+        placeTile(1, 1, TileName.CITY1, Rotation.DEG_180);
+        placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
+        placeTile(1, 3, TileName.CITY1, Rotation.DEG_180);
+        placeTile(1, 4, TileName.CITY1, Rotation.DEG_0);
+        manager.addPointsForUnfinishedRealEstate();
+        assertEquals("Player has no poinst", 6, anton.getCurrentPoints());
     }
 }
