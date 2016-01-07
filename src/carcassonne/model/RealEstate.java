@@ -22,20 +22,6 @@ public abstract class RealEstate {
         firstTile = tile;
     }
 
-    int getFirstX() {
-        return firstTile.getX();
-    }
-
-    int getFirstY() {
-        return firstTile.getY();
-    }
-
-    boolean firstTilePlaced() {
-        return firstTile != null;
-    }
-
-    abstract boolean isFinished();
-
     static RealEstate getInstance(Tile tile, Table table) {
         if (tile.getOccupiedFeature() instanceof RoadPiece)
             return new Road(tile, table);
@@ -47,15 +33,29 @@ public abstract class RealEstate {
         return new Castle(tile, table);
     }
 
-    public ImmutableRealEstate getImmutableRealEstate() {
-        return immutableRealEstate;
-    }
+    abstract boolean isFinished();
 
     public void addTile(Tile tile) {
         checkArguments(tile);
         addTileAndConnectedTiles(tile);
     }
 
+    private void checkArguments(Tile tile) {
+        if (tile.isNull())
+            throw new RuntimeException("Trying to add a NULL tile");
+        if (tile.getCoordinates() == null)
+            throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
+        if (! tile.isComplete())
+            throw new RuntimeException("Incomplete tile cannot be part of real estate");
+        if (! validCoordinates(tile))
+            throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
+        if (! addedFeatureUnoccupied(tile))
+            throw new RuntimeException("Trying to add occupied feature to existing real estate");
+    }
+
+    /*
+     * Correct for City, Road and Land. Cloister class overrides this method
+     */
     void addTileAndConnectedTiles(Tile tile) {
         if (tilesAndFeatureTileDirections.isEmpty()) {
             tilesAndFeatureTileDirections.put(tile, tile.getOccupiedFeatureDirections());
@@ -73,19 +73,6 @@ public abstract class RealEstate {
             throw new RuntimeException("Trying to add inappropriately place tile to real estate");
         }
         addAdjacentTiles(tile);
-    }
-
-    private void checkArguments(Tile tile) {
-        if (tile.isNull())
-            throw new RuntimeException("Trying to add a NULL tile");
-        if (tile.getCoordinates() == null)
-            throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
-        if (! tile.isComplete())
-            throw new RuntimeException("Incomplete tile cannot be part of real estate");
-        if (! validCoordinates(tile))
-            throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
-        if (! addedFeatureUnoccupied(tile))
-            throw new RuntimeException("Trying to add occupied feature to existing real estate");
     }
 
     private Set<Tile> getNeighbourRealEstateTiles(Tile tile) {
@@ -180,13 +167,7 @@ public abstract class RealEstate {
         return result;
     }
 
-    public Set<Tile> getTileSet() {
-        return new HashSet<>(tilesAndFeatureTileDirections.keySet());
-    }
 
-    void update(Tile tile) {
-        addIfCanBeConnectedToRealEstate(tile);
-    }
 
     private void addIfCanBeConnectedToRealEstate(Tile tile) {
         int[][] aroundCoordinates = {{tile.getX(), tile.getY() - 1}, {tile.getX(), tile.getY() + 1},
@@ -278,9 +259,6 @@ public abstract class RealEstate {
         return result;
     }
 
-    int getPoints() {
-        return 4;
-    }
 
     public boolean contains(Tile tilePlacedLast, TileDirections direction) {
         boolean result = false;
@@ -294,14 +272,82 @@ public abstract class RealEstate {
         return result;
     }
 
-    public Tile getFirstTile() {
+    void update(Tile tile) {
+        addIfCanBeConnectedToRealEstate(tile);
+    }
+
+    /*
+     * Method used by child class Cloister
+     */
+    void putTile(Tile tile, Set<TileDirections> directions) {
+        tilesAndFeatureTileDirections.put(tile, directions);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        RealEstate realEstate = (RealEstate) o;
+        if (!this.tilesAndFeatureTileDirections.keySet().equals(((RealEstate) o).tilesAndFeatureTileDirections.keySet()))
+            return false;
+        for (Tile thisTile: tilesAndFeatureTileDirections.keySet()) {
+            if (! this.tilesAndFeatureTileDirections.get(thisTile).
+                    equals(((RealEstate) o).tilesAndFeatureTileDirections.get(thisTile)))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1043;
+        for(Tile tile: tilesAndFeatureTileDirections.keySet()) {
+           hashCode += 10 * tile.hashCode();
+        }
+        return hashCode;
+    }
+
+    /*
+     * Getters and setters begin
+     */
+    int getFirstX() {
+        return firstTile.getX();
+    }
+
+    int getFirstY() {
+        return firstTile.getY();
+    }
+
+    ImmutableRealEstate getImmutableRealEstate() {
+        return immutableRealEstate;
+    }
+
+    Set<Tile> getTileSet() {
+        return new HashSet<>(tilesAndFeatureTileDirections.keySet());
+    }
+
+    Tile getFirstTile() {
         return firstTile;
     }
 
-    public void setFirstTile(Tile firstTile) {
+    void setFirstTile(Tile firstTile) {
         this.firstTile = firstTile;
     }
 
+
+    int getPoints() {
+        return 4;
+    }
+
+    Map<Tile, Set<TileDirections>> getTilesAndFeatureTileDirections() {
+        return tilesAndFeatureTileDirections;
+    }
+    /*
+     * Getters and setters end
+     */
+
+    /*
+     * Every RealEstate instance is mutable, so a corresponding immutableRealEstate instance is used
+     * as Map key when necessary
+     */
     static class ImmutableRealEstate {
         private final RealEstate realEstate;
         private final Tile firstTile;
@@ -319,29 +365,4 @@ public abstract class RealEstate {
             return (firstTile.hashCode() * 13) % 7 ;
         }
     }
-
-    public boolean equals(Object o) {
-        RealEstate realEstate = (RealEstate) o;
-        if (!this.tilesAndFeatureTileDirections.keySet().equals(((RealEstate) o).tilesAndFeatureTileDirections.keySet()))
-            return false;
-        for (Tile thisTile: tilesAndFeatureTileDirections.keySet()) {
-            if (! this.tilesAndFeatureTileDirections.get(thisTile).
-                    equals(((RealEstate) o).tilesAndFeatureTileDirections.get(thisTile)))
-                return false;
-        }
-        return true;
-    }
-
-    public int hashCode() {
-        int hashCode = 1043;
-        for(Tile tile: tilesAndFeatureTileDirections.keySet()) {
-           hashCode += 10 * tile.hashCode();
-        }
-        return hashCode;
-    }
-
-    Map<Tile, Set<TileDirections>> getTilesAndFeatureTileDirections() {
-        return tilesAndFeatureTileDirections;
-    }
-
 }

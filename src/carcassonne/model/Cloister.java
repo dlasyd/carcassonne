@@ -25,11 +25,11 @@ class Cloister extends RealEstate {
 
     @Override
     void addTileAndConnectedTiles(Tile tile) {
-        tilesAndFeatureTileDirections.put(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+        putTile(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
         for (int x = tile.getX() - 1; x < tile.getX() + 2; x++) {
             for (int y = tile.getY() - 1; y < tile.getY() + 2; y++) {
                 if (!table.getTile(x, y).isNull()) {
-                    tilesAndFeatureTileDirections.put(table.getTile(x, y), new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+                    putTile(table.getTile(x, y), new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
                 }
             }
         }
@@ -40,8 +40,7 @@ class Cloister extends RealEstate {
         for (int x = getFirstX() - 1; x < getFirstX() + 2; x++) {
             for (int y = getFirstY() - 1; y < getFirstY() + 2; y++) {
                 if (tile.getX() == x && tile.getY() == y)
-                    //TODO add using method, not variable
-                    tilesAndFeatureTileDirections.put(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+                    putTile(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
             }
         }
     }
