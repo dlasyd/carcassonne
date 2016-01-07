@@ -710,7 +710,7 @@ public class RealEstateTest {
         table.placeTile(tile_2_2);
 
         Set<Tile> expectedSet = new HashSet<>();
-        expectedSet.add(tile_0_0);
+        expectedSet.add(table.getFirstTile());
         expectedSet.add(tile_1_0);
         expectedSet.add(tile_0_1);
         expectedSet.add(tile_1_1);

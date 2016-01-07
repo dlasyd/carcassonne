@@ -20,22 +20,28 @@ class Cloister extends RealEstate {
 
     @Override
     int getPoints() {
-        return super.getTilesAndFeatureTileDirections().keySet().size();
+        return getTilesAndFeatureTileDirections().keySet().size();
     }
 
     @Override
     void addTileAndConnectedTiles(Tile tile) {
-        //TODO super might be redundant
-        super.tilesAndFeatureTileDirections.put(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+        tilesAndFeatureTileDirections.put(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+        for (int x = tile.getX() - 1; x < tile.getX() + 2; x++) {
+            for (int y = tile.getY() - 1; y < tile.getY() + 2; y++) {
+                if (!table.getTile(x, y).isNull()) {
+                    tilesAndFeatureTileDirections.put(table.getTile(x, y), new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+                }
+            }
+        }
     }
 
     @Override
     void update(Tile tile) {
-        for (int x = super.getFirstX() - 1; x < super.getFirstX() + 2; x++) {
-            for (int y = super.getFirstY() - 1; y < super.getFirstY() + 2; y++) {
+        for (int x = getFirstX() - 1; x < getFirstX() + 2; x++) {
+            for (int y = getFirstY() - 1; y < getFirstY() + 2; y++) {
                 if (tile.getX() == x && tile.getY() == y)
                     //TODO add using method, not variable
-                    super.tilesAndFeatureTileDirections.put(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+                    tilesAndFeatureTileDirections.put(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
             }
         }
     }
