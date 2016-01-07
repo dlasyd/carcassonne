@@ -11,6 +11,7 @@ public abstract class RealEstate {
     final Table table;
     private final ImmutableRealEstate immutableRealEstate;
     boolean finished = false;
+    private Tile firstTile;
 
     public RealEstate(Tile tile, Table table) {
         immutableRealEstate = new ImmutableRealEstate(this, tile);
@@ -18,6 +19,19 @@ public abstract class RealEstate {
         if (tile.isNoFollower())
             throw new RuntimeException("Cannot create real estate from tile without a follower");
         addTile(tile);
+        firstTile = tile;
+    }
+
+    int getFirstX() {
+        return firstTile.getX();
+    }
+
+    int getFirstY() {
+        return firstTile.getY();
+    }
+
+    boolean firstTilePlaced() {
+        return firstTile != null;
     }
 
     abstract boolean isFinished();
@@ -38,17 +52,11 @@ public abstract class RealEstate {
     }
 
     public void addTile(Tile tile) {
-        if (tile.isNull())
-            throw new RuntimeException("Trying to add a NULL tile");
-        if (tile.getCoordinates() == null)
-            throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
-        if (! tile.isComplete())
-            throw new RuntimeException("Incomplete tile cannot be part of real estate");
-        if (! validCoordinates(tile))
-            throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
-        if (! addedFeatureUnoccupied(tile))
-            throw new RuntimeException("Trying to add occupied feature to existing real estate");
+        checkArguments(tile);
+        addTileAndConnectedTiles(tile);
+    }
 
+    void addTileAndConnectedTiles(Tile tile) {
         if (tilesAndFeatureTileDirections.isEmpty()) {
             tilesAndFeatureTileDirections.put(tile, tile.getOccupiedFeatureDirections());
         } else {
@@ -64,9 +72,20 @@ public abstract class RealEstate {
 
             throw new RuntimeException("Trying to add inappropriately place tile to real estate");
         }
-
         addAdjacentTiles(tile);
+    }
 
+    private void checkArguments(Tile tile) {
+        if (tile.isNull())
+            throw new RuntimeException("Trying to add a NULL tile");
+        if (tile.getCoordinates() == null)
+            throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
+        if (! tile.isComplete())
+            throw new RuntimeException("Incomplete tile cannot be part of real estate");
+        if (! validCoordinates(tile))
+            throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
+        if (! addedFeatureUnoccupied(tile))
+            throw new RuntimeException("Trying to add occupied feature to existing real estate");
     }
 
     private Set<Tile> getNeighbourRealEstateTiles(Tile tile) {
@@ -273,6 +292,14 @@ public abstract class RealEstate {
                 break;
         }
         return result;
+    }
+
+    public Tile getFirstTile() {
+        return firstTile;
+    }
+
+    public void setFirstTile(Tile firstTile) {
+        this.firstTile = firstTile;
     }
 
     static class ImmutableRealEstate {
