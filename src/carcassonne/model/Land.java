@@ -9,7 +9,13 @@ class Land extends RealEstate {
         super(tile, table);
     }
 
+    @Override
     boolean isFinished() {
         return false;
+    }
+
+    @Override
+    int getPoints() {
+        return 0;
     }
 }

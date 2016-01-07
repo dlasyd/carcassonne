@@ -266,7 +266,7 @@ public abstract class RealEstate {
             if (tile.equals(tilePlacedLast)) {
                 result = tilesAndFeatureTileDirections.get(tile).contains(direction);
             }
-            if (result == true)
+            if (result)
                 break;
         }
         return result;
@@ -285,7 +285,6 @@ public abstract class RealEstate {
 
     @Override
     public boolean equals(Object o) {
-        RealEstate realEstate = (RealEstate) o;
         if (!this.tilesAndFeatureTileDirections.keySet().equals(((RealEstate) o).tilesAndFeatureTileDirections.keySet()))
             return false;
         for (Tile thisTile: tilesAndFeatureTileDirections.keySet()) {
@@ -332,9 +331,10 @@ public abstract class RealEstate {
         this.firstTile = firstTile;
     }
 
+    abstract int getPoints();
 
-    int getPoints() {
-        return 4;
+    int getNumberOfTiles() {
+        return tilesAndFeatureTileDirections.keySet().size();
     }
 
     Map<Tile, Set<TileDirections>> getTilesAndFeatureTileDirections() {

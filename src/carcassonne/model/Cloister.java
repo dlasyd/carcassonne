@@ -15,7 +15,7 @@ class Cloister extends RealEstate {
     }
 
     boolean isFinished() {
-        return false;
+        return getNumberOfTiles() == 9;
     }
 
     @Override
