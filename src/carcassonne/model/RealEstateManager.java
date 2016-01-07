@@ -189,4 +189,15 @@ public class RealEstateManager {
         }
         return result;
     }
+
+    void addPointsForUnfinishedRealEstate() {
+        for (RealEstate.ImmutableRealEstate currentImmutableRE: realEstateMap.keySet()) {
+            int points = currentImmutableRE.getRealEstate().getPoints();
+            for (Player player: realEstateMap.get(currentImmutableRE)) {
+                Util.addSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
+                Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
+                player.increaseCurrentPoints(points);
+            }
+        }
+    }
 }

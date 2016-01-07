@@ -16,6 +16,6 @@ class Cloister extends RealEstate {
     }
 
     int getPoints() {
-        return 9;
+        return super.getTilesAndFeatureTileDirections().keySet().size();
     }
 }

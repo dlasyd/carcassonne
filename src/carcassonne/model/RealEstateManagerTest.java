@@ -302,4 +302,19 @@ public class RealEstateManagerTest {
         placeTile(3, 3, CITY1, DEG_180);
         assertEquals("9 points for finished cloister", 9, anton.getCurrentPoints());
     }
+
+    @Test
+    public void inCompleteCloister9Points() {
+        placeTile(1, 1, CITY1, DEG_0);
+        placeTile(2, 1, CITY1, DEG_0);
+        placeTile(3, 1, CITY1, DEG_0);
+        placeTile(1, 2, CITY1, DEG_270);
+        placeTile(2, 2, CLOISTER, DEG_0, anton, CENTER);
+        placeTile(3, 2, CITY1, DEG_90);
+        placeTile(1, 3, CITY1, DEG_180);
+        placeTile(2, 3, CITY1, DEG_180);
+        manager.addPointsForUnfinishedRealEstate();
+        assertEquals("9 points for finished cloister", 8, anton.getCurrentPoints());
+    }
+
 }

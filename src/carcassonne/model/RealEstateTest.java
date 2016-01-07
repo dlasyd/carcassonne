@@ -689,4 +689,34 @@ public class RealEstateTest {
 
         assertEquals ("Player has no unfinished real estate", false, manager.playerHasAssets(anton));
     }
+
+    @Test
+    public void tilesAddedToCloister() {
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_1.copyFeatures(TilePile.getReferenceTile(CLOISTER));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(CLOISTER));
+        tile_1_1.placeFollower(new Player(), TileDirections.CENTER);
+        tile_1_2.copyFeatures(TilePile.getReferenceTile(CLOISTER));
+        tile_0_1.copyFeatures(TilePile.getReferenceTile(CLOISTER));
+
+        table.placeTile(tile_1_0);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_1, table);
+        table.placeTile(tile_1_1);
+        RealEstateManager manager = new RealEstateManager();
+        manager.addAsset(new Player(), realEstate);
+        table.setRealEstateManager(manager);
+        table.placeTile(tile_0_1);
+        table.placeTile(tile_1_2);
+        table.placeTile(tile_2_2);
+
+        Set<Tile> expectedSet = new HashSet<>();
+        expectedSet.add(tile_0_0);
+        expectedSet.add(tile_1_0);
+        expectedSet.add(tile_0_1);
+        expectedSet.add(tile_1_1);
+        expectedSet.add(tile_1_2);
+        expectedSet.add(tile_2_2);
+
+        assertEquals("Cloister has correct tiles", expectedSet, realEstate.getTileSet());
+    }
 }
