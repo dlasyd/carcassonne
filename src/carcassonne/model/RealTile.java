@@ -130,7 +130,7 @@ public class RealTile extends Tile {
     }
 
     public Set<TileDirections> getDestinations(TileDirections dir) {
-        return new HashSet<TileDirections>(propertyConnectionMap.get(dir));
+        return new HashSet<>(propertyConnectionMap.get(dir));
     }
 
     public void addFeature(Feature feature, TileDirections direction) {
@@ -148,9 +148,6 @@ public class RealTile extends Tile {
         }
     }
 
-    /*
-     * Ignores END direction, because several features may have END within one tile
-     */
     private void checkIfDirectionIsNotOccupied(TileDirections... directions) {
         for (TileDirections direction: directions) {
             if (propertyMap.containsKey(direction))
@@ -198,6 +195,11 @@ public class RealTile extends Tile {
     }
 
     @Override
+    Feature getFeature(TileDirections direction) {
+        return propertyMap.get(direction);
+    }
+
+    @Override
     /*
      * returns unoccupied directions. CENTER is excluded from return because they are not needed in
      * the context of use of the method (the method is created to be used in RealEstateTest)
@@ -215,7 +217,7 @@ public class RealTile extends Tile {
     }
 
     public Set<TileDirections> getOccupiedFeatureDirections() {
-        return new HashSet<TileDirections>(featureToTileDirections.get(getOccupiedFeature()));
+        return new HashSet<>(featureToTileDirections.get(getOccupiedFeature()));
     }
 
     public String toString() {

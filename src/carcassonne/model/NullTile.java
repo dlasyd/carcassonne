@@ -107,6 +107,11 @@ public class NullTile extends Tile{
     }
 
     @Override
+    Feature getFeature(TileDirections direction) {
+        return null;
+    }
+
+    @Override
     public TileDirections[] getUnoccupiedDirections() {
         throw new RuntimeException("The tile is Null");
     }

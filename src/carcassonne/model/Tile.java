@@ -26,6 +26,7 @@ public abstract class Tile {
     abstract Feature getOccupiedFeature();
     abstract void returnFollower();
     abstract Player getFollowerOwner();
+    abstract Feature getFeature(TileDirections direction);
 
     public static Tile getInstance() {
         return new RealTile();

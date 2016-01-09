@@ -1,5 +1,7 @@
 package carcassonne.model;
 
+import java.util.Objects;
+
 /**
  * Created by Andrey on 02/12/15.
  * Features of tile are roads, cities, land and cloisters
@@ -33,5 +35,9 @@ public class Feature {
         if (isFollowerPlaced())
             throw new RuntimeException("Trying to place follower on feature element that already has one");
         this.follower = follower;
+    }
+
+    boolean isCity() {
+        return this instanceof CityPiece;
     }
 }

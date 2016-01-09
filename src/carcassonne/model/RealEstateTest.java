@@ -755,6 +755,7 @@ public class RealEstateTest {
 
     @Test
     public void landFinishedCity() {
+        placeTile(1, 0, TileName.CLOISTER, Rotation.DEG_0);
         placeTile(1, 1, TileName.CITY1, Rotation.DEG_180);
         placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
         manager.addPointsForUnfinishedRealEstate();
