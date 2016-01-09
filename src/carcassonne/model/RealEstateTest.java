@@ -741,7 +741,7 @@ public class RealEstateTest {
     public void landNoFinishedCity() {
         placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
         manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no poinst", 0, anton.getCurrentPoints());
+        assertEquals("Player has no points", 0, anton.getCurrentPoints());
     }
 
     @Test
@@ -750,7 +750,7 @@ public class RealEstateTest {
         placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
         placeTile(1, 3, TileName.CITY1, Rotation.DEG_180);
         manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no poinst", 3, anton.getCurrentPoints());
+        assertEquals("Player has no points", 3, anton.getCurrentPoints());
     }
 
     @Test
@@ -759,7 +759,7 @@ public class RealEstateTest {
         placeTile(1, 1, TileName.CITY1, Rotation.DEG_180);
         placeTile(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirections.SOUTH);
         manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no poinst", 3, anton.getCurrentPoints());
+        assertEquals("Player has no points", 3, anton.getCurrentPoints());
     }
 
     @Test
@@ -769,6 +769,15 @@ public class RealEstateTest {
         placeTile(1, 3, TileName.CITY1, Rotation.DEG_180);
         placeTile(1, 4, TileName.CITY1, Rotation.DEG_0);
         manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no poinst", 6, anton.getCurrentPoints());
+        assertEquals("Player has no points", 6, anton.getCurrentPoints());
+    }
+
+    @Test
+    public void landWith2FinishedCitiesRussianG() {
+        placeTile(1, 2, TileName.CITY11NE, Rotation.DEG_0, anton, SOUTH);
+        placeTile(1, 1, TileName.CITY1, Rotation.DEG_180);
+        placeTile(2, 2, TileName.CITY1, Rotation.DEG_270);
+        manager.addPointsForUnfinishedRealEstate();
+        assertEquals("Two castles are finished", 6, anton.getCurrentPoints());
     }
 }
