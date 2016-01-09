@@ -1,9 +1,6 @@
 package carcassonne.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Land is never finished.
@@ -39,11 +36,12 @@ class Land extends RealEstate {
 
         Player helper = new Player();
         for (Tile tile: tilesWithCity) {
-            Map<Tile, Set<TileDirections>> disjointCitiesDirections = getTileToCityDirectionsMap(tile);
-            // TODO change the line below to make it work with disjoint castles on the same tile
-            tile.placeFollower(helper, Util.any(disjointCitiesDirections.get(tile)));
-            citiesOnLand.add(RealEstate.getInstance(tile, table));
-            // place follower on every disjoint city tile
+            Set<TileDirections> disjointCitiesDirections = oneDirectionPerDisjointCity(tile);
+
+            for (TileDirections direction: disjointCitiesDirections) {
+                tile.placeFollower(helper, direction);
+                citiesOnLand.add(RealEstate.getInstance(tile, table));
+            }
         }
 
         int points = 0;
@@ -55,20 +53,36 @@ class Land extends RealEstate {
     }
 
     /*
-     * TODO make it work with disjointed castles on same tile
+     * Returns a set of TileDirections, one TileDirection per disjoint city
      */
-    private Map<Tile, Set<TileDirections>> getTileToCityDirectionsMap(Tile tile) {
-        Map<Tile, Set<TileDirections>> disjointCitiesDirections = new HashMap<>();
+    private Set<TileDirections> oneDirectionPerDisjointCity(Tile tile) {
+        Set<TileDirections> disjointCitiesDirections = new HashSet<>();
 
-        TileDirections[] directionsToCheck = {TileDirections.WEST, TileDirections.EAST,
-                TileDirections.NORTH, TileDirections.SOUTH};
+        Set<TileDirections> directionsToCheck = new HashSet<>(Arrays.asList(
+                TileDirections.WEST, TileDirections.EAST, TileDirections.NORTH, TileDirections.SOUTH));
 
+        /*
+         * One tile can have two disjoint city feature sets, so every tile should be checked twice
+         */
+        Set<TileDirections> remainingDirectionsToCheck = new HashSet<>(directionsToCheck);
+        disjointCitiesDirections = addOneCityDirection(tile, directionsToCheck);
+        remainingDirectionsToCheck.removeAll(disjointCitiesDirections);
+        disjointCitiesDirections.addAll(addOneCityDirection(tile, remainingDirectionsToCheck));
+        disjointCitiesDirections.retainAll(directionsToCheck);
+        return  disjointCitiesDirections;
+    }
+
+    private Set<TileDirections> addOneCityDirection(Tile tile, Set<TileDirections> directionsToCheck) {
+        Set<TileDirections> disjointCitiesDirections = new HashSet<>();
         for (TileDirections tileDirection: directionsToCheck) {
             if (tile.getFeature(tileDirection).isCity()) {
-                Util.addSetElement(disjointCitiesDirections, tile, tileDirection);
+                disjointCitiesDirections.add(tileDirection);
+                for (TileDirections cityDirections: tile.getDestinations(tileDirection)) {
+                    disjointCitiesDirections.add(cityDirections);
+                }
+                break;
             }
         }
-
-        return  disjointCitiesDirections;
+        return disjointCitiesDirections;
     }
 }
