@@ -780,4 +780,12 @@ public class RealEstateTest {
         manager.addPointsForUnfinishedRealEstate();
         assertEquals("Two castles are finished", 6, anton.getCurrentPoints());
     }
+
+    @Test
+    public void CastleWithOneShield() {
+        placeTile(1, 1, TileName.CITY1, Rotation.DEG_180, anton, SOUTH);
+        placeTile(1, 2, TileName.CITY2NWS, Rotation.DEG_0);
+        placeTile(0, 2, TileName.CITY1, Rotation.DEG_90);
+        assertEquals("Three tile castle with one shield is 8 points", 8, anton.getCurrentPoints());
+    }
 }
