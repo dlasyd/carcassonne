@@ -56,6 +56,9 @@ public class PlayerTest {
             anton.placeFollower();
         }
         assertEquals ("Has follower", false, anton.hasAvaliableFollowers());
-
     }
+
+    /*
+     * Testing of changing number of followers based on real estate events are in RealEstateManagerTest
+     */
 }

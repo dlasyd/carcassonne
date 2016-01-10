@@ -51,21 +51,19 @@ public class RealEstateManagerTest {
     @Before
     public void setUp() {
         table = new Table();
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_1_0.placeFollower(anton, EAST);
-        realEstate = RealEstate.getInstance(tile_1_0, table);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        table.setRealEstateManager(manager);
-        //tile_2_0.placeFollower(anton, EAST);
-        //realEstate2 = new RealEstate(tile_2_0, table);
-
-        table = new Table();
         manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
     }
 
     @Test
     public void playerHasRealEstate() {
+        table = new Table();
+        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0.placeFollower(anton, EAST);
+        realEstate = RealEstate.getInstance(tile_1_0, table);
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        table.setRealEstateManager(manager);
+
         tile_2_0.placeFollower(anton, EAST);
         realEstate2 = RealEstate.getInstance(tile_2_0, table);
         Set<RealEstate> expectedSet = new HashSet<>();
@@ -315,6 +313,19 @@ public class RealEstateManagerTest {
         placeTile(2, 3, CITY1, DEG_180);
         manager.addPointsForUnfinishedRealEstate();
         assertEquals("9 points for finished cloister", 8, anton.getCurrentPoints());
+    }
+
+    @Test
+    public void lessFollowersAfterPlaced() {
+        placeTile(1, 1, CITY1, DEG_0, anton, NORTH);
+        assertEquals("Anton has 6 followers after placing one", 6, anton.getNumberOfFollowers());
+    }
+
+    @Test
+    public void tileReturnedAfterRealEstateIsFinished() {
+        placeTile(1, 1, CITY1, DEG_180, anton, NORTH);
+        placeTile(1, 2, CITY1, DEG_0);
+        assertEquals("Anton has 7 followers after city is finished", 7, anton.getNumberOfFollowers());
     }
 
 }
