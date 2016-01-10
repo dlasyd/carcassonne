@@ -73,6 +73,10 @@ public class TilePile {
                 tile.addFeature(Feature.createFeature(CITY), EAST, EEN, EES);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
+            case CITY2NWS:
+                tile.addFeature(Feature.createFeature(CITY_SHIELD), NORTH, NNE, NNW, WEST, WWS, WWN);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
+                break;
             default:
                 throw new RuntimeException("Not supported yet");
         }

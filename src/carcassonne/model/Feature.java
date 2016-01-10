@@ -23,6 +23,8 @@ public class Feature {
                 return new LandPiece();
             case CITY:
                 return new CityPiece();
+            case CITY_SHIELD:
+                return new CityPieceWithShield();
         }
         return new Feature();
     }

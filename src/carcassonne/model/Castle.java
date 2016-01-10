@@ -38,9 +38,16 @@ class Castle extends RealEstate{
     }
 
     int getPoints() {
+        int result = 0;
+        for (Tile tile: tilesAndFeatureTileDirections.keySet()) {
+            result += 1;
+            Feature castleOrWithShield = tile.getFeature(Util.any(tilesAndFeatureTileDirections.get(tile)));
+            if (castleOrWithShield instanceof CityPieceWithShield)
+                result +=1;
+
+        }
         if (isFinished())
-            return tilesAndFeatureTileDirections.size() * 2;
-        else
-            return tilesAndFeatureTileDirections.size();
+            result *= 2;
+        return result;
     }
 }
