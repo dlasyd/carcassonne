@@ -323,7 +323,7 @@ public class RealEstateManagerTest {
 
     @Test
     public void tileReturnedAfterRealEstateIsFinished() {
-        placeTile(1, 1, CITY1, DEG_180, anton, NORTH);
+        placeTile(1, 1, CITY1, DEG_180, anton, SOUTH);
         placeTile(1, 2, CITY1, DEG_0);
         assertEquals("Anton has 7 followers after city is finished", 7, anton.getNumberOfFollowers());
     }

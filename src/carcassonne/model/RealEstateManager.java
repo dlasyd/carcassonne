@@ -33,7 +33,7 @@ public class RealEstateManager {
 
 
     Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToFinishedRealEstate() {
-        return new HashMap<Player, Set<RealEstate.ImmutableRealEstate>>(playerToFinishedRealEstate);
+        return new HashMap<>(playerToFinishedRealEstate);
     }
     /*
      * used for testing purposes only
@@ -94,6 +94,11 @@ public class RealEstateManager {
                     Util.addSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
                     Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
                     player.increaseCurrentPoints(points);
+                    for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
+                        if (!tile.isNoFollower()) {
+                            tile.getFollowerOwner().returnFollower();
+                        }
+                    }
                 }
                 realEstateMap.remove(currentImmutableRE);
             }
