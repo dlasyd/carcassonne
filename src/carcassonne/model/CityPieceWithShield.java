@@ -7,4 +7,7 @@ package carcassonne.model;
  * Created by Andrey on 10/01/16.
  */
 public class CityPieceWithShield extends CityPiece {
+    boolean hasShield() {
+        return true;
+    }
 }

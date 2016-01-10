@@ -42,4 +42,8 @@ public class Feature {
     boolean isCity() {
         return this instanceof CityPiece;
     }
+
+    boolean hasShield() {
+        return false;
+    }
 }

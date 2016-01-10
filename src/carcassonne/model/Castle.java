@@ -42,7 +42,7 @@ class Castle extends RealEstate{
         for (Tile tile: tilesAndFeatureTileDirections.keySet()) {
             result += 1;
             Feature castleOrWithShield = tile.getFeature(Util.any(tilesAndFeatureTileDirections.get(tile)));
-            if (castleOrWithShield instanceof CityPieceWithShield)
+            if (castleOrWithShield.hasShield())
                 result +=1;
 
         }
