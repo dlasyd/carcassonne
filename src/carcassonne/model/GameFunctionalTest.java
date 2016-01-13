@@ -1,7 +1,9 @@
 package carcassonne.model;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.awt.*;
 
@@ -21,9 +23,7 @@ public class GameFunctionalTest {
         game.setTable(table);
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
-        game.getTilePile().addTile(Tile.getInstance());
-        game.getTilePile().addTile(Tile.getInstance());
-        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addXCrossroads(5);
     }
 
     @Test

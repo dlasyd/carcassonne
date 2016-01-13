@@ -221,6 +221,8 @@ public class RealTile extends Tile {
     }
 
     public String toString() {
-        return "T(" + getX() + "," + getY() + ")";
+        if (hasCoordinates())
+            return "T(" + getX() + "," + getY() + ")";
+        else return "Not placed yet";
     }
 }

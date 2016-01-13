@@ -2,6 +2,8 @@ package carcassonne.model;
 
 import static org.junit.Assert.*;
 
+import carcassonne.controller.WindowLogic;
+import carcassonne.controller.DataCollector;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,12 +23,12 @@ public class GameTest {
     public final void setUp() {
         game = new Game();
         table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
         game.setTable(table);
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
-        game.getTilePile().addTile(Tile.getInstance());
-        game.getTilePile().addTile(Tile.getInstance());
-        game.getTilePile().addTile(Tile.getInstance());
+        game.getTilePile().addXCrossroads(5);
     }
 
     @Test
@@ -157,6 +159,8 @@ public class GameTest {
         game.dragTile();
         game.dragTile();
         game.dragTile();
+        game.dragTile();
+        game.dragTile();
         assertEquals("\nNo tiles left. game.isFinished()", true, game.isFinished());
         /*
          * This is not tested, but the dragTile method is intended to invoke gameFinished() method
@@ -196,6 +200,30 @@ public class GameTest {
     public void firstPlayerNameIsAnton() {
         game.nextPlayer();
         assertEquals ("first player name", "Anton", game.getCurrentPlayer().getName());
+    }
+
+    @Test
+    public void smallGameSession() {
+        WindowLogic windowLogic = new DataCollector();
+        game.setWindowLogic(windowLogic);
+        game.nextPlayer();
+        game.turnActions(1, 0);
+        game.turnActions(2, 0);
+        game.turnActions(3, 0);
+        game.turnActions(4, 0);
+        game.turnActions(5, 0);
+
+        game.dragTile();
+        assertTrue(game.isFinished());
+    }
+    @Test
+    public void gameUpdatesController() {
+        WindowLogic windowLogic = new DataCollector();
+        game.setWindowLogic(windowLogic);
+        game.nextPlayer();
+        game.turnActions(1, 0);
+        assertEquals("Players name reached windowLogic via observer", "Anton",
+                windowLogic.getLatestGameData().getName());
     }
 }
 

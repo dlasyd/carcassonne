@@ -186,11 +186,11 @@ public class RealEstateManagerTest {
         table.placeTile(tile_2_1);  //second union
 
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
-                new HashSet<Tile>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(anton),
-                new HashSet<Tile>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(lena),
-                new HashSet<Tile>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
         assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
         assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(lena));
         assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
@@ -214,7 +214,6 @@ public class RealEstateManagerTest {
         RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
-        Set<RealEstate> expected = new HashSet<>();
         Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
         expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(SOUTH, SSE, SSW )));
         expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(SSW, SSE, SOUTH, EES, EEN, EAST)));

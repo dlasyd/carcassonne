@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Andrey on 01/12/15.
  */
-public class ControllerTest {
+public class WindowLogicTest {
     Game game;
     Table table;
 

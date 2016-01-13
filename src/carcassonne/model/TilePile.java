@@ -82,85 +82,20 @@ public class TilePile {
         }
         return tile;
 
-    /*
-     * # # #
-     *   # #
-     * # # #
-     *
-    public void threeSideCastleWithWestLand(Tile tile) {
-        tile.addFeature(new Feature(), WEST, WWN, WWS, END);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     * # # #
-     *   #
-     * # # #
-     *
-    public void verticalTCastle(Tile tile) {
-        tile.addFeature(new Feature(), EAST, EEN, EES, END );
-        tile.addFeature(new Feature(), WEST, WWN, WWS, END);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     *     #
-     *   # #
-     * # # #
-     *
-    public void bottomRightAngleCastle(Tile tile) {
-        tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     * # # #
-     * # #
-     * #
-     *
-    public void topLeftAngleCastle(Tile tile) {
-        tile.addFeature(new Feature(), NNW, NNE, NORTH, WWN, WWS, WEST);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-
-    /*
-     * # # #
-     *
-     *
-     *
-    public void topCap(Tile tile) {
-        tile.addFeature(new Feature(), NNW, NORTH, NNE, END);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    }
-
-    /*
-     *
-     * - - -
-     *
-     *
-    public void simpleRoad(Tile tile) {
-        tile.addFeature(new Feature(), WWN, NNW, NORTH, NNE, EEN);
-        tile.addFeature(new Feature(), WEST, EAST);
-        tile.addFeature(new Feature(), WWS, SSW, SOUTH, SSE, EES);
-    }
-
-    /*
-     * w w w
-     * w + -
-     * w | w
-     *
-    public void roadTurn(Tile tile) {
-        tile.addFeature(new Feature(), SOUTH, EAST);
-        tile.addFeature(new Feature(), EES, SSE);
-        tile.addFeature(new Feature(), tile.getUnoccupiedDirections());
-    } */
     }
 
     public static TilePile getInstance() {
         if (tilePile == null)
             tilePile = new TilePile();
         return tilePile;
+    }
+
+    public void addXCrossroads(int x) {
+        for (int i = 0; i < x; i ++) {
+            Tile tile = Tile.getInstance();
+            tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+            addTile(tile);
+        }
     }
 
     public int getNumberOfTiles() {

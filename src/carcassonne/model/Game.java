@@ -3,7 +3,8 @@ package carcassonne.model;
 import java.awt.*;
 import java.util.ArrayList;
 
-import carcassonne.model.Player;
+import carcassonne.controller.WindowLogic;
+import carcassonne.controller.GameDataBuilder;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<Player>();
@@ -14,6 +15,7 @@ public class Game {
     private boolean followerFriendly;           //determines if a tile has a vacant place for follower
     private TilePile tilePile = new TilePile();
     private boolean finished;
+    private WindowLogic windowLogic;
 
     public static Game getInstance() {
         if (game == null){
@@ -21,6 +23,20 @@ public class Game {
             game.table = new Table();
         }
         return game;
+    }
+
+    public void turnActions(int x, int y, TileDirections direction) {
+        turnActions(x, y);
+        table.placeFollower(getCurrentPlayer(), direction);
+    }
+
+    public void turnActions(int x, int y) {
+        nextPlayer();
+        dragTile();
+        Tile tile = getCurrentTile();
+        tile.setCoordinates(x, y);
+        table.placeTile(tile);
+        notifyController();
     }
 
     int getNumberOfPlayers() {
@@ -83,6 +99,14 @@ public class Game {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public void setWindowLogic(WindowLogic windowLogic) {
+        this.windowLogic = windowLogic;
+    }
+
+    public void notifyController() {
+        windowLogic.updateGameInformation(new GameDataBuilder().setName("Anton").createGameData());
     }
 
     public TilePile getTilePile() {
