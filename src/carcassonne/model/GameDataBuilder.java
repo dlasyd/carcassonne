@@ -23,6 +23,6 @@ public class GameDataBuilder {
     }
 
     public GameData createGameData() {
-        return new GameData(name, points, followers);
+        return new carcassonne.controller.GameDataBuilder().setName(name).setPoints(points).setFollowers(followers).createGameData();
     }
 }

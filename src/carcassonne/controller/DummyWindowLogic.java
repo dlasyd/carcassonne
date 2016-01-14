@@ -2,6 +2,7 @@ package carcassonne.controller;
 
 import carcassonne.view.ViewWindow;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public class DummyWindowLogic implements WindowLogic {
     private boolean tileConfirmed;
     private DataToModel dataToModel;
     private Map<DataType, String> interfaceData = new HashMap();
+    private GameData gameData;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -28,6 +30,7 @@ public class DummyWindowLogic implements WindowLogic {
         interfaceData.put(DataType.NAME, gameData.getName());
         interfaceData.put(DataType.FOLLOWES, gameData.getFollowers());
         interfaceData.put(DataType.POINTS, gameData.getPoints());
+        this.gameData = gameData;
         updateUI();
     }
 
@@ -35,11 +38,17 @@ public class DummyWindowLogic implements WindowLogic {
         gameWindow.setCurrentPlayerName(interfaceData.get(DataType.NAME));
         gameWindow.setNumberOfFollwers(interfaceData.get(DataType.FOLLOWES));
         gameWindow.setCurrentPoints(interfaceData.get(DataType.POINTS));
-
+        gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
+        gameWindow.setTilesNumber(gameData.getTilesLeft());
     }
 
     public void setDataToModel(DataToModel dataToModel) {
         this.dataToModel = dataToModel;
+    }
+
+    @Override
+    public void pull() {
+        dataToModel.forceNotify();
     }
 
     @Override

@@ -22,4 +22,6 @@ public interface WindowLogic {
     void updateEndTurnButton();
 
     public void setDataToModel(DataToModel dataToModel);
+
+    void pull();
 }

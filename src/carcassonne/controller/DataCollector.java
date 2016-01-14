@@ -52,4 +52,9 @@ public class DataCollector implements WindowLogic {
     public void setDataToModel(DataToModel dataToModel) {
 
     }
+
+    @Override
+    public void pull() {
+
+    }
 }

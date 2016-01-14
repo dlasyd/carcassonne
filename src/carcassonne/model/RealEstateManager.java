@@ -15,7 +15,7 @@ public class RealEstateManager {
 
     RealEstateManager() {}
 
-    RealEstateManager(Table table) {
+    public RealEstateManager(Table table) {
         this.table = table;
     }
 

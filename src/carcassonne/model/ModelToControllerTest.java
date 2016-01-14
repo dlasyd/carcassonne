@@ -66,4 +66,20 @@ public class ModelToControllerTest {
         windowLogic.setGameWindow(viewWindow);
     }
 
+    @Test
+    public void beforeFirsMoveAllInfoIsDisplayedInGameWindow() {
+        WindowLogic windowLogic = new DummyWindowLogic();
+        ViewWindow viewWindow = new FakeWindow(windowLogic);
+        windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(game);
+        game.setWindowLogic(windowLogic);
+        game.nextPlayer();
+        game.dragTile();
+        game.notifyController();
+        assertEquals("Current player in controller is correct", "Anton", ((FakeWindow)viewWindow).getCurrentPlayerName());
+        assertEquals("Score in controller is correct", "0", ((FakeWindow)viewWindow).getCurrentPoints());
+        assertEquals("Followers number is correct", "7", ((FakeWindow) viewWindow).getNumberOfFollwers());
+        assertEquals("Tiles left", "4", ((FakeWindow) viewWindow).getTilesLeft());
+    }
+
 }

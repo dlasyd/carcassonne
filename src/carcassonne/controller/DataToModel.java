@@ -11,4 +11,7 @@ import carcassonne.model.TileDirections;
 public interface DataToModel {
     public void turnActions(int x, int y, TileDirections direction);
     public void turnActions(int x, int y);
+
+
+    void forceNotify();
 }

@@ -13,7 +13,9 @@ import java.awt.*;
 public class FakeWindow implements ViewWindow {
     String currentPlayerName = "";
     private WindowLogic windowLogic;
-
+    private String currentPoints;
+    private String numberOfFollwers;
+    private String tilesLeft;
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
     }
@@ -35,8 +37,10 @@ public class FakeWindow implements ViewWindow {
 
     @Override
     public void setTilesNumber(String tilesNumber) {
-
+        this.tilesLeft = tilesNumber;
     }
+
+
 
     @Override
     public void setCurrentPlayerName(String currentPlayer) {
@@ -50,12 +54,12 @@ public class FakeWindow implements ViewWindow {
 
     @Override
     public void setNumberOfFollwers(String numberOfFollwers) {
-
+        this.numberOfFollwers = numberOfFollwers;
     }
 
     @Override
     public void setCurrentPoints(String currentPoints) {
-
+        this.currentPoints = currentPoints;
     }
 
     public String getCurrentPlayerName() {
@@ -64,5 +68,17 @@ public class FakeWindow implements ViewWindow {
 
     public void pressEndTurnButton() {
         windowLogic.updateEndTurnButton();
+    }
+
+    public String getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public String getNumberOfFollwers() {
+        return numberOfFollwers;
+    }
+
+    public String getTilesLeft() {
+        return tilesLeft;
     }
 }

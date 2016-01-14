@@ -27,7 +27,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JPanel playerColor;
     private JButton confirmTileButton;
     private JLabel currentPoints;
-    private WindowLogic windowLogic;
+    private final WindowLogic windowLogic;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
