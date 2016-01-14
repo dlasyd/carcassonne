@@ -77,7 +77,8 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void pressEndTurnButton() {
-        windowLogic.updateEndTurnButton(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
+        windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
+        windowLogic.updateEndTurnButton();
         moveCounter++;
     }
 

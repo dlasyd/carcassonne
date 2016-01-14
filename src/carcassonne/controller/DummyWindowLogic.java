@@ -19,6 +19,8 @@ public class DummyWindowLogic implements WindowLogic {
     private DataToModel dataToModel;
     private Map<DataType, String> interfaceData = new HashMap();
     private GameData gameData;
+    private int currentX, currentY;
+    private boolean gameEnded = false;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -32,6 +34,9 @@ public class DummyWindowLogic implements WindowLogic {
         interfaceData.put(DataType.POINTS, gameData.getPoints());
         this.gameData = gameData;
         updateUI();
+        tileConfirmed = false;
+        gameWindow.setConfirmTileButtonText("Confirm tile");
+        gameWindow.setConfirmTileButtonEnabled(false);
     }
 
     private void updateUI() {
@@ -58,9 +63,11 @@ public class DummyWindowLogic implements WindowLogic {
 
     @Override
     public void updateTilePlaced(int x, int y) {
-        if (!isTileFixed()) {
+        if (!isTileFixed() && !gameEnded) {
             currentTileOnTheTable = true;
             gameWindow.setConfirmTileButtonEnabled(true);
+            currentX = x;
+            currentY = y;
         }
     }
 
@@ -84,8 +91,8 @@ public class DummyWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void updateEndTurnButton(int x, int y) {
-        dataToModel.turnActions(x ,y);
+    public void updateEndTurnButton() {
+        dataToModel.turnActions(currentX ,currentY);
         gameWindow.setEndTurnEnabled(false);
     }
 
@@ -94,6 +101,7 @@ public class DummyWindowLogic implements WindowLogic {
         gameWindow.setConfirmTileButtonEnabled(false);
         gameWindow.setEndTurnEnabled(false);
         gameWindow.displayEndgameWindow();
+        gameEnded = true;
     }
 
 

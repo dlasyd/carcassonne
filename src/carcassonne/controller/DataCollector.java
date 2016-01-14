@@ -52,7 +52,7 @@ public class DataCollector implements WindowLogic {
     }
 
     @Override
-    public void updateEndTurnButton(int x, int y) {
+    public void updateEndTurnButton() {
 
     }
 

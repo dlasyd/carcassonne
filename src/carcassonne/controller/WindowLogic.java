@@ -23,7 +23,7 @@ public interface WindowLogic {
 
     void pull();
 
-    void updateEndTurnButton(int x, int y);
+    void updateEndTurnButton();
 
     void finishGame();
 }

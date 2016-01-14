@@ -28,6 +28,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JButton confirmTileButton;
     private JLabel currentPoints;
     private final WindowLogic windowLogic;
+    private int endTurnButtonPressed = 1;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -41,7 +42,8 @@ public class GameWindow extends JFrame implements ViewWindow{
         endTurnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                windowLogic.updateEndTurnButton(1, 0);
+                windowLogic.updateEndTurnButton();
+                endTurnButtonPressed++;
             }
         });
 
@@ -53,7 +55,7 @@ public class GameWindow extends JFrame implements ViewWindow{
                  * 1) save info
                  * 2) enable end move button
                  */
-                windowLogic.updateTilePlaced(1, 0);
+                windowLogic.updateTilePlaced(endTurnButtonPressed, 0);
             }
 
             @Override
