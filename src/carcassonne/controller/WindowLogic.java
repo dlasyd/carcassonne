@@ -19,9 +19,9 @@ public interface WindowLogic {
 
     boolean isTileFixed();
 
-    void updateEndTurnButton();
-
     public void setDataToModel(DataToModel dataToModel);
 
     void pull();
+
+    void updateEndTurnButton(int x, int y);
 }

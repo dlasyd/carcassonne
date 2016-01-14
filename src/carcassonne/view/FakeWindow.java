@@ -16,6 +16,9 @@ public class FakeWindow implements ViewWindow {
     private String currentPoints;
     private String numberOfFollwers;
     private String tilesLeft;
+    private int[][] fakeCoordinates = {{1,0}, {2,0}, {3, 0}, {4, 0}, {5, 0}};
+    int moveCounter = 0;
+
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
     }
@@ -67,7 +70,8 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void pressEndTurnButton() {
-        windowLogic.updateEndTurnButton();
+        windowLogic.updateEndTurnButton(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
+        moveCounter++;
     }
 
     public String getCurrentPoints() {

@@ -39,7 +39,5 @@ public class StartGame {
         GameWindow window = new GameWindow(windowLogic);
         windowLogic.setGameWindow(window);
         windowLogic.pull();
-
-
     }
 }

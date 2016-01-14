@@ -41,7 +41,7 @@ public class GameWindow extends JFrame implements ViewWindow{
         endTurnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                windowLogic.updateEndTurnButton();
+                windowLogic.updateEndTurnButton(1, 0);
             }
         });
 

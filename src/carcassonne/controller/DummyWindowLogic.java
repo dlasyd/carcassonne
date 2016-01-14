@@ -84,8 +84,8 @@ public class DummyWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void updateEndTurnButton() {
-        dataToModel.turnActions(1 ,0);
+    public void updateEndTurnButton(int x, int y) {
+        dataToModel.turnActions(x ,y);
         gameWindow.setEndTurnEnabled(false);
     }
 

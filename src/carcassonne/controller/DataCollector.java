@@ -44,17 +44,17 @@ public class DataCollector implements WindowLogic {
         return false;
     }
 
-    @Override
-    public void updateEndTurnButton() {
-
-    }
-
     public void setDataToModel(DataToModel dataToModel) {
 
     }
 
     @Override
     public void pull() {
+
+    }
+
+    @Override
+    public void updateEndTurnButton(int x, int y) {
 
     }
 }

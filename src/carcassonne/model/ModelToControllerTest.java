@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a part of Carcassonne project.
@@ -80,6 +81,27 @@ public class ModelToControllerTest {
         assertEquals("Score in controller is correct", "0", ((FakeWindow)viewWindow).getCurrentPoints());
         assertEquals("Followers number is correct", "7", ((FakeWindow) viewWindow).getNumberOfFollwers());
         assertEquals("Tiles left", "4", ((FakeWindow) viewWindow).getTilesLeft());
+    }
+
+    @Test
+    public void endGameWindowRunsWhenGameEnds() {
+        WindowLogic windowLogic = new DummyWindowLogic();
+        ViewWindow viewWindow = new FakeWindow(windowLogic);
+        windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(game);
+        game.setWindowLogic(windowLogic);
+        game.nextPlayer();
+        game.dragTile();
+        game.notifyController();
+        ((FakeWindow) viewWindow).pressEndTurnButton();
+        ((FakeWindow) viewWindow).pressEndTurnButton();
+        ((FakeWindow) viewWindow).pressEndTurnButton();
+        ((FakeWindow) viewWindow).pressEndTurnButton();
+        ((FakeWindow) viewWindow).pressEndTurnButton();
+        assertEquals("Game is finished", true, game.isFinished());
+        assertEquals("Tile place button disabled", true);
+        assertEquals("End turn button disabled", true);
+        assertEquals("End game window displayed", true);
     }
 
 }
