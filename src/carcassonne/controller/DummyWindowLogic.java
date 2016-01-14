@@ -89,6 +89,13 @@ public class DummyWindowLogic implements WindowLogic {
         gameWindow.setEndTurnEnabled(false);
     }
 
+    @Override
+    public void finishGame() {
+        gameWindow.setConfirmTileButtonEnabled(false);
+        gameWindow.setEndTurnEnabled(false);
+        gameWindow.displayEndgameWindow();
+    }
+
 
     enum DataType {NAME, POINTS, FOLLOWES}
 }

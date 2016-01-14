@@ -124,4 +124,9 @@ public class GameWindow extends JFrame implements ViewWindow{
     public void setCurrentPoints(String currentPoints) {
         this.currentPoints.setText("Current points: " + currentPoints);
     }
+
+    @Override
+    public void displayEndgameWindow() {
+
+    }
 }

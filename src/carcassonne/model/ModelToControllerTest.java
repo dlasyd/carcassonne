@@ -99,9 +99,9 @@ public class ModelToControllerTest {
         ((FakeWindow) viewWindow).pressEndTurnButton();
         ((FakeWindow) viewWindow).pressEndTurnButton();
         assertEquals("Game is finished", true, game.isFinished());
-        assertEquals("Tile place button disabled", true);
-        assertEquals("End turn button disabled", true);
-        assertEquals("End game window displayed", true);
+        assertEquals("Tile place button disabled", false, ((FakeWindow) viewWindow).isPlaceTileButtonEnabled());
+        assertEquals("End turn button disabled", false, ((FakeWindow) viewWindow).isPlaceEndTurnButtonEnabled());
+        assertEquals("End game window displayed", true, ((FakeWindow) viewWindow).isEndGameWindowDisplayed());
     }
 
 }

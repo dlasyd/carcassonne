@@ -24,4 +24,6 @@ public interface ViewWindow {
     void setNumberOfFollwers(String numberOfFollwers);
 
     void setCurrentPoints(String currentPoints);
+
+    void displayEndgameWindow();
 }

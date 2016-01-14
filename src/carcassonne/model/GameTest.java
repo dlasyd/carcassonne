@@ -160,7 +160,6 @@ public class GameTest {
         game.dragTile();
         game.dragTile();
         game.dragTile();
-        game.dragTile();
         assertEquals("\nNo tiles left. game.isFinished()", true, game.isFinished());
         /*
          * This is not tested, but the dragTile method is intended to invoke gameFinished() method

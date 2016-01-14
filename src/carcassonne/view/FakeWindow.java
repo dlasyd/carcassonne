@@ -18,6 +18,8 @@ public class FakeWindow implements ViewWindow {
     private String tilesLeft;
     private int[][] fakeCoordinates = {{1,0}, {2,0}, {3, 0}, {4, 0}, {5, 0}};
     int moveCounter = 0;
+    private boolean endTurnEnabled, nextTurnEnabled;
+    private boolean endGameWindowDisplayed;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -25,7 +27,7 @@ public class FakeWindow implements ViewWindow {
 
     @Override
     public void setConfirmTileButtonEnabled(boolean b) {
-
+        this.nextTurnEnabled = b;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class FakeWindow implements ViewWindow {
 
     @Override
     public void setEndTurnEnabled(boolean b) {
-
+        this.endTurnEnabled = b;
     }
 
     @Override
@@ -63,6 +65,11 @@ public class FakeWindow implements ViewWindow {
     @Override
     public void setCurrentPoints(String currentPoints) {
         this.currentPoints = currentPoints;
+    }
+
+    @Override
+    public void displayEndgameWindow() {
+        this.endGameWindowDisplayed = true;
     }
 
     public String getCurrentPlayerName() {
@@ -84,5 +91,17 @@ public class FakeWindow implements ViewWindow {
 
     public String getTilesLeft() {
         return tilesLeft;
+    }
+
+    public boolean isPlaceTileButtonEnabled() {
+        return this.nextTurnEnabled;
+    }
+
+    public boolean isPlaceEndTurnButtonEnabled() {
+        return this.endTurnEnabled;
+    }
+
+    public boolean isEndGameWindowDisplayed() {
+        return this.endGameWindowDisplayed;
     }
 }

@@ -35,9 +35,14 @@ public class Game implements DataToModel{
         Tile tile = getCurrentTile();
         tile.setCoordinates(x, y);
         table.placeTile(tile);
-        nextPlayer();
-        dragTile();
-        notifyController();
+        if (!isFinished()) {
+            nextPlayer();
+            dragTile();
+            notifyController();
+        } else {
+            windowLogic.finishGame();
+        }
+
     }
 
     @Override

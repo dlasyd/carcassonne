@@ -11,8 +11,6 @@ import carcassonne.view.ViewWindow;
 public class DataCollector implements WindowLogic {
     private GameData latestGameData;
 
-
-
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
 
@@ -55,6 +53,11 @@ public class DataCollector implements WindowLogic {
 
     @Override
     public void updateEndTurnButton(int x, int y) {
+
+    }
+
+    @Override
+    public void finishGame() {
 
     }
 }
