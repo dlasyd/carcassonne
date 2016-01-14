@@ -17,7 +17,7 @@ public interface ViewWindow {
 
     void setTilesNumber(String tilesNumber);
 
-    void setCurrentPlayer(String currentPlayer);
+    void setCurrentPlayerName(String currentPlayerName);
 
     void setEndTurnEnabled(boolean b);
 

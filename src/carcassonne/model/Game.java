@@ -57,7 +57,6 @@ public class Game implements DataToModel{
     }
 
     public boolean addPlayer(String name, Color color) {
-        // TODO Auto-generated method stub
         if (5 > getNumberOfPlayers()) {
             players.add(new Player(name, color));
             return true;

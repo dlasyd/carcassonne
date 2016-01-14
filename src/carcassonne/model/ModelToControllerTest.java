@@ -51,7 +51,7 @@ public class ModelToControllerTest {
     }
 
     @Test
-    public void controllerCanSeindInformation() {
+    public void controllerCanSendInformation() {
         WindowLogic windowLogic = new DummyWindowLogic();
         ViewWindow viewWindow = new FakeWindow(windowLogic);
         windowLogic.setGameWindow(viewWindow);

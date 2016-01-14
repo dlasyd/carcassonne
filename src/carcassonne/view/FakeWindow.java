@@ -39,7 +39,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
-    public void setCurrentPlayer(String currentPlayer) {
+    public void setCurrentPlayerName(String currentPlayer) {
         this.currentPlayerName = currentPlayer;
     }
 

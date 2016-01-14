@@ -106,7 +106,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setCurrentPlayer(String currentPlayer) {
+    public void setCurrentPlayerName(String currentPlayer) {
         this.currentPlayer.setText(currentPlayer);
     }
 

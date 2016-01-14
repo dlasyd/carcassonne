@@ -32,7 +32,7 @@ public class DummyWindowLogic implements WindowLogic {
     }
 
     private void updateUI() {
-        gameWindow.setCurrentPlayer(interfaceData.get(DataType.NAME));
+        gameWindow.setCurrentPlayerName(interfaceData.get(DataType.NAME));
         gameWindow.setNumberOfFollwers(interfaceData.get(DataType.FOLLOWES));
         gameWindow.setCurrentPoints(interfaceData.get(DataType.POINTS));
 
