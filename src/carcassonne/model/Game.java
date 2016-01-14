@@ -35,11 +35,12 @@ public class Game implements DataToModel{
         Tile tile = getCurrentTile();
         tile.setCoordinates(x, y);
         table.placeTile(tile);
-        if (!isFinished()) {
+        if (tilePile.hasTiles()) {
             nextPlayer();
             dragTile();
             notifyController();
         } else {
+            finished = true;
             windowLogic.finishGame();
         }
 
@@ -134,13 +135,8 @@ public class Game implements DataToModel{
         if (tilePile.hasTiles())
             table.setCurrentTile(tilePile.dragTile());
         else
-            gameFinished();
+            throw new RuntimeException("Trying to drag a tile from an empty pile");
     }
-
-    private void gameFinished() {
-        finished = true;
-    }
-
 
     public boolean followerCanBePlaced() {
         return true;
