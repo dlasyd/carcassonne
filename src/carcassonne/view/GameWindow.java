@@ -29,6 +29,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JLabel currentPoints;
     private final WindowLogic windowLogic;
     private int endTurnButtonPressed = 1;
+    private JDialog gameEndWindow = new GameEndWindow();
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -129,6 +130,6 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     @Override
     public void displayEndgameWindow() {
-
+        gameEndWindow.setVisible(true);
     }
 }
