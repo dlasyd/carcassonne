@@ -2,20 +2,20 @@ package carcassonne.controller;
 
 public class GameDataBuilder {
     private String name;
-    private int points;
-    private int followers;
+    private String points;
+    private String followers;
 
     public GameDataBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
-    public GameDataBuilder setPoints(int points) {
+    public GameDataBuilder setPoints(String points) {
         this.points = points;
         return this;
     }
 
-    public GameDataBuilder setFollowers(int followers) {
+    public GameDataBuilder setFollowers(String followers) {
         this.followers = followers;
         return this;
     }

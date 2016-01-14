@@ -3,10 +3,11 @@ package carcassonne.model;
 import java.awt.*;
 import java.util.ArrayList;
 
+import carcassonne.controller.DataToModel;
 import carcassonne.controller.WindowLogic;
 import carcassonne.controller.GameDataBuilder;
 
-public class Game {
+public class Game implements DataToModel{
     private ArrayList<Player> players = new ArrayList<Player>();
     private Player currentPlayer;
     private Table table;
@@ -31,21 +32,19 @@ public class Game {
     }
 
     public void turnActions(int x, int y) {
-        nextPlayer();
-        dragTile();
         Tile tile = getCurrentTile();
         tile.setCoordinates(x, y);
         table.placeTile(tile);
+        nextPlayer();
+        dragTile();
         notifyController();
     }
 
     int getNumberOfPlayers() {
-        // TODO Fake it
         return players.size();
     }
 
     Player getCurrentPlayer() {
-        // TODO Auto-generated method stub
         return currentPlayer;
     }
 
@@ -106,7 +105,7 @@ public class Game {
     }
 
     public void notifyController() {
-        windowLogic.updateGameInformation(new GameDataBuilder().setName("Anton").createGameData());
+        windowLogic.update(new GameDataBuilder().setName(getCurrentPlayerName()).createGameData());
     }
 
     public TilePile getTilePile() {

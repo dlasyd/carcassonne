@@ -1,6 +1,6 @@
 package carcassonne.controller;
 
-import carcassonne.view.GameWindow;
+import carcassonne.view.ViewWindow;
 
 /**
  * This is a part of Carcassonne project.
@@ -14,12 +14,12 @@ public class DataCollector implements WindowLogic {
 
 
     @Override
-    public void setGameWindow(GameWindow gameWindow) {
+    public void setGameWindow(ViewWindow gameWindow) {
 
     }
 
     @Override
-    public void updateGameInformation(GameData gameData) {
+    public void update(GameData gameData) {
         latestGameData = gameData;
     }
 
@@ -46,6 +46,10 @@ public class DataCollector implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
+
+    }
+
+    public void setDataToModel(DataToModel dataToModel) {
 
     }
 }

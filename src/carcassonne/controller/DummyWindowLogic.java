@@ -1,8 +1,9 @@
 package carcassonne.controller;
 
-import carcassonne.view.GameWindow;
+import carcassonne.view.ViewWindow;
 
-import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a part of Carcassonne project.
@@ -11,21 +12,34 @@ import java.awt.*;
  * Created by Andrey on 12/01/16.
  */
 public class DummyWindowLogic implements WindowLogic {
-    private GameWindow gameWindow;
-    private int tiles = 72;
+    private ViewWindow gameWindow;
     private boolean currentTileOnTheTable;
     private boolean tileConfirmed;
-    private String[] players = {"Anton", "Andrey"};
-    private Color[] colors = {Color.ORANGE, Color.YELLOW};
+    private DataToModel dataToModel;
+    private Map<DataType, String> interfaceData = new HashMap();
 
     @Override
-    public void setGameWindow(GameWindow gameWindow) {
+    public void setGameWindow(ViewWindow gameWindow) {
         this.gameWindow = gameWindow;
     }
 
     @Override
-    public void updateGameInformation(GameData gameData) {
+    public void update(GameData gameData) {
+        interfaceData.put(DataType.NAME, gameData.getName());
+        interfaceData.put(DataType.FOLLOWES, gameData.getFollowers());
+        interfaceData.put(DataType.POINTS, gameData.getPoints());
+        updateUI();
+    }
 
+    private void updateUI() {
+        gameWindow.setCurrentPlayer(interfaceData.get(DataType.NAME));
+        gameWindow.setNumberOfFollwers(interfaceData.get(DataType.FOLLOWES));
+        gameWindow.setCurrentPoints(interfaceData.get(DataType.POINTS));
+
+    }
+
+    public void setDataToModel(DataToModel dataToModel) {
+        this.dataToModel = dataToModel;
     }
 
     @Override
@@ -62,12 +76,11 @@ public class DummyWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
-            tiles -= 1;
-            gameWindow.setTilesNumber(tiles);
-            gameWindow.setCurrentPlayer(players[tiles % 2]);
-            gameWindow.setPlayerColorRemainder(colors[tiles % 2]);
-            gameWindow.setEndTurnEnabled(false);
+        dataToModel.turnActions(1 ,0);
+        gameWindow.setEndTurnEnabled(false);
     }
 
+
+    enum DataType {NAME, POINTS, FOLLOWES}
 }
 

@@ -1,15 +1,15 @@
 package carcassonne.controller;
 
 
-import carcassonne.view.GameWindow;
+import carcassonne.view.ViewWindow;
 
 /**
  * Created by Andrey on 01/12/15.
  */
 public interface WindowLogic {
-    public void setGameWindow(GameWindow gameWindow);
+    public void setGameWindow(ViewWindow gameWindow);
 
-    void updateGameInformation(GameData gameData);
+    void update(GameData gameData);
 
     GameData getLatestGameData();
 
@@ -20,4 +20,6 @@ public interface WindowLogic {
     boolean isTileFixed();
 
     void updateEndTurnButton();
+
+    public void setDataToModel(DataToModel dataToModel);
 }

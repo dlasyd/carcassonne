@@ -13,5 +13,6 @@ public class StartGame {
         WindowLogic windowLogic = new DummyWindowLogic();
         GameWindow window = new GameWindow(windowLogic);
         windowLogic.setGameWindow(window);
+
     }
 }

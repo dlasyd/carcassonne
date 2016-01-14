@@ -89,7 +89,7 @@ public class Table {
         return Tile.getNullInstance();
     }
 
-    void setRealEstateManager(RealEstateManager realEstateManager) {
+    public void setRealEstateManager(RealEstateManager realEstateManager) {
         this.realEstateManager = realEstateManager;
     }
 
