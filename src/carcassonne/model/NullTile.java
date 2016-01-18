@@ -138,6 +138,11 @@ public class NullTile extends Tile{
 
     }
 
+    @Override
+    public TileName getName() {
+        return null;
+    }
+
     private void throwRuntimeException() {
         throw new RuntimeException("The tile is Null");
     }

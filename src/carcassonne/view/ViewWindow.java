@@ -30,4 +30,6 @@ public interface ViewWindow {
     void setTilePreviewEnabled(boolean b);
 
     void repaintWindow();
+
+    void setCurrentTile(DrawableTile currentTile);
 }

@@ -1,5 +1,7 @@
 package carcassonne.controller;
 
+import carcassonne.view.DrawableTile;
+
 import java.awt.*;
 
 public class GameDataBuilder {
@@ -8,6 +10,7 @@ public class GameDataBuilder {
     private String followers;
     private Color playerColor;
     private String tilesLeft;
+    private DrawableTile currentTile;
 
     public GameDataBuilder setName(String name) {
         this.name = name;
@@ -35,6 +38,11 @@ public class GameDataBuilder {
     }
 
     public GameData createGameData() {
-        return new GameData(name, points, followers, playerColor, tilesLeft);
+        return new GameData(name, points, followers, playerColor, tilesLeft, currentTile);
+    }
+
+    public GameDataBuilder setCurrentTile(DrawableTile currentTile) {
+        this.currentTile = currentTile;
+        return this;
     }
 }

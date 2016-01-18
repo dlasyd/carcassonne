@@ -1,17 +1,18 @@
 package carcassonne.model;
 
+import carcassonne.controller.DataToModel;
+import carcassonne.controller.GameDataBuilder;
+import carcassonne.controller.WindowLogic;
+import carcassonne.view.DrawableTile;
+
 import java.awt.*;
 import java.util.ArrayList;
 
-import carcassonne.controller.DataToModel;
-import carcassonne.controller.WindowLogic;
-import carcassonne.controller.GameDataBuilder;
-
 public class Game implements DataToModel{
+    private static Game game;
     private ArrayList<Player> players = new ArrayList<Player>();
     private Player currentPlayer;
     private Table table;
-    private static Game game;
     private boolean currentTileConfirmed;
     private boolean followerFriendly;           //determines if a tile has a vacant place for follower
     private TilePile tilePile = new TilePile();
@@ -120,7 +121,7 @@ public class Game implements DataToModel{
                 setFollowers("" + getCurrentPlayer().getNumberOfFollowers()).
                 setPlayerColor(getCurrentPlayer().getColor()).
                 setTilesLeft("" + tilePile.getNumberOfTiles()).
-                createGameData());
+                setCurrentTile(new DrawableTile(table.getCurrentTile())).createGameData());
     }
 
     public TilePile getTilePile() {

@@ -1,8 +1,9 @@
 package carcassonne.model;
 
-import java.util.*;
-
-import static carcassonne.model.TileDirections.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This is a part of Carcassonne project.
@@ -17,6 +18,7 @@ public class RealTile extends Tile {
     private Follower follower;
     private HashMap<Feature,Set<TileDirections>> featureToTileDirections = new HashMap<>();
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
+    private TileName tileName;
 
     /*
      * A feature can "connect" one TileDirections with the other. For example, a road from EAST to WEST
@@ -24,6 +26,10 @@ public class RealTile extends Tile {
     private HashMap<TileDirections, Set<TileDirections>> propertyConnectionMap = new HashMap<>();
 
     RealTile() {}
+
+    RealTile(TileName tileName) {
+        this.tileName = tileName;
+    }
 
     RealTile(int x, int y) {
         setCoordinates(x, y);
@@ -40,19 +46,14 @@ public class RealTile extends Tile {
     @Override
     public boolean featureEqual(Tile tile) {
         RealTile otherTile = (RealTile) tile;
-        if (this.featureToTileDirections.equals(otherTile.featureToTileDirections) &
+        return this.featureToTileDirections.equals(otherTile.featureToTileDirections) &
                 this.propertyMap.equals(otherTile.propertyMap) &
-                this.propertyConnectionMap.equals(otherTile.propertyConnectionMap))
-            return true;
-        return false;
+                this.propertyConnectionMap.equals(otherTile.propertyConnectionMap);
     }
 
     @Override
     public boolean directionsEqual(Tile referenceTile) {
-        if (this.propertyConnectionMap.equals( ((RealTile)referenceTile).propertyConnectionMap) )
-            return true;
-        else
-            return false;
+        return this.propertyConnectionMap.equals(((RealTile) referenceTile).propertyConnectionMap);
     }
 
     @Override
@@ -60,6 +61,11 @@ public class RealTile extends Tile {
         featureToTileDirections = ((RealTile) referenceTile).featureToTileDirections;
         propertyMap = ((RealTile) referenceTile).propertyMap;
         propertyConnectionMap = ((RealTile) referenceTile).propertyConnectionMap;
+    }
+
+    @Override
+    public TileName getName() {
+        return tileName;
     }
 
     private <T> void rotateKeys(HashMap<TileDirections, T> map, Rotation angle) {

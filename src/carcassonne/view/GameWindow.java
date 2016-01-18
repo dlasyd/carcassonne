@@ -33,6 +33,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JDialog gameEndWindow = new GameEndWindow();
     private boolean tilePreviewEnabled;
     private JPanel tilePreview;
+    private DrawableTile currentTile;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -147,6 +148,11 @@ public class GameWindow extends JFrame implements ViewWindow{
     @Override
     public void repaintWindow() {
         tilePreview.repaint();
+    }
+
+    @Override
+    public void setCurrentTile(DrawableTile currentTile) {
+        this.currentTile = currentTile;
     }
 
     private class TilePreview extends JPanel {

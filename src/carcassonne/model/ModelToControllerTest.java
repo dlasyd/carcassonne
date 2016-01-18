@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,7 +36,7 @@ public class ModelToControllerTest {
         game.setTable(table);
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
-        game.getTilePile().addXCrossroads(5);
+        game.getTilePile().add5DifferentTiles();
 
         windowLogic = new GameWindowLogic();
         viewWindow = new FakeWindow(windowLogic);
@@ -96,12 +99,22 @@ public class ModelToControllerTest {
 
     @Test
     public void tilePreviewDisplaysDifferentTiles() {
-        assertEquals("Fist tile preview is crossroad", TileName.ROAD4, fakeWindow.getTilePreviewName());
+        Set<TileName> tileNames = new HashSet<>();
+        Set<TileName> expected = new HashSet<>(Arrays.asList(TileName.ROAD4, TileName.ROAD3,
+                TileName.CITY1, TileName.CITY1RWE, TileName.CITY11NE));
+        tileNames.add(fakeWindow.getTilePreviewName());
         fakeWindow.clickOnGamePanel();
         fakeWindow.pressEndTurnButton();
-        assertEquals("Second is three way road", TileName.ROAD3, fakeWindow.getTilePreviewName());
+        tileNames.add(fakeWindow.getTilePreviewName());
         fakeWindow.clickOnGamePanel();
         fakeWindow.pressEndTurnButton();
-        assertEquals("Third tile is simple road with city", TileName.CITY1RSE, fakeWindow.getTilePreviewName());
+        tileNames.add(fakeWindow.getTilePreviewName());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.pressEndTurnButton();
+        tileNames.add(fakeWindow.getTilePreviewName());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.pressEndTurnButton();
+        tileNames.add(fakeWindow.getTilePreviewName());
+        assertEquals("Tiles displayed correctly", expected, tileNames);
     }
 }
