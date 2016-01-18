@@ -19,7 +19,7 @@ import java.io.File;
 public class GameWindow extends JFrame implements ViewWindow{
     private final WindowLogic windowLogic;
     private JPanel rootPanel;
-    private JPanel gameDrawer;
+    private JPanel gamePanelArea;
     private JPanel rightColumn;
     private JLabel tilesLeft;
     private JLabel currentPlayer;
@@ -34,17 +34,20 @@ public class GameWindow extends JFrame implements ViewWindow{
     private boolean tilePreviewEnabled;
     private JPanel tilePreview;
     private String currentTileFileName;
+    private JPanel gamePanel;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
         this.windowLogic = windowLogic;
         setContentPane(rootPanel);
-        pack();
+        //pack();
         setSize(800,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         tilePreview = new TilePreview();
         tilePreviewArea.add(tilePreview);
+        gamePanel = new GamePanel();
+        gamePanelArea.add(gamePanel);
 
         endTurnButton.addActionListener(new ActionListener() {
             @Override
@@ -54,7 +57,7 @@ public class GameWindow extends JFrame implements ViewWindow{
             }
         });
 
-        gameDrawer.addMouseListener(new MouseListener() {
+        gamePanelArea.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 /*
@@ -179,10 +182,18 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     private class GamePanel extends JPanel {
+        private javaxt.io.Image tileImage;
+
+        GamePanel() {
+            this.setBackground(Color.GRAY);
+        }
 
         @Override
         public void paintComponent(Graphics g) {
-
+            super.paintComponent(g);
+            g.fillRect(40,40, 40,40);
+            tileImage = new javaxt.io.Image(new File("res/tiles/city1.png"));
+            g.drawImage(tileImage.getBufferedImage(), 200, 200, null);
         }
     }
 }
