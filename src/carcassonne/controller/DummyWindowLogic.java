@@ -2,7 +2,6 @@ package carcassonne.controller;
 
 import carcassonne.view.ViewWindow;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +44,7 @@ public class DummyWindowLogic implements WindowLogic {
         gameWindow.setCurrentPoints(interfaceData.get(DataType.POINTS));
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
+        gameWindow.setTilePreviewEnabled(true);
     }
 
     public void setDataToModel(DataToModel dataToModel) {
@@ -69,6 +69,8 @@ public class DummyWindowLogic implements WindowLogic {
             currentX = x;
             currentY = y;
         }
+        gameWindow.setTilePreviewEnabled(false);
+        gameWindow.repaintWindow();
     }
 
     @Override

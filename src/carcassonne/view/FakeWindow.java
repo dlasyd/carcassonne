@@ -12,14 +12,15 @@ import java.awt.*;
  */
 public class FakeWindow implements ViewWindow {
     String currentPlayerName = "";
+    int moveCounter = 0;
     private WindowLogic windowLogic;
     private String currentPoints;
     private String numberOfFollwers;
     private String tilesLeft;
     private int[][] fakeCoordinates = {{1,0}, {2,0}, {3, 0}, {4, 0}, {5, 0}};
-    int moveCounter = 0;
     private boolean endTurnEnabled, nextTurnEnabled;
     private boolean endGameWindowDisplayed;
+    private boolean tilePreviewEnabled;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -45,26 +46,9 @@ public class FakeWindow implements ViewWindow {
         this.tilesLeft = tilesNumber;
     }
 
-
-
-    @Override
-    public void setCurrentPlayerName(String currentPlayer) {
-        this.currentPlayerName = currentPlayer;
-    }
-
     @Override
     public void setEndTurnEnabled(boolean b) {
         this.endTurnEnabled = b;
-    }
-
-    @Override
-    public void setNumberOfFollwers(String numberOfFollwers) {
-        this.numberOfFollwers = numberOfFollwers;
-    }
-
-    @Override
-    public void setCurrentPoints(String currentPoints) {
-        this.currentPoints = currentPoints;
     }
 
     @Override
@@ -72,8 +56,18 @@ public class FakeWindow implements ViewWindow {
         this.endGameWindowDisplayed = true;
     }
 
+    @Override
+    public void repaintWindow() {
+
+    }
+
     public String getCurrentPlayerName() {
         return currentPlayerName;
+    }
+
+    @Override
+    public void setCurrentPlayerName(String currentPlayer) {
+        this.currentPlayerName = currentPlayer;
     }
 
     public void pressEndTurnButton() {
@@ -86,8 +80,18 @@ public class FakeWindow implements ViewWindow {
         return currentPoints;
     }
 
+    @Override
+    public void setCurrentPoints(String currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+
     public String getNumberOfFollwers() {
         return numberOfFollwers;
+    }
+
+    @Override
+    public void setNumberOfFollwers(String numberOfFollwers) {
+        this.numberOfFollwers = numberOfFollwers;
     }
 
     public String getTilesLeft() {
@@ -104,5 +108,17 @@ public class FakeWindow implements ViewWindow {
 
     public boolean isEndGameWindowDisplayed() {
         return this.endGameWindowDisplayed;
+    }
+
+    public boolean isTilePreviewEnabled() {
+        return tilePreviewEnabled;
+    }
+
+    public void setTilePreviewEnabled(boolean b) {
+        this.tilePreviewEnabled = b;
+    }
+
+    public void clickOnGamePanel() {
+        windowLogic.updateTilePlaced(1, 0);
     }
 }

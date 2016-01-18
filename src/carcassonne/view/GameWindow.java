@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 
 /**
  * This is a part of Carcassonne project.
@@ -16,6 +17,7 @@ import java.awt.event.MouseListener;
  * Created by Andrey on 11/01/16.
  */
 public class GameWindow extends JFrame implements ViewWindow{
+    private final WindowLogic windowLogic;
     private JPanel rootPanel;
     private JPanel gameDrawer;
     private JPanel rightColumn;
@@ -23,13 +25,14 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JLabel currentPlayer;
     private JLabel numberOfFollowers;
     private JButton endTurnButton;
-    private JPanel tilePreview;
+    private JPanel tilePreviewArea;
     private JPanel playerColor;
     private JButton confirmTileButton;
     private JLabel currentPoints;
-    private final WindowLogic windowLogic;
     private int endTurnButtonPressed = 1;
     private JDialog gameEndWindow = new GameEndWindow();
+    private boolean tilePreviewEnabled;
+    private JPanel tilePreview;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -39,7 +42,8 @@ public class GameWindow extends JFrame implements ViewWindow{
         setSize(800,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
+        tilePreview = new TilePreview();
+        tilePreviewArea.add(tilePreview);
 
         endTurnButton.addActionListener(new ActionListener() {
             @Override
@@ -49,7 +53,7 @@ public class GameWindow extends JFrame implements ViewWindow{
             }
         });
 
-        rootPanel.addMouseListener(new MouseListener() {
+        gameDrawer.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 /*
@@ -87,6 +91,8 @@ public class GameWindow extends JFrame implements ViewWindow{
                 windowLogic.updateTileConfirmed();
             }
         });
+
+        setVisible(true);
     }
 
     @Override
@@ -132,5 +138,41 @@ public class GameWindow extends JFrame implements ViewWindow{
     @Override
     public void displayEndgameWindow() {
         gameEndWindow.setVisible(true);
+    }
+
+    public void setTilePreviewEnabled(boolean b) {
+        tilePreviewEnabled = b;
+    }
+
+    @Override
+    public void repaintWindow() {
+        tilePreview.repaint();
+    }
+
+    private class TilePreview extends JPanel {
+        private javaxt.io.Image tileImage;
+
+        TilePreview() {
+            tileImage = new javaxt.io.Image(new File("res/tiles/road4.png"));
+            assert (tileImage.getBufferedImage() != null) : "image was not loaded";
+        }
+
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (tilePreviewEnabled) {
+                g.drawImage(tileImage.getBufferedImage(), 0, 0, null);
+            }
+
+        }
+    }
+
+    private class GamePanel extends JPanel {
+
+        @Override
+        public void paintComponent(Graphics g) {
+
+        }
     }
 }

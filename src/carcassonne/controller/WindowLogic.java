@@ -7,7 +7,7 @@ import carcassonne.view.ViewWindow;
  * Created by Andrey on 01/12/15.
  */
 public interface WindowLogic {
-    public void setGameWindow(ViewWindow gameWindow);
+    void setGameWindow(ViewWindow gameWindow);
 
     void update(GameData gameData);
 
@@ -19,11 +19,12 @@ public interface WindowLogic {
 
     boolean isTileFixed();
 
-    public void setDataToModel(DataToModel dataToModel);
+    void setDataToModel(DataToModel dataToModel);
 
     void pull();
 
     void updateEndTurnButton();
 
     void finishGame();
+
 }

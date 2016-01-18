@@ -26,4 +26,8 @@ public interface ViewWindow {
     void setCurrentPoints(String currentPoints);
 
     void displayEndgameWindow();
+
+    void setTilePreviewEnabled(boolean b);
+
+    void repaintWindow();
 }

@@ -1,10 +1,7 @@
 package carcassonne.model;
 
-import static org.junit.Assert.*;
-
 import carcassonne.controller.DummyWindowLogic;
 import carcassonne.controller.WindowLogic;
-import carcassonne.controller.DataCollector;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;
 import org.junit.Before;
@@ -14,13 +11,14 @@ import org.junit.rules.ExpectedException;
 
 import java.awt.*;
 
-public class GameTest {
-    Game game;
-    Table table;
+import static org.junit.Assert.*;
 
+public class GameTest {
     @Rule
     public ExpectedException exception =
             ExpectedException.none();
+    Game game;
+    Table table;
 
     @Before
     public final void setUp() {

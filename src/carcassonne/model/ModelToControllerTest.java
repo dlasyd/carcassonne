@@ -1,10 +1,8 @@
 package carcassonne.model;
 
-import carcassonne.controller.DataCollector;
 import carcassonne.controller.DummyWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.FakeWindow;
-import carcassonne.view.GameWindow;
 import carcassonne.view.ViewWindow;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +10,6 @@ import org.junit.Test;
 import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This is a part of Carcassonne project.
@@ -102,6 +99,26 @@ public class ModelToControllerTest {
         assertEquals("Tile place button disabled", false, ((FakeWindow) viewWindow).isPlaceTileButtonEnabled());
         assertEquals("End turn button disabled", false, ((FakeWindow) viewWindow).isPlaceEndTurnButtonEnabled());
         assertEquals("End game window displayed", true, ((FakeWindow) viewWindow).isEndGameWindowDisplayed());
+    }
+
+    /*
+     * User should see tile preview in the top right corner only until he places
+     * it on board for the first time. It should return there if replace tile button
+     * is pressed
+     */
+    @Test
+    public void tilePreviewIsDisplayedCorrectly() {
+        WindowLogic windowLogic = new DummyWindowLogic();
+        ViewWindow viewWindow = new FakeWindow(windowLogic);
+        windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(game);
+        game.setWindowLogic(windowLogic);
+        game.nextPlayer();
+        game.dragTile();
+        game.notifyController();
+        assertEquals("Tile preview is enabled", true, ((FakeWindow) viewWindow).isTilePreviewEnabled());
+        ((FakeWindow) viewWindow).clickOnGamePanel();
+        assertEquals("Tile preview is disabled", false, ((FakeWindow) viewWindow).isTilePreviewEnabled());
     }
 
 }
