@@ -22,6 +22,7 @@ public class ModelToControllerTest {
     Table table;
     WindowLogic windowLogic;
     ViewWindow viewWindow;
+    FakeWindow fakeWindow;
 
     @Before
     public final void setUp() {
@@ -42,6 +43,7 @@ public class ModelToControllerTest {
         game.nextPlayer();
         game.dragTile();
         game.notifyController();
+        fakeWindow = (FakeWindow) viewWindow;
 
     }
 
@@ -79,7 +81,7 @@ public class ModelToControllerTest {
         assertEquals("Game is finished", true, game.isFinished());
         assertEquals("Tile place button disabled", false, ((FakeWindow) viewWindow).isPlaceTileButtonEnabled());
         assertEquals("End turn button disabled", false, ((FakeWindow) viewWindow).isPlaceEndTurnButtonEnabled());
-        assertEquals("End game window displayed", true, ((FakeWindow) viewWindow).isEndGameWindowDisplayed());
+        assertEquals("End game window displayed", true, fakeWindow.isEndGameWindowDisplayed());
     }
 
     /*
@@ -87,9 +89,19 @@ public class ModelToControllerTest {
      */
     @Test
     public void tilePreviewIsDisplayedCorrectly() {
-        assertEquals("Tile preview is enabled", true, ((FakeWindow) viewWindow).isTilePreviewEnabled());
+        assertEquals("Tile preview is enabled", true, fakeWindow.isTilePreviewEnabled());
         ((FakeWindow) viewWindow).clickOnGamePanel();
-        assertEquals("Tile preview is disabled", false, ((FakeWindow) viewWindow).isTilePreviewEnabled());
+        assertEquals("Tile preview is disabled", false, fakeWindow.isTilePreviewEnabled());
     }
 
+    @Test
+    public void tilePreviewDisplaysDifferentTiles() {
+        assertEquals("Fist tile preview is crossroad", TileName.ROAD4, fakeWindow.getTilePreviewName());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Second is three way road", TileName.ROAD3, fakeWindow.getTilePreviewName());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Third tile is simple road with city", TileName.CITY1RSE, fakeWindow.getTilePreviewName());
+    }
 }

@@ -1,6 +1,7 @@
 package carcassonne.view;
 
 import carcassonne.controller.WindowLogic;
+import carcassonne.model.TileName;
 
 import java.awt.*;
 
@@ -120,5 +121,9 @@ public class FakeWindow implements ViewWindow {
 
     public void clickOnGamePanel() {
         windowLogic.updateTilePlaced(1, 0);
+    }
+
+    public TileName getTilePreviewName() {
+        return TileName.CITY2NW;
     }
 }
