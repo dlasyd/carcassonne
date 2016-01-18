@@ -99,9 +99,9 @@ public class ModelToControllerTest {
 
     @Test
     public void tilePreviewDisplaysDifferentTiles() {
-        Set<TileName> tileNames = new HashSet<>();
-        Set<TileName> expected = new HashSet<>(Arrays.asList(TileName.ROAD4, TileName.ROAD3,
-                TileName.CITY1, TileName.CITY1RWE, TileName.CITY11NE));
+        Set<String> tileNames = new HashSet<>();
+        Set<String> expected = new HashSet<>(Arrays.asList("road4.png", "road3.png",
+                "city1.png", "city1rwe.png", "city11ne.png"));
         tileNames.add(fakeWindow.getTilePreviewName());
         fakeWindow.clickOnGamePanel();
         fakeWindow.pressEndTurnButton();

@@ -33,7 +33,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JDialog gameEndWindow = new GameEndWindow();
     private boolean tilePreviewEnabled;
     private JPanel tilePreview;
-    private DrawableTile currentTile;
+    private String currentTileFileName;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -151,18 +151,22 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setCurrentTile(DrawableTile currentTile) {
-        this.currentTile = currentTile;
+    public void setCurrentTileFileName(String currentTileFileName) {
+        this.currentTileFileName = currentTileFileName;
+        ((TilePreview) tilePreview).loadTileImage(currentTileFileName);
     }
 
     private class TilePreview extends JPanel {
         private javaxt.io.Image tileImage;
 
         TilePreview() {
-            tileImage = new javaxt.io.Image(new File("res/tiles/road4.png"));
-            assert (tileImage.getBufferedImage() != null) : "image was not loaded";
+            loadTileImage(currentTileFileName);
         }
 
+        void loadTileImage(String imageFileName) {
+            tileImage = new javaxt.io.Image(new File("res/tiles/" + imageFileName));
+            //assert (tileImage.getBufferedImage() != null) : "image was not loaded";
+        }
 
         @Override
         public void paintComponent(Graphics g) {

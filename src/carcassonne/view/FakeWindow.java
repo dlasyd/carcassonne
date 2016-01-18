@@ -22,7 +22,7 @@ public class FakeWindow implements ViewWindow {
     private boolean endTurnEnabled, nextTurnEnabled;
     private boolean endGameWindowDisplayed;
     private boolean tilePreviewEnabled;
-    private DrawableTile currentTile;
+    private String currentTileFileName;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -64,8 +64,8 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
-    public void setCurrentTile(DrawableTile currentTile) {
-        this.currentTile = currentTile;
+    public void setCurrentTileFileName(String currentTileFileName) {
+        this.currentTileFileName = currentTileFileName;
     }
 
     public String getCurrentPlayerName() {
@@ -129,7 +129,7 @@ public class FakeWindow implements ViewWindow {
         windowLogic.updateTilePlaced(1, 0);
     }
 
-    public TileName getTilePreviewName() {
-        return currentTile.getTileName();
+    public String getTilePreviewName() {
+        return currentTileFileName;
     }
 }

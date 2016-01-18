@@ -31,5 +31,5 @@ public interface ViewWindow {
 
     void repaintWindow();
 
-    void setCurrentTile(DrawableTile currentTile);
+    void setCurrentTileFileName(String currentTileFileName);
 }

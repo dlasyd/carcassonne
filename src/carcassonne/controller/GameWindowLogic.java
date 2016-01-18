@@ -38,7 +38,7 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
         gameWindow.setTilePreviewEnabled(true);
-        gameWindow.setCurrentTile(gameData.getCurrentTile());
+        gameWindow.setCurrentTileFileName(gameData.getCurrentTile().getFileName());
     }
 
     public void setDataToModel(DataToModel dataToModel) {

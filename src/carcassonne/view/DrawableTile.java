@@ -20,4 +20,8 @@ public class DrawableTile {
     public TileName getTileName() {
         return tile.getName();
     }
+
+    public String getFileName() {
+        return tile.getName().name().toLowerCase() + ".png";
+    }
 }
