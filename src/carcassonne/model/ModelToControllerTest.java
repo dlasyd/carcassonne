@@ -52,38 +52,38 @@ public class ModelToControllerTest {
 
     @Test
     public void dataIsPushed() {
-        assertEquals("Current player in controller is correct", "Anton", ((FakeWindow)viewWindow).getCurrentPlayerName());
+        assertEquals("Current player in controller is correct", "Anton", fakeWindow.getCurrentPlayerName());
         game.turnActions(1, 0);
-        assertEquals("Current player in controller is correct", "Andrey", ((FakeWindow)viewWindow).getCurrentPlayerName());
+        assertEquals("Current player in controller is correct", "Andrey", fakeWindow.getCurrentPlayerName());
         windowLogic.setGameWindow(viewWindow);
     }
 
     @Test
     public void controllerCanSendInformation() {
-        assertEquals("Current player in controller is correct", "Anton", ((FakeWindow)viewWindow).getCurrentPlayerName());
-        ((FakeWindow) viewWindow).pressEndTurnButton();
-        assertEquals("Current player in controller is correct", "Andrey", ((FakeWindow)viewWindow).getCurrentPlayerName());
+        assertEquals("Current player in controller is correct", "Anton", fakeWindow.getCurrentPlayerName());
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Current player in controller is correct", "Andrey", fakeWindow.getCurrentPlayerName());
         windowLogic.setGameWindow(viewWindow);
     }
 
     @Test
     public void beforeFirsMoveAllInfoIsDisplayedInGameWindow() {
-        assertEquals("Current player in controller is correct", "Anton", ((FakeWindow)viewWindow).getCurrentPlayerName());
-        assertEquals("Score in controller is correct", "0", ((FakeWindow)viewWindow).getCurrentPoints());
-        assertEquals("Followers number is correct", "7", ((FakeWindow) viewWindow).getNumberOfFollwers());
-        assertEquals("Tiles left", "4", ((FakeWindow) viewWindow).getTilesLeft());
+        assertEquals("Current player in controller is correct", "Anton", fakeWindow.getCurrentPlayerName());
+        assertEquals("Score in controller is correct", "0", fakeWindow.getCurrentPoints());
+        assertEquals("Followers number is correct", "7", fakeWindow.getNumberOfFollwers());
+        assertEquals("Tiles left", "4", fakeWindow.getTilesLeft());
     }
 
     @Test
     public void endGameWindowRunsWhenGameEnds() {
-        ((FakeWindow) viewWindow).pressEndTurnButton();
-        ((FakeWindow) viewWindow).pressEndTurnButton();
-        ((FakeWindow) viewWindow).pressEndTurnButton();
-        ((FakeWindow) viewWindow).pressEndTurnButton();
-        ((FakeWindow) viewWindow).pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
         assertEquals("Game is finished", true, game.isFinished());
-        assertEquals("Tile place button disabled", false, ((FakeWindow) viewWindow).isPlaceTileButtonEnabled());
-        assertEquals("End turn button disabled", false, ((FakeWindow) viewWindow).isPlaceEndTurnButtonEnabled());
+        assertEquals("Tile place button disabled", false, fakeWindow.isPlaceTileButtonEnabled());
+        assertEquals("End turn button disabled", false, fakeWindow.isPlaceEndTurnButtonEnabled());
         assertEquals("End game window displayed", true, fakeWindow.isEndGameWindowDisplayed());
     }
 
@@ -93,7 +93,7 @@ public class ModelToControllerTest {
     @Test
     public void tilePreviewIsDisplayedCorrectly() {
         assertEquals("Tile preview is enabled", true, fakeWindow.isTilePreviewEnabled());
-        ((FakeWindow) viewWindow).clickOnGamePanel();
+        fakeWindow.clickOnGamePanel();
         assertEquals("Tile preview is disabled", false, fakeWindow.isTilePreviewEnabled());
     }
 
