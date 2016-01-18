@@ -20,6 +20,8 @@ import static org.junit.Assert.assertEquals;
 public class ModelToControllerTest {
     Game game;
     Table table;
+    WindowLogic windowLogic;
+    ViewWindow viewWindow;
 
     @Before
     public final void setUp() {
@@ -31,17 +33,21 @@ public class ModelToControllerTest {
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
         game.getTilePile().addXCrossroads(5);
-    }
 
-    @Test
-    public void dataIsPushed() {
-        WindowLogic windowLogic = new DummyWindowLogic();
-        ViewWindow viewWindow = new FakeWindow(windowLogic);
+
+        windowLogic = new DummyWindowLogic();
+        viewWindow = new FakeWindow(windowLogic);
         windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(game);
         game.setWindowLogic(windowLogic);
         game.nextPlayer();
         game.dragTile();
         game.notifyController();
+
+    }
+
+    @Test
+    public void dataIsPushed() {
         assertEquals("Current player in controller is correct", "Anton", ((FakeWindow)viewWindow).getCurrentPlayerName());
         game.turnActions(1, 0);
         assertEquals("Current player in controller is correct", "Andrey", ((FakeWindow)viewWindow).getCurrentPlayerName());
@@ -50,14 +56,6 @@ public class ModelToControllerTest {
 
     @Test
     public void controllerCanSendInformation() {
-        WindowLogic windowLogic = new DummyWindowLogic();
-        ViewWindow viewWindow = new FakeWindow(windowLogic);
-        windowLogic.setGameWindow(viewWindow);
-        windowLogic.setDataToModel(game);
-        game.setWindowLogic(windowLogic);
-        game.nextPlayer();
-        game.dragTile();
-        game.notifyController();
         assertEquals("Current player in controller is correct", "Anton", ((FakeWindow)viewWindow).getCurrentPlayerName());
         ((FakeWindow) viewWindow).pressEndTurnButton();
         assertEquals("Current player in controller is correct", "Andrey", ((FakeWindow)viewWindow).getCurrentPlayerName());
@@ -66,14 +64,6 @@ public class ModelToControllerTest {
 
     @Test
     public void beforeFirsMoveAllInfoIsDisplayedInGameWindow() {
-        WindowLogic windowLogic = new DummyWindowLogic();
-        ViewWindow viewWindow = new FakeWindow(windowLogic);
-        windowLogic.setGameWindow(viewWindow);
-        windowLogic.setDataToModel(game);
-        game.setWindowLogic(windowLogic);
-        game.nextPlayer();
-        game.dragTile();
-        game.notifyController();
         assertEquals("Current player in controller is correct", "Anton", ((FakeWindow)viewWindow).getCurrentPlayerName());
         assertEquals("Score in controller is correct", "0", ((FakeWindow)viewWindow).getCurrentPoints());
         assertEquals("Followers number is correct", "7", ((FakeWindow) viewWindow).getNumberOfFollwers());
@@ -82,14 +72,6 @@ public class ModelToControllerTest {
 
     @Test
     public void endGameWindowRunsWhenGameEnds() {
-        WindowLogic windowLogic = new DummyWindowLogic();
-        ViewWindow viewWindow = new FakeWindow(windowLogic);
-        windowLogic.setGameWindow(viewWindow);
-        windowLogic.setDataToModel(game);
-        game.setWindowLogic(windowLogic);
-        game.nextPlayer();
-        game.dragTile();
-        game.notifyController();
         ((FakeWindow) viewWindow).pressEndTurnButton();
         ((FakeWindow) viewWindow).pressEndTurnButton();
         ((FakeWindow) viewWindow).pressEndTurnButton();
@@ -103,19 +85,9 @@ public class ModelToControllerTest {
 
     /*
      * User should see tile preview in the top right corner only until he places
-     * it on board for the first time. It should return there if replace tile button
-     * is pressed
      */
     @Test
     public void tilePreviewIsDisplayedCorrectly() {
-        WindowLogic windowLogic = new DummyWindowLogic();
-        ViewWindow viewWindow = new FakeWindow(windowLogic);
-        windowLogic.setGameWindow(viewWindow);
-        windowLogic.setDataToModel(game);
-        game.setWindowLogic(windowLogic);
-        game.nextPlayer();
-        game.dragTile();
-        game.notifyController();
         assertEquals("Tile preview is enabled", true, ((FakeWindow) viewWindow).isTilePreviewEnabled());
         ((FakeWindow) viewWindow).clickOnGamePanel();
         assertEquals("Tile preview is disabled", false, ((FakeWindow) viewWindow).isTilePreviewEnabled());
