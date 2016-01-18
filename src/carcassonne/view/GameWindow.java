@@ -38,6 +38,7 @@ public class GameWindow extends JFrame implements ViewWindow{
         pack();
         setSize(800,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setVisible(true);
 
         endTurnButton.addActionListener(new ActionListener() {

@@ -13,6 +13,7 @@ public class GameEndWindow extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         pack();
+        setLocationRelativeTo(null);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
