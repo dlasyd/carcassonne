@@ -4,10 +4,7 @@ import carcassonne.controller.WindowLogic;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 
 /**
@@ -54,38 +51,6 @@ public class GameWindow extends JFrame implements ViewWindow{
             public void actionPerformed(ActionEvent e) {
                 windowLogic.updateEndTurnButton();
                 endTurnButtonPressed++;
-            }
-        });
-
-        gamePanelArea.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                /*
-                 * If tile has been placed
-                 * 1) save info
-                 * 2) enable end move button
-                 */
-                windowLogic.updateTilePlaced(endTurnButtonPressed, 0);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
 
@@ -183,17 +148,81 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     private class GamePanel extends JPanel {
         private javaxt.io.Image tileImage;
-
+        private int windowLocalX = 200;
+        private int windowLocalY = 200;
+        private boolean firstMouseDrag = true;
+        private int previousMouseX = 0, previousMouseY = 0;
         GamePanel() {
             this.setBackground(Color.GRAY);
+            this.addMouseListener(new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                /*
+                 * If tile has been placed
+                 * 1) save info
+                 * 2) enable end move button
+                 */
+                    windowLogic.updateTilePlaced(endTurnButtonPressed, 0);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    firstMouseDrag = true;
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+            this.addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    super.mouseDragged(e);
+
+                    int mouseX = e.getX();
+                    int mouseY = e.getY();
+                    if (firstMouseDrag) {
+                        /*
+                         * when mouse is clicked but not yet moved
+                         * windowLocal coordinates should not change
+                         */
+                        firstMouseDrag = false;
+                        previousMouseX = mouseX;
+                        previousMouseY = mouseY;
+                    } else {
+                        windowLocalX -= previousMouseX - mouseX;
+                        previousMouseX = mouseX;
+                        windowLocalY -= previousMouseY - mouseY;
+                        previousMouseY = mouseY;
+                    }
+
+                    repaint();
+                }
+
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    super.mouseMoved(e);
+                }
+            });
         }
 
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.fillRect(40,40, 40,40);
             tileImage = new javaxt.io.Image(new File("res/tiles/city1.png"));
-            g.drawImage(tileImage.getBufferedImage(), 200, 200, null);
+            g.drawImage(tileImage.getBufferedImage(), windowLocalX, windowLocalY, null);
         }
     }
 }
