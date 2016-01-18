@@ -1,6 +1,6 @@
 package carcassonne.model;
 
-import carcassonne.controller.DummyWindowLogic;
+import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;
@@ -159,7 +159,7 @@ public class GameTest {
         /*
          * added later because previous test implementation stopped working
          */
-        WindowLogic windowLogic = new DummyWindowLogic();
+        WindowLogic windowLogic = new GameWindowLogic();
         ViewWindow viewWindow = new FakeWindow(windowLogic);
         windowLogic.setGameWindow(viewWindow);
         game.setWindowLogic(windowLogic);

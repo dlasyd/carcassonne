@@ -2,21 +2,17 @@ package carcassonne.controller;
 
 import carcassonne.view.ViewWindow;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This is a part of Carcassonne project.
  * The project is created for learning and practicing java
  * and not intended for distribution.
  * Created by Andrey on 12/01/16.
  */
-public class DummyWindowLogic implements WindowLogic {
+public class GameWindowLogic implements WindowLogic {
     private ViewWindow gameWindow;
     private boolean currentTileOnTheTable;
     private boolean tileConfirmed;
     private DataToModel dataToModel;
-    private Map<DataType, String> interfaceData = new HashMap();
     private GameData gameData;
     private int currentX, currentY;
     private boolean gameEnded = false;
@@ -28,9 +24,6 @@ public class DummyWindowLogic implements WindowLogic {
 
     @Override
     public void update(GameData gameData) {
-        interfaceData.put(DataType.NAME, gameData.getName());
-        interfaceData.put(DataType.FOLLOWES, gameData.getFollowers());
-        interfaceData.put(DataType.POINTS, gameData.getPoints());
         this.gameData = gameData;
         updateUI();
         tileConfirmed = false;
@@ -39,9 +32,9 @@ public class DummyWindowLogic implements WindowLogic {
     }
 
     private void updateUI() {
-        gameWindow.setCurrentPlayerName(interfaceData.get(DataType.NAME));
-        gameWindow.setNumberOfFollwers(interfaceData.get(DataType.FOLLOWES));
-        gameWindow.setCurrentPoints(interfaceData.get(DataType.POINTS));
+        gameWindow.setCurrentPlayerName(gameData.getName());
+        gameWindow.setNumberOfFollwers(gameData.getFollowers());
+        gameWindow.setCurrentPoints(gameData.getPoints());
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
         gameWindow.setTilePreviewEnabled(true);
@@ -105,8 +98,5 @@ public class DummyWindowLogic implements WindowLogic {
         gameWindow.displayEndgameWindow();
         gameEnded = true;
     }
-
-
-    enum DataType {NAME, POINTS, FOLLOWES}
 }
 

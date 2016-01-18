@@ -29,7 +29,7 @@ public class StartGame {
         /*
          * prepare mvc
          */
-        WindowLogic windowLogic = new DummyWindowLogic();
+        WindowLogic windowLogic = new GameWindowLogic();
 
         /*
          * Should be done before creating a window instance

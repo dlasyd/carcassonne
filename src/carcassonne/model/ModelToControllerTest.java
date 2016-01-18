@@ -1,6 +1,6 @@
 package carcassonne.model;
 
-import carcassonne.controller.DummyWindowLogic;
+import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;
@@ -34,8 +34,7 @@ public class ModelToControllerTest {
         game.addPlayer("Andrey", Color.YELLOW);
         game.getTilePile().addXCrossroads(5);
 
-
-        windowLogic = new DummyWindowLogic();
+        windowLogic = new GameWindowLogic();
         viewWindow = new FakeWindow(windowLogic);
         windowLogic.setGameWindow(viewWindow);
         windowLogic.setDataToModel(game);
