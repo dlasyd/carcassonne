@@ -40,6 +40,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JPanel tilePreview;
     private String currentTileFileName;
     private GamePanel gamePanel;
+    private Set<Coordinates> possibleTileLocations;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -147,7 +148,7 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     @Override
     public void setPossibleTileLocations(Set<Coordinates> possibleTileLocations) {
-
+        this.possibleTileLocations = possibleTileLocations;
     }
 
     private class TilePreview extends JPanel {
@@ -277,8 +278,12 @@ public class GameWindow extends JFrame implements ViewWindow{
                         windowLocalX + tileSize * tile.getX(), windowLocalY + tileSize * tile.getY(), tileSize, tileSize, null);
             }
 
-            g.drawRect(windowLocalX + tileSize * 0 + rectangleMargin ,windowLocalY + tileSize * 1 + rectangleMargin ,
-                    tileSize - 2 * rectangleMargin, tileSize - 2 * rectangleMargin);
+            for (Coordinates coordinates: possibleTileLocations) {
+                g.drawRect(windowLocalX + tileSize * coordinates.getX() + rectangleMargin,
+                           windowLocalY + tileSize * coordinates.getY()  + rectangleMargin,
+                           tileSize - 2 * rectangleMargin, tileSize - 2 * rectangleMargin);
+            }
+
         }
     }
 }

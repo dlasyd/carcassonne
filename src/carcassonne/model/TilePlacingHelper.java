@@ -67,6 +67,6 @@ class TilePlacingHelper {
             }
             tile.turnRight(Rotation.DEG_90);
         }
-
+        coordinatesToRotationMap.keySet().removeAll(placedTiles.keySet());
     }
 }
