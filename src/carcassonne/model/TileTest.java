@@ -327,8 +327,8 @@ public class TileTest {
         expected.add(TileDirections.WWS);
         expected.add(TileDirections.WWN);
         TileDirections[] expectedArray = expected.toArray(new TileDirections[expected.size()]);
-        assertEquals("Unoccupied directions excluding END and CENTER", new HashSet(Arrays.asList(expectedArray)),
-                new HashSet(Arrays.asList(tile.getUnoccupiedDirections())));
+        assertEquals("Unoccupied directions excluding END and CENTER", new HashSet<>(Arrays.asList(expectedArray)),
+                new HashSet<>(Arrays.asList(tile.getUnoccupiedDirections())));
     }
 
 
@@ -413,6 +413,21 @@ public class TileTest {
         Tile tile = Tile.getInstance();
         tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
         assertTrue("New tile is feature equal", tile.directionsEqual(TilePile.getReferenceTile(TileName.ROAD4)));
+    }
+
+    @Test
+    public void smallCityContinuous() {
+        Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
+        Tile tile2 = Tile.getInstance(TileName.CITY1);
+        tile2.turnRight(Rotation.DEG_180);
+        assertEquals("Small city is continuous", true, tile1.isContinuous(tile2, TileDirections.SOUTH));
+    }
+
+    @Test
+    public void smallCityNotContinuous() {
+        Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
+        Tile tile2 = Tile.getInstance(TileName.CITY1);
+        assertEquals("Small city is continuous", false, tile1.isContinuous(tile2, TileDirections.NORTH));
     }
 
 }

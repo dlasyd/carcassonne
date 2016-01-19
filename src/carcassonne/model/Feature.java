@@ -46,4 +46,11 @@ public class Feature {
     boolean hasShield() {
         return false;
     }
+
+    public boolean isSameType(Feature feature) {
+        this.getClass();
+        feature.getClass();
+        boolean t = this.getClass().equals(feature.getClass());
+        return this.getClass().equals(feature.getClass());
+    }
 }

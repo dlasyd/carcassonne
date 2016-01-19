@@ -13,11 +13,10 @@ public class Table {
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
-    private final Tile firstTile = Tile.getInstance(0, 0, TileName.CITY1);
+    private final Tile firstTile = Tile.getInstance(0, 0, TileName.CITY1RWE);
     private HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
 
     public Table() {
-        firstTile.copyFeatures(TilePile.getReferenceTile(TileName.CITY1RWE));
         placeTile(firstTile);
     }
 

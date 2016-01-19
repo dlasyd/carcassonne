@@ -12,16 +12,18 @@ public abstract class Tile {
     }
 
     public static Tile getInstance(TileName tileName) {
-        return new RealTile(tileName);
+        Tile tile = new RealTile(tileName);
+        tile.copyFeatures(TilePile.getReferenceTile(tileName));
+        return tile;
     }
 
     public static Tile getInstance(int x, int y) {
         return new RealTile(x, y);
     }
 
-    public static Tile getInstance(int x, int y, TileName city1) {
-        Tile tile = new RealTile(city1);
-        tile.copyFeatures(TilePile.getReferenceTile(city1));
+    public static Tile getInstance(int x, int y, TileName tileName) {
+        Tile tile = new RealTile(tileName);
+        tile.copyFeatures(TilePile.getReferenceTile(tileName));
         tile.setCoordinates(x, y);
         return tile;
     }
@@ -81,5 +83,7 @@ public abstract class Tile {
     public abstract void copyFeatures(Tile referenceTile);
 
     public abstract TileName getName();
+
+    public abstract boolean isContinuous(Tile tile, TileDirections direction);
 }
 

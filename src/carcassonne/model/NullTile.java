@@ -143,6 +143,11 @@ public class NullTile extends Tile{
         return null;
     }
 
+    @Override
+    public boolean isContinuous(Tile tile, TileDirections direction) {
+        return false;
+    }
+
     private void throwRuntimeException() {
         throw new RuntimeException("The tile is Null");
     }

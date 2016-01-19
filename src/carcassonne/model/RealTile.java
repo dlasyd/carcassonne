@@ -68,6 +68,18 @@ public class RealTile extends Tile {
         return tileName;
     }
 
+    @Override
+    public boolean isContinuous(Tile tile, TileDirections direction) {
+        Set<TileDirections> directionsToCheck = direction.getEdge();
+        for (TileDirections edgeDirection: directionsToCheck) {
+            Feature feature = tile.getFeature(edgeDirection);
+            Feature thisFeature = this.getFeature(edgeDirection.getNeighbour());
+            if (!tile.getFeature(edgeDirection).isSameType(this.getFeature(edgeDirection.getNeighbour())))
+                return false;
+        }
+        return true;
+    }
+
     private <T> void rotateKeys(HashMap<TileDirections, T> map, Rotation angle) {
         Set<TileDirections> keySet = new HashSet<>(map.keySet());
         HashMap<TileDirections, T> resultMap = new HashMap<>();
