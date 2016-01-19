@@ -22,11 +22,10 @@ public class TilePlacingHelperTest {
     @Test
     public void cloisterWithNoRoadCoordinates() {
         Map<Coordinates, Set<Rotation>> expected = new HashMap<>();
-        Coordinates coord = new Coordinates(0, 1);
-        Util.addSetElement(expected, coord, Rotation.DEG_0);
-        Util.addSetElement(expected, coord, Rotation.DEG_90);
-        Util.addSetElement(expected, coord, Rotation.DEG_180);
-        Util.addSetElement(expected, coord, Rotation.DEG_270);
+        Util.addSetElement(expected,  new Coordinates(0, 1), Rotation.DEG_0);
+        Util.addSetElement(expected,  new Coordinates(0, 1), Rotation.DEG_90);
+        Util.addSetElement(expected,  new Coordinates(0, 1), Rotation.DEG_180);
+        Util.addSetElement(expected,  new Coordinates(0, 1), Rotation.DEG_270);
         helper.setPlacedTiles(table.getPlacedTiles());
         Tile tile = Tile.getInstance(TileName.CLOISTER);
         helper.update(tile);

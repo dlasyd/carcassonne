@@ -19,6 +19,7 @@ public class RealTile extends Tile {
     private HashMap<Feature,Set<TileDirections>> featureToTileDirections = new HashMap<>();
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
     private TileName tileName;
+    private Rotation currentRotation = Rotation.DEG_0;
 
     /*
      * A feature can "connect" one TileDirections with the other. For example, a road from EAST to WEST
@@ -40,7 +41,8 @@ public class RealTile extends Tile {
         rotateKeys(propertyConnectionMap, angle);
         rotateValueSet(propertyConnectionMap, angle);
         rotateKeys(propertyMap, angle);
-
+        int numberOf90Rotations = currentRotation.getNumberOf90Rotations() + angle.getNumberOf90Rotations();
+        currentRotation = Rotation.getValue(numberOf90Rotations % 4);
     }
 
     @Override
@@ -78,6 +80,10 @@ public class RealTile extends Tile {
                 return false;
         }
         return true;
+    }
+
+    public Rotation getCurrentRotation() {
+        return currentRotation;
     }
 
     private <T> void rotateKeys(HashMap<TileDirections, T> map, Rotation angle) {

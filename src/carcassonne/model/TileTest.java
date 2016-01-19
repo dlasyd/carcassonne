@@ -430,6 +430,21 @@ public class TileTest {
         assertEquals("Small city is continuous", false, tile1.isContinuous(tile2, TileDirections.NORTH));
     }
 
+    @Test
+    public void tileSavesRotation() {
+        Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
+        assertEquals("All tiles have 0 rotation by default", Rotation.DEG_0, tile1.getCurrentRotation());
+    }
+
+    @Test
+    public void rotationChangesWhenTurned() {
+        Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
+        tile1.turnRight(Rotation.DEG_180);
+        assertEquals("Rotation saved after turn", Rotation.DEG_180, tile1.getCurrentRotation());
+        tile1.turnRight(Rotation.DEG_270);
+        assertEquals("Rotation saved after turn", Rotation.DEG_90, tile1.getCurrentRotation());
+    }
+
 }
 
 

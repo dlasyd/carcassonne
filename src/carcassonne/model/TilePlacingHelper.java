@@ -44,29 +44,29 @@ class TilePlacingHelper {
             eligibleTiles.add(new Coordinates(coordinates.getX() - 1, coordinates.getY()));
         }
 
-        /*
-         * check rotation zero first
-         */
-        Rotation rotation = Rotation.DEG_0;
-        for (Coordinates coordinate: eligibleTiles) {
-            Set<TileDirections> directionsToCompare = new HashSet<>(Arrays.asList(
-                    TileDirections.SOUTH, TileDirections.NORTH, TileDirections.EAST, TileDirections.WEST));
+        for (Rotation rotation: Rotation.values()) {
+            for (Coordinates coordinate: eligibleTiles) {
+                Set<TileDirections> directionsToCompare = new HashSet<>(Arrays.asList(
+                        TileDirections.SOUTH, TileDirections.NORTH, TileDirections.EAST, TileDirections.WEST));
 
-            /*
-             * Continuity should be checked for every tile that is a neighbour
-             */
-            boolean continuityBroken = false;
-            for (TileDirections direction: directionsToCompare) {
-                Tile neighbour = table.getNeighbouringTile(coordinate.getX(), coordinate.getY(), direction);
-                if (!neighbour.isNull()) {
-                    if (!neighbour.isContinuous(tile, direction))
-                        continuityBroken = true;
+                /*
+                 * Continuity should be checked for every tile that is a neighbour
+                 */
+                boolean continuityBroken = false;
+                for (TileDirections direction: directionsToCompare) {
+                    Tile neighbour = table.getNeighbouringTile(coordinate.getX(), coordinate.getY(), direction);
+                    if (!neighbour.isNull()) {
+                        if (!neighbour.isContinuous(tile, direction))
+                            continuityBroken = true;
+                    }
                 }
+
+                if (!continuityBroken)
+                    Util.addSetElement(coordinatesToRotationMap, coordinate, rotation);
+
             }
-
-            if (!continuityBroken)
-                Util.addSetElement(coordinatesToRotationMap, coordinate, Rotation.DEG_0);
-
+            tile.turnRight(Rotation.DEG_90);
         }
+
     }
 }

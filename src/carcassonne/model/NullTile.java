@@ -148,6 +148,10 @@ public class NullTile extends Tile{
         return false;
     }
 
+    public Rotation getCurrentRotation() {
+        return null;
+    }
+
     private void throwRuntimeException() {
         throw new RuntimeException("The tile is Null");
     }

@@ -85,5 +85,7 @@ public abstract class Tile {
     public abstract TileName getName();
 
     public abstract boolean isContinuous(Tile tile, TileDirections direction);
+
+    public abstract Rotation getCurrentRotation();
 }
 
