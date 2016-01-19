@@ -12,14 +12,14 @@ import java.util.Set;
  * Created by Andrey on 06/12/15.
  */
 public class RealTile extends Tile {
+    private TileName tileName;
     private Coordinates coordinates;
-    private boolean noFollower = true;
+    private Rotation currentRotation = Rotation.DEG_0;
     private Feature occupiedFeature = null;
     private Follower follower;
+    private boolean noFollower = true;
     private HashMap<Feature,Set<TileDirections>> featureToTileDirections = new HashMap<>();
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
-    private TileName tileName;
-    private Rotation currentRotation = Rotation.DEG_0;
 
     /*
      * A feature can "connect" one TileDirections with the other. For example, a road from EAST to WEST
@@ -144,9 +144,6 @@ public class RealTile extends Tile {
         player.placeFollower();
     }
 
-    /*
-     * should place follower only if tile is not part of real estate
-     */
     public void placeFollower(Player player, TileDirections direction) {
         if (propertyMap.get(direction) == null)
             throw new RuntimeException("Cannot place follower using tileDirection because there is no corresponding feature");
@@ -223,11 +220,11 @@ public class RealTile extends Tile {
         return propertyMap.get(direction);
     }
 
-    @Override
     /*
      * returns unoccupied directions. CENTER is excluded from return because they are not needed in
      * the context of use of the method (the method is created to be used in RealEstateTest)
      */
+    @Override
     public TileDirections[] getUnoccupiedDirections() {
         Set<TileDirections> result = new HashSet<>();
         result.addAll(Arrays.asList(TileDirections.values()));

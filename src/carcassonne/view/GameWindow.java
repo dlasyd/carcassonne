@@ -176,6 +176,8 @@ public class GameWindow extends JFrame implements ViewWindow{
         private int MIN_TILE_SIZE = 45;
         private int TILE_SIZE_VARIATION = 90;
         private Set<DrawableTile> tilesOnTable = new HashSet<>();
+        private final int RECTANGLE_DIVIDER = 9;
+        private int rectangleMargin = 10;
 
         GamePanel() {
             this.setBackground(Color.GRAY);
@@ -245,6 +247,7 @@ public class GameWindow extends JFrame implements ViewWindow{
 
         void changeScale(double scale) {
             tileSize = MIN_TILE_SIZE + (int)(TILE_SIZE_VARIATION  * scale / 100);
+            rectangleMargin = (int) (tileSize / RECTANGLE_DIVIDER);
             //TODO scale relative to window center
             windowLocalX += previousTileSize - tileSize;
             windowLocalY += previousTileSize - tileSize;
@@ -267,6 +270,9 @@ public class GameWindow extends JFrame implements ViewWindow{
                 g.drawImage(tileImage.getBufferedImage(),
                         windowLocalX + tileSize * tile.getX(), windowLocalY + tileSize * tile.getY(), tileSize, tileSize, null);
             }
+
+            g.drawRect(windowLocalX + tileSize * 0 + rectangleMargin ,windowLocalY + tileSize * 1 + rectangleMargin ,
+                    tileSize - 2 * rectangleMargin, tileSize - 2 * rectangleMargin);
         }
     }
 }
