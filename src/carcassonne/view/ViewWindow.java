@@ -21,9 +21,11 @@ public interface ViewWindow {
 
     void setEndTurnEnabled(boolean b);
 
-    void setNumberOfFollwers(String numberOfFollwers);
+    void setNumberOfFollowers(String numberOfFollowers);
 
     void setCurrentPoints(String currentPoints);
+
+    void addTileOnTable(DrawableTile tile);
 
     void displayEndgameWindow();
 

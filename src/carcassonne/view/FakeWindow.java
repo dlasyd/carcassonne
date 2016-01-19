@@ -4,6 +4,8 @@ import carcassonne.controller.WindowLogic;
 import carcassonne.model.TileName;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This is a part of Carcassonne project.
@@ -23,6 +25,8 @@ public class FakeWindow implements ViewWindow {
     private boolean endGameWindowDisplayed;
     private boolean tilePreviewEnabled;
     private String currentTileFileName;
+    private Set<DrawableTile> tilesOnTable = new HashSet<>();
+    private TileName firstPlacedTileName;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -92,12 +96,18 @@ public class FakeWindow implements ViewWindow {
         this.currentPoints = currentPoints;
     }
 
+    @Override
+    public void addTileOnTable(DrawableTile tile) {
+        tilesOnTable.add(tile);
+        firstPlacedTileName = tile.getTileName();
+    }
+
     public String getNumberOfFollwers() {
         return numberOfFollwers;
     }
 
     @Override
-    public void setNumberOfFollwers(String numberOfFollwers) {
+    public void setNumberOfFollowers(String numberOfFollwers) {
         this.numberOfFollwers = numberOfFollwers;
     }
 
@@ -131,5 +141,13 @@ public class FakeWindow implements ViewWindow {
 
     public String getTilePreviewName() {
         return currentTileFileName;
+    }
+
+    public boolean isPlacedTileSetEmpty() {
+        return tilesOnTable.isEmpty();
+    }
+
+    public TileName getFirstPlacedTileName() {
+        return firstPlacedTileName;
     }
 }

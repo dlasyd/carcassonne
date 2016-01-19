@@ -24,4 +24,19 @@ public class DrawableTile {
     public String getFileName() {
         return tile.getName().name().toLowerCase() + ".png";
     }
+
+    public boolean noCoordinates() {
+        if (tile.getCoordinates() == null)
+            return true;
+        else
+            return false;
+    }
+
+    int getX() {
+        return tile.getX();
+    }
+
+    int getY() {
+        return tile.getY();
+    }
 }

@@ -96,11 +96,11 @@ public class RealTile extends Tile {
         coordinates = new Coordinates (x, y);
     }
 
-    int getX() {
+    public int getX() {
         return coordinates.getX();
     }
 
-    int getY() {
+    public int getY() {
         return coordinates.getY();
     }
 

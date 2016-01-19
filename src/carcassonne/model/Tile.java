@@ -19,13 +19,20 @@ public abstract class Tile {
         return new RealTile(x, y);
     }
 
+    public static Tile getInstance(int x, int y, TileName city1) {
+        Tile tile = new RealTile(city1);
+        tile.copyFeatures(TilePile.getReferenceTile(city1));
+        tile.setCoordinates(x, y);
+        return tile;
+    }
+
     public abstract boolean isNull();
 
-    abstract Coordinates getCoordinates();
+    public abstract Coordinates getCoordinates();
 
-    abstract int getX();
+    public abstract int getX();
 
-    abstract int getY();
+    public abstract int getY();
 
     abstract void setCoordinates(int x, int y);
 

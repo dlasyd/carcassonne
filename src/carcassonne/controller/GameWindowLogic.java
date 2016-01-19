@@ -1,5 +1,6 @@
 package carcassonne.controller;
 
+import carcassonne.view.DrawableTile;
 import carcassonne.view.ViewWindow;
 
 /**
@@ -33,12 +34,13 @@ public class GameWindowLogic implements WindowLogic {
 
     private void updateUI() {
         gameWindow.setCurrentPlayerName(gameData.getName());
-        gameWindow.setNumberOfFollwers(gameData.getFollowers());
+        gameWindow.setNumberOfFollowers(gameData.getFollowers());
         gameWindow.setCurrentPoints(gameData.getPoints());
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
         gameWindow.setTilePreviewEnabled(true);
-        gameWindow.setCurrentTileFileName(gameData.getCurrentTile().getFileName());
+        gameWindow.setCurrentTileFileName(new DrawableTile(gameData.getCurrentTile()).getFileName());
+        gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
     }
 
     public void setDataToModel(DataToModel dataToModel) {

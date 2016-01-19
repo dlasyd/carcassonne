@@ -117,4 +117,14 @@ public class ModelToControllerTest {
         tileNames.add(fakeWindow.getTilePreviewName());
         assertEquals("Tiles displayed correctly", expected, tileNames);
     }
+
+    @Test
+    public void windowGetsFirstTile() {
+        assertEquals("Placed tiles set is not empty", false, fakeWindow.isPlacedTileSetEmpty());
+    }
+
+    @Test
+    public void fistTileIsCorrect() {
+        assertEquals("First tile is correct", TileName.CITY1RWE, fakeWindow.getFirstPlacedTileName());
+    }
 }

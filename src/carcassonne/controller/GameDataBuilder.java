@@ -1,6 +1,6 @@
 package carcassonne.controller;
 
-import carcassonne.view.DrawableTile;
+import carcassonne.model.Tile;
 
 import java.awt.*;
 
@@ -10,7 +10,8 @@ public class GameDataBuilder {
     private String followers;
     private Color playerColor;
     private String tilesLeft;
-    private DrawableTile currentTile;
+    private Tile currentTile;
+    private Tile previouslyPlacedTile;
 
     public GameDataBuilder setName(String name) {
         this.name = name;
@@ -37,12 +38,17 @@ public class GameDataBuilder {
         return this;
     }
 
-    public GameData createGameData() {
-        return new GameData(name, points, followers, playerColor, tilesLeft, currentTile);
-    }
-
-    public GameDataBuilder setCurrentTile(DrawableTile currentTile) {
+    public GameDataBuilder setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
         return this;
+    }
+
+    public GameDataBuilder setPreviouslyPlacedTile(Tile previouslyPlacedTile) {
+        this.previouslyPlacedTile = previouslyPlacedTile;
+        return this;
+    }
+
+    public GameData createGameData() {
+        return new GameData(name, points, followers, playerColor, tilesLeft, currentTile, previouslyPlacedTile);
     }
 }

@@ -1,5 +1,6 @@
 package carcassonne.controller;
 
+import carcassonne.model.Tile;
 import carcassonne.view.DrawableTile;
 
 import java.awt.*;
@@ -16,24 +17,22 @@ public class GameData {
     private String followers;
     private Color playerColor;
     private String tilesLeft;
-    private DrawableTile currentTile;
+    private Tile currentTile;
+    private Tile previouslyPlacedTile;
 
     public GameData(String name, String points, String followers, Color playerColor, String tilesLeft,
-                    DrawableTile currentTile) {
+                    Tile currentTile, Tile previouslyPlacedTile) {
         this.name = name;
         this.points = points;
         this.followers = followers;
         this.playerColor = playerColor;
         this.tilesLeft = tilesLeft;
         this.currentTile = currentTile;
+        this.previouslyPlacedTile = previouslyPlacedTile;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPoints() {
@@ -48,19 +47,15 @@ public class GameData {
         return playerColor;
     }
 
-    public void setPlayerColor(Color playerColor) {
-        this.playerColor = playerColor;
-    }
-
     public String getTilesLeft() {
         return tilesLeft;
     }
 
-    public void setTilesLeft(String tilesLeft) {
-        this.tilesLeft = tilesLeft;
+    public Tile getCurrentTile() {
+        return currentTile;
     }
 
-    public DrawableTile getCurrentTile() {
-        return currentTile;
+    public Tile getPreviouslyPlacedTile() {
+        return previouslyPlacedTile;
     }
 }

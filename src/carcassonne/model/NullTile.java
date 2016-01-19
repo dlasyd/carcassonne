@@ -12,17 +12,17 @@ public class NullTile extends Tile{
     }
 
     @Override
-    Coordinates getCoordinates() {
+    public Coordinates getCoordinates() {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    int getX() {
+    public int getX() {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    int getY() {
+    public int getY() {
         throw new RuntimeException("The tile is Null");
     }
 

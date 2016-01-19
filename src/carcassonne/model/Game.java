@@ -121,7 +121,9 @@ public class Game implements DataToModel{
                 setFollowers("" + getCurrentPlayer().getNumberOfFollowers()).
                 setPlayerColor(getCurrentPlayer().getColor()).
                 setTilesLeft("" + tilePile.getNumberOfTiles()).
-                setCurrentTile(new DrawableTile(table.getCurrentTile())).createGameData());
+                setCurrentTile(table.getCurrentTile()).
+                setPreviouslyPlacedTile(table.getPreviouslyPlacedTile()).
+                createGameData());
     }
 
     public TilePile getTilePile() {

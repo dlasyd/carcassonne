@@ -13,7 +13,7 @@ public class Table {
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
-    private final Tile firstTile = Tile.getInstance(0, 0);
+    private final Tile firstTile = Tile.getInstance(0, 0, TileName.CITY1);
     private HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
 
     public Table() {
@@ -105,5 +105,9 @@ public class Table {
             throw new RuntimeException("Cannot place follower on existing real estate");
         tilePlacedLast.placeFollower(player, direction);
         realEstateManager.createAsset(player, tilePlacedLast);
+    }
+
+    public Tile getPreviouslyPlacedTile() {
+        return tilePlacedLast;
     }
 }

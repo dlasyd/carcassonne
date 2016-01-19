@@ -3,9 +3,15 @@ package carcassonne.view;
 import carcassonne.controller.WindowLogic;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This is a part of Carcassonne project.
@@ -26,12 +32,13 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JPanel playerColor;
     private JButton confirmTileButton;
     private JLabel currentPoints;
+    private JSlider scaleSlider;
     private int endTurnButtonPressed = 1;
     private JDialog gameEndWindow = new GameEndWindow();
     private boolean tilePreviewEnabled;
     private JPanel tilePreview;
     private String currentTileFileName;
-    private JPanel gamePanel;
+    private GamePanel gamePanel;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -62,6 +69,14 @@ public class GameWindow extends JFrame implements ViewWindow{
         });
 
         setVisible(true);
+        scaleSlider.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider source = (JSlider)e.getSource();
+                gamePanel.changeScale(source.getValue());
+            }
+        });
     }
 
     @Override
@@ -95,13 +110,18 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setNumberOfFollwers(String numberOfFollwers) {
+    public void setNumberOfFollowers(String numberOfFollwers) {
         this.numberOfFollowers.setText("Followers: " + numberOfFollwers);
     }
 
     @Override
     public void setCurrentPoints(String currentPoints) {
         this.currentPoints.setText("Current points: " + currentPoints);
+    }
+
+    @Override
+    public void addTileOnTable(DrawableTile tile) {
+        gamePanel.addTileOnTable(tile);
     }
 
     @Override
@@ -133,7 +153,6 @@ public class GameWindow extends JFrame implements ViewWindow{
 
         void loadTileImage(String imageFileName) {
             tileImage = new javaxt.io.Image(new File("res/tiles/" + imageFileName));
-            //assert (tileImage.getBufferedImage() != null) : "image was not loaded";
         }
 
         @Override
@@ -152,6 +171,12 @@ public class GameWindow extends JFrame implements ViewWindow{
         private int windowLocalY = 200;
         private boolean firstMouseDrag = true;
         private int previousMouseX = 0, previousMouseY = 0;
+        private int tileSize = 90;
+        private int previousTileSize = tileSize;
+        private int MIN_TILE_SIZE = 45;
+        private int TILE_SIZE_VARIATION = 90;
+        private Set<DrawableTile> tilesOnTable = new HashSet<>();
+
         GamePanel() {
             this.setBackground(Color.GRAY);
             this.addMouseListener(new MouseListener() {
@@ -218,11 +243,30 @@ public class GameWindow extends JFrame implements ViewWindow{
             });
         }
 
+        void changeScale(double scale) {
+            tileSize = MIN_TILE_SIZE + (int)(TILE_SIZE_VARIATION  * scale / 100);
+            //TODO scale relative to window center
+            windowLocalX += previousTileSize - tileSize;
+            windowLocalY += previousTileSize - tileSize;
+            repaint();
+            previousTileSize = tileSize;
+        }
+
+        void addTileOnTable(DrawableTile tile) {
+            if (tile.noCoordinates())
+                throw new RuntimeException("Cannot draw placed tile with no coordinates");
+            tilesOnTable.add(tile);
+            repaint();
+        }
+
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            tileImage = new javaxt.io.Image(new File("res/tiles/city1.png"));
-            g.drawImage(tileImage.getBufferedImage(), windowLocalX, windowLocalY, null);
+            for (DrawableTile tile: tilesOnTable) {
+                tileImage = new javaxt.io.Image(new File("res/tiles/" + tile.getFileName()));
+                g.drawImage(tileImage.getBufferedImage(),
+                        windowLocalX + tileSize * tile.getX(), windowLocalY + tileSize * tile.getY(), tileSize, tileSize, null);
+            }
         }
     }
 }
