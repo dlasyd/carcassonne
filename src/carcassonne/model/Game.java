@@ -123,6 +123,7 @@ public class Game implements DataToModel{
                 setTilesLeft("" + tilePile.getNumberOfTiles()).
                 setCurrentTile(table.getCurrentTile()).
                 setPreviouslyPlacedTile(table.getPreviouslyPlacedTile()).
+                setPossibleTileLocations(table.getPossibleTileLocations()).
                 createGameData());
     }
 

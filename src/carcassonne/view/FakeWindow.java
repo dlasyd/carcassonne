@@ -1,6 +1,7 @@
 package carcassonne.view;
 
 import carcassonne.controller.WindowLogic;
+import carcassonne.model.Coordinates;
 import carcassonne.model.TileName;
 
 import java.awt.*;
@@ -27,6 +28,7 @@ public class FakeWindow implements ViewWindow {
     private String currentTileFileName;
     private Set<DrawableTile> tilesOnTable = new HashSet<>();
     private TileName firstPlacedTileName;
+    private Set<Coordinates> possibleTileLocations;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -39,12 +41,10 @@ public class FakeWindow implements ViewWindow {
 
     @Override
     public void setConfirmTileButtonText(String text) {
-
     }
 
     @Override
     public void setPlayerColorRemainder(Color color) {
-
     }
 
     @Override
@@ -107,8 +107,13 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
-    public void setNumberOfFollowers(String numberOfFollwers) {
-        this.numberOfFollwers = numberOfFollwers;
+    public void setNumberOfFollowers(String numberOfFollowers) {
+        this.numberOfFollwers = numberOfFollowers;
+    }
+
+    @Override
+    public void setPossibleTileLocations(Set<Coordinates> possibleTileLocations) {
+        this.possibleTileLocations = possibleTileLocations;
     }
 
     public String getTilesLeft() {
@@ -150,4 +155,13 @@ public class FakeWindow implements ViewWindow {
     public TileName getFirstPlacedTileName() {
         return firstPlacedTileName;
     }
+
+    public Set<Coordinates> getDisplayedPossibleTileCoordinatesSet() {
+        return new HashSet<>();
+    }
+
+    public Set<Coordinates> getPossibleTileLocations() {
+        return possibleTileLocations;
+    }
+
 }

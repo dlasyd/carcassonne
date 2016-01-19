@@ -1,6 +1,9 @@
 package carcassonne.view;
 
+import carcassonne.model.Coordinates;
+
 import java.awt.*;
+import java.util.Set;
 
 /**
  * This is a part of Carcassonne project.
@@ -34,4 +37,6 @@ public interface ViewWindow {
     void repaintWindow();
 
     void setCurrentTileFileName(String currentTileFileName);
+
+    void setPossibleTileLocations(Set<Coordinates> possibleTileLocations);
 }

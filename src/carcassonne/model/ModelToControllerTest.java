@@ -127,4 +127,16 @@ public class ModelToControllerTest {
     public void fistTileIsCorrect() {
         assertEquals("First tile is correct", TileName.CITY1RWE, fakeWindow.getFirstPlacedTileName());
     }
+
+    @Test
+    public void coordinatesOfLegalTilePlacement() {
+        Set<Coordinates> result = new HashSet<>();
+
+        /*
+         * This only tests the fact that data came through, correctness of
+         * data is tested in TilePlacementHelperTest
+         */
+        assertEquals("Window has displayed possible tile position",
+                false, fakeWindow.getPossibleTileLocations().isEmpty());
+    }
 }

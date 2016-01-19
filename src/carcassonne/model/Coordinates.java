@@ -3,7 +3,7 @@ package carcassonne.model;
 import java.util.HashSet;
 import java.util.Set;
 
-class Coordinates {
+public class Coordinates {
     private int x, y;
     private Rotation rotation;
 

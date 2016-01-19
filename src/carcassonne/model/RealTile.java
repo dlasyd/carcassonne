@@ -74,8 +74,6 @@ public class RealTile extends Tile {
     public boolean isContinuous(Tile tile, TileDirections direction) {
         Set<TileDirections> directionsToCheck = direction.getEdge();
         for (TileDirections edgeDirection: directionsToCheck) {
-            Feature feature = tile.getFeature(edgeDirection);
-            Feature thisFeature = this.getFeature(edgeDirection.getNeighbour());
             if (!tile.getFeature(edgeDirection).isSameType(this.getFeature(edgeDirection.getNeighbour())))
                 return false;
         }
@@ -181,7 +179,7 @@ public class RealTile extends Tile {
     }
 
     public boolean isComplete() {
-        Set keys = new HashSet(propertyMap.keySet());
+        Set keys = new HashSet<>(propertyMap.keySet());
         switch (keys.size()) {
             case 12:
                 return !keys.contains(TileDirections.CENTER);
@@ -192,7 +190,7 @@ public class RealTile extends Tile {
     }
 
     public Set<Feature> getFeatures() {
-        return new HashSet<Feature>(featureToTileDirections.keySet());
+        return new HashSet<>(featureToTileDirections.keySet());
     }
 
     public Feature getOccupiedFeature() {

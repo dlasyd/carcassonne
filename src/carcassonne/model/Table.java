@@ -1,6 +1,8 @@
 package carcassonne.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * Table on which table games are played, not a table that has rows and columns
@@ -10,6 +12,7 @@ public class Table {
     private Tile currentTile;
     private Tile tilePlacedLast;
     private RealEstateManager realEstateManager;
+    private final TilePlacingHelper placementHelper;
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
@@ -18,6 +21,7 @@ public class Table {
 
     public Table() {
         placeTile(firstTile);
+        placementHelper = new TilePlacingHelper(this);
     }
 
     static Table getInstance() {
@@ -54,12 +58,16 @@ public class Table {
         return currentTile;
     }
 
+    //TODO refactor, maybe remove
     public void dragNewCurrentTile() {
         currentTile = Tile.getInstance();
     }
 
     void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
+        placementHelper.setPlacedTiles(new HashMap<>(placedTiles));
+        placementHelper.update(currentTile);
+
     }
 
     HashMap<Coordinates,Tile> getPlacedTiles() {
@@ -108,5 +116,9 @@ public class Table {
 
     public Tile getPreviouslyPlacedTile() {
         return tilePlacedLast;
+    }
+
+    public Set<Coordinates> getPossibleTileLocations() {
+        return placementHelper.getCoordinatesToRotationMap().keySet();
     }
 }

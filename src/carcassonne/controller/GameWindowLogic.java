@@ -41,6 +41,7 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setTilePreviewEnabled(true);
         gameWindow.setCurrentTileFileName(new DrawableTile(gameData.getCurrentTile()).getFileName());
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
+        gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
     }
 
     public void setDataToModel(DataToModel dataToModel) {

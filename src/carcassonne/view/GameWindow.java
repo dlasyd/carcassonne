@@ -1,6 +1,7 @@
 package carcassonne.view;
 
 import carcassonne.controller.WindowLogic;
+import carcassonne.model.Coordinates;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -110,8 +111,8 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setNumberOfFollowers(String numberOfFollwers) {
-        this.numberOfFollowers.setText("Followers: " + numberOfFollwers);
+    public void setNumberOfFollowers(String numberOfFollowers) {
+        this.numberOfFollowers.setText("Followers: " + numberOfFollowers);
     }
 
     @Override
@@ -142,6 +143,11 @@ public class GameWindow extends JFrame implements ViewWindow{
     public void setCurrentTileFileName(String currentTileFileName) {
         this.currentTileFileName = currentTileFileName;
         ((TilePreview) tilePreview).loadTileImage(currentTileFileName);
+    }
+
+    @Override
+    public void setPossibleTileLocations(Set<Coordinates> possibleTileLocations) {
+
     }
 
     private class TilePreview extends JPanel {
