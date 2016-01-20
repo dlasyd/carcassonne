@@ -7,7 +7,7 @@ public class Coordinates {
     private int x, y;
     private Rotation rotation;
 
-    Coordinates (int x, int y) {
+    public Coordinates(int x, int y) {
         this(x, y, Rotation.DEG_0);
     }
 

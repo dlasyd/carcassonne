@@ -185,7 +185,9 @@ public class GameWindow extends JFrame implements ViewWindow{
         private Set<DrawableTile> tilesOnTable = new HashSet<>();
         private final int RECTANGLE_DIVIDER = 9;
         private int rectangleMargin = 10;
-
+        private double offsetX, offsetY;
+        private double centerX, centerY;
+        private double previousScaleMultiplier = 2;
         GamePanel() {
             this.setBackground(Color.GRAY);
             this.addMouseListener(new MouseListener() {
@@ -253,13 +255,28 @@ public class GameWindow extends JFrame implements ViewWindow{
         }
 
         void changeScale(double scale) {
+            centerX = this.getWidth() / 2;
+            centerY = this.getHeight() / 2;
+            int windowWidth = this.getWidth();
+            int windowHeight = this.getHeight();
             tileSize = MIN_TILE_SIZE + (int)(TILE_SIZE_VARIATION  * scale / 100);
             rectangleMargin = (int) (tileSize / RECTANGLE_DIVIDER);
-            //TODO scale relative to window center
-            windowLocalX += previousTileSize - tileSize;
-            windowLocalY += previousTileSize - tileSize;
+
+            double scaleMultiplier = 1 + 2 * (scale / 100);  // 0,5 - 1.5
+
+            int offsetX = windowWidth / 2 - windowLocalX;
+            double newOffsetX = offsetX / previousScaleMultiplier;
+            newOffsetX *= scaleMultiplier;
+            windowLocalX = (int) (windowWidth / 2 - newOffsetX);
+
+
+            int offsetY = windowHeight / 2 - windowLocalY;
+            double newOffsetY = offsetY / previousScaleMultiplier;
+            newOffsetY *= scaleMultiplier;
+            windowLocalY = (int) (windowHeight / 2 - newOffsetY);
+
+            previousScaleMultiplier = scaleMultiplier;
             repaint();
-            previousTileSize = tileSize;
         }
 
         void addTileOnTable(DrawableTile tile) {
@@ -272,18 +289,20 @@ public class GameWindow extends JFrame implements ViewWindow{
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+
+
             for (DrawableTile tile: tilesOnTable) {
                 tileImage = new javaxt.io.Image(new File("res/tiles/" + tile.getFileName()));
                 g.drawImage(tileImage.getBufferedImage(),
                         windowLocalX + tileSize * tile.getX(), windowLocalY + tileSize * tile.getY(), tileSize, tileSize, null);
             }
-
+/*
             for (Coordinates coordinates: possibleTileLocations) {
                 g.drawRect(windowLocalX + tileSize * coordinates.getX() + rectangleMargin,
                            windowLocalY + tileSize * coordinates.getY()  + rectangleMargin,
                            tileSize - 2 * rectangleMargin, tileSize - 2 * rectangleMargin);
             }
-
+*/
         }
     }
 }
