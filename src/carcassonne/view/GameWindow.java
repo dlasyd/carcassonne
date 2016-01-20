@@ -174,8 +174,8 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     private class GamePanel extends JPanel {
         private javaxt.io.Image tileImage;
-        private double windowLocalX = 200;
-        private double windowLocalY = 200;
+        private double windowLocalX = 235;
+        private double windowLocalY = 244;
         private boolean firstMouseDrag = true;
         private int previousMouseX = 0, previousMouseY = 0;
         private double tileSize = 90;
@@ -185,8 +185,6 @@ public class GameWindow extends JFrame implements ViewWindow{
         private Set<DrawableTile> tilesOnTable = new HashSet<>();
         private final int RECTANGLE_DIVIDER = 9;
         private double rectangleMargin = 10;
-        private double offsetX, offsetY;
-        private double centerX, centerY;
         private double previousScaleMultiplier = 2;
 
         GamePanel() {
@@ -195,12 +193,21 @@ public class GameWindow extends JFrame implements ViewWindow{
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                /*
-                 * If tile has been placed
-                 * 1) save info
-                 * 2) enable end move button
-                 */
-                    windowLogic.updateTilePlaced(endTurnButtonPressed, 0);
+                    /*
+                     * If tile has been placed
+                     * 1) save info
+                     * 2) enable end move button
+                     */
+
+                    for (Coordinates coordinates: possibleTileLocations) {
+                        if ((e.getX() > windowLocalX + tileSize * coordinates.getX() &&
+                                e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
+                                (e.getY() > windowLocalY + tileSize * coordinates.getY() &&
+                                        e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
+                            windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
+                            break;
+                        }
+                    }
                 }
 
                 @Override
@@ -256,10 +263,8 @@ public class GameWindow extends JFrame implements ViewWindow{
         }
 
         void changeScale(double scale) {
-            centerX = this.getWidth() / 2;
-            centerY = this.getHeight() / 2;
-            int windowWidth = this.getWidth();
-            int windowHeight = this.getHeight();
+            double windowWidth = this.getWidth();
+            double windowHeight = this.getHeight();
             tileSize = MIN_TILE_SIZE + (int)(TILE_SIZE_VARIATION  * scale / 100);
             rectangleMargin = (tileSize / RECTANGLE_DIVIDER);
 
@@ -291,7 +296,6 @@ public class GameWindow extends JFrame implements ViewWindow{
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-
             for (DrawableTile tile: tilesOnTable) {
                 tileImage = new javaxt.io.Image(new File("res/tiles/" + tile.getFileName()));
                 g.drawImage(tileImage.getBufferedImage(),
@@ -299,7 +303,12 @@ public class GameWindow extends JFrame implements ViewWindow{
                         (int) (windowLocalY + tileSize * tile.getY()),
                         (int) tileSize, (int) tileSize, null);
             }
-            if (windowLogic.displayPossibleLocations()) {
+
+            /*
+             * Sometimes possibleTileLocations is null for a moment when the window is displayed.
+             * The programme works ok after.
+             */
+            if (windowLogic.displayPossibleLocations() && possibleTileLocations != null) {
                 for (Coordinates coordinates: possibleTileLocations) {
                     g.drawRect((int) (windowLocalX + tileSize * coordinates.getX() + rectangleMargin),
                             (int) (windowLocalY + tileSize * coordinates.getY()  + rectangleMargin),
