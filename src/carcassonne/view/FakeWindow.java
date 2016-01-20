@@ -26,6 +26,11 @@ public class FakeWindow implements ViewWindow {
     private boolean endGameWindowDisplayed;
     private boolean tilePreviewEnabled;
     private String currentTileFileName;
+
+    public Set<DrawableTile> getTilesOnTable() {
+        return tilesOnTable;
+    }
+
     private Set<DrawableTile> tilesOnTable = new HashSet<>();
     private TileName firstPlacedTileName;
     private Set<Coordinates> possibleTileLocations;

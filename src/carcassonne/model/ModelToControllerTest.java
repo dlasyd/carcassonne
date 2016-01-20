@@ -139,4 +139,14 @@ public class ModelToControllerTest {
         assertEquals("Window has displayed possible tile position",
                 false, fakeWindow.getPossibleTileLocations().isEmpty());
     }
+
+    @Test
+    public void endGameLastTileIsDisplayed() {
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        assertEquals ("Window displays 6 tiles", 6, fakeWindow.getTilesOnTable().size());
+    }
 }
