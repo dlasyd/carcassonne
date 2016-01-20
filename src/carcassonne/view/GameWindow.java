@@ -174,20 +174,21 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     private class GamePanel extends JPanel {
         private javaxt.io.Image tileImage;
-        private int windowLocalX = 200;
-        private int windowLocalY = 200;
+        private double windowLocalX = 200;
+        private double windowLocalY = 200;
         private boolean firstMouseDrag = true;
         private int previousMouseX = 0, previousMouseY = 0;
-        private int tileSize = 90;
-        private int previousTileSize = tileSize;
+        private double tileSize = 90;
+        private double previousTileSize = tileSize;
         private int MIN_TILE_SIZE = 45;
         private int TILE_SIZE_VARIATION = 90;
         private Set<DrawableTile> tilesOnTable = new HashSet<>();
         private final int RECTANGLE_DIVIDER = 9;
-        private int rectangleMargin = 10;
+        private double rectangleMargin = 10;
         private double offsetX, offsetY;
         private double centerX, centerY;
         private double previousScaleMultiplier = 2;
+
         GamePanel() {
             this.setBackground(Color.GRAY);
             this.addMouseListener(new MouseListener() {
@@ -260,20 +261,20 @@ public class GameWindow extends JFrame implements ViewWindow{
             int windowWidth = this.getWidth();
             int windowHeight = this.getHeight();
             tileSize = MIN_TILE_SIZE + (int)(TILE_SIZE_VARIATION  * scale / 100);
-            rectangleMargin = (int) (tileSize / RECTANGLE_DIVIDER);
+            rectangleMargin = (tileSize / RECTANGLE_DIVIDER);
 
-            double scaleMultiplier = 1 + 2 * (scale / 100);  // 0,5 - 1.5
+            double scaleMultiplier = 1 + 2 * (scale / 100);
 
-            int offsetX = windowWidth / 2 - windowLocalX;
+            double offsetX = windowWidth / 2 - windowLocalX;
             double newOffsetX = offsetX / previousScaleMultiplier;
             newOffsetX *= scaleMultiplier;
-            windowLocalX = (int) (windowWidth / 2 - newOffsetX);
+            windowLocalX =  windowWidth / 2 - newOffsetX;
 
 
-            int offsetY = windowHeight / 2 - windowLocalY;
+            double offsetY = windowHeight / 2 - windowLocalY;
             double newOffsetY = offsetY / previousScaleMultiplier;
             newOffsetY *= scaleMultiplier;
-            windowLocalY = (int) (windowHeight / 2 - newOffsetY);
+            windowLocalY = windowHeight / 2 - newOffsetY;
 
             previousScaleMultiplier = scaleMultiplier;
             repaint();
@@ -294,7 +295,9 @@ public class GameWindow extends JFrame implements ViewWindow{
             for (DrawableTile tile: tilesOnTable) {
                 tileImage = new javaxt.io.Image(new File("res/tiles/" + tile.getFileName()));
                 g.drawImage(tileImage.getBufferedImage(),
-                        windowLocalX + tileSize * tile.getX(), windowLocalY + tileSize * tile.getY(), tileSize, tileSize, null);
+                        (int) (windowLocalX + tileSize * tile.getX()),
+                        (int) (windowLocalY + tileSize * tile.getY()),
+                        (int) tileSize, (int) tileSize, null);
             }
 /*
             for (Coordinates coordinates: possibleTileLocations) {
