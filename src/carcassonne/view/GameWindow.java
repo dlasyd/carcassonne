@@ -299,13 +299,15 @@ public class GameWindow extends JFrame implements ViewWindow{
                         (int) (windowLocalY + tileSize * tile.getY()),
                         (int) tileSize, (int) tileSize, null);
             }
-
-            for (Coordinates coordinates: possibleTileLocations) {
-                g.drawRect((int) (windowLocalX + tileSize * coordinates.getX() + rectangleMargin),
-                        (int) (windowLocalY + tileSize * coordinates.getY()  + rectangleMargin),
-                        (int) (tileSize - 2 * rectangleMargin),
-                        (int) (tileSize - 2 * rectangleMargin));
+            if (windowLogic.displayPossibleLocations()) {
+                for (Coordinates coordinates: possibleTileLocations) {
+                    g.drawRect((int) (windowLocalX + tileSize * coordinates.getX() + rectangleMargin),
+                            (int) (windowLocalY + tileSize * coordinates.getY()  + rectangleMargin),
+                            (int) (tileSize - 2 * rectangleMargin),
+                            (int) (tileSize - 2 * rectangleMargin));
+                }
             }
+
 
         }
     }

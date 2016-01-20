@@ -17,6 +17,7 @@ public class GameWindowLogic implements WindowLogic {
     private GameData gameData;
     private int currentX, currentY;
     private boolean gameEnded = false;
+    private boolean lastTurn = false;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -93,14 +94,25 @@ public class GameWindowLogic implements WindowLogic {
     public void updateEndTurnButton() {
         dataToModel.turnActions(currentX ,currentY);
         gameWindow.setEndTurnEnabled(false);
+        if (gameEnded)
+            gameWindow.displayEndgameWindow();
+    }
+
+    @Override
+    public void setLastTurn(Boolean value) {
+        lastTurn = value;
     }
 
     @Override
     public void finishGame() {
         gameWindow.setConfirmTileButtonEnabled(false);
         gameWindow.setEndTurnEnabled(false);
-        gameWindow.displayEndgameWindow();
         gameEnded = true;
+    }
+
+    @Override
+    public boolean displayPossibleLocations() {
+        return !gameEnded;
     }
 }
 

@@ -80,11 +80,27 @@ public class ModelToControllerTest {
         fakeWindow.pressEndTurnButton();
         fakeWindow.pressEndTurnButton();
         fakeWindow.pressEndTurnButton();
+        assertEquals("End game window not displayed", false, fakeWindow.isEndGameWindowDisplayed());
         fakeWindow.pressEndTurnButton();
         assertEquals("Game is finished", true, game.isFinished());
         assertEquals("Tile place button disabled", false, fakeWindow.isPlaceTileButtonEnabled());
         assertEquals("End turn button disabled", false, fakeWindow.isPlaceEndTurnButtonEnabled());
         assertEquals("End game window displayed", true, fakeWindow.isEndGameWindowDisplayed());
+    }
+
+    @Test
+    public void lastTileCorrectButtonBehaviour() {
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Game is finished", true, game.isFinished());
+        assertEquals("Tile place button disabled", false, fakeWindow.isPlaceTileButtonEnabled());
+        assertEquals("End turn button disabled", false, fakeWindow.isPlaceEndTurnButtonEnabled());
+        fakeWindow.clickOnGamePanel();
+        assertEquals("Tile place button enabled", false, fakeWindow.isPlaceTileButtonEnabled());
+        assertEquals("End turn button disabled", false, fakeWindow.isPlaceEndTurnButtonEnabled());
     }
 
     /*

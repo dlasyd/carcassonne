@@ -20,8 +20,8 @@ public class Table {
     private HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
 
     public Table() {
-        placeTile(firstTile);
         placementHelper = new TilePlacingHelper(this);
+        placeTile(firstTile);
     }
 
     static Table getInstance() {
@@ -46,6 +46,8 @@ public class Table {
         if (placedTiles.containsKey(currentTile.getCoordinates()))
             throw new RuntimeException("Trying to place tile on an occupied space");
         placedTiles.put(currentTile.getCoordinates(), currentTile);
+        placementHelper.setPlacedTiles(new HashMap<>(placedTiles));
+        placementHelper.update(currentTile);
         notifyObservers(currentTile);
         tilePlacedLast = currentTile;
     }
@@ -65,8 +67,6 @@ public class Table {
 
     void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
-        placementHelper.setPlacedTiles(new HashMap<>(placedTiles));
-        placementHelper.update(currentTile);
 
     }
 
