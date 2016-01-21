@@ -76,7 +76,7 @@ public enum TileDirections {
         List<TileDirections> congruentNNE   = new ArrayList<>(Arrays.asList(NNE, EES, SSW, WWN));
         List<TileDirections> congruentNNW   = new ArrayList<>(Arrays.asList(NNW, EEN, SSE, WWS));
 
-        int numberOf90Rotations = angle.getNumberOf90Rotations();
+        int numberOf90Rotations = angle.ordinal();
 
         switch (this) {
             case SOUTH:
