@@ -31,7 +31,6 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JButton confirmTileButton;
     private JLabel currentPoints;
     private JSlider scaleSlider;
-    private int endTurnButtonPressed = 1;
     private JDialog gameEndWindow = new GameEndWindow();
     private boolean tilePreviewEnabled;
     private JPanel tilePreview;
@@ -55,7 +54,6 @@ public class GameWindow extends JFrame implements ViewWindow{
             @Override
             public void actionPerformed(ActionEvent e) {
                 windowLogic.updateEndTurnButton();
-                endTurnButtonPressed++;
             }
         });
 
@@ -73,6 +71,15 @@ public class GameWindow extends JFrame implements ViewWindow{
             public void stateChanged(ChangeEvent e) {
                 JSlider source = (JSlider)e.getSource();
                 gamePanel.changeScale(source.getValue());
+            }
+        });
+
+        this.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int value = scaleSlider.getValue();
+                value += 2 * e.getWheelRotation();
+                scaleSlider.setValue(value);
             }
         });
     }
