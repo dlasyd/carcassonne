@@ -78,11 +78,11 @@ public class GameWindowLogic implements WindowLogic {
         if (tileConfirmed) {
             tileConfirmed = false;
             gameWindow.setConfirmTileButtonText("Confirm tile");
-            gameWindow.setEndTurnEnabled(false);
+            gameWindow.setEndTurnButtonEnabled(false);
         } else {
             tileConfirmed = true;
             gameWindow.setConfirmTileButtonText("Relocate tile");
-            gameWindow.setEndTurnEnabled(true);
+            gameWindow.setEndTurnButtonEnabled(true);
         }
     }
 
@@ -95,7 +95,7 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public void updateEndTurnButton() {
         dataToModel.turnActions(currentTileX,currentTileY);
-        gameWindow.setEndTurnEnabled(false);
+        gameWindow.setEndTurnButtonEnabled(false);
         currentTileOnTheTable = false;
         if (gameEnded)
             gameWindow.displayEndgameWindow();
@@ -109,7 +109,7 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public void finishGame() {
         gameWindow.setConfirmTileButtonEnabled(false);
-        gameWindow.setEndTurnEnabled(false);
+        gameWindow.setEndTurnButtonEnabled(false);
         gameEnded = true;
     }
 

@@ -8,8 +8,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +45,6 @@ public class GameWindow extends JFrame implements ViewWindow{
         super("Carcassonne");
         this.windowLogic = windowLogic;
         setContentPane(rootPanel);
-        //pack();
         setSize(800,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -82,6 +79,7 @@ public class GameWindow extends JFrame implements ViewWindow{
         });
     }
 
+    //<editor-fold desc="Setters used by controller">
     @Override
     public void setConfirmTileButtonEnabled(boolean b) {
         confirmTileButton.setEnabled(b);
@@ -93,13 +91,13 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setPlayerColorRemainder(Color color) {
-        playerColor.setBackground(color);
+    public void setEndTurnButtonEnabled(boolean b) {
+        endTurnButton.setEnabled(b);
     }
 
     @Override
-    public void setTilesNumber(String tilesNumber) {
-        this.tilesLeft.setText("Tiles left: " + tilesNumber);
+    public void setPlayerColorRemainder(Color color) {
+        playerColor.setBackground(color);
     }
 
     @Override
@@ -108,8 +106,8 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setEndTurnEnabled(boolean b) {
-        endTurnButton.setEnabled(b);
+    public void setTilesNumber(String tilesNumber) {
+        this.tilesLeft.setText("Tiles left: " + tilesNumber);
     }
 
     @Override
@@ -127,18 +125,9 @@ public class GameWindow extends JFrame implements ViewWindow{
         gamePanel.addTileOnTable(tile);
     }
 
-    @Override
-    public void displayEndgameWindow() {
-        gameEndWindow.setVisible(true);
-    }
 
     public void setTilePreviewEnabled(boolean b) {
         tilePreviewEnabled = b;
-    }
-
-    @Override
-    public void repaintWindow() {
-        tilePreview.repaint();
     }
 
     @Override
@@ -155,6 +144,17 @@ public class GameWindow extends JFrame implements ViewWindow{
     @Override
     public void setCurrentTile(DrawableTile drawableTile) {
         this.currentTile =drawableTile;
+    }
+    //</editor-fold>
+
+    @Override
+    public void displayEndgameWindow() {
+        gameEndWindow.setVisible(true);
+    }
+
+    @Override
+    public void repaintWindow() {
+        tilePreview.repaint();
     }
 
     private class TilePreview extends JPanel {
@@ -185,7 +185,6 @@ public class GameWindow extends JFrame implements ViewWindow{
         private boolean firstMouseDrag = true;
         private int previousMouseX = 0, previousMouseY = 0;
         private double tileSize = 90;
-        private double previousTileSize = tileSize;
         private int MIN_TILE_SIZE = 45;
         private int TILE_SIZE_VARIATION = 90;
         private Set<DrawableTile> tilesOnTable = new HashSet<>();
@@ -327,8 +326,6 @@ public class GameWindow extends JFrame implements ViewWindow{
             }
 
             if (windowLogic.isCurrentTileOnTheTable()) {
-                DrawableTile testTile = currentTile;
-
                 tileImage = new javaxt.io.Image(new File("res/tiles/" + currentTile.getFileName()));
                 g.drawImage(tileImage.getBufferedImage(),
                         (int) (windowLocalX + tileSize * windowLogic.getCurrentTileX()),

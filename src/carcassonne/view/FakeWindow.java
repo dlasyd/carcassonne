@@ -58,7 +58,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
-    public void setEndTurnEnabled(boolean b) {
+    public void setEndTurnButtonEnabled(boolean b) {
         this.endTurnEnabled = b;
     }
 

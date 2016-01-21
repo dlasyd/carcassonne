@@ -22,7 +22,7 @@ public interface ViewWindow {
 
     void setCurrentPlayerName(String currentPlayerName);
 
-    void setEndTurnEnabled(boolean b);
+    void setEndTurnButtonEnabled(boolean b);
 
     void setNumberOfFollowers(String numberOfFollowers);
 
