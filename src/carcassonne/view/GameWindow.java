@@ -36,7 +36,6 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JDialog gameEndWindow = new GameEndWindow();
     private boolean tilePreviewEnabled;
     private JPanel tilePreview;
-    private String currentTileFileName;
     private GamePanel gamePanel;
     private Set<Coordinates> possibleTileLocations;
     private DrawableTile currentTile;
@@ -131,12 +130,6 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setCurrentTileFileName(String currentTileFileName) {
-        this.currentTileFileName = currentTileFileName;
-        ((TilePreview) tilePreview).loadTileImage(currentTileFileName);
-    }
-
-    @Override
     public void setPossibleTileLocations(Set<Coordinates> possibleTileLocations) {
         this.possibleTileLocations = possibleTileLocations;
     }
@@ -144,6 +137,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     @Override
     public void setCurrentTile(DrawableTile drawableTile) {
         this.currentTile =drawableTile;
+        ((TilePreview) tilePreview).loadTileImage(currentTile.getFileName());
     }
     //</editor-fold>
 
@@ -161,7 +155,6 @@ public class GameWindow extends JFrame implements ViewWindow{
         private javaxt.io.Image tileImage;
 
         TilePreview() {
-            loadTileImage(currentTileFileName);
         }
 
         void loadTileImage(String imageFileName) {
@@ -171,7 +164,9 @@ public class GameWindow extends JFrame implements ViewWindow{
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if (tilePreviewEnabled) {
+            //!= null test required because paintComponent runs
+            // before tileImage is updated in the beginning of the game
+            if (tilePreviewEnabled && tileImage != null) {
                 g.drawImage(tileImage.getBufferedImage(), 0, 0, null);
             }
 

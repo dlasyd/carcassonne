@@ -183,4 +183,12 @@ public class ModelToControllerTest {
         fakeWindow.pressConfirmTileButton();
         assertEquals("Tile can be relocated", true, fakeWindow.canTileBeRelocated());
     }
+
+    @Test
+    public void rotateTileWhenClickOnPlacedTile() {
+        assertEquals("Tile isn't rotated", Rotation.DEG_0, fakeWindow.getCurrentTileRotation());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.clickOnPlacedTile();
+        assertEquals("Tile is rotated", Rotation.DEG_90, fakeWindow.getCurrentTileRotation());
+    }
 }

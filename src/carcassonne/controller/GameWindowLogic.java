@@ -40,7 +40,6 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
         gameWindow.setTilePreviewEnabled(true);
-        gameWindow.setCurrentTileFileName(new DrawableTile(gameData.getCurrentTile()).getFileName());
         gameWindow.setCurrentTile(new DrawableTile(gameData.getCurrentTile()));
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
@@ -136,6 +135,12 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public boolean isTileConfirmed() {
         return tileConfirmed;
+    }
+
+    @Override
+    public void clickOnPlacedTile() {
+        DrawableTile tile = new DrawableTile(gameData.getCurrentTile());
+        tile.turnRight();
     }
 
 

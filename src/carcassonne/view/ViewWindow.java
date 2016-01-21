@@ -36,8 +36,6 @@ public interface ViewWindow {
 
     void repaintWindow();
 
-    void setCurrentTileFileName(String currentTileFileName);
-
     void setPossibleTileLocations(Set<Coordinates> possibleTileLocations);
 
     void setCurrentTile(DrawableTile drawableTile);

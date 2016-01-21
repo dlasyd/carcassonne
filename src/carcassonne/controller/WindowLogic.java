@@ -38,4 +38,6 @@ public interface WindowLogic {
     boolean isCurrentTileOnTheTable();
 
     boolean isTileConfirmed();
+
+    void clickOnPlacedTile();
 }

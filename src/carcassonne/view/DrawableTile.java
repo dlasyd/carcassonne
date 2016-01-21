@@ -1,5 +1,6 @@
 package carcassonne.view;
 
+import carcassonne.model.Rotation;
 import carcassonne.model.Tile;
 import carcassonne.model.TileName;
 
@@ -38,5 +39,13 @@ public class DrawableTile {
 
     int getY() {
         return tile.getY();
+    }
+
+    public void turnRight() {
+        tile.turnRight(Rotation.DEG_90);
+    }
+
+    public Rotation getCurrentRotation() {
+        return tile.getCurrentRotation();
     }
 }

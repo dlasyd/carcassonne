@@ -2,6 +2,7 @@ package carcassonne.view;
 
 import carcassonne.controller.WindowLogic;
 import carcassonne.model.Coordinates;
+import carcassonne.model.Rotation;
 import carcassonne.model.TileName;
 
 import java.awt.*;
@@ -25,7 +26,7 @@ public class FakeWindow implements ViewWindow {
     private boolean endTurnEnabled, nextTurnEnabled;
     private boolean endGameWindowDisplayed;
     private boolean tilePreviewEnabled;
-    private String currentTileFileName;
+    private DrawableTile currentTile;
 
     public Set<DrawableTile> getTilesOnTable() {
         return tilesOnTable;
@@ -70,11 +71,6 @@ public class FakeWindow implements ViewWindow {
     @Override
     public void repaintWindow() {
 
-    }
-
-    @Override
-    public void setCurrentTileFileName(String currentTileFileName) {
-        this.currentTileFileName = currentTileFileName;
     }
 
     public String getCurrentPlayerName() {
@@ -123,7 +119,7 @@ public class FakeWindow implements ViewWindow {
 
     @Override
     public void setCurrentTile(DrawableTile drawableTile) {
-
+        this.currentTile = drawableTile;
     }
 
     public String getTilesLeft() {
@@ -155,7 +151,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public String getTilePreviewName() {
-        return currentTileFileName;
+        return currentTile.getFileName();
     }
 
     public boolean isPlacedTileSetEmpty() {
@@ -184,5 +180,13 @@ public class FakeWindow implements ViewWindow {
 
     public void pressConfirmTileButton() {
         windowLogic.updateTileConfirmed();
+    }
+
+    public Rotation getCurrentTileRotation() {
+        return currentTile.getCurrentRotation();
+    }
+
+    public void clickOnPlacedTile() {
+        windowLogic.clickOnPlacedTile();
     }
 }
