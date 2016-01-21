@@ -2,6 +2,7 @@ package carcassonne.view;
 
 import carcassonne.model.Rotation;
 import carcassonne.model.Tile;
+import carcassonne.model.TileDirections;
 import carcassonne.model.TileName;
 
 import java.awt.*;
@@ -15,11 +16,24 @@ import java.awt.*;
 public class DrawableTile {
     private Tile tile;
     private javaxt.io.Image image;
+    private Rotation rotation = Rotation.DEG_0;
 
     public DrawableTile(Tile tile) {
         assert (tile.getName() != null);
+        if (tile.isNull()) {
+            throw new RuntimeException("Cannot create a DrawableTile from null tile");
+        }
+
         this.tile = tile;
         image = new javaxt.io.Image("res/tiles/" + this.getFileName());
+
+        /*
+         * ordinal() will return number of 90 degrees rotations
+         */
+        int numberOfRotations = tile.getCurrentRotation().ordinal();
+        for (int i = 0; i < numberOfRotations; i++) {
+            this.turnRight();
+        }
     }
 
     public TileName getTileName() {
@@ -47,6 +61,8 @@ public class DrawableTile {
 
     public void turnRight() {
         tile.turnRight(Rotation.DEG_90);
+        image.rotate(90);
+        rotation = Rotation.values()[(rotation.ordinal() + 1) % 4];
     }
 
     public Rotation getCurrentRotation() {
@@ -55,5 +71,9 @@ public class DrawableTile {
 
     public Image getBufferedImage() {
         return image.getBufferedImage();
+    }
+
+    public Rotation getRotation() {
+        return rotation;
     }
 }

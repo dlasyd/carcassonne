@@ -17,7 +17,8 @@ public class GameWindowLogic implements WindowLogic {
     private GameData gameData;
     private int currentTileX, currentTileY;
     private boolean gameEnded = false;
-    private boolean lastTurn = false;
+    private DrawableTile currentTile;
+    private boolean lastTurn;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -27,6 +28,10 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public void update(GameData gameData) {
         this.gameData = gameData;
+
+        if(!gameEnded)
+            this.currentTile = new DrawableTile(gameData.getCurrentTile());
+
         updateUI();
         tileConfirmed = false;
         gameWindow.setConfirmTileButtonText("Confirm tile");
@@ -39,10 +44,10 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setCurrentPoints(gameData.getPoints());
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
-        gameWindow.setCurrentTile(new DrawableTile(gameData.getCurrentTile()));
+        gameWindow.setCurrentTile(currentTile);
         gameWindow.setTilePreviewEnabled(true);
-        gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
+        gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
     }
 
     public void setDataToModel(DataToModel dataToModel) {
@@ -93,7 +98,7 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
-        dataToModel.turnActions(currentTileX,currentTileY);
+        dataToModel.turnActions(currentTileX, currentTileY);
         gameWindow.setEndTurnButtonEnabled(false);
         currentTileOnTheTable = false;
         if (gameEnded)
@@ -139,8 +144,8 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void clickOnPlacedTile() {
-        DrawableTile tile = new DrawableTile(gameData.getCurrentTile());
-        tile.turnRight();
+        currentTile.turnRight();
+        gameWindow.repaintWindow();
     }
 
 

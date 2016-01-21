@@ -27,14 +27,15 @@ public class Game implements DataToModel{
         return game;
     }
 
-    public void turnActions(int x, int y, TileDirections direction) {
-        turnActions(x, y);
-        table.placeFollower(getCurrentPlayer(), direction);
+    public void turnActions(int x, int y) {
+        turnActions(x, y , Rotation.DEG_0);
     }
 
-    public void turnActions(int x, int y) {
+    @Override
+    public void turnActions(int x, int y, Rotation rotation) {
         Tile tile = getCurrentTile();
         tile.setCoordinates(x, y);
+        tile.turnRight(rotation);
         table.placeTile(tile);
         if (tilePile.hasTiles()) {
             nextPlayer();
@@ -44,10 +45,16 @@ public class Game implements DataToModel{
                 windowLogic.setLastTurn(true);
         } else {
             finished = true;
-            notifyController();
+            table.setCurrentTile(Tile.getNullInstance());
             windowLogic.finishGame();
+            notifyController();
         }
 
+    }
+
+    public void turnActions(int x, int y, TileDirections direction) {
+        turnActions(x, y);
+        table.placeFollower(getCurrentPlayer(), direction);
     }
 
     @Override

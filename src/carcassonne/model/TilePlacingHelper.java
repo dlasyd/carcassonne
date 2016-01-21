@@ -31,7 +31,8 @@ class TilePlacingHelper {
         return new HashMap<>(coordinatesToRotationMap);
     }
 
-    public void update(Tile tile) {
+    public void update(Tile dontChangeTile) {
+        Tile tile = new RealTile((RealTile) dontChangeTile);
         /*
          * 1) tiles around existing tiles are eligible
          * 2) for each rotation check continuity of each eligible tile

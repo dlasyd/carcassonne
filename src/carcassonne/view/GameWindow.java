@@ -147,6 +147,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     @Override
     public void repaintWindow() {
         tilePreview.repaint();
+        gamePanel.repaint();
     }
 
     private class TilePreview extends JPanel {
@@ -190,6 +191,17 @@ public class GameWindow extends JFrame implements ViewWindow{
                      */
 
                     if (!windowLogic.isTileConfirmed()) {
+                        if (windowLogic.isCurrentTileOnTheTable()) {
+                            if ((e.getX() > windowLocalX + tileSize *  windowLogic.getCurrentTileX() &&
+                                    e.getX() < (windowLocalX + tileSize *  windowLogic.getCurrentTileX() + tileSize)) &&
+                                    (e.getY() > windowLocalY + tileSize *  windowLogic.getCurrentTileY() &&
+                                            e.getY() < (windowLocalY + tileSize *  windowLogic.getCurrentTileY() + tileSize))) {
+                                windowLogic.clickOnPlacedTile();
+                                return;
+                            }
+
+                        }
+
                         for (Coordinates coordinates: possibleTileLocations) {
                             if ((e.getX() > windowLocalX + tileSize * coordinates.getX() &&
                                     e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&

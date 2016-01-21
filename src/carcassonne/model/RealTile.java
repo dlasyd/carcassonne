@@ -28,6 +28,17 @@ public class RealTile extends Tile {
 
     RealTile() {}
 
+    RealTile(RealTile realTile) {
+        this.tileName = realTile.tileName;
+        this.coordinates = realTile.coordinates;
+        this.currentRotation = realTile.currentRotation;
+        this.occupiedFeature = realTile.occupiedFeature;
+        this.follower = realTile.follower;
+        this.noFollower = realTile.noFollower;
+        this.featureToTileDirections = new HashMap<>(realTile.featureToTileDirections);
+        this.propertyMap = new HashMap<>(realTile.propertyMap);
+    }
+
     RealTile(TileName tileName) {
         this.tileName = tileName;
     }
@@ -41,8 +52,8 @@ public class RealTile extends Tile {
         rotateKeys(propertyConnectionMap, angle);
         rotateValueSet(propertyConnectionMap, angle);
         rotateKeys(propertyMap, angle);
-        int numberOf90Rotations = currentRotation.getNumberOf90Rotations() + angle.getNumberOf90Rotations();
-        currentRotation = Rotation.getValue(numberOf90Rotations % 4);
+        int index = ((currentRotation.ordinal() + angle.ordinal()) % 4);
+        currentRotation = Rotation.values()[((currentRotation.ordinal() + angle.ordinal()) % 4)];
     }
 
     @Override
