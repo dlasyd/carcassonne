@@ -30,4 +30,12 @@ public interface WindowLogic {
     void finishGame();
 
     boolean displayPossibleLocations();
+
+    int getCurrentTileX();
+
+    int getCurrentTileY();
+
+    boolean isCurrentTileOnTheTable();
+
+    boolean isTileConfirmed();
 }

@@ -41,6 +41,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private String currentTileFileName;
     private GamePanel gamePanel;
     private Set<Coordinates> possibleTileLocations;
+    private DrawableTile currentTile;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -151,6 +152,11 @@ public class GameWindow extends JFrame implements ViewWindow{
         this.possibleTileLocations = possibleTileLocations;
     }
 
+    @Override
+    public void setCurrentTile(DrawableTile drawableTile) {
+        this.currentTile =drawableTile;
+    }
+
     private class TilePreview extends JPanel {
         private javaxt.io.Image tileImage;
 
@@ -199,14 +205,17 @@ public class GameWindow extends JFrame implements ViewWindow{
                      * 2) enable end move button
                      */
 
-                    for (Coordinates coordinates: possibleTileLocations) {
-                        if ((e.getX() > windowLocalX + tileSize * coordinates.getX() &&
-                                e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
-                                (e.getY() > windowLocalY + tileSize * coordinates.getY() &&
-                                        e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
-                            windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
-                            break;
+                    if (!windowLogic.isTileConfirmed()) {
+                        for (Coordinates coordinates: possibleTileLocations) {
+                            if ((e.getX() > windowLocalX + tileSize * coordinates.getX() &&
+                                    e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
+                                    (e.getY() > windowLocalY + tileSize * coordinates.getY() &&
+                                            e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
+                                windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
+                                break;
+                            }
                         }
+                        repaint();
                     }
                 }
 
@@ -317,6 +326,15 @@ public class GameWindow extends JFrame implements ViewWindow{
                 }
             }
 
+            if (windowLogic.isCurrentTileOnTheTable()) {
+                DrawableTile testTile = currentTile;
+
+                tileImage = new javaxt.io.Image(new File("res/tiles/" + currentTile.getFileName()));
+                g.drawImage(tileImage.getBufferedImage(),
+                        (int) (windowLocalX + tileSize * windowLogic.getCurrentTileX()),
+                        (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY()),
+                        (int) tileSize, (int) tileSize, null);
+            }
 
         }
     }

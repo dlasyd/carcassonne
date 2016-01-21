@@ -121,6 +121,11 @@ public class FakeWindow implements ViewWindow {
         this.possibleTileLocations = possibleTileLocations;
     }
 
+    @Override
+    public void setCurrentTile(DrawableTile drawableTile) {
+
+    }
+
     public String getTilesLeft() {
         return tilesLeft;
     }
@@ -169,4 +174,15 @@ public class FakeWindow implements ViewWindow {
         return possibleTileLocations;
     }
 
+    public boolean isCurrentTilePlaced() {
+        return windowLogic.isCurrentTileOnTheTable();
+    }
+
+    public boolean canTileBeRelocated() {
+        return !windowLogic.isTileConfirmed();
+    }
+
+    public void pressConfirmTileButton() {
+        windowLogic.updateTileConfirmed();
+    }
 }

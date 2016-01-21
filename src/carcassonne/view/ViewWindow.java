@@ -39,4 +39,6 @@ public interface ViewWindow {
     void setCurrentTileFileName(String currentTileFileName);
 
     void setPossibleTileLocations(Set<Coordinates> possibleTileLocations);
+
+    void setCurrentTile(DrawableTile drawableTile);
 }

@@ -15,9 +15,8 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 /**
- * This is a part of Carcassonne project.
- * The project is created for learning and practicing java
- * and not intended for distribution.
+ * Tests data flow from model to controller and then to view
+ * and all controller behaviour
  * Created by Andrey on 14/01/16.
  */
 public class ModelToControllerTest {
@@ -164,5 +163,24 @@ public class ModelToControllerTest {
         fakeWindow.pressEndTurnButton();
         fakeWindow.pressEndTurnButton();
         assertEquals ("Window displays 6 tiles", 6, fakeWindow.getTilesOnTable().size());
+    }
+
+    @Test
+    public void currentTileDrawnOnlyAfterPlaced() {
+        assertEquals("Current tile not placed before game area is clicked", false, fakeWindow.isCurrentTilePlaced());
+        fakeWindow.clickOnGamePanel();
+        assertEquals("Current tile placed after game area is clicked", true, fakeWindow.isCurrentTilePlaced());
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Current tile not placed before game area is clicked", false, fakeWindow.isCurrentTilePlaced());
+    }
+
+    @Test
+    public void confirmTileButtonStopsTileRelocation() {
+        assertEquals("Tile can be relocated", true, fakeWindow.canTileBeRelocated());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.pressConfirmTileButton();
+        assertEquals("Tile cannot be relocated", false, fakeWindow.canTileBeRelocated());
+        fakeWindow.pressConfirmTileButton();
+        assertEquals("Tile can be relocated", true, fakeWindow.canTileBeRelocated());
     }
 }

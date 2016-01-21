@@ -15,7 +15,7 @@ public class GameWindowLogic implements WindowLogic {
     private boolean tileConfirmed;
     private DataToModel dataToModel;
     private GameData gameData;
-    private int currentX, currentY;
+    private int currentTileX, currentTileY;
     private boolean gameEnded = false;
     private boolean lastTurn = false;
 
@@ -41,6 +41,7 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setTilesNumber(gameData.getTilesLeft());
         gameWindow.setTilePreviewEnabled(true);
         gameWindow.setCurrentTileFileName(new DrawableTile(gameData.getCurrentTile()).getFileName());
+        gameWindow.setCurrentTile(new DrawableTile(gameData.getCurrentTile()));
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
     }
@@ -64,8 +65,8 @@ public class GameWindowLogic implements WindowLogic {
         if (!isTileFixed() && !gameEnded) {
             currentTileOnTheTable = true;
             gameWindow.setConfirmTileButtonEnabled(true);
-            currentX = x;
-            currentY = y;
+            currentTileX = x;
+            currentTileY = y;
         }
         gameWindow.setTilePreviewEnabled(false);
         gameWindow.repaintWindow();
@@ -85,6 +86,7 @@ public class GameWindowLogic implements WindowLogic {
         }
     }
 
+    //TODO removed
     @Override
     public boolean isTileFixed() {
         return false;
@@ -92,8 +94,9 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
-        dataToModel.turnActions(currentX ,currentY);
+        dataToModel.turnActions(currentTileX,currentTileY);
         gameWindow.setEndTurnEnabled(false);
+        currentTileOnTheTable = false;
         if (gameEnded)
             gameWindow.displayEndgameWindow();
     }
@@ -114,5 +117,27 @@ public class GameWindowLogic implements WindowLogic {
     public boolean displayPossibleLocations() {
         return !gameEnded;
     }
+
+    @Override
+    public int getCurrentTileX() {
+        return currentTileX;
+    }
+
+    @Override
+    public int getCurrentTileY() {
+        return currentTileY;
+    }
+
+    @Override
+    public boolean isCurrentTileOnTheTable() {
+        return currentTileOnTheTable;
+    }
+
+    @Override
+    public boolean isTileConfirmed() {
+        return tileConfirmed;
+    }
+
+
 }
 
