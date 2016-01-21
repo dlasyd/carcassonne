@@ -8,7 +8,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -136,8 +135,7 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     @Override
     public void setCurrentTile(DrawableTile drawableTile) {
-        this.currentTile =drawableTile;
-        ((TilePreview) tilePreview).loadTileImage(currentTile.getFileName());
+        this.currentTile = drawableTile;
     }
     //</editor-fold>
 
@@ -152,24 +150,16 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     private class TilePreview extends JPanel {
-        private javaxt.io.Image tileImage;
 
         TilePreview() {
-        }
-
-        void loadTileImage(String imageFileName) {
-            tileImage = new javaxt.io.Image(new File("res/tiles/" + imageFileName));
         }
 
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            //!= null test required because paintComponent runs
-            // before tileImage is updated in the beginning of the game
-            if (tilePreviewEnabled && tileImage != null) {
-                g.drawImage(tileImage.getBufferedImage(), 0, 0, null);
+            if (tilePreviewEnabled) {
+                g.drawImage(currentTile.getBufferedImage(), 0, 0, null);
             }
-
         }
     }
 
@@ -300,8 +290,7 @@ public class GameWindow extends JFrame implements ViewWindow{
             super.paintComponent(g);
 
             for (DrawableTile tile: tilesOnTable) {
-                tileImage = new javaxt.io.Image(new File("res/tiles/" + tile.getFileName()));
-                g.drawImage(tileImage.getBufferedImage(),
+                g.drawImage(tile.getBufferedImage(),
                         (int) (windowLocalX + tileSize * tile.getX()),
                         (int) (windowLocalY + tileSize * tile.getY()),
                         (int) tileSize, (int) tileSize, null);
@@ -321,8 +310,7 @@ public class GameWindow extends JFrame implements ViewWindow{
             }
 
             if (windowLogic.isCurrentTileOnTheTable()) {
-                tileImage = new javaxt.io.Image(new File("res/tiles/" + currentTile.getFileName()));
-                g.drawImage(tileImage.getBufferedImage(),
+                g.drawImage(currentTile.getBufferedImage(),
                         (int) (windowLocalX + tileSize * windowLogic.getCurrentTileX()),
                         (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY()),
                         (int) tileSize, (int) tileSize, null);

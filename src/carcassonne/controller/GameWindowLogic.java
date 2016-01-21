@@ -39,8 +39,8 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setCurrentPoints(gameData.getPoints());
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
-        gameWindow.setTilePreviewEnabled(true);
         gameWindow.setCurrentTile(new DrawableTile(gameData.getCurrentTile()));
+        gameWindow.setTilePreviewEnabled(true);
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
     }

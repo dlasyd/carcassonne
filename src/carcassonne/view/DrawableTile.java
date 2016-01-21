@@ -4,6 +4,8 @@ import carcassonne.model.Rotation;
 import carcassonne.model.Tile;
 import carcassonne.model.TileName;
 
+import java.awt.*;
+
 /**
  * This is a part of Carcassonne project.
  * The project is created for learning and practicing java
@@ -12,10 +14,12 @@ import carcassonne.model.TileName;
  */
 public class DrawableTile {
     private Tile tile;
+    private javaxt.io.Image image;
 
     public DrawableTile(Tile tile) {
         assert (tile.getName() != null);
         this.tile = tile;
+        image = new javaxt.io.Image("res/tiles/" + this.getFileName());
     }
 
     public TileName getTileName() {
@@ -47,5 +51,9 @@ public class DrawableTile {
 
     public Rotation getCurrentRotation() {
         return tile.getCurrentRotation();
+    }
+
+    public Image getBufferedImage() {
+        return image.getBufferedImage();
     }
 }
