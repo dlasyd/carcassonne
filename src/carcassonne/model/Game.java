@@ -10,18 +10,18 @@ import java.util.ArrayList;
 
 public class Game implements DataToModel{
     private static Game game;
-    private ArrayList<Player> players = new ArrayList<Player>();
-    private Player currentPlayer;
-    private Table table;
-    private boolean currentTileConfirmed;
-    private boolean followerFriendly;           //determines if a tile has a vacant place for follower
-    private TilePile tilePile = new TilePile();
-    private boolean finished;
-    private WindowLogic windowLogic;
+    private Table               table;
+    private WindowLogic         windowLogic;
+    private TilePile            tilePile = new TilePile();
+    private ArrayList<Player>   players = new ArrayList<>();
+    private Player              currentPlayer;
+    private boolean             finished;
+    private boolean             currentTileConfirmed;
+    private boolean             followerFriendly;           //determines if a tile has a vacant place for follower
 
     public static Game getInstance() {
         if (game == null){
-            game =   new Game();
+            game = new Game();
             game.table = new Table();
         }
         return game;
@@ -52,11 +52,24 @@ public class Game implements DataToModel{
         table.placeFollower(getCurrentPlayer(), direction);
     }
 
+    public void notifyController() {
+        windowLogic.update(new GameDataBuilder().setName(getCurrentPlayer().getName()).
+                setPoints("" + getCurrentPlayer().getCurrentPoints()).
+                setFollowers("" + getCurrentPlayer().getNumberOfFollowers()).
+                setPlayerColor(getCurrentPlayer().getColor()).
+                setTilesLeft("" + tilePile.getNumberOfTiles()).
+                setCurrentTile(table.getCurrentTile()).
+                setPreviouslyPlacedTile(table.getPreviouslyPlacedTile()).
+                setPossibleTileLocations(table.getPossibleTileLocations()).
+                createGameData());
+    }
+
     @Override
     public void forceNotify() {
         notifyController();
     }
 
+    //<editor-fold desc="Getters">
     int getNumberOfPlayers() {
         return players.size();
     }
@@ -64,6 +77,37 @@ public class Game implements DataToModel{
     Player getCurrentPlayer() {
         return currentPlayer;
     }
+    boolean isCurrentTileConfirmed() {
+        return currentTileConfirmed;
+    }
+
+    public Tile getCurrentTile() {
+        return table.getCurrentTile();
+    }
+
+    public TilePile getTilePile() {
+        return tilePile;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Setters">
+    void setFollowerFriendly(boolean followerFriendly) {
+        this.followerFriendly = followerFriendly;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
+    public void setWindowLogic(WindowLogic windowLogic) {
+        this.windowLogic = windowLogic;
+    }
+    //</editor-fold>
 
     public void nextPlayer() {
         if (currentPlayer == null) {
@@ -82,12 +126,11 @@ public class Game implements DataToModel{
         }
     }
 
+    /*
+     * Adding no param player is used only in testing
+     */
     boolean addPlayer() {
         return addPlayer("Default", Color.BLACK);
-    }
-
-    boolean isCurrentTileConfirmed() {
-        return currentTileConfirmed;
     }
 
     void confirmCurrentTile(int x, int y) {
@@ -104,41 +147,6 @@ public class Game implements DataToModel{
         nextPlayer();
     }
 
-    void setFollowerFriendly(boolean followerFriendly) {
-        this.followerFriendly = followerFriendly;
-    }
-
-    public Tile getCurrentTile() {
-        return table.getCurrentTile();
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
-    }
-
-    public void setWindowLogic(WindowLogic windowLogic) {
-        this.windowLogic = windowLogic;
-    }
-
-    public void notifyController() {
-        windowLogic.update(new GameDataBuilder().setName(getCurrentPlayer().getName()).
-                setPoints("" + getCurrentPlayer().getCurrentPoints()).
-                setFollowers("" + getCurrentPlayer().getNumberOfFollowers()).
-                setPlayerColor(getCurrentPlayer().getColor()).
-                setTilesLeft("" + tilePile.getNumberOfTiles()).
-                setCurrentTile(table.getCurrentTile()).
-                setPreviouslyPlacedTile(table.getPreviouslyPlacedTile()).
-                setPossibleTileLocations(table.getPossibleTileLocations()).
-                createGameData());
-    }
-
-    public TilePile getTilePile() {
-        return tilePile;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
 
     public void dragTile() {
         if (tilePile.hasTiles())
@@ -147,6 +155,8 @@ public class Game implements DataToModel{
             throw new RuntimeException("Trying to drag a tile from an empty pile");
     }
 
+    //TODO rename,
+    //TODO where is it used
     public boolean followerCanBePlaced() {
         return true;
     }
@@ -159,9 +169,5 @@ public class Game implements DataToModel{
         game.getTilePile().addTile(Tile.getInstance());
         game.getTilePile().addTile(Tile.getInstance());
         game.getTilePile().addTile(Tile.getInstance());
-    }
-
-    public String getCurrentPlayerName() {
-        return currentPlayer.getName();
     }
 }
