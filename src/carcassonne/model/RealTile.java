@@ -210,7 +210,7 @@ public class RealTile extends Tile {
         return occupiedFeature;
     }
 
-    public void returnFollower() {
+    public void returnFollowerToPlayer() {
         if (isNoFollower())
             throw new RuntimeException("Trying to return follower from tile that hasn't got one");
         follower.getPlayer().returnFollower();

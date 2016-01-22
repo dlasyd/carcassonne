@@ -29,63 +29,37 @@ public abstract class Tile {
     }
 
     public abstract boolean isNull();
-
-    public abstract Coordinates getCoordinates();
-
-    public abstract int getX();
-
-    public abstract int getY();
+    public abstract boolean isContinuous(Tile tile, TileDirections direction);
+    public abstract boolean featureEqual(Tile roadTile);
+    public abstract boolean directionsEqual(Tile referenceTile);
+    public abstract void    turnRight(Rotation angle);
+    public abstract void    copyFeatures(Tile referenceTile);
 
     abstract void setCoordinates(int x, int y);
-
-    abstract boolean isNoFollower();
-
-    abstract boolean isComplete();
-
-    abstract boolean hasCoordinates();
-
-    abstract boolean hasCloister();
-
     abstract void placeFollower(Player player, Feature feature);
-
     abstract void placeFollower(Player player, TileDirections direction);
-
+    abstract void returnFollowerToPlayer();
     abstract void addFeature(Feature feature, TileDirections direction);
-
     abstract void addFeature(Feature feature, TileDirections... directions);
 
-    abstract Set<TileDirections> getDestinations(TileDirections tileDirection);
-
-    abstract Set<TileDirections> getOccupiedFeatureDirections();
-
-    abstract Set<Feature> getFeatures();
-
-    abstract Feature getOccupiedFeature();
-
-    abstract void returnFollower();
-
-    abstract Player getFollowerOwner();
-
-    abstract Feature getFeature(TileDirections direction);
-
-    /*
-     * This method is created to make creating test Tiles easier. Should not be used in real Tile creation
-     * that will be developed later.
-     */
+    //<editor-fold desc="Getters">
+    public abstract Rotation         getCurrentRotation();
+    public abstract Coordinates      getCoordinates();
+    public abstract int              getX();
+    public abstract int              getY();
     public abstract TileDirections[] getUnoccupiedDirections();
+    public abstract TileName         getName();
+    abstract Feature                 getOccupiedFeature();
+    abstract Player                  getFollowerOwner();
+    abstract Feature                 getFeature(TileDirections direction);
+    abstract Set<TileDirections>     getDestinations(TileDirections tileDirection);
+    abstract Set<TileDirections>     getOccupiedFeatureDirections();
+    abstract Set<Feature>            getFeatures();
 
-    public abstract void turnRight(Rotation angle);
-
-    public abstract boolean featureEqual(Tile roadTile);
-
-    public abstract boolean directionsEqual(Tile referenceTile);
-
-    public abstract void copyFeatures(Tile referenceTile);
-
-    public abstract TileName getName();
-
-    public abstract boolean isContinuous(Tile tile, TileDirections direction);
-
-    public abstract Rotation getCurrentRotation();
+    abstract boolean isNoFollower();
+    abstract boolean isComplete();
+    abstract boolean hasCoordinates();
+    abstract boolean hasCloister();
+    //</editor-fold>
 }
 

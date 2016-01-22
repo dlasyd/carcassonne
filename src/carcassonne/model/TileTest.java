@@ -260,7 +260,7 @@ public class TileTest {
 
     @Test
     /*
-     * idea: returnFollower() returns follower to the player it belonged.
+     * idea: returnFollowerToPlayer() returns follower to the player it belonged.
      * realization: players follower counter changes. Follower objects only exist when they are placed on tile
      */
     public void returnFollowerReturnsFollowerToThePlayer() {
@@ -270,7 +270,7 @@ public class TileTest {
         tile.placeFollower(player, feature);
         assertEquals("Number of followers a player has", 6, player.getNumberOfFollowers());
         assertFalse("Tile has a follower", tile.isNoFollower());
-        tile.returnFollower();
+        tile.returnFollowerToPlayer();
         assertTrue("Tile should not have follower", tile.isNoFollower());
         assertEquals("Number of followers a player has", 7, player.getNumberOfFollowers());
     }
@@ -279,7 +279,7 @@ public class TileTest {
     public void returnFollowerWhenNoFollowerThenRuntimeException() {
         assertTrue("There are no followers", tile.isNoFollower());
         exception.expect(RuntimeException.class);
-        tile.returnFollower();
+        tile.returnFollowerToPlayer();
     }
 
     @Test

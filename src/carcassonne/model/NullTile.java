@@ -97,7 +97,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    void returnFollower() {
+    void returnFollowerToPlayer() {
         throw new RuntimeException("The tile is Null");
     }
 
