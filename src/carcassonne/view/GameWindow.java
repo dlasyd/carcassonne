@@ -280,6 +280,10 @@ public class GameWindow extends JFrame implements ViewWindow{
             tileSize = MIN_TILE_SIZE + (int)(TILE_SIZE_VARIATION  * scale / 100);
             rectangleMargin = (tileSize / RECTANGLE_DIVIDER);
 
+            /*
+             * Everything below moves the windowLocalX and Y in such way that
+             * when scale happens, center pixel stays in the center
+             */
             double scaleMultiplier = 1 + 2 * (scale / 100);
 
             double offsetX = windowWidth / 2 - windowLocalX;

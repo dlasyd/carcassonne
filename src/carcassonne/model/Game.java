@@ -27,15 +27,10 @@ public class Game implements DataToModel{
         return game;
     }
 
-    public void turnActions(int x, int y) {
-        turnActions(x, y , Rotation.DEG_0);
-    }
-
     @Override
-    public void turnActions(int x, int y, Rotation rotation) {
+    public void turnActions(int x, int y) {
         Tile tile = getCurrentTile();
         tile.setCoordinates(x, y);
-        tile.turnRight(rotation);
         table.placeTile(tile);
         if (tilePile.hasTiles()) {
             nextPlayer();
@@ -49,9 +44,9 @@ public class Game implements DataToModel{
             windowLogic.finishGame();
             notifyController();
         }
-
     }
 
+    @Override
     public void turnActions(int x, int y, TileDirections direction) {
         turnActions(x, y);
         table.placeFollower(getCurrentPlayer(), direction);
@@ -158,6 +153,7 @@ public class Game implements DataToModel{
 
     /*
      * This function was not tested with JUnit
+     * Used in testing
      */
     public void loadTestTiles() {
         game.getTilePile().addTile(Tile.getInstance());
