@@ -19,6 +19,7 @@ public class GameWindowLogic implements WindowLogic {
     private boolean gameEnded = false;
     private DrawableTile currentTile;
     private boolean lastTurn;
+    private boolean tilePreviewEnabled = true;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -29,8 +30,10 @@ public class GameWindowLogic implements WindowLogic {
     public void update(GameData gameData) {
         this.gameData = gameData;
 
-        if(!gameEnded)
+        if(!gameEnded) {
             this.currentTile = new DrawableTile(gameData.getCurrentTile());
+            tilePreviewEnabled = true;
+        }
 
         updateUI();
         tileConfirmed = false;
@@ -45,7 +48,7 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
         gameWindow.setCurrentTile(currentTile);
-        gameWindow.setTilePreviewEnabled(true);
+        gameWindow.setTilePreviewEnabled(tilePreviewEnabled);
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
     }
@@ -73,6 +76,7 @@ public class GameWindowLogic implements WindowLogic {
             currentTileY = y;
         }
         gameWindow.setTilePreviewEnabled(false);
+        tilePreviewEnabled = false;
         gameWindow.repaintWindow();
     }
 
@@ -90,7 +94,7 @@ public class GameWindowLogic implements WindowLogic {
         }
     }
 
-    //TODO removed
+    //TODO remove
     @Override
     public boolean isTileFixed() {
         return false;
@@ -114,6 +118,7 @@ public class GameWindowLogic implements WindowLogic {
     public void finishGame() {
         gameWindow.setConfirmTileButtonEnabled(false);
         gameWindow.setEndTurnButtonEnabled(false);
+        gameWindow.setTilePreviewEnabled(false);
         gameEnded = true;
     }
 

@@ -191,4 +191,14 @@ public class ModelToControllerTest {
         fakeWindow.clickOnPlacedTile();
         assertEquals("Tile is rotated", Rotation.DEG_90, fakeWindow.getCurrentTileRotation());
     }
+
+    @Test
+    public void endGamePreviewCurrentTileDisabled() {
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Tile preview is disabled", false, fakeWindow.isTilePreviewEnabled());
+    }
 }
