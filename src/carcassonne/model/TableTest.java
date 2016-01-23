@@ -50,8 +50,8 @@ public class TableTest {
 
     @Test
     public void placedTilesAmount() {
-        Tile tile1 = Tile.getInstance(1, 1);
-        Tile tile2 = Tile.getInstance(2, 1);
+        Tile tile1 = Tile.getInstance(1, 1, TileName.CLOISTER);
+        Tile tile2 = Tile.getInstance(2, 1, TileName.CLOISTER);
         table.placeTile(tile1);
         table.placeTile(tile2);
         assertEquals(3, table.placedTilesAmount());
@@ -74,7 +74,7 @@ public class TableTest {
          */
         passedTiles.put(new Coordinates(0, 0), table.getFirstTile());
 
-        Tile tile = Tile.getInstance(1, 0);
+        Tile tile = Tile.getInstance(1, 0, TileName.CLOISTER);
         passedTiles.put(tile.getCoordinates(), tile);
         table.placeTile(tile);
         assertTrue ("Tiles that were placed on table", passedTiles.equals(table.getPlacedTiles()));
@@ -83,13 +83,13 @@ public class TableTest {
     @Test
     public void getNeighbourByTileDirections() {
         Table table = Table.getInstance();
-        Tile expected = Tile.getInstance(1, 0);
+        Tile expected = Tile.getInstance(1, 0, TileName.CLOISTER);
         table.placeTile(expected);
-        table.placeTile(Tile.getInstance(2,0));
+        table.placeTile(Tile.getInstance(2, 0, TileName.CLOISTER));
         assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(2, 0, TileDirections.WEST));
-        table.placeTile(Tile.getInstance(1,1));
+        table.placeTile(Tile.getInstance(1, 1, TileName.CLOISTER));
         assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, 1, TileDirections.NORTH));
-        table.placeTile(Tile.getInstance(1,-1));
+        table.placeTile(Tile.getInstance(1, -1, TileName.CLOISTER));
         assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, -1, TileDirections.SOUTH));
         assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(0, 0, TileDirections.EAST));
     }

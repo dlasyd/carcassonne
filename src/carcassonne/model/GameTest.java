@@ -87,8 +87,7 @@ public class GameTest {
 
     @Test
     public void confirmTilePlacementPlacesTileOnTable() {
-        Tile currentTile = Tile.getInstance(1, 0);
-        currentTile.setCoordinates(1, 0);
+        Tile currentTile = Tile.getInstance(1, 0, TileName.CITY1);
         table.placeTile(currentTile);
         assertEquals (currentTile, table.getTile(1,0));
     }

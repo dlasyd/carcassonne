@@ -260,6 +260,8 @@ public class RealEstateTest {
     public void createPropertyFromMiddleTile() {
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+
         table.placeTile(tile_1_0);
         table.placeTile(tile_3_0);
         table.placeTile(tile_2_0);
@@ -715,6 +717,7 @@ public class RealEstateTest {
         tile_1_1.placeFollower(new Player(), TileDirections.CENTER);
         tile_1_2.copyFeatures(TilePile.getReferenceTile(CLOISTER));
         tile_0_1.copyFeatures(TilePile.getReferenceTile(CLOISTER));
+        tile_2_2.copyFeatures(TilePile.getReferenceTile(CLOISTER));
 
         table.placeTile(tile_1_0);
         RealEstate realEstate = RealEstate.getInstance(tile_1_1, table);
