@@ -10,16 +10,15 @@ import carcassonne.view.ViewWindow;
  * Created by Andrey on 12/01/16.
  */
 public class GameWindowLogic implements WindowLogic {
-    private ViewWindow gameWindow;
+    private boolean tilePreviewEnabled = true;
     private boolean currentTileOnTheTable;
     private boolean tileConfirmed;
-    private DataToModel dataToModel;
-    private GameData gameData;
-    private int currentTileX, currentTileY;
     private boolean gameEnded = false;
-    private DrawableTile currentTile;
-    private boolean lastTurn;
-    private boolean tilePreviewEnabled = true;
+    private int     currentTileX, currentTileY;
+    private GameData        gameData;
+    private ViewWindow      gameWindow;
+    private DataToModel     dataToModel;
+    private DrawableTile    currentTile;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -31,7 +30,7 @@ public class GameWindowLogic implements WindowLogic {
         this.gameData = gameData;
 
         if(!gameEnded) {
-            this.currentTile = new DrawableTile(gameData.getCurrentTile());
+            currentTile = new DrawableTile(gameData.getCurrentTile());
             tilePreviewEnabled = true;
         }
 
@@ -51,20 +50,6 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setTilePreviewEnabled(tilePreviewEnabled);
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
-    }
-
-    public void setDataToModel(DataToModel dataToModel) {
-        this.dataToModel = dataToModel;
-    }
-
-    @Override
-    public void pull() {
-        dataToModel.forceNotify();
-    }
-
-    @Override
-    public GameData getLatestGameData() {
-        return null;
     }
 
     @Override
@@ -94,10 +79,10 @@ public class GameWindowLogic implements WindowLogic {
         }
     }
 
-    //TODO remove
     @Override
-    public boolean isTileFixed() {
-        return false;
+    public void clickOnPlacedTile() {
+        currentTile.turnRight();
+        gameWindow.repaintWindow();
     }
 
     @Override
@@ -110,11 +95,6 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void setLastTurn(Boolean value) {
-        lastTurn = value;
-    }
-
-    @Override
     public void finishGame() {
         gameWindow.setConfirmTileButtonEnabled(false);
         gameWindow.setEndTurnButtonEnabled(false);
@@ -123,10 +103,22 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
+    public void pull() {
+        dataToModel.forceNotify();
+    }
+
+    @Override
     public boolean displayPossibleLocations() {
         return !gameEnded;
     }
 
+    //TODO remove
+    @Override
+    public boolean isTileFixed() {
+        return false;
+    }
+
+    //<editor-fold desc="Getters and setters">
     @Override
     public int getCurrentTileX() {
         return currentTileX;
@@ -148,10 +140,15 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void clickOnPlacedTile() {
-        currentTile.turnRight();
-        gameWindow.repaintWindow();
+    public GameData getLatestGameData() {
+        return null;
     }
+
+    public void setDataToModel(DataToModel dataToModel) {
+        this.dataToModel = dataToModel;
+    }
+
+    //</editor-fold>
 
 
 }

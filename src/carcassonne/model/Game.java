@@ -36,9 +36,7 @@ public class Game implements DataToModel{
             nextPlayer();
             dragTile();
             notifyController();
-            if (!tilePile.hasTiles())
-                windowLogic.setLastTurn(true);
-        } else {
+    } else {
             finished = true;
             table.setCurrentTile(Tile.getNullInstance());
             windowLogic.finishGame();

@@ -25,8 +25,6 @@ public interface WindowLogic {
 
     void updateEndTurnButton();
 
-    void setLastTurn(Boolean value);
-
     void finishGame();
 
     boolean displayPossibleLocations();
