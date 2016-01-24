@@ -149,7 +149,5 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     //</editor-fold>
-
-
 }
 
