@@ -10,28 +10,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This is a part of Carcassonne project.
- * The project is created for learning and practicing java
- * and not intended for distribution.
- * Created by Andrey on 14/01/16.
+ * This class simulates a game window. It is used for testing controller.
+ * Data is saved into instance variables via ViewWindow implemented methods.
+ * Data can be retrieved by FakeWindow getters
  */
 public class FakeWindow implements ViewWindow {
     String currentPlayerName = "";
     int moveCounter = 0;
     private WindowLogic windowLogic;
     private String currentPoints;
-    private String numberOfFollwers;
+    private String numberOfFollowers;
     private String tilesLeft;
     private int[][] fakeCoordinates = {{1,0}, {2,0}, {3, 0}, {4, 0}, {5, 0}};
     private boolean endTurnEnabled, nextTurnEnabled;
     private boolean endGameWindowDisplayed;
     private boolean tilePreviewEnabled;
     private DrawableTile currentTile;
-
-    public Set<DrawableTile> getTilesOnTable() {
-        return tilesOnTable;
-    }
-
     private Set<DrawableTile> tilesOnTable = new HashSet<>();
     private TileName firstPlacedTileName;
     private Set<Coordinates> possibleTileLocations;
@@ -40,17 +34,58 @@ public class FakeWindow implements ViewWindow {
         this.windowLogic = windowLogic;
     }
 
+    /*
+     * Simulating window events
+     */
+    public void pressEndTurnButton() {
+        windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
+        windowLogic.updateEndTurnButton();
+        moveCounter++;
+    }
+
+    public void clickOnGamePanel() {
+        windowLogic.updateTilePlaced(1, 0);
+    }
+
+    public void clickOnPlacedTile() {
+        windowLogic.clickOnPlacedTile();
+    }
+
+    @Override
+    public DrawableTile getCurrentTile() {
+        return currentTile;
+    }
+
+    //<editor-fold desc="Overridden setters">
     @Override
     public void setConfirmTileButtonEnabled(boolean b) {
         this.nextTurnEnabled = b;
     }
 
     @Override
-    public void setConfirmTileButtonText(String text) {
+    public void setCurrentPoints(String currentPoints) {
+        this.currentPoints = currentPoints;
     }
 
     @Override
-    public void setPlayerColorRemainder(Color color) {
+    public void addTileOnTable(DrawableTile tile) {
+        tilesOnTable.add(tile);
+        firstPlacedTileName = tile.getTileName();
+    }
+
+    @Override
+    public void setNumberOfFollowers(String numberOfFollowers) {
+        this.numberOfFollowers = numberOfFollowers;
+    }
+
+    @Override
+    public void setPossibleTileLocations(Set<Coordinates> possibleTileLocations) {
+        this.possibleTileLocations = possibleTileLocations;
+    }
+
+    @Override
+    public void setCurrentTile(DrawableTile drawableTile) {
+        this.currentTile = drawableTile;
     }
 
     @Override
@@ -69,68 +104,26 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
-    public void repaintWindow() {
-
-    }
-
-    public String getCurrentPlayerName() {
-        return currentPlayerName;
-    }
-
-    @Override
     public void setCurrentPlayerName(String currentPlayer) {
         this.currentPlayerName = currentPlayer;
     }
+    //</editor-fold>
 
-    public void pressEndTurnButton() {
-        windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
-        windowLogic.updateEndTurnButton();
-        moveCounter++;
-    }
-
-    public String getCurrentPoints() {
-        return currentPoints;
+    //<editor-fold desc="Empty implementations">
+    @Override
+    public void setConfirmTileButtonText(String text) {
     }
 
     @Override
-    public void setCurrentPoints(String currentPoints) {
-        this.currentPoints = currentPoints;
+    public void setPlayerColorRemainder(Color color) {
     }
 
     @Override
-    public void addTileOnTable(DrawableTile tile) {
-        tilesOnTable.add(tile);
-        firstPlacedTileName = tile.getTileName();
+    public void repaintWindow() {
     }
+    //</editor-fold>
 
-    public String getNumberOfFollwers() {
-        return numberOfFollwers;
-    }
-
-    @Override
-    public void setNumberOfFollowers(String numberOfFollowers) {
-        this.numberOfFollwers = numberOfFollowers;
-    }
-
-    @Override
-    public void setPossibleTileLocations(Set<Coordinates> possibleTileLocations) {
-        this.possibleTileLocations = possibleTileLocations;
-    }
-
-    @Override
-    public void setCurrentTile(DrawableTile drawableTile) {
-        this.currentTile = drawableTile;
-    }
-
-    @Override
-    public DrawableTile getCurrentTile() {
-        return currentTile;
-    }
-
-    public String getTilesLeft() {
-        return tilesLeft;
-    }
-
+    //<editor-fold desc="FakeWindow Getters">
     public boolean isPlaceTileButtonEnabled() {
         return this.nextTurnEnabled;
     }
@@ -143,18 +136,6 @@ public class FakeWindow implements ViewWindow {
         return this.endGameWindowDisplayed;
     }
 
-    public boolean isTilePreviewEnabled() {
-        return tilePreviewEnabled;
-    }
-
-    public void setTilePreviewEnabled(boolean b) {
-        this.tilePreviewEnabled = b;
-    }
-
-    public void clickOnGamePanel() {
-        windowLogic.updateTilePlaced(1, 0);
-    }
-
     public String getTilePreviewName() {
         return currentTile.getFileName();
     }
@@ -165,14 +146,6 @@ public class FakeWindow implements ViewWindow {
 
     public TileName getFirstPlacedTileName() {
         return firstPlacedTileName;
-    }
-
-    public Set<Coordinates> getDisplayedPossibleTileCoordinatesSet() {
-        return new HashSet<>();
-    }
-
-    public Set<Coordinates> getPossibleTileLocations() {
-        return possibleTileLocations;
     }
 
     public boolean isCurrentTilePlaced() {
@@ -191,8 +164,40 @@ public class FakeWindow implements ViewWindow {
         return currentTile.getCurrentRotation();
     }
 
-    public void clickOnPlacedTile() {
-        windowLogic.clickOnPlacedTile();
+    public String getCurrentPlayerName() {
+        return currentPlayerName;
     }
+
+    public boolean isTilePreviewEnabled() {
+        return tilePreviewEnabled;
+    }
+
+    public String getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public String getNumberOfFollwers() {
+        return numberOfFollowers;
+    }
+
+
+    public String getTilesLeft() {
+        return tilesLeft;
+    }
+
+    //</editor-fold>
+
+    public void setTilePreviewEnabled(boolean b) {
+        this.tilePreviewEnabled = b;
+    }
+
+    public Set<Coordinates> getPossibleTileLocations() {
+        return possibleTileLocations;
+    }
+
+    public Set<DrawableTile> getTilesOnTable() {
+        return tilesOnTable;
+    }
+
 
 }
