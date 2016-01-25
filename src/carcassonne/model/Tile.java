@@ -58,7 +58,7 @@ public abstract class Tile {
 
     abstract boolean isNoFollower();
     abstract boolean isComplete();
-    abstract boolean hasCoordinates();
+    public abstract boolean hasCoordinates();
     abstract boolean hasCloister();
     //</editor-fold>
 }

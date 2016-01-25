@@ -29,8 +29,14 @@ public class Game implements DataToModel{
 
     @Override
     public void turnActions(int x, int y) {
+        turnActions(x, y, Rotation.DEG_0);
+    }
+
+    @Override
+    public void turnActions(int x, int y, Rotation angle) {
         Tile tile = getCurrentTile();
         tile.setCoordinates(x, y);
+        tile.turnRight(angle);
         table.placeTile(tile);
         if (tilePile.hasTiles()) {
             nextPlayer();
@@ -45,7 +51,7 @@ public class Game implements DataToModel{
     }
 
     @Override
-    public void turnActions(int x, int y, TileDirections direction) {
+    public void turnActions(int x, int y, Rotation angle,TileDirections direction) {
         turnActions(x, y);
         table.placeFollower(getCurrentPlayer(), direction);
     }

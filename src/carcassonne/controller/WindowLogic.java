@@ -1,6 +1,7 @@
 package carcassonne.controller;
 
 
+import carcassonne.model.Rotation;
 import carcassonne.view.ViewWindow;
 
 /**
@@ -13,7 +14,7 @@ public interface WindowLogic {
 
     GameData getLatestGameData();
 
-    void updateTilePlaced(int x, int y);
+    void updateTilePlaced(int x, int y, Rotation angle);
 
     void updateTileConfirmed();
 

@@ -218,7 +218,7 @@ public class GameWindow extends JFrame implements ViewWindow{
                                     e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
                                     (e.getY() > windowLocalY + tileSize * coordinates.getY() &&
                                             e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
-                                windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
+                                windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY(), currentTile.getRotation());
                                 break;
                             }
                         }

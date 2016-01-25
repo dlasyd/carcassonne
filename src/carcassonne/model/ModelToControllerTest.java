@@ -1,5 +1,6 @@
 package carcassonne.model;
 
+import carcassonne.controller.DataToModel;
 import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.FakeWindow;
@@ -200,5 +201,17 @@ public class ModelToControllerTest {
         fakeWindow.pressEndTurnButton();
         fakeWindow.pressEndTurnButton();
         assertEquals("Tile preview is disabled", false, fakeWindow.isTilePreviewEnabled());
+    }
+
+    @Test
+    public void tileRotationIsPassedToModel() {
+        DataToModel game = new FakeGame();
+        FakeGame fakeGame = (FakeGame) game;
+        windowLogic.setDataToModel(game);
+        assertEquals("Tile isn't rotated", Rotation.DEG_0, fakeGame.getCurrentTileRotation());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.clickOnPlacedTile();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Tile is rotated", Rotation.DEG_90, fakeGame.getCurrentTileRotation());
     }
 }

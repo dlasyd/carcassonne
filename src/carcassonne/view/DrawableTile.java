@@ -1,17 +1,13 @@
 package carcassonne.view;
 
-import carcassonne.model.Rotation;
-import carcassonne.model.Tile;
-import carcassonne.model.TileDirections;
-import carcassonne.model.TileName;
+import carcassonne.model.*;
 
 import java.awt.*;
 
 /**
- * This is a part of Carcassonne project.
- * The project is created for learning and practicing java
- * and not intended for distribution.
- * Created by Andrey on 18/01/16.
+ * This class contains an image of a tile and information about rotation.
+ * It stores a copy of a tile object that is passed in constructor and there is no way
+ * to change the original tile using class methods.
  */
 public class DrawableTile {
     private Tile tile;
@@ -24,7 +20,11 @@ public class DrawableTile {
             throw new RuntimeException("Cannot create a DrawableTile from null tile");
         }
 
-        this.tile = tile;
+        if (tile.hasCoordinates()) {
+            this.tile = Tile.getInstance(tile.getX(), tile.getY(), tile.getName());
+        } else {
+            this.tile = Tile.getInstance(tile.getName());
+        }
         image = new javaxt.io.Image("res/tiles/" + this.getFileName());
 
         /*
@@ -60,13 +60,12 @@ public class DrawableTile {
     }
 
     public void turnRight() {
-        tile.turnRight(Rotation.DEG_90);
         image.rotate(90);
         rotation = Rotation.values()[(rotation.ordinal() + 1) % 4];
     }
 
     public Rotation getCurrentRotation() {
-        return tile.getCurrentRotation();
+        return rotation;
     }
 
     public Image getBufferedImage() {

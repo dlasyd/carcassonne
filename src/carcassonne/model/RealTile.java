@@ -242,6 +242,7 @@ public class RealTile extends Tile {
         return result.toArray(new TileDirections[result.size()]);
     }
 
+    @Override
     public boolean hasCoordinates() {
         return coordinates != null;
     }

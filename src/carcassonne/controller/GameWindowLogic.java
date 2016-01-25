@@ -1,5 +1,6 @@
 package carcassonne.controller;
 
+import carcassonne.model.Rotation;
 import carcassonne.view.DrawableTile;
 import carcassonne.view.ViewWindow;
 
@@ -19,6 +20,7 @@ public class GameWindowLogic implements WindowLogic {
     private ViewWindow      gameWindow;
     private DataToModel     dataToModel;
     private DrawableTile    currentTile;
+    private Rotation        currentTileRotation = Rotation.DEG_0;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -53,12 +55,13 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void updateTilePlaced(int x, int y) {
+    public void updateTilePlaced(int x, int y, Rotation angle) {
         if (!isTileFixed() && !gameEnded) {
             currentTileOnTheTable = true;
             gameWindow.setConfirmTileButtonEnabled(true);
             currentTileX = x;
             currentTileY = y;
+            currentTileRotation = angle;
         }
         gameWindow.setTilePreviewEnabled(false);
         tilePreviewEnabled = false;
@@ -87,7 +90,7 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
-        dataToModel.turnActions(currentTileX, currentTileY);
+        dataToModel.turnActions(currentTileX, currentTileY, currentTile.getRotation());
         gameWindow.setEndTurnButtonEnabled(false);
         currentTileOnTheTable = false;
         if (gameEnded)

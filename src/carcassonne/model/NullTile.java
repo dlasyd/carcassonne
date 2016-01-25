@@ -43,7 +43,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    boolean hasCoordinates() {
+    public boolean hasCoordinates() {
         throw new RuntimeException("The tile is Null");
     }
 
