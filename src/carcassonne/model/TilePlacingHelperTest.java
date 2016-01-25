@@ -44,4 +44,20 @@ public class TilePlacingHelperTest {
         helper.update(tile);
         assertEquals("Set of coordinates", expected, helper.getCoordinatesToRotationMap());
     }
+
+    @Test
+    public void road3() {
+        Map<Coordinates, Set<Rotation>> expected = new HashMap<>();
+        Util.addSetElement(expected, new Coordinates(-1, 0), Rotation.DEG_0);
+        Util.addSetElement(expected, new Coordinates(-1, 0), Rotation.DEG_180);
+        Util.addSetElement(expected, new Coordinates(-1, 0), Rotation.DEG_270);
+        Util.addSetElement(expected, new Coordinates(1, 0), Rotation.DEG_0);
+        Util.addSetElement(expected, new Coordinates(1, 0), Rotation.DEG_90);
+        Util.addSetElement(expected, new Coordinates(1, 0), Rotation.DEG_180);
+        Util.addSetElement(expected, new Coordinates(0, 1), Rotation.DEG_0);
+        helper.setPlacedTiles(table.getPlacedTiles());
+        Tile tile = Tile.getInstance(TileName.ROAD3);
+        helper.update(tile);
+        assertEquals("Set of coordinates", expected, helper.getCoordinatesToRotationMap());
+    }
 }

@@ -44,7 +44,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void clickOnGamePanel() {
-        clickOnGamePanel(1, 0);
+        clickOnGamePanel(moveCounter + 1, 0);
     }
 
     public void clickOnGamePanel(int x, int y) {

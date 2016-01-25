@@ -136,7 +136,7 @@ public class TilePile {
         return tiles.isEmpty() != true;
     }
 
-    public void singletonPile(TileName tileName) {
+    public void addTile(TileName tileName) {
         addTile(Tile.getInstance(tileName));
     }
 }

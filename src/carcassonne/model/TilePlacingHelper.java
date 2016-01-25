@@ -17,6 +17,7 @@ class TilePlacingHelper {
         this.table = table;
     }
 
+    //TODO remove
     public Set<Coordinates> getCoordinatesSet(Tile tile) {
         Set<Coordinates> result = new HashSet<>();
         result.add(new Coordinates(0, 1));
@@ -32,6 +33,7 @@ class TilePlacingHelper {
     }
 
     public void update(Tile dontChangeTile) {
+        coordinatesToRotationMap.clear();
         Tile tile = new RealTile((RealTile) dontChangeTile);
         /*
          * 1) tiles around existing tiles are eligible
@@ -57,8 +59,10 @@ class TilePlacingHelper {
                 for (TileDirections direction: directionsToCompare) {
                     Tile neighbour = table.getNeighbouringTile(coordinate.getX(), coordinate.getY(), direction);
                     if (!neighbour.isNull()) {
-                        if (!neighbour.isContinuous(tile, direction))
+                        if (!neighbour.isContinuous(tile, direction)) {
                             continuityBroken = true;
+                            break;
+                        }
                     }
                 }
 

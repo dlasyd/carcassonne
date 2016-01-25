@@ -48,9 +48,9 @@ public class Table {
             throw new RuntimeException("Trying to place tile on an occupied space");
         placedTiles.put(currentTile.getCoordinates(), currentTile);
         placementHelper.setPlacedTiles(new HashMap<>(placedTiles));
+        tilePlacedLast = currentTile;
         placementHelper.update(currentTile);
         notifyObservers(currentTile);
-        tilePlacedLast = currentTile;
     }
 
     public int placedTilesAmount() {
@@ -68,6 +68,7 @@ public class Table {
 
     void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
+        placementHelper.update(currentTile);
 
     }
 

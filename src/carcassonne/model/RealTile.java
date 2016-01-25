@@ -37,6 +37,7 @@ public class RealTile extends Tile {
         this.noFollower = realTile.noFollower;
         this.featureToTileDirections = new HashMap<>(realTile.featureToTileDirections);
         this.propertyMap = new HashMap<>(realTile.propertyMap);
+        this.propertyConnectionMap = realTile.propertyConnectionMap;
     }
 
     RealTile(TileName tileName) {
