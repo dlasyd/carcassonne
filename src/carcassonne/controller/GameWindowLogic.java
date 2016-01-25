@@ -19,7 +19,6 @@ public class GameWindowLogic implements WindowLogic {
     private GameData        gameData;
     private ViewWindow      gameWindow;
     private DataToModel     dataToModel;
-    private DrawableTile    currentTile;
     private Rotation        currentTileRotation = Rotation.DEG_0;
 
     @Override
@@ -32,7 +31,6 @@ public class GameWindowLogic implements WindowLogic {
         this.gameData = gameData;
 
         if(!gameEnded) {
-            currentTile = new DrawableTile(gameData.getCurrentTile());
             tilePreviewEnabled = true;
         }
 
@@ -48,20 +46,19 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setCurrentPoints(gameData.getPoints());
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
-        gameWindow.setCurrentTile(currentTile);
+        gameWindow.setCurrentTile(new DrawableTile(gameData.getCurrentTile()));
         gameWindow.setTilePreviewEnabled(tilePreviewEnabled);
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
     }
 
     @Override
-    public void updateTilePlaced(int x, int y, Rotation angle) {
+    public void updateTilePlaced(int x, int y) {
         if (!isTileFixed() && !gameEnded) {
             currentTileOnTheTable = true;
             gameWindow.setConfirmTileButtonEnabled(true);
             currentTileX = x;
             currentTileY = y;
-            currentTileRotation = angle;
         }
         gameWindow.setTilePreviewEnabled(false);
         tilePreviewEnabled = false;
@@ -84,13 +81,14 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void clickOnPlacedTile() {
-        currentTile.turnRight();
+        currentTileRotation = Rotation.values()[(currentTileRotation.ordinal() + 1) % 4];
+        gameWindow.getCurrentTile().turnRight();
         gameWindow.repaintWindow();
     }
 
     @Override
     public void updateEndTurnButton() {
-        dataToModel.turnActions(currentTileX, currentTileY, currentTile.getRotation());
+        dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
         gameWindow.setEndTurnButtonEnabled(false);
         currentTileOnTheTable = false;
         if (gameEnded)

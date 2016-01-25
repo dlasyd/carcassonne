@@ -44,7 +44,6 @@ public class Game implements DataToModel{
             notifyController();
     } else {
             finished = true;
-            table.setCurrentTile(Tile.getNullInstance());
             windowLogic.finishGame();
             notifyController();
         }

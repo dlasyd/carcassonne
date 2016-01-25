@@ -14,7 +14,7 @@ public interface WindowLogic {
 
     GameData getLatestGameData();
 
-    void updateTilePlaced(int x, int y, Rotation angle);
+    void updateTilePlaced(int x, int y);
 
     void updateTileConfirmed();
 

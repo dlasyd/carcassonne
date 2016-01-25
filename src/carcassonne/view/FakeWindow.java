@@ -83,7 +83,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void pressEndTurnButton() {
-        windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1], Rotation.DEG_0);
+        windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
         windowLogic.updateEndTurnButton();
         moveCounter++;
     }
@@ -122,6 +122,11 @@ public class FakeWindow implements ViewWindow {
         this.currentTile = drawableTile;
     }
 
+    @Override
+    public DrawableTile getCurrentTile() {
+        return currentTile;
+    }
+
     public String getTilesLeft() {
         return tilesLeft;
     }
@@ -147,7 +152,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void clickOnGamePanel() {
-        windowLogic.updateTilePlaced(1, 0, Rotation.DEG_0);
+        windowLogic.updateTilePlaced(1, 0);
     }
 
     public String getTilePreviewName() {
@@ -189,4 +194,5 @@ public class FakeWindow implements ViewWindow {
     public void clickOnPlacedTile() {
         windowLogic.clickOnPlacedTile();
     }
+
 }
