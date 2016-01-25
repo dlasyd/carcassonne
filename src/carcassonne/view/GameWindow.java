@@ -151,7 +151,7 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     @Override
     public DrawableTile getCurrentTile() {
-        return null;
+        return currentTile;
     }
     //</editor-fold>
 

@@ -1,9 +1,11 @@
 package carcassonne.controller;
 
 import carcassonne.model.Coordinates;
+import carcassonne.model.Rotation;
 import carcassonne.model.Tile;
 
 import java.awt.*;
+import java.util.Map;
 import java.util.Set;
 
 public class GameDataBuilder {
@@ -15,6 +17,7 @@ public class GameDataBuilder {
     private Tile currentTile;
     private Tile previouslyPlacedTile;
     private Set<Coordinates> possibleTileLocations;
+    private Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
 
     public GameDataBuilder setName(String name) {
         this.name = name;
@@ -56,7 +59,12 @@ public class GameDataBuilder {
         return this;
     }
 
+    public GameDataBuilder setPossibleLocationsAndRotations(Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations) {
+        this.possibleLocationsAndRotations = possibleLocationsAndRotations;
+        return this;
+    }
+
     public GameData createGameData() {
-        return new GameData(name, points, followers, playerColor, tilesLeft, currentTile, previouslyPlacedTile, possibleTileLocations);
+        return new GameData(name, points, followers, playerColor, tilesLeft, currentTile, previouslyPlacedTile, possibleTileLocations, possibleLocationsAndRotations);
     }
 }

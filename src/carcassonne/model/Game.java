@@ -64,6 +64,7 @@ public class Game implements DataToModel{
                 setCurrentTile(table.getCurrentTile()).
                 setPreviouslyPlacedTile(table.getPreviouslyPlacedTile()).
                 setPossibleTileLocations(table.getPossibleTileLocations()).
+                setPossibleLocationsAndRotations(table.getPossibleTileLocationsAndRotations()).
                 createGameData());
     }
 

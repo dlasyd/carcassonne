@@ -64,6 +64,16 @@ public class DrawableTile {
         rotation = Rotation.values()[(rotation.ordinal() + 1) % 4];
     }
 
+    public void setRotation(Rotation angle) {
+        /*
+         * First, rotate the image to initial position
+         */
+        image.rotate(- (90 * rotation.ordinal()));
+
+        image.rotate(90 * angle.ordinal());
+        rotation = angle;
+    }
+
     public Rotation getCurrentRotation() {
         return rotation;
     }

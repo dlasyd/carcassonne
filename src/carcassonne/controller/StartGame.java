@@ -3,6 +3,7 @@ package carcassonne.controller;
 import carcassonne.model.Game;
 import carcassonne.model.RealEstateManager;
 import carcassonne.model.Table;
+import carcassonne.model.TileName;
 import carcassonne.view.GameWindow;
 
 import java.awt.*;
@@ -23,7 +24,8 @@ public class StartGame {
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
         //game.getTilePile().addXCrossroads(5);
-        game.getTilePile().add5DifferentTiles();
+        //game.getTilePile().add5DifferentTiles();
+        game.getTilePile().singletonPile(TileName.ROAD3);
         game.nextPlayer();
         game.dragTile();
 

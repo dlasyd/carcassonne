@@ -1,8 +1,11 @@
 package carcassonne.controller;
 
+import carcassonne.model.Coordinates;
 import carcassonne.model.Rotation;
 import carcassonne.view.DrawableTile;
 import carcassonne.view.ViewWindow;
+
+import java.util.Set;
 
 /**
  * This is a part of Carcassonne project.
@@ -20,6 +23,7 @@ public class GameWindowLogic implements WindowLogic {
     private ViewWindow      gameWindow;
     private DataToModel     dataToModel;
     private Rotation        currentTileRotation = Rotation.DEG_0;
+    private Set<Rotation>   possibleCurrentTileRotations;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -59,6 +63,16 @@ public class GameWindowLogic implements WindowLogic {
             gameWindow.setConfirmTileButtonEnabled(true);
             currentTileX = x;
             currentTileY = y;
+            possibleCurrentTileRotations = gameData.getPossibleLocationsAndRotations().get(new Coordinates(x, y));
+            gameWindow.getCurrentTile().setRotation(Rotation.DEG_0);
+            if (!possibleCurrentTileRotations.contains(Rotation.DEG_0)) {
+                for (int i = 1; i < 4; i++) {
+                    if (possibleCurrentTileRotations.contains(Rotation.values()[i])) {
+                        gameWindow.getCurrentTile().setRotation(Rotation.values()[i]);
+                        break;
+                    }
+                }
+            }
         }
         gameWindow.setTilePreviewEnabled(false);
         tilePreviewEnabled = false;
@@ -81,7 +95,13 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void clickOnPlacedTile() {
-        currentTileRotation = Rotation.values()[(currentTileRotation.ordinal() + 1) % 4];
+        //int i = 1;
+        //while (true) {
+            currentTileRotation = Rotation.values()[(currentTileRotation.ordinal() + 1) % 4];
+            //if (possibleCurrentTileRotations.contains(currentTileRotation))
+            //    break;
+          //  i++;
+        //}
         gameWindow.getCurrentTile().turnRight();
         gameWindow.repaintWindow();
     }

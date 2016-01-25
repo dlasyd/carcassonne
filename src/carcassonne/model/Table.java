@@ -2,6 +2,7 @@ package carcassonne.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /*
@@ -120,5 +121,9 @@ public class Table {
 
     public Set<Coordinates> getPossibleTileLocations() {
         return placementHelper.getCoordinatesToRotationMap().keySet();
+    }
+
+    public Map<Coordinates,Set<Rotation>> getPossibleTileLocationsAndRotations() {
+        return placementHelper.getCoordinatesToRotationMap();
     }
 }

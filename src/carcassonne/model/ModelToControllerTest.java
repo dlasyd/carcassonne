@@ -236,7 +236,8 @@ public class ModelToControllerTest {
         game.notifyController();
         fakeWindow = (FakeWindow) viewWindow;
 
-        fakeWindow.clickOnGamePanel(-1, 0);
+        fakeWindow.clickOnGamePanel(0, -1);
         assertEquals("Tile is rotated legally when placed", Rotation.DEG_180, fakeWindow.getCurrentTileRotation());
     }
+
 }
