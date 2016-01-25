@@ -135,4 +135,8 @@ public class TilePile {
     public boolean hasTiles() {
         return tiles.isEmpty() != true;
     }
+
+    public void singletonPile(TileName tileName) {
+        addTile(Tile.getInstance(tileName));
+    }
 }

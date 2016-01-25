@@ -214,4 +214,29 @@ public class ModelToControllerTest {
         fakeWindow.pressEndTurnButton();
         assertEquals("Tile is rotated", Rotation.DEG_90, fakeGame.getCurrentTileRotation());
     }
+
+    @Test
+    public void currentTileIsLegallyRotatedWhenPlaced() {
+        game = new Game();
+        table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        game.setTable(table);
+        game.addPlayer("Anton" , Color.RED);
+        game.addPlayer("Andrey", Color.YELLOW);
+        game.getTilePile().singletonPile(TileName.CITY1);
+
+        windowLogic = new GameWindowLogic();
+        viewWindow = new FakeWindow(windowLogic);
+        windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(game);
+        game.setWindowLogic(windowLogic);
+        game.nextPlayer();
+        game.dragTile();
+        game.notifyController();
+        fakeWindow = (FakeWindow) viewWindow;
+
+        fakeWindow.clickOnGamePanel(-1, 0);
+        assertEquals("Tile is rotated legally when placed", Rotation.DEG_180, fakeWindow.getCurrentTileRotation());
+    }
 }

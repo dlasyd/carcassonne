@@ -44,7 +44,11 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void clickOnGamePanel() {
-        windowLogic.updateTilePlaced(1, 0);
+        clickOnGamePanel(1, 0);
+    }
+
+    public void clickOnGamePanel(int x, int y) {
+        windowLogic.updateTilePlaced(x , y);
     }
 
     public void clickOnPlacedTile() {
