@@ -18,8 +18,6 @@ public interface WindowLogic {
 
     void updateTileConfirmed();
 
-    boolean isTileFixed();
-
     void setDataToModel(DataToModel dataToModel);
 
     void pull();

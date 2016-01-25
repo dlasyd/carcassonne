@@ -10,19 +10,20 @@ import carcassonne.controller.DataToModel;
  */
 public class FakeGame implements DataToModel {
     private Rotation currentTileRotation = Rotation.DEG_0;
+
     @Override
     public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
         this.currentTileRotation = angle;
     }
 
     @Override
-    public void turnActions(int x, int y) {
-
+    public void turnActions(int x, int y, Rotation angle) {
+        this.currentTileRotation = angle;
     }
 
     @Override
-    public void turnActions(int x, int y, Rotation angle) {
-        this.currentTileRotation = angle;
+    public void turnActions(int x, int y) {
+
     }
 
     @Override

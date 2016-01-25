@@ -54,7 +54,7 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateTilePlaced(int x, int y) {
-        if (!isTileFixed() && !gameEnded) {
+        if (!gameEnded) {
             currentTileOnTheTable = true;
             gameWindow.setConfirmTileButtonEnabled(true);
             currentTileX = x;
@@ -111,12 +111,6 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public boolean displayPossibleLocations() {
         return !gameEnded;
-    }
-
-    //TODO remove
-    @Override
-    public boolean isTileFixed() {
-        return false;
     }
 
     //<editor-fold desc="Getters and setters">
