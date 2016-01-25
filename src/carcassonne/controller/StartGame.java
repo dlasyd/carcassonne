@@ -25,7 +25,7 @@ public class StartGame {
         game.addPlayer("Andrey", Color.YELLOW);
         //game.getTilePile().addXCrossroads(5);
         game.getTilePile().add5DifferentTiles();
-        //game.getTilePile().addTile(TileName.ROAD3);
+        //game.getTilePile().addTile(TileName.CITY1);
         game.nextPlayer();
         game.dragTile();
 

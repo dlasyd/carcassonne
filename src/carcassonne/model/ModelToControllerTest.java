@@ -292,4 +292,16 @@ public class ModelToControllerTest {
         assertEquals("Tile is rotated legally when placed", Rotation.DEG_180, fakeWindow.getCurrentTileRotation());
     }
 
+    @Test
+    public void whenClickOnTileOnlyLegalRotation() {
+        game.getTilePile().addTile(TileName.CITY1);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(0, 1);
+        fakeWindow.clickOnPlacedTile();
+        assertEquals("Current tile rotation is correct", Rotation.DEG_180, fakeWindow.getCurrentTileRotation());
+        fakeWindow.clickOnPlacedTile();
+        assertEquals("Current tile rotation is correct", Rotation.DEG_270, fakeWindow.getCurrentTileRotation());
+        fakeWindow.clickOnPlacedTile();
+        assertEquals("Incorrect rotation is skipped", Rotation.DEG_90, fakeWindow.getCurrentTileRotation());
+    }
 }

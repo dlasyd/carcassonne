@@ -68,7 +68,8 @@ public class GameWindowLogic implements WindowLogic {
             if (!possibleCurrentTileRotations.contains(Rotation.DEG_0)) {
                 for (int i = 1; i < 4; i++) {
                     if (possibleCurrentTileRotations.contains(Rotation.values()[i])) {
-                        gameWindow.getCurrentTile().setRotation(Rotation.values()[i]);
+                        currentTileRotation = Rotation.values()[i];
+                        gameWindow.getCurrentTile().setRotation(currentTileRotation);
                         break;
                     }
                 }
@@ -95,14 +96,12 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void clickOnPlacedTile() {
-        //int i = 1;
-        //while (true) {
+        while (true) {
             currentTileRotation = Rotation.values()[(currentTileRotation.ordinal() + 1) % 4];
-            //if (possibleCurrentTileRotations.contains(currentTileRotation))
-            //    break;
-          //  i++;
-        //}
-        gameWindow.getCurrentTile().turnRight();
+            if (possibleCurrentTileRotations.contains(currentTileRotation))
+                break;
+        }
+        gameWindow.getCurrentTile().setRotation(currentTileRotation);
         gameWindow.repaintWindow();
     }
 
@@ -111,6 +110,7 @@ public class GameWindowLogic implements WindowLogic {
         dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
         gameWindow.setEndTurnButtonEnabled(false);
         currentTileOnTheTable = false;
+        currentTileRotation = Rotation.DEG_0;
         if (gameEnded)
             gameWindow.displayEndgameWindow();
     }
