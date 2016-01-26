@@ -75,6 +75,8 @@ public class GameWindowLogic implements WindowLogic {
                         break;
                     }
                 }
+            } else {
+                currentTileRotation = Rotation.DEG_0;
             }
         }
         gameWindow.setTilePreviewEnabled(false);
