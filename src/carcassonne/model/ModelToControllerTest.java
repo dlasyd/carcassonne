@@ -328,7 +328,7 @@ public class ModelToControllerTest {
     }
 
     @Test
-    public void road3FollowerLocationsDisplayedCorrectly() {
+    public void followeLocationsRotateWithTileWhenTileFirstPlaced() {
         Set<double[]> expected = new HashSet<>();
         expected.add(new double[]{0, 0});
 
@@ -336,13 +336,13 @@ public class ModelToControllerTest {
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
-
-        Set<double[]> result = fakeWindow.getFollowerLocations();
+        Set<double[]> beforeRotation = fakeWindow.getFollowerLocations();
 
         Set<String> stringResult = new HashSet<>();
-        for (double[] xyMultiple: result) {
-            stringResult.add(Arrays.toString(xyMultiple));
-        }
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnPlacedTile();
+        fakeWindow.pressConfirmTileButton();
+        Set<double[]> afterRotation = fakeWindow.getFollowerLocations();
 
         System.out.println(stringResult);
 

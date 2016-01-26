@@ -2,6 +2,7 @@ package carcassonne.view;
 
 import carcassonne.controller.WindowLogic;
 import carcassonne.model.Coordinates;
+import carcassonne.model.Rotation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -364,9 +365,26 @@ public class GameWindow extends JFrame implements ViewWindow{
         }
 
         private void drawFollowerPossibleLocation(Graphics g, double[] xyMultipliers) {
-            g.drawOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * xyMultipliers[0]),
-                    (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1]),
-                    (int) tileSize / 4, (int) tileSize / 4);
+            xyMultipliers = rotateMultipliers(xyMultipliers, currentTile.getRotation());
+            double circleDiameter = tileSize / 4;
+            double circleRadius = tileSize / 8;
+            g.drawOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * xyMultipliers[0] - circleRadius),
+                    (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
+                    (int) circleDiameter, (int) circleDiameter);
+        }
+
+        private double[] rotateMultipliers(double[] xyMultipliers, Rotation angle) {
+            switch (angle) {
+                case DEG_0:
+                    return xyMultipliers;
+                case DEG_90:
+                    return new double[] {1 - xyMultipliers[1], xyMultipliers[0] };
+                case DEG_180:
+                    return new double[] {1 - xyMultipliers[0], 1 - xyMultipliers[1]};
+                case DEG_270:
+                    return new double[] {xyMultipliers[1], 1 - xyMultipliers[0]};
+            }
+            return xyMultipliers;
         }
     }
 }

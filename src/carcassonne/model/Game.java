@@ -225,56 +225,56 @@ public class Game implements DataToModel{
             TileDirections direction = Util.any(directions);
             switch (direction) {
                 case NNE:
-                    xyMultipliers[0] = 0.8;
-                    xyMultipliers[1] = 0;
+                    xyMultipliers[0] = 0.9;
+                    xyMultipliers[1] = 0.15;
                     break;
                 case NNW:
-                    xyMultipliers[0] = 0;
-                    xyMultipliers[1] = 0;
+                    xyMultipliers[0] = 0.15;
+                    xyMultipliers[1] = 0.15;
                     break;
                 case NORTH:
-                    xyMultipliers[0] = 0.4;
-                    xyMultipliers[1] = 0;
+                    xyMultipliers[0] = 0.5;
+                    xyMultipliers[1] = 0.15;
                     break;
                 case SOUTH:
-                    xyMultipliers[0] = 0.4;
-                    xyMultipliers[1] = 0.8;
+                    xyMultipliers[0] = 0.5;
+                    xyMultipliers[1] = 0.9;
                     break;
                 case SSE:
-                    xyMultipliers[0] = 0.8;
-                    xyMultipliers[1] = 0.8;
+                    xyMultipliers[0] = 0.9;
+                    xyMultipliers[1] = 0.9;
                     break;
                 case SSW:
-                    xyMultipliers[0] = 0;
-                    xyMultipliers[1] = 0.8;
+                    xyMultipliers[0] = 0.15;
+                    xyMultipliers[1] = 0.9;
                     break;
                 case WEST:
-                    xyMultipliers[0] = 0;
-                    xyMultipliers[1] = 0.4;
+                    xyMultipliers[0] = 0.15;
+                    xyMultipliers[1] = 0.5;
                     break;
                 case WWN:
-                    xyMultipliers[0] = 0;
-                    xyMultipliers[1] = 0.2;
+                    xyMultipliers[0] = 0.15;
+                    xyMultipliers[1] = 0.35;
                     break;
                 case WWS:
-                    xyMultipliers[0] = 0;
-                    xyMultipliers[1] = 0.6;
+                    xyMultipliers[0] = 0.15;
+                    xyMultipliers[1] = 0.75;
                     break;
                 case EAST:
-                    xyMultipliers[0] = 0.8;
-                    xyMultipliers[1] = 0.4;
+                    xyMultipliers[0] = 0.9;
+                    xyMultipliers[1] = 0.5;
                     break;
                 case EEN:
                     xyMultipliers[0] = 0.8;
-                    xyMultipliers[1] = 0.2;
+                    xyMultipliers[1] = 0.35;
                     break;
                 case EES:
-                    xyMultipliers[0] = 0.8;
-                    xyMultipliers[1] = 0.8;
+                    xyMultipliers[0] = 0.9;
+                    xyMultipliers[1] = 0.9;
                     break;
                 case CENTER:
-                    xyMultipliers[0] = 0.4;
-                    xyMultipliers[1] = 0.4;
+                    xyMultipliers[0] = 0.5;
+                    xyMultipliers[1] = 0.5;
                     break;
 
             }
