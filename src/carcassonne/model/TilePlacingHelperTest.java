@@ -60,4 +60,17 @@ public class TilePlacingHelperTest {
         helper.update(tile);
         assertEquals("Set of coordinates", expected, helper.getCoordinatesToRotationMap());
     }
+
+    @Test
+    public void city4() {
+        Map<Coordinates, Set<Rotation>> expected = new HashMap<>();
+        Util.addSetElement(expected, new Coordinates(0, -1), Rotation.DEG_0);
+        Util.addSetElement(expected, new Coordinates(0, -1), Rotation.DEG_90);
+        Util.addSetElement(expected, new Coordinates(0, -1), Rotation.DEG_180);
+        Util.addSetElement(expected, new Coordinates(0, -1), Rotation.DEG_270);
+        helper.setPlacedTiles(table.getPlacedTiles());
+        Tile tile = Tile.getInstance(TileName.CITY4);
+        helper.update(tile);
+        assertEquals("Set of coordinates", expected, helper.getCoordinatesToRotationMap());
+    }
 }

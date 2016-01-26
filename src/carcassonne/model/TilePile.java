@@ -27,12 +27,43 @@ public class TilePile {
                 tile.addFeature(Feature.createFeature(CITY), EAST, EEN, EES);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
+            case CITY1RSE:
+                tile.addFeature(Feature.createFeature(CITY), NORTH, NNW, NNE);
+                tile.addFeature(Feature.createFeature(ROAD), EAST, SOUTH);
+                tile.addFeature(Feature.createFeature(LAND), EES, SSE);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
+                break;
+            case CITY1RSW:
+                tile.addFeature(Feature.createFeature(CITY), NORTH, NNW, NNE);
+                tile.addFeature(Feature.createFeature(ROAD), WEST, SOUTH);
+                tile.addFeature(Feature.createFeature(LAND), WWS, SSW);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
+                break;
+            case CITY1RSWE:
+                tile.addFeature(Feature.createFeature(CITY), NORTH, NNW, NNE);
+                tile.addFeature(Feature.createFeature(ROAD), SOUTH);
+                tile.addFeature(Feature.createFeature(ROAD), WEST);
+                tile.addFeature(Feature.createFeature(ROAD), EAST);
+                tile.addFeature(Feature.createFeature(LAND), WWS, SSW);
+                tile.addFeature(Feature.createFeature(LAND), EES, SSE);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
+                break;
+            case CITY11WE:
+                tile.addFeature(Feature.createFeature(CITY), WEST, WWS, WWN);
+                tile.addFeature(Feature.createFeature(CITY), EAST, EES, EEN);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
+                break;
             case CITY2NWS:
                 tile.addFeature(Feature.createFeature(CITY_SHIELD), NORTH, NNE, NNW, WEST, WWS, WWN);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             case CITY2WE:
                 tile.addFeature(Feature.createFeature(CITY), WWN, WEST, WWS, EAST, EEN, EES);
+                tile.addFeature(Feature.createFeature(LAND), NNW, NORTH, NNE);
+                tile.addFeature(Feature.createFeature(LAND), SSW, SOUTH, SSE);
+                break;
+            case CITY2WES:
+                tile.addFeature(Feature.createFeature(CITY_SHIELD), WWN, WEST, WWS, EAST, EEN, EES);
                 tile.addFeature(Feature.createFeature(LAND), NNW, NORTH, NNE);
                 tile.addFeature(Feature.createFeature(LAND), SSW, SOUTH, SSE);
                 break;
@@ -46,12 +77,34 @@ public class TilePile {
                 tile.addFeature(Feature.createFeature(LAND), SSW, EEN);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
+            case CITY2NWSR:
+                tile.addFeature(Feature.createFeature(CITY_SHIELD), NNW, NNE, NORTH, WWN, WWS, WEST);
+                tile.addFeature(Feature.createFeature(ROAD), EAST, SOUTH);
+                tile.addFeature(Feature.createFeature(LAND), SSW, EEN);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
+                break;
             case CITY3:
                 tile.addFeature(Feature.createFeature(LAND), SOUTH, SSW, SSE);
                 tile.addFeature(Feature.createFeature(CITY), tile.getUnoccupiedDirections());
                 break;
+            case CITY3S:
+                tile.addFeature(Feature.createFeature(LAND), SOUTH, SSW, SSE);
+                tile.addFeature(Feature.createFeature(CITY_SHIELD), tile.getUnoccupiedDirections());
+                break;
+            case CITY3R:
+                tile.addFeature(Feature.createFeature(ROAD),SOUTH);
+                tile.addFeature(Feature.createFeature(LAND), SSE);
+                tile.addFeature(Feature.createFeature(LAND), SSW);
+                tile.addFeature(Feature.createFeature(CITY), tile.getUnoccupiedDirections());
+                break;
+            case CITY3SR:
+                tile.addFeature(Feature.createFeature(ROAD),SOUTH);
+                tile.addFeature(Feature.createFeature(LAND), SSE);
+                tile.addFeature(Feature.createFeature(LAND), SSW);
+                tile.addFeature(Feature.createFeature(CITY_SHIELD), tile.getUnoccupiedDirections());
+                break;
             case CITY4:
-                tile.addFeature(Feature.createFeature(CITY), NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE, SSW, WEST, WWN, WWS);
+                tile.addFeature(Feature.createFeature(CITY_SHIELD), NORTH, NNW, NNE, EAST, EEN, EES, SOUTH, SSE, SSW, WEST, WWN, WWS);
                 break;
             case ROAD2NS:
                 tile.addFeature(Feature.createFeature(LAND), WEST, WWN, WWS, SSW, NNW);
@@ -85,8 +138,12 @@ public class TilePile {
                 tile.addFeature(Feature.createFeature(CLOISTER), CENTER);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
+            case CLOISTERR:
+                tile.addFeature(Feature.createFeature(CLOISTER), CENTER);
+                tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
+                break;
             default:
-                throw new RuntimeException("Not supported yet");
+                throw new RuntimeException("" + tileName + " Not supported yet");
         }
         return tile;
 
@@ -138,5 +195,11 @@ public class TilePile {
 
     public void addTile(TileName tileName) {
         addTile(Tile.getInstance(tileName));
+    }
+
+    public void addEveryTileOnce() {
+        for (TileName name: TileName.values()) {
+            addTile(name);
+        }
     }
 }
