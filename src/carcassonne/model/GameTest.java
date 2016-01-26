@@ -215,6 +215,42 @@ public class GameTest {
         game.nextPlayer();
         assertEquals ("first player name", "Anton", game.getCurrentPlayer().getName());
     }
+
+    @Test
+    public void road3HasSixFollowerLocations() {
+        game = new Game();
+        table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        game.setTable(table);
+        game.addPlayer("Anton" , Color.RED);
+        game.addPlayer("Andrey", Color.YELLOW);
+        game.getTilePile().addTile(TileName.ROAD3);
+
+        game.nextPlayer();
+        game.dragTile();
+        Game.FollowerPlacingHelper helper = game.getFollowerPlacingHelper();
+
+        assertEquals("ROAD3 has 6 follower locations", 6, helper.getFollowerLocations(game.getCurrentTile()).size());
+    }
+
+    @Test
+    public void city1HasSixFollowerLocations() {
+        game = new Game();
+        table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        game.setTable(table);
+        game.addPlayer("Anton" , Color.RED);
+        game.addPlayer("Andrey", Color.YELLOW);
+        game.getTilePile().addTile(TileName.CITY1);
+
+        game.nextPlayer();
+        game.dragTile();
+        Game.FollowerPlacingHelper helper = game.getFollowerPlacingHelper();
+
+        assertEquals("CITY1 has 2 follower locations", 2, helper.getFollowerLocations(game.getCurrentTile()).size());
+    }
 }
 
 

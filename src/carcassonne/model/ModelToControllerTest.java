@@ -304,4 +304,26 @@ public class ModelToControllerTest {
         fakeWindow.clickOnPlacedTile();
         assertEquals("Incorrect rotation is skipped", Rotation.DEG_90, fakeWindow.getCurrentTileRotation());
     }
+
+    @Test
+    public void placesForFollowersAreDisplayedWhenNecessary() {
+        game.getTilePile().addTile(TileName.ROAD3);
+        prepareGame();
+        assertEquals("Spaces for followers are displayed", false, fakeWindow.areFollowersLocationsDisplayed());
+        fakeWindow.clickOnGamePanel(0, 1);
+        assertEquals("Spaces for followers are displayed", false, fakeWindow.areFollowersLocationsDisplayed());
+        fakeWindow.pressConfirmTileButton();
+        assertEquals("Spaces for followers are displayed", true, fakeWindow.areFollowersLocationsDisplayed());
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Spaces for followers are displayed", false, fakeWindow.areFollowersLocationsDisplayed());
+    }
+
+    @Test
+    public void windowReceivesFollowerLocationData() {
+        game.getTilePile().addTile(TileName.CITY1);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
+        assertEquals("Window has follower locations coordinates", 2, fakeWindow.getFollowerLocations().size());
+    }
 }

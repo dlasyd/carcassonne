@@ -5,6 +5,8 @@ import carcassonne.model.Rotation;
 import carcassonne.view.DrawableTile;
 import carcassonne.view.ViewWindow;
 
+import java.awt.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -90,8 +92,10 @@ public class GameWindowLogic implements WindowLogic {
         } else {
             tileConfirmed = true;
             gameWindow.setConfirmTileButtonText("Relocate tile");
+            gameWindow.setPossibleFollowerLocations(dataToModel.getPossibleFollowerLocations(currentTileX, currentTileY));
             gameWindow.setEndTurnButtonEnabled(true);
         }
+        gameWindow.repaintWindow();
     }
 
     @Override
@@ -103,6 +107,16 @@ public class GameWindowLogic implements WindowLogic {
         }
         gameWindow.getCurrentTile().setRotation(currentTileRotation);
         gameWindow.repaintWindow();
+    }
+
+    @Override
+    public boolean isFollowerPlaceDisplayed() {
+        return tileConfirmed;
+    }
+
+    @Override
+    public Color getCurrentPlayerColor() {
+        return gameData.getPlayerColor();
     }
 
     @Override

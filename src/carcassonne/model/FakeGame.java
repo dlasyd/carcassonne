@@ -2,6 +2,8 @@ package carcassonne.model;
 
 import carcassonne.controller.DataToModel;
 
+import java.util.Set;
+
 /**
  * This is a part of Carcassonne project.
  * The project is created for learning and practicing java
@@ -29,6 +31,11 @@ public class FakeGame implements DataToModel {
     @Override
     public void forceNotify() {
 
+    }
+
+    @Override
+    public Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY) {
+        return null;
     }
 
     public Rotation getCurrentTileRotation() {

@@ -6,6 +6,7 @@ import carcassonne.model.Rotation;
 import carcassonne.model.TileName;
 
 import java.awt.*;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ public class FakeWindow implements ViewWindow {
     private Set<DrawableTile> tilesOnTable = new HashSet<>();
     private TileName firstPlacedTileName;
     private Set<Coordinates> possibleTileLocations;
+    private Set<double[]> followerLocations;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -41,6 +43,10 @@ public class FakeWindow implements ViewWindow {
         windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
         windowLogic.updateEndTurnButton();
         moveCounter++;
+    }
+
+    public void pressConfirmTileButton() {
+        windowLogic.updateTileConfirmed();
     }
 
     public void clickOnGamePanel() {
@@ -59,6 +65,12 @@ public class FakeWindow implements ViewWindow {
     public DrawableTile getCurrentTile() {
         return currentTile;
     }
+
+    @Override
+    public void setPossibleFollowerLocations(Set<double[]> followerLocations) {
+        this.followerLocations = followerLocations;
+    }
+
 
     //<editor-fold desc="Overridden setters">
     @Override
@@ -160,9 +172,7 @@ public class FakeWindow implements ViewWindow {
         return !windowLogic.isTileConfirmed();
     }
 
-    public void pressConfirmTileButton() {
-        windowLogic.updateTileConfirmed();
-    }
+
 
     public Rotation getCurrentTileRotation() {
         return currentTile.getCurrentRotation();
@@ -204,4 +214,11 @@ public class FakeWindow implements ViewWindow {
     }
 
 
+    public boolean areFollowersLocationsDisplayed() {
+        return windowLogic.isFollowerPlaceDisplayed();
+    }
+
+    public Set<double[]> getFollowerLocations() {
+        return followerLocations;
+    }
 }

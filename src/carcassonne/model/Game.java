@@ -6,7 +6,10 @@ import carcassonne.controller.WindowLogic;
 import carcassonne.view.DrawableTile;
 
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Game implements DataToModel{
     private static Game game;
@@ -15,6 +18,7 @@ public class Game implements DataToModel{
     private TilePile            tilePile = new TilePile();
     private ArrayList<Player>   players = new ArrayList<>();
     private Player              currentPlayer;
+    private FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
     private boolean             finished;
     private boolean             currentTileConfirmed;
     private boolean             followerFriendly;           //determines if a tile has a vacant place for follower
@@ -71,6 +75,11 @@ public class Game implements DataToModel{
     @Override
     public void forceNotify() {
         notifyController();
+    }
+
+    @Override
+    public Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY) {
+        return followerPlacingHelper.getFollowerLocations(getCurrentTile());
     }
 
     //<editor-fold desc="Getters">
@@ -173,5 +182,31 @@ public class Game implements DataToModel{
         game.getTilePile().addTile(Tile.getInstance());
         game.getTilePile().addTile(Tile.getInstance());
         game.getTilePile().addTile(Tile.getInstance());
+    }
+
+    FollowerPlacingHelper getFollowerPlacingHelper() {
+        return followerPlacingHelper;
+    }
+
+    /**
+     * An instance of this class has a method that returns all legal locations
+     * of possible follower placement on the current tile. Legal is:
+     * 1) 1 per feature
+     * 2) exclude occupied real estate
+     */
+    class FollowerPlacingHelper {
+
+        Set<double[]> getFollowerLocations(Tile tile) {
+            Set<double[]> result = new HashSet<>();
+            Set<Feature> features = tile.getFeatures();
+            for (Feature feature: features) {
+                result.add(getTileSizeRelativeDividers());
+            }
+            return result;
+        }
+
+        private double[] getTileSizeRelativeDividers() {
+            return new double[] {0.3, 0.3};
+        }
     }
 }

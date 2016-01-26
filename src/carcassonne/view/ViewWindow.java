@@ -3,6 +3,7 @@ package carcassonne.view;
 import carcassonne.model.Coordinates;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -41,4 +42,6 @@ public interface ViewWindow {
     void setCurrentTile(DrawableTile drawableTile);
 
     DrawableTile getCurrentTile();
+
+    void setPossibleFollowerLocations(Set<double[]> followerLocations);
 }

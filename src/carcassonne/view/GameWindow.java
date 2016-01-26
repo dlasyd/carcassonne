@@ -41,6 +41,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private GamePanel gamePanel;
     private Set<Coordinates> possibleTileLocations;
     private DrawableTile currentTile;
+    private Set<double[]> followerLocations;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -153,6 +154,11 @@ public class GameWindow extends JFrame implements ViewWindow{
     public DrawableTile getCurrentTile() {
         return currentTile;
     }
+
+    @Override
+    public void setPossibleFollowerLocations(Set<double[]> followerLocations) {
+        this.followerLocations = followerLocations;
+    }
     //</editor-fold>
 
     @Override
@@ -181,7 +187,6 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     private class GamePanel extends JPanel {
-        private javaxt.io.Image tileImage;
         private double windowLocalX = 235;
         private double windowLocalY = 244;
         private boolean firstMouseDrag = true;
@@ -348,6 +353,15 @@ public class GameWindow extends JFrame implements ViewWindow{
                         (int) tileSize, (int) tileSize, null);
             }
 
+            if (windowLogic.isFollowerPlaceDisplayed()) {
+                g.setColor(windowLogic.getCurrentPlayerColor());
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(3));
+                g.drawOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize / 3),
+                        (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize / 3),
+                        (int) tileSize / 4, (int) tileSize / 4);
+            }
         }
+
     }
 }

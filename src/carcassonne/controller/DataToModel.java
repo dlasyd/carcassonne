@@ -3,6 +3,9 @@ package carcassonne.controller;
 import carcassonne.model.Rotation;
 import carcassonne.model.TileDirections;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This is a part of Carcassonne project.
  * The project is created for learning and practicing java
@@ -18,4 +21,6 @@ public interface DataToModel {
 
 
     void forceNotify();
+
+    Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY);
 }
