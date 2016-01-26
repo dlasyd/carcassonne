@@ -7,4 +7,12 @@ package carcassonne.model;
  * Created by Andrey on 06/01/16.
  */
 public class CityPiece extends Feature {
+    @Override
+    public boolean isSameType(Feature feature) {
+        if (feature instanceof CityPiece || feature instanceof  CityPieceWithShield) {
+            return true;
+        } else {
+            return super.isSameType(feature);
+        }
+    }
 }
