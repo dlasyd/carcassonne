@@ -8,8 +8,11 @@ import carcassonne.view.DrawableTile;
 import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static carcassonne.model.TileDirections.*;
 
 public class Game implements DataToModel{
     private static Game game;
@@ -200,13 +203,82 @@ public class Game implements DataToModel{
             Set<double[]> result = new HashSet<>();
             Set<Feature> features = tile.getFeatures();
             for (Feature feature: features) {
-                result.add(getTileSizeRelativeDividers());
+                result.add(getTileSizeRelativeMultipliers(tile, feature));
             }
             return result;
         }
 
-        private double[] getTileSizeRelativeDividers() {
-            return new double[] {0.3, 0.3};
+        private double[] getTileSizeRelativeMultipliers(Tile tile, Feature feature) {
+            /*
+             * get 1 direction pre feature
+             */
+            double[] xyMultipliers = new double[2];
+            Set<TileDirections> directions= tile.getFeatureTileDirections(feature);
+            if (feature.isCity()) {
+                directions.removeAll(Arrays.asList(NNE, NNE, EES, EEN, WWS, WWN, NNE, NNW));
+            } else if(feature.isRoad()) {
+                if(directions.size() == 2) {
+                    directions.clear();
+                    directions.add(CENTER);
+                }
+            }
+            TileDirections direction = Util.any(directions);
+            switch (direction) {
+                case NNE:
+                    xyMultipliers[0] = 0.8;
+                    xyMultipliers[1] = 0;
+                    break;
+                case NNW:
+                    xyMultipliers[0] = 0;
+                    xyMultipliers[1] = 0;
+                    break;
+                case NORTH:
+                    xyMultipliers[0] = 0.4;
+                    xyMultipliers[1] = 0;
+                    break;
+                case SOUTH:
+                    xyMultipliers[0] = 0.4;
+                    xyMultipliers[1] = 0.8;
+                    break;
+                case SSE:
+                    xyMultipliers[0] = 0.8;
+                    xyMultipliers[1] = 0.8;
+                    break;
+                case SSW:
+                    xyMultipliers[0] = 0;
+                    xyMultipliers[1] = 0.8;
+                    break;
+                case WEST:
+                    xyMultipliers[0] = 0;
+                    xyMultipliers[1] = 0.4;
+                    break;
+                case WWN:
+                    xyMultipliers[0] = 0;
+                    xyMultipliers[1] = 0.2;
+                    break;
+                case WWS:
+                    xyMultipliers[0] = 0;
+                    xyMultipliers[1] = 0.6;
+                    break;
+                case EAST:
+                    xyMultipliers[0] = 0.8;
+                    xyMultipliers[1] = 0.4;
+                    break;
+                case EEN:
+                    xyMultipliers[0] = 0.8;
+                    xyMultipliers[1] = 0.2;
+                    break;
+                case EES:
+                    xyMultipliers[0] = 0.8;
+                    xyMultipliers[1] = 0.8;
+                    break;
+                case CENTER:
+                    xyMultipliers[0] = 0.4;
+                    xyMultipliers[1] = 0.4;
+                    break;
+
+            }
+            return xyMultipliers;
         }
     }
 }

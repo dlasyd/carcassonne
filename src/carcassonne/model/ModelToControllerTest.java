@@ -326,4 +326,26 @@ public class ModelToControllerTest {
         fakeWindow.pressConfirmTileButton();
         assertEquals("Window has follower locations coordinates", 2, fakeWindow.getFollowerLocations().size());
     }
+
+    @Test
+    public void road3FollowerLocationsDisplayedCorrectly() {
+        Set<double[]> expected = new HashSet<>();
+        expected.add(new double[]{0, 0});
+
+        game.getTilePile().addTile(TileName.ROAD3);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(1, 0);
+        fakeWindow.pressConfirmTileButton();
+
+        Set<double[]> result = fakeWindow.getFollowerLocations();
+
+        Set<String> stringResult = new HashSet<>();
+        for (double[] xyMultiple: result) {
+            stringResult.add(Arrays.toString(xyMultiple));
+        }
+
+        System.out.println(stringResult);
+
+        assertEquals("Set of xymultiples is correct", expected, stringResult);
+    }
 }

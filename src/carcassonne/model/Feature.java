@@ -53,4 +53,8 @@ public class Feature {
         boolean t = this.getClass().equals(feature.getClass());
         return this.getClass().equals(feature.getClass());
     }
+
+    boolean isRoad() {
+        return false;
+    }
 }

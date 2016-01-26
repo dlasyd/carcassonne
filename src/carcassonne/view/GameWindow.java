@@ -356,12 +356,17 @@ public class GameWindow extends JFrame implements ViewWindow{
             if (windowLogic.isFollowerPlaceDisplayed()) {
                 g.setColor(windowLogic.getCurrentPlayerColor());
                 Graphics2D g2 = (Graphics2D) g;
-                g2.setStroke(new BasicStroke(3));
-                g.drawOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize / 3),
-                        (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize / 3),
-                        (int) tileSize / 4, (int) tileSize / 4);
+                g2.setStroke(new BasicStroke(2));
+                for (double[] xyMultipliers: followerLocations) {
+                    drawFollowerPossibleLocation(g, xyMultipliers);
+                }
             }
         }
 
+        private void drawFollowerPossibleLocation(Graphics g, double[] xyMultipliers) {
+            g.drawOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * xyMultipliers[0]),
+                    (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1]),
+                    (int) tileSize / 4, (int) tileSize / 4);
+        }
     }
 }

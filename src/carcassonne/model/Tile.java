@@ -43,6 +43,7 @@ public abstract class Tile {
     abstract void addFeature(Feature feature, TileDirections... directions);
 
     //<editor-fold desc="Getters">
+    public abstract Set<TileDirections> getFeatureTileDirections(Feature feature);
     public abstract Rotation         getCurrentRotation();
     public abstract Coordinates      getCoordinates();
     public abstract int              getX();
@@ -60,6 +61,7 @@ public abstract class Tile {
     abstract boolean isComplete();
     public abstract boolean hasCoordinates();
     abstract boolean hasCloister();
+
     //</editor-fold>
 }
 

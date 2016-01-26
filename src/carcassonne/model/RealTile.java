@@ -230,6 +230,11 @@ public class RealTile extends Tile {
         return propertyMap.get(direction);
     }
 
+    @Override
+    public Set<TileDirections> getFeatureTileDirections(Feature feature) {
+        return featureToTileDirections.get(feature);
+    }
+
     /*
      * returns unoccupied directions. CENTER is excluded from return because they are not needed in
      * the context of use of the method (the method is created to be used in RealEstateTest)

@@ -77,6 +77,11 @@ public class NullTile extends Tile{
     }
 
     @Override
+    public Set<TileDirections> getFeatureTileDirections(Feature feature) {
+        return null;
+    }
+
+    @Override
     Set<TileDirections> getDestinations(TileDirections tileDirection) {
         throw new RuntimeException("The tile is Null");
     }
