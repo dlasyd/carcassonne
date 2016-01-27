@@ -209,10 +209,10 @@ public class Game implements DataToModel{
         }
 
         private double[] getTileSizeRelativeMultipliers(Tile tile, Feature feature) {
+            double[] xyMultipliers = new double[2];
             /*
              * get 1 direction pre feature
              */
-            double[] xyMultipliers = new double[2];
             Set<TileDirections> directions= tile.getFeatureTileDirections(feature);
             if (feature.isCity()) {
                 directions.removeAll(Arrays.asList(NNE, NNE, EES, EEN, WWS, WWN, NNE, NNW));
@@ -226,7 +226,7 @@ public class Game implements DataToModel{
             switch (direction) {
                 case NNE:
                     xyMultipliers[0] = 0.85;
-                    xyMultipliers[1] = 0.35;
+                    xyMultipliers[1] = 0.15;
                     break;
                 case NNW:
                     xyMultipliers[0] = 0.15;
@@ -254,11 +254,11 @@ public class Game implements DataToModel{
                     break;
                 case WWN:
                     xyMultipliers[0] = 0.15;
-                    xyMultipliers[1] = 0.35;
+                    xyMultipliers[1] = 0.15;
                     break;
                 case WWS:
                     xyMultipliers[0] = 0.15;
-                    xyMultipliers[1] = 0.75;
+                    xyMultipliers[1] = 0.85;
                     break;
                 case EAST:
                     xyMultipliers[0] = 0.85;
@@ -266,7 +266,7 @@ public class Game implements DataToModel{
                     break;
                 case EEN:
                     xyMultipliers[0] = 0.85;
-                    xyMultipliers[1] = 0.35;
+                    xyMultipliers[1] = 0.15;
                     break;
                 case EES:
                     xyMultipliers[0] = 0.85;
@@ -277,6 +277,21 @@ public class Game implements DataToModel{
                     xyMultipliers[1] = 0.5;
                     break;
 
+            }
+            switch (tile.getName()) {
+                case CITY4:
+                    xyMultipliers[0] = 0.5;
+                    xyMultipliers[1] = 0.5;
+                    break;
+                case CITY3:
+                case CITY3R:
+                case CITY3S:
+                case CITY3SR:
+                    if (feature.isCity()) {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.3;
+                    }
+                    break;
             }
             return xyMultipliers;
         }

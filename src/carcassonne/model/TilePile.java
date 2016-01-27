@@ -140,6 +140,7 @@ public class TilePile {
                 break;
             case CLOISTERR:
                 tile.addFeature(Feature.createFeature(CLOISTER), CENTER);
+                tile.addFeature(Feature.createFeature(ROAD), SOUTH);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             default:
