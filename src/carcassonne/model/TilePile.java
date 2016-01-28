@@ -198,6 +198,12 @@ public class TilePile {
         addTile(Tile.getInstance(tileName));
     }
 
+    public void addTile(TileName... tileNames) {
+        for (TileName tileName: tileNames) {
+            addTile(tileName);
+        }
+    }
+
     public void addEveryTileOnce() {
         for (TileName name: TileName.values()) {
             addTile(name);

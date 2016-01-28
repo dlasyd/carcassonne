@@ -56,4 +56,8 @@ public class Feature {
     boolean isRoad() {
         return false;
     }
+
+    boolean isLand() {
+        return false;
+    }
 }

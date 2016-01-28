@@ -7,4 +7,8 @@ package carcassonne.model;
  * Created by Andrey on 06/01/16.
  */
 public class LandPiece extends Feature {
+    @Override
+    boolean isLand() {
+        return true;
+    }
 }

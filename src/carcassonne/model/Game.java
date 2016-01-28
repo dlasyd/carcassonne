@@ -7,10 +7,7 @@ import carcassonne.view.DrawableTile;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static carcassonne.model.TileDirections.*;
 
@@ -214,15 +211,23 @@ public class Game implements DataToModel{
              * get 1 direction pre feature
              */
             Set<TileDirections> directions= tile.getFeatureTileDirections(feature);
+
             if (feature.isCity()) {
-                directions.removeAll(Arrays.asList(NNE, NNE, EES, EEN, WWS, WWN, NNE, NNW));
-            } else if(feature.isRoad()) {
-                if(directions.size() == 2) {
-                    directions.clear();
-                    directions.add(CENTER);
+                directions.removeAll(Arrays.asList(NNE, NNW, EES, EEN, WWS, WWN, SSE, SSW));
+            } else if (feature.isLand()) {
+                if (directions.size() > 3) {
+                    directions.removeAll(Arrays.asList(NNE, NNW, EES, EEN, WWS, WWN, SSE, SSW));
                 }
             }
+
             TileDirections direction = Util.any(directions);
+
+
+
+
+            /*
+             * Basic rule
+             */
             switch (direction) {
                 case NNE:
                     xyMultipliers[0] = 0.85;
@@ -260,7 +265,7 @@ public class Game implements DataToModel{
                     xyMultipliers[0] = 0.15;
                     xyMultipliers[1] = 0.85;
                     break;
-                case EAST:
+            case EAST:
                     xyMultipliers[0] = 0.85;
                     xyMultipliers[1] = 0.5;
                     break;
@@ -278,10 +283,76 @@ public class Game implements DataToModel{
                     break;
 
             }
+
+            /*
+             * Tile specific rules
+             */
             switch (tile.getName()) {
-                case CITY4:
-                    xyMultipliers[0] = 0.5;
-                    xyMultipliers[1] = 0.5;
+                case CITY1:
+                    if(feature.isLand()) {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.6;
+                    }
+                case CITY1RSE:
+                case CITY1RSW:
+                case CITY1RWE:
+                case CITY1RSWE:
+                    if (feature.isRoad() && directions.size() == 2) {
+                        if (directions.contains(TileDirections.WEST) && directions.contains(TileDirections.EAST)) {
+                            xyMultipliers[0] = 0.5;
+                            xyMultipliers[1] = 0.5;
+                        } else if (directions.contains(TileDirections.WEST)) {
+                            xyMultipliers[0] = 0.4;
+                            xyMultipliers[1] = 0.6;
+                        } else {
+                            xyMultipliers[0] = 0.6;
+                            xyMultipliers[1] = 0.6;
+                        }
+                    } else if((feature.isRoad() && directions.size() == 1) ) {
+                        if (directions.contains(TileDirections.WEST)) {
+                            xyMultipliers[0] = 0.3;
+                            xyMultipliers[1] = 0.6;
+                        } else if (directions.contains(TileDirections.EAST)) {
+                            xyMultipliers[0] = 0.8;
+                            xyMultipliers[1] = 0.6;
+                        }
+
+                    } else if(feature.isLand() && directions.contains(TileDirections.WWN)) {
+                        xyMultipliers[0] = 0.15;
+                        xyMultipliers[1] = 0.35;
+                    }
+                    break;
+                case CITY2WE:
+                case CITY2WES:
+                    if (feature.isCity()) {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.45;
+                    } else if (directions.contains(TileDirections.NORTH)) {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.0;
+                    } else {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.9;
+                    }
+                    break;
+                case CITY2NW:
+                case CITY2NWS:
+                    if (feature.isLand()) {
+                        xyMultipliers[0] = 0.65;
+                        xyMultipliers[1] = 0.65;
+                    }
+                case CITY2NWR:
+                case CITY2NWSR:
+                    if (feature.isCity()) {
+                        xyMultipliers[0] = 0.25;
+                        xyMultipliers[1] = 0.25;
+                    } else if (feature.isRoad()) {
+                        xyMultipliers[0] = 0.85;
+                        xyMultipliers[1] = 0.55;
+                    } else if (directions.contains(SSW)){
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.65;
+                    }
                     break;
                 case CITY3:
                 case CITY3R:
@@ -289,8 +360,25 @@ public class Game implements DataToModel{
                 case CITY3SR:
                     if (feature.isCity()) {
                         xyMultipliers[0] = 0.5;
-                        xyMultipliers[1] = 0.3;
+                        xyMultipliers[1] = 0.4;
                     }
+                    if (feature.isLand()) {
+                        if (directions.size() == 3) {
+                            xyMultipliers[0] = 0.6;
+                            xyMultipliers[1] = 0.85;
+                        } else if (directions.contains(TileDirections.SSW)) {
+                            xyMultipliers[0] = 0.25;
+                            xyMultipliers[1] = 0.95;
+                        } else {
+                            xyMultipliers[0] = 0.75;
+                            xyMultipliers[1] = 0.85;
+                        }
+                    }
+                    break;
+
+                case CITY4:
+                    xyMultipliers[0] = 0.5;
+                    xyMultipliers[1] = 0.5;
                     break;
             }
             return xyMultipliers;

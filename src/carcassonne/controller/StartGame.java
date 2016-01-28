@@ -8,6 +8,8 @@ import carcassonne.view.GameWindow;
 
 import java.awt.*;
 
+import static carcassonne.model.TileName.*;
+
 /**
  * This class creates all necessary objects, does all the preparation and starts the game
  */
@@ -25,7 +27,9 @@ public class StartGame {
         game.addPlayer("Andrey", Color.YELLOW);
         //game.getTilePile().addXCrossroads(5);
         //game.getTilePile().add5DifferentTiles();
-        //game.getTilePile().addTile(TileName.CITY1RWE);
+        //game.getTilePile().addTile(CITY1, CITY1RSE, CITY1RSW, CITY1RWE, CITY1RSWE);
+        //game.getTilePile().addTile(CITY3, CITY3SR, CITY3S, CITY3R);
+        //game.getTilePile().addTile(CITY2NW, CITY2NWR, CITY2NWS, CITY2NWSR);
         game.getTilePile().addEveryTileOnce();
         game.nextPlayer();
         game.dragTile();

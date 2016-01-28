@@ -328,24 +328,12 @@ public class ModelToControllerTest {
     }
 
     @Test
-    public void followeLocationsRotateWithTileWhenTileFirstPlaced() {
-        Set<double[]> expected = new HashSet<>();
-        expected.add(new double[]{0, 0});
-
-        game.getTilePile().addTile(TileName.ROAD3);
+    public void temporaryFollowerCanBePlaced() {
+        game.getTilePile().addTile(TileName.CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
-        Set<double[]> beforeRotation = fakeWindow.getFollowerLocations();
-
-        Set<String> stringResult = new HashSet<>();
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnPlacedTile();
-        fakeWindow.pressConfirmTileButton();
-        Set<double[]> afterRotation = fakeWindow.getFollowerLocations();
-
-        System.out.println(stringResult);
-
-        assertEquals("Set of xymultiples is correct", expected, stringResult);
+        fakeWindow.placeFollower(0.5, 0.5);
+        assertEquals("Temporary follower is placed", true, fakeWindow.isTemporaryFollowerPlaced());
     }
 }

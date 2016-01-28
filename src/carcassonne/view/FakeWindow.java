@@ -31,6 +31,7 @@ public class FakeWindow implements ViewWindow {
     private TileName firstPlacedTileName;
     private Set<Coordinates> possibleTileLocations;
     private Set<double[]> followerLocations;
+    private boolean temporaryFollowerPlaced;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -220,5 +221,13 @@ public class FakeWindow implements ViewWindow {
 
     public Set<double[]> getFollowerLocations() {
         return followerLocations;
+    }
+
+    public boolean isTemporaryFollowerPlaced() {
+        return temporaryFollowerPlaced;
+    }
+
+    public void placeFollower(double xM, double yM) {
+        windowLogic.placeFollower(xM, yM);
     }
 }

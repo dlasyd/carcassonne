@@ -122,6 +122,11 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
+    public void placeFollower(double xM, double yM) {
+
+    }
+
+    @Override
     public void updateEndTurnButton() {
         dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
         gameWindow.setEndTurnButtonEnabled(false);
