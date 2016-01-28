@@ -43,6 +43,8 @@ public class GameWindow extends JFrame implements ViewWindow{
     private Set<Coordinates> possibleTileLocations;
     private DrawableTile currentTile;
     private Set<double[]> followerLocations;
+    private double[] currentFollowerLocation;
+    private boolean temporaryFollowerEnabled;
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -163,12 +165,7 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     @Override
     public void setCurrentFollowerLocation(double[] currentFollowerLocation) {
-
-    }
-
-    @Override
-    public void setTemporaryFollowerDisplayed(boolean b) {
-
+        this.currentFollowerLocation = currentFollowerLocation;
     }
     //</editor-fold>
 
@@ -243,8 +240,11 @@ public class GameWindow extends JFrame implements ViewWindow{
                                 break;
                             }
                         }
-                        repaint();
                     }
+                    if (windowLogic.canFollowerBePlaced()) {
+                        windowLogic.placeFollower(0.5 ,0.5);
+                    }
+                    repaint();
                 }
 
                 @Override
@@ -371,6 +371,10 @@ public class GameWindow extends JFrame implements ViewWindow{
                 for (double[] xyMultipliers: followerLocations) {
                     drawFollowerPossibleLocation(g, xyMultipliers);
                 }
+            }
+
+            if (windowLogic.isTemporaryFollowerDisplayed()) {
+                g.fillOval(100, 100, 22, 22);
             }
         }
 

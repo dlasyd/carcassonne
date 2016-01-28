@@ -45,4 +45,8 @@ public interface WindowLogic {
     Color getCurrentPlayerColor();
 
     void placeFollower(double xM, double yM);
+
+    boolean isTemporaryFollowerDisplayed();
+
+    boolean canFollowerBePlaced();
 }

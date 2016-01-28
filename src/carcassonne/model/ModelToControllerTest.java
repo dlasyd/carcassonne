@@ -1,6 +1,5 @@
 package carcassonne.model;
 
-import carcassonne.controller.DataToModel;
 import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.FakeWindow;
@@ -314,7 +313,34 @@ public class ModelToControllerTest {
     }
 
     @Test
-    public void temporaryFollowerCanBePlaced() {
+    public void followerCantBePlacedBeforeTileIsConfirmed() {
+        game.getTilePile().addTile(TileName.CITY1RWE);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(1, 0);
+        assertEquals("Follower cannot be placed", false, fakeWindow.canFollowerBePlaced());
+    }
+
+    @Test
+    public void followerCanBePlacedAfterTileIsConfirmed() {
+        game.getTilePile().addTile(TileName.CITY1RWE);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(1, 0);
+        fakeWindow.pressConfirmTileButton();
+        assertEquals("Follower can be placed", true, fakeWindow.canFollowerBePlaced());
+    }
+
+    @Test
+    public void followerCantBePlacedAfterUnconfirmed() {
+        game.getTilePile().addTile(TileName.CITY1RWE);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(1, 0);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.pressConfirmTileButton();
+        assertEquals("Follower cannot be placed", false, fakeWindow.canFollowerBePlaced());
+    }
+
+    @Test
+    public void temporaryFollowerIsPlaced() {
         game.getTilePile().addTile(TileName.CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);

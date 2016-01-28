@@ -31,7 +31,6 @@ public class FakeWindow implements ViewWindow {
     private TileName firstPlacedTileName;
     private Set<Coordinates> possibleTileLocations;
     private Set<double[]> followerLocations;
-    private boolean temporaryFollowerPlaced;
     private double[] temporaryFollowerLocation;
 
     public FakeWindow(WindowLogic windowLogic) {
@@ -81,12 +80,6 @@ public class FakeWindow implements ViewWindow {
     public void setCurrentFollowerLocation(double[] temporaryFollowerLocation ) {
         this.temporaryFollowerLocation = temporaryFollowerLocation;
     }
-
-    @Override
-    public void setTemporaryFollowerDisplayed(boolean b) {
-        temporaryFollowerPlaced = b;
-    }
-
 
     //<editor-fold desc="Overridden setters">
     @Override
@@ -173,7 +166,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public boolean isTemporaryFollowerPlaced() {
-        return temporaryFollowerPlaced;
+        return windowLogic.isTemporaryFollowerDisplayed();
     }
 
     public boolean isCurrentTilePlaced() {
@@ -237,5 +230,9 @@ public class FakeWindow implements ViewWindow {
 
     public Set<double[]> getFollowerLocations() {
         return followerLocations;
+    }
+
+    public boolean canFollowerBePlaced() {
+        return windowLogic.canFollowerBePlaced();
     }
 }

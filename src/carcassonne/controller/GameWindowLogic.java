@@ -26,6 +26,9 @@ public class GameWindowLogic implements WindowLogic {
     private Rotation        currentTileRotation = Rotation.DEG_0;
     private Set<Rotation>   possibleCurrentTileRotations;
     private double[]        currentFollowerLocation;
+    private boolean         temporaryFollowerDisplayed;
+    private boolean         canFollowerBePlaced;
+
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -89,10 +92,12 @@ public class GameWindowLogic implements WindowLogic {
         assert (currentTileOnTheTable);
         if (tileConfirmed) {
             tileConfirmed = false;
+            canFollowerBePlaced = false;
             gameWindow.setConfirmTileButtonText("Confirm tile");
             gameWindow.setEndTurnButtonEnabled(false);
         } else {
             tileConfirmed = true;
+            canFollowerBePlaced = true;
             gameWindow.setConfirmTileButtonText("Relocate tile");
             gameWindow.setPossibleFollowerLocations(dataToModel.getPossibleFollowerLocations(currentTileX, currentTileY));
             gameWindow.setEndTurnButtonEnabled(true);
@@ -125,7 +130,17 @@ public class GameWindowLogic implements WindowLogic {
     public void placeFollower(double xM, double yM) {
         currentFollowerLocation = new double [] {xM, yM};
         gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
-        gameWindow.setTemporaryFollowerDisplayed(true);
+        temporaryFollowerDisplayed = true;
+    }
+
+    @Override
+    public boolean isTemporaryFollowerDisplayed() {
+        return temporaryFollowerDisplayed;
+    }
+
+    @Override
+    public boolean canFollowerBePlaced() {
+        return canFollowerBePlaced;
     }
 
     @Override
