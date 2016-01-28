@@ -44,4 +44,8 @@ public interface ViewWindow {
     DrawableTile getCurrentTile();
 
     void setPossibleFollowerLocations(Set<double[]> followerLocations);
+
+    void setCurrentFollowerLocation(double[] temporaryFollowerLocation );
+
+    void setTemporaryFollowerDisplayed(boolean b);
 }

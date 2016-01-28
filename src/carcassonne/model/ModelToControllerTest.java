@@ -254,20 +254,6 @@ public class ModelToControllerTest {
     }
 
     @Test
-    public void tileRotationIsPassedToModel() {
-        add5CrossRoads();
-        prepareGame();
-        DataToModel game = new FakeGame();
-        FakeGame fakeGame = (FakeGame) game;
-        windowLogic.setDataToModel(game);
-        assertEquals("Tile isn't rotated", Rotation.DEG_0, fakeGame.getCurrentTileRotation());
-        fakeWindow.clickOnGamePanel();
-        fakeWindow.clickOnPlacedTile();
-        fakeWindow.pressEndTurnButton();
-        assertEquals("Tile is rotated", Rotation.DEG_90, fakeGame.getCurrentTileRotation());
-    }
-
-    @Test
     public void currentTileIsLegallyRotatedWhenPlaced() {
         game = new Game();
         table = new Table();

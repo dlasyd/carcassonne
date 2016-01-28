@@ -32,6 +32,7 @@ public class FakeWindow implements ViewWindow {
     private Set<Coordinates> possibleTileLocations;
     private Set<double[]> followerLocations;
     private boolean temporaryFollowerPlaced;
+    private double[] temporaryFollowerLocation;
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -44,6 +45,10 @@ public class FakeWindow implements ViewWindow {
         windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
         windowLogic.updateEndTurnButton();
         moveCounter++;
+    }
+
+    public void placeFollower(double xM, double yM) {
+        windowLogic.placeFollower(xM, yM);
     }
 
     public void pressConfirmTileButton() {
@@ -70,6 +75,16 @@ public class FakeWindow implements ViewWindow {
     @Override
     public void setPossibleFollowerLocations(Set<double[]> followerLocations) {
         this.followerLocations = followerLocations;
+    }
+
+    @Override
+    public void setCurrentFollowerLocation(double[] temporaryFollowerLocation ) {
+        this.temporaryFollowerLocation = temporaryFollowerLocation;
+    }
+
+    @Override
+    public void setTemporaryFollowerDisplayed(boolean b) {
+        temporaryFollowerPlaced = b;
     }
 
 
@@ -153,27 +168,33 @@ public class FakeWindow implements ViewWindow {
         return this.endGameWindowDisplayed;
     }
 
-    public String getTilePreviewName() {
-        return currentTile.getFileName();
-    }
-
     public boolean isPlacedTileSetEmpty() {
         return tilesOnTable.isEmpty();
     }
 
-    public TileName getFirstPlacedTileName() {
-        return firstPlacedTileName;
+    public boolean isTemporaryFollowerPlaced() {
+        return temporaryFollowerPlaced;
     }
 
     public boolean isCurrentTilePlaced() {
         return windowLogic.isCurrentTileOnTheTable();
     }
 
+    public boolean isTilePreviewEnabled() {
+        return tilePreviewEnabled;
+    }
+
+    public String getTilePreviewName() {
+        return currentTile.getFileName();
+    }
+
+    public TileName getFirstPlacedTileName() {
+        return firstPlacedTileName;
+    }
+
     public boolean canTileBeRelocated() {
         return !windowLogic.isTileConfirmed();
     }
-
-
 
     public Rotation getCurrentTileRotation() {
         return currentTile.getCurrentRotation();
@@ -183,10 +204,6 @@ public class FakeWindow implements ViewWindow {
         return currentPlayerName;
     }
 
-    public boolean isTilePreviewEnabled() {
-        return tilePreviewEnabled;
-    }
-
     public String getCurrentPoints() {
         return currentPoints;
     }
@@ -194,7 +211,6 @@ public class FakeWindow implements ViewWindow {
     public String getNumberOfFollwers() {
         return numberOfFollowers;
     }
-
 
     public String getTilesLeft() {
         return tilesLeft;
@@ -221,13 +237,5 @@ public class FakeWindow implements ViewWindow {
 
     public Set<double[]> getFollowerLocations() {
         return followerLocations;
-    }
-
-    public boolean isTemporaryFollowerPlaced() {
-        return temporaryFollowerPlaced;
-    }
-
-    public void placeFollower(double xM, double yM) {
-        windowLogic.placeFollower(xM, yM);
     }
 }

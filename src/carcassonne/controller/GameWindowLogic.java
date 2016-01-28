@@ -6,7 +6,6 @@ import carcassonne.view.DrawableTile;
 import carcassonne.view.ViewWindow;
 
 import java.awt.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -26,6 +25,7 @@ public class GameWindowLogic implements WindowLogic {
     private DataToModel     dataToModel;
     private Rotation        currentTileRotation = Rotation.DEG_0;
     private Set<Rotation>   possibleCurrentTileRotations;
+    private double[]        currentFollowerLocation;
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -123,7 +123,9 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void placeFollower(double xM, double yM) {
-
+        currentFollowerLocation = new double [] {xM, yM};
+        gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
+        gameWindow.setTemporaryFollowerDisplayed(true);
     }
 
     @Override
