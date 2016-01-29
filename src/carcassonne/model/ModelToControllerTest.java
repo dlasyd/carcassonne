@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests data flow from model to controller and then to view
@@ -340,6 +341,16 @@ public class ModelToControllerTest {
     }
 
     @Test
+    public void followerCantBePlacedAfterEndTurnButton() {
+        game.getTilePile().addTile(TileName.CITY1RWE);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(1, 0);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Follower cannot be placed", false, fakeWindow.canFollowerBePlaced());
+    }
+
+    @Test
     public void temporaryFollowerIsPlaced() {
         game.getTilePile().addTile(TileName.CITY1RWE);
         prepareGame();
@@ -348,4 +359,51 @@ public class ModelToControllerTest {
         fakeWindow.placeFollower(0.5, 0.5);
         assertEquals("Temporary follower is placed", true, fakeWindow.isTemporaryFollowerPlaced());
     }
+
+    @Test
+    public void followerCanBePlacedOnOneOfCorrectPositions() {
+        Set<double[]> expected = new HashSet<>();
+        expected.add(new double[] {0.5, 0.6});
+        expected.add(new double[] {0.5, 0.15});
+
+        game.getTilePile().addTile(TileName.CITY1);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
+        boolean result = false;
+        for (double[] i: fakeWindow.getPossibleFollowerLocationsSet()) {
+            for (double[] j: expected) {
+                if (Arrays.equals(i, j)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void temporaryFollowerLocationIsSavedInController() {
+        /*
+         * expected location differed from previous test because tile will be turn upside down automatically
+         */
+        double[] expected = new double[]{0.5, 0.85};
+        game.getTilePile().addTile(TileName.CITY1);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.placeFollower(0.5, 0.85);
+        assertTrue("Window should get correct temporary follower location", Arrays.equals(expected, fakeWindow.getCurrentFollowerLocation()));
+    }
+
+    @Test
+    public void clickAwayFromCurrentTileRemovesTemporaryFollower() {
+        game.getTilePile().addTile(TileName.CITY1RWE);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(1, 0);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.placeFollower(0.5, 0.5);
+        fakeWindow.clickOffCurrentTile();
+        assertEquals("Temporary follower should ber removed", false, fakeWindow.isTemporaryFollowerPlaced());
+    }
+
 }

@@ -219,30 +219,34 @@ public class GameWindow extends JFrame implements ViewWindow{
                      * 2) enable end move button
                      */
 
-                    if (!windowLogic.isTileConfirmed()) {
-                        if (windowLogic.isCurrentTileOnTheTable()) {
-                            if ((e.getX() > windowLocalX + tileSize *  windowLogic.getCurrentTileX() &&
-                                    e.getX() < (windowLocalX + tileSize *  windowLogic.getCurrentTileX() + tileSize)) &&
-                                    (e.getY() > windowLocalY + tileSize *  windowLogic.getCurrentTileY() &&
-                                            e.getY() < (windowLocalY + tileSize *  windowLogic.getCurrentTileY() + tileSize))) {
-                                windowLogic.clickOnPlacedTile();
-                                return;
+                    if (windowLogic.isCurrentTileOnTheTable()) {
+                        if ((e.getX() > windowLocalX + tileSize *  windowLogic.getCurrentTileX() &&
+                                e.getX() < (windowLocalX + tileSize *  windowLogic.getCurrentTileX() + tileSize)) &&
+                                (e.getY() > windowLocalY + tileSize *  windowLogic.getCurrentTileY() &&
+                                        e.getY() < (windowLocalY + tileSize *  windowLogic.getCurrentTileY() + tileSize))) {
+                            if (!windowLogic.isTileConfirmed()) {
+                                windowLogic.clickOnCurrentTile();
+                            } else {
+                                if (windowLogic.canFollowerBePlaced()) {
+                                    windowLogic.placeFollower(0.5 ,0.5);
+                                }
                             }
 
+                        } else {
+                            windowLogic.clickOffCurrentTile();
                         }
 
-                        for (Coordinates coordinates: possibleTileLocations) {
-                            if ((e.getX() > windowLocalX + tileSize * coordinates.getX() &&
-                                    e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
-                                    (e.getY() > windowLocalY + tileSize * coordinates.getY() &&
-                                            e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
-                                windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
-                                break;
-                            }
-                        }
                     }
-                    if (windowLogic.canFollowerBePlaced()) {
-                        windowLogic.placeFollower(0.5 ,0.5);
+
+                    for (Coordinates coordinates: possibleTileLocations) {
+                        if ((e.getX() > windowLocalX + tileSize * coordinates.getX() &&
+                                e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
+                                (e.getY() > windowLocalY + tileSize * coordinates.getY() &&
+                                        e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
+                            if (!windowLogic.isTileConfirmed())
+                                windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
+                            break;
+                        }
                     }
                     repaint();
                 }
@@ -374,7 +378,7 @@ public class GameWindow extends JFrame implements ViewWindow{
             }
 
             if (windowLogic.isTemporaryFollowerDisplayed()) {
-                g.fillOval(100, 100, 22, 22);
+                drawPlacedFollower(g, windowLogic.getCurrentFollowerLocation());
             }
         }
 
@@ -383,6 +387,14 @@ public class GameWindow extends JFrame implements ViewWindow{
             double circleDiameter = tileSize / 4;
             double circleRadius = tileSize / 8;
             g.drawOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * xyMultipliers[0] - circleRadius),
+                    (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
+                    (int) circleDiameter, (int) circleDiameter);
+        }
+        private void drawPlacedFollower(Graphics g, double[] xyMultipliers) {
+            xyMultipliers = rotateMultipliers(xyMultipliers, currentTile.getRotation());
+            double circleDiameter = tileSize / 4;
+            double circleRadius = tileSize / 8;
+            g.fillOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * xyMultipliers[0] - circleRadius),
                     (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
                     (int) circleDiameter, (int) circleDiameter);
         }

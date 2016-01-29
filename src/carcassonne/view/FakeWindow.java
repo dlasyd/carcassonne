@@ -6,7 +6,6 @@ import carcassonne.model.Rotation;
 import carcassonne.model.TileName;
 
 import java.awt.*;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,7 +62,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void clickOnPlacedTile() {
-        windowLogic.clickOnPlacedTile();
+        windowLogic.clickOnCurrentTile();
     }
 
     @Override
@@ -234,5 +233,17 @@ public class FakeWindow implements ViewWindow {
 
     public boolean canFollowerBePlaced() {
         return windowLogic.canFollowerBePlaced();
+    }
+
+    public Set<double[]> getPossibleFollowerLocationsSet() {
+        return followerLocations;
+    }
+
+    public double[] getCurrentFollowerLocation() {
+        return windowLogic.getCurrentFollowerLocation();
+    }
+
+    public void clickOffCurrentTile() {
+        windowLogic.clickOffCurrentTile();
     }
 }

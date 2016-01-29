@@ -38,7 +38,7 @@ public interface WindowLogic {
 
     boolean isTileConfirmed();
 
-    void clickOnPlacedTile();
+    void clickOnCurrentTile();
 
     boolean isFollowerPlaceDisplayed();
 
@@ -49,4 +49,8 @@ public interface WindowLogic {
     boolean isTemporaryFollowerDisplayed();
 
     boolean canFollowerBePlaced();
+
+    double[] getCurrentFollowerLocation();
+
+    void clickOffCurrentTile();
 }

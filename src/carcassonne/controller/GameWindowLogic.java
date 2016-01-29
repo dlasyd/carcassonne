@@ -93,6 +93,7 @@ public class GameWindowLogic implements WindowLogic {
         if (tileConfirmed) {
             tileConfirmed = false;
             canFollowerBePlaced = false;
+            temporaryFollowerDisplayed = false;
             gameWindow.setConfirmTileButtonText("Confirm tile");
             gameWindow.setEndTurnButtonEnabled(false);
         } else {
@@ -106,7 +107,7 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void clickOnPlacedTile() {
+    public void clickOnCurrentTile() {
         while (true) {
             currentTileRotation = Rotation.values()[(currentTileRotation.ordinal() + 1) % 4];
             if (possibleCurrentTileRotations.contains(currentTileRotation))
@@ -144,10 +145,24 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
+    public double[] getCurrentFollowerLocation() {
+        return currentFollowerLocation;
+    }
+
+    @Override
+    public void clickOffCurrentTile() {
+        if (temporaryFollowerDisplayed) {
+            temporaryFollowerDisplayed = false;
+        }
+    }
+
+    @Override
     public void updateEndTurnButton() {
         dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
         gameWindow.setEndTurnButtonEnabled(false);
         currentTileOnTheTable = false;
+        canFollowerBePlaced = false;
+        temporaryFollowerDisplayed = false;
         currentTileRotation = Rotation.DEG_0;
         if (gameEnded)
             gameWindow.displayEndgameWindow();
