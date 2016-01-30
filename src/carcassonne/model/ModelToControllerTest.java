@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -404,8 +405,31 @@ public class ModelToControllerTest {
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
         fakeWindow.clickOnCurrentTile(0.5, 0.5);
+        assertEquals("Temporary follower should be placed", true, fakeWindow.isTemporaryFollowerPlaced());
         fakeWindow.clickOffCurrentTile();
-        assertEquals("Temporary follower should ber removed", false, fakeWindow.isTemporaryFollowerPlaced());
+        assertEquals("Temporary follower should be removed", false, fakeWindow.isTemporaryFollowerPlaced());
+    }
+
+
+    /*
+     * Duplicate test
+     */
+    @Test
+    public void followerIsPlacedOnRealPositionNoRotation() {
+        ArrayList<Double> expected = new ArrayList<>();
+        expected.add(0.5);
+        expected.add(0.85);
+        ArrayList<Double> coordinatesArray = new ArrayList<>();
+
+        game.getTilePile().addTile(TileName.CITY1RWE);
+        prepareGame();
+        fakeWindow.clickOnGamePanel(1, 0);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(0.5, 0.85);
+        double[] resultCoordinates = fakeWindow.getCurrentFollowerLocation();
+        coordinatesArray.add(resultCoordinates[0]);
+        coordinatesArray.add(resultCoordinates[1]);
+        assertEquals ("Temporary follower is placed on one of correct locations", expected, coordinatesArray);
     }
 
 }

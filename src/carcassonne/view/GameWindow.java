@@ -233,6 +233,19 @@ public class GameWindow extends JFrame implements ViewWindow{
                             break;
                         }
                     }
+
+                    if (followerLocations != null) {
+                        for (double[] followerPosition : followerLocations) {
+                            double[] rotatedFollowerPosition = rotateMultipliers(followerPosition, currentTile.getRotation());
+                            if ((e.getX() > windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * rotatedFollowerPosition[0] - 12) &&
+                                (e.getX() < windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * rotatedFollowerPosition[0] + 12) &&
+                                (e.getY() > windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * rotatedFollowerPosition[1] - 12) &&
+                                (e.getY() < windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * rotatedFollowerPosition[1] + 12)) {
+
+                                windowLogic.clickOnCurrentTile(followerPosition[0], followerPosition[1]);
+                            }
+                        }
+                    }
                     repaint();
                 }
 
