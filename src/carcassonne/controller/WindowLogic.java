@@ -46,6 +46,8 @@ public interface WindowLogic {
      */
     void clickOnCurrentTile(double xMultiplier, double yMultiplier);
 
+    void clickOnCurrentTile();
+
     boolean isFollowerPlaceDisplayed();
 
     Color getCurrentPlayerColor();

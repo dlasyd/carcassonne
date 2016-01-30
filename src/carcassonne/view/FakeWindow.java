@@ -63,7 +63,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void clickOnPlacedTile() {
-        windowLogic.clickOnCurrentTile(0.5, 0.5);
+        windowLogic.clickOnCurrentTile();
     }
 
     public void clickOffCurrentTile() {

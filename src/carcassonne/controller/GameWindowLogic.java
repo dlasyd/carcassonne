@@ -156,7 +156,10 @@ public class GameWindowLogic implements WindowLogic {
             placeFollower(xMultiplier, yMultiplier);
             return;
         }
+    }
 
+    @Override
+    public void clickOnCurrentTile() {
         if (!isCurrentTileOnTheTable()) {
             return;
         }

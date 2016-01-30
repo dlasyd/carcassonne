@@ -218,7 +218,7 @@ public class GameWindow extends JFrame implements ViewWindow{
                         (e.getY() >  windowLocalY + tileSize * windowLogic.getCurrentTileY() &&
                          e.getY() < (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize))) {
 
-                        windowLogic.clickOnCurrentTile(0.5, 0.5);
+                        windowLogic.clickOnCurrentTile();
                     } else {
                         windowLogic.clickOffCurrentTile();
                     }
