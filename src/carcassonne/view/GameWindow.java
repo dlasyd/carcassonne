@@ -371,18 +371,18 @@ public class GameWindow extends JFrame implements ViewWindow{
         private void drawFollowerPossibleLocation(Graphics g, double[] xyMultipliers) {
             xyMultipliers = rotateMultipliers(xyMultipliers, currentTile.getRotation());
             double circleDiameter = tileSize / 4;
-            double circleRadius = tileSize / 8;
+            double circleRadius   = tileSize / 8;
             g.drawOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * xyMultipliers[0] - circleRadius),
-                    (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
-                    (int) circleDiameter, (int) circleDiameter);
+                       (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
+                       (int) circleDiameter, (int) circleDiameter);
         }
         private void drawPlacedFollower(Graphics g, double[] xyMultipliers) {
             xyMultipliers = rotateMultipliers(xyMultipliers, currentTile.getRotation());
             double circleDiameter = tileSize / 4;
-            double circleRadius = tileSize / 8;
+            double circleRadius   = tileSize / 8;
             g.fillOval((int) (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * xyMultipliers[0] - circleRadius),
-                    (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
-                    (int) circleDiameter, (int) circleDiameter);
+                       (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
+                       (int) circleDiameter, (int) circleDiameter);
         }
 
         private double[] rotateMultipliers(double[] xyMultipliers, Rotation angle) {
