@@ -50,7 +50,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void pressConfirmTileButton() {
-        windowLogic.updateTileConfirmed();
+        windowLogic.updateTileConfirmedButton();
     }
 
     public void clickOnGamePanel() {

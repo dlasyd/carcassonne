@@ -18,7 +18,7 @@ public interface WindowLogic {
 
     void updateTilePlaced(int x, int y);
 
-    void updateTileConfirmed();
+    void updateTileConfirmedButton();
 
     void setDataToModel(DataToModel dataToModel);
 

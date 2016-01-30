@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -391,6 +392,7 @@ public class ModelToControllerTest {
         game.getTilePile().addTile(TileName.CITY1);
         prepareGame();
         fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
         fakeWindow.placeFollower(0.5, 0.85);
         assertTrue("Window should get correct temporary follower location", Arrays.equals(expected, fakeWindow.getCurrentFollowerLocation()));
     }

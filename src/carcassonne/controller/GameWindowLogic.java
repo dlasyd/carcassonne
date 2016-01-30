@@ -61,6 +61,10 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
     }
 
+    /*
+     * Methods that are invoked by action listeners of GameWindow
+     * BEGINNING
+     */
     @Override
     public void updateTilePlaced(int x, int y) {
         /*
@@ -100,7 +104,7 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void updateTileConfirmed() {
+    public void updateTileConfirmedButton() {
         assert (currentTileOnTheTable);
         if (tileConfirmed) {
             tileConfirmed = false;
@@ -116,6 +120,28 @@ public class GameWindowLogic implements WindowLogic {
             gameWindow.setEndTurnButtonEnabled(true);
         }
         gameWindow.repaintWindow();
+    }
+
+    @Override
+    public void updateEndTurnButton() {
+        dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
+        gameWindow.setEndTurnButtonEnabled(false);
+        currentTileOnTheTable = false;
+        canFollowerBePlaced = false;
+        temporaryFollowerDisplayed = false;
+        currentTileRotation = Rotation.DEG_0;
+        if (gameEnded)
+            gameWindow.displayEndgameWindow();
+    }
+
+    @Override
+    public void placeFollower(double xM, double yM) {
+        if (!canFollowerBePlaced()) {
+            return;
+        }
+        currentFollowerLocation = new double [] {xM, yM};
+        gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
+        temporaryFollowerDisplayed = true;
     }
 
     @Override
@@ -138,58 +164,15 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
-    public boolean isFollowerPlaceDisplayed() {
-        return tileConfirmed;
-    }
-
-    @Override
-    public Color getCurrentPlayerColor() {
-        return gameData.getPlayerColor();
-    }
-
-    @Override
-    public void placeFollower(double xM, double yM) {
-        if (!canFollowerBePlaced()) {
-            return;
-        }
-        currentFollowerLocation = new double [] {xM, yM};
-        gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
-        temporaryFollowerDisplayed = true;
-    }
-
-    @Override
-    public boolean isTemporaryFollowerDisplayed() {
-        return temporaryFollowerDisplayed;
-    }
-
-    @Override
-    public boolean canFollowerBePlaced() {
-        return canFollowerBePlaced;
-    }
-
-    @Override
-    public double[] getCurrentFollowerLocation() {
-        return currentFollowerLocation;
-    }
-
-    @Override
     public void clickOffCurrentTile() {
         if (temporaryFollowerDisplayed) {
             temporaryFollowerDisplayed = false;
         }
     }
-
-    @Override
-    public void updateEndTurnButton() {
-        dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
-        gameWindow.setEndTurnButtonEnabled(false);
-        currentTileOnTheTable = false;
-        canFollowerBePlaced = false;
-        temporaryFollowerDisplayed = false;
-        currentTileRotation = Rotation.DEG_0;
-        if (gameEnded)
-            gameWindow.displayEndgameWindow();
-    }
+    /*
+     * Methods that are invoked by action listeners of GameWindow
+     * END
+     */
 
     @Override
     public void finishGame() {
@@ -233,6 +216,31 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public GameData getLatestGameData() {
         return null;
+    }
+
+    @Override
+    public boolean isFollowerPlaceDisplayed() {
+        return tileConfirmed;
+    }
+
+    @Override
+    public Color getCurrentPlayerColor() {
+        return gameData.getPlayerColor();
+    }
+
+    @Override
+    public boolean isTemporaryFollowerDisplayed() {
+        return temporaryFollowerDisplayed;
+    }
+
+    @Override
+    public boolean canFollowerBePlaced() {
+        return canFollowerBePlaced;
+    }
+
+    @Override
+    public double[] getCurrentFollowerLocation() {
+        return currentFollowerLocation;
     }
 
     public void setDataToModel(DataToModel dataToModel) {

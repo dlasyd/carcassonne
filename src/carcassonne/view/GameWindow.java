@@ -68,7 +68,7 @@ public class GameWindow extends JFrame implements ViewWindow{
         confirmTileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                windowLogic.updateTileConfirmed();
+                windowLogic.updateTileConfirmedButton();
             }
         });
 
