@@ -63,6 +63,18 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateTilePlaced(int x, int y) {
+        /*
+         * Things that are checked as part of window logic:
+         * 1) if the tile is already on the table and logical coordinates are the same,
+         * should not do anything. Otherwise the rotation of tile will be changed;
+         */
+        if (isCurrentTileOnTheTable() && currentTileX == x && currentTileY == y) {
+            return;
+        }
+
+        if (isTileConfirmed()) {
+            return;
+        }
         if (!gameEnded) {
             currentTileOnTheTable = true;
             gameWindow.setConfirmTileButtonEnabled(true);
@@ -108,6 +120,14 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void clickOnCurrentTile() {
+        if (!isCurrentTileOnTheTable()) {
+            return;
+        }
+
+        if (isTileConfirmed()) {
+            return;
+        }
+
         while (true) {
             currentTileRotation = Rotation.values()[(currentTileRotation.ordinal() + 1) % 4];
             if (possibleCurrentTileRotations.contains(currentTileRotation))
@@ -129,6 +149,9 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void placeFollower(double xM, double yM) {
+        if (!canFollowerBePlaced()) {
+            return;
+        }
         currentFollowerLocation = new double [] {xM, yM};
         gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
         temporaryFollowerDisplayed = true;

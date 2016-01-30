@@ -213,38 +213,24 @@ public class GameWindow extends JFrame implements ViewWindow{
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    /*
-                     * If tile has been placed
-                     * 1) save info
-                     * 2) enable end move button
-                     */
+                    if ((e.getX() >  windowLocalX + tileSize * windowLogic.getCurrentTileX() &&
+                         e.getX() < (windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize)) &&
+                        (e.getY() >  windowLocalY + tileSize * windowLogic.getCurrentTileY() &&
+                         e.getY() < (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize))) {
 
-                    if (windowLogic.isCurrentTileOnTheTable()) {
-                        if ((e.getX() > windowLocalX + tileSize *  windowLogic.getCurrentTileX() &&
-                                e.getX() < (windowLocalX + tileSize *  windowLogic.getCurrentTileX() + tileSize)) &&
-                                (e.getY() > windowLocalY + tileSize *  windowLogic.getCurrentTileY() &&
-                                        e.getY() < (windowLocalY + tileSize *  windowLogic.getCurrentTileY() + tileSize))) {
-                            if (!windowLogic.isTileConfirmed()) {
-                                windowLogic.clickOnCurrentTile();
-                            } else {
-                                if (windowLogic.canFollowerBePlaced()) {
-                                    windowLogic.placeFollower(0.5 ,0.5);
-                                }
-                            }
-
-                        } else {
-                            windowLogic.clickOffCurrentTile();
-                        }
-
+                            windowLogic.clickOnCurrentTile();
+                            windowLogic.placeFollower(0.5 ,0.5);
+                    } else {
+                        windowLogic.clickOffCurrentTile();
                     }
 
                     for (Coordinates coordinates: possibleTileLocations) {
-                        if ((e.getX() > windowLocalX + tileSize * coordinates.getX() &&
-                                e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
-                                (e.getY() > windowLocalY + tileSize * coordinates.getY() &&
-                                        e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
-                            if (!windowLogic.isTileConfirmed())
-                                windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
+                        if ((e.getX() >  windowLocalX + tileSize * coordinates.getX() &&
+                             e.getX() < (windowLocalX + tileSize * coordinates.getX() + tileSize)) &&
+                            (e.getY() >  windowLocalY + tileSize * coordinates.getY() &&
+                             e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
+
+                            windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
                             break;
                         }
                     }
