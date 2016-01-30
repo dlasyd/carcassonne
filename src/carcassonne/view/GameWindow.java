@@ -218,7 +218,7 @@ public class GameWindow extends JFrame implements ViewWindow{
                         (e.getY() >  windowLocalY + tileSize * windowLogic.getCurrentTileY() &&
                          e.getY() < (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize))) {
 
-                            windowLogic.clickOnCurrentTile(0.5, 0.5);
+                        windowLogic.clickOnCurrentTile(0.5, 0.5);
                     } else {
                         windowLogic.clickOffCurrentTile();
                     }
@@ -229,7 +229,7 @@ public class GameWindow extends JFrame implements ViewWindow{
                             (e.getY() >  windowLocalY + tileSize * coordinates.getY() &&
                              e.getY() < (windowLocalY + tileSize * coordinates.getY() + tileSize))) {
 
-                            windowLogic.updateTilePlaced(coordinates.getX(), coordinates.getY());
+                            windowLogic.clickOnPossibleLocation(coordinates.getX(), coordinates.getY());
                             break;
                         }
                     }

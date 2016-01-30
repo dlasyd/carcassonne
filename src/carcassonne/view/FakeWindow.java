@@ -38,9 +38,10 @@ public class FakeWindow implements ViewWindow {
 
     /*
      * Simulating window events
+     * BEGINNING
      */
     public void pressEndTurnButton() {
-        windowLogic.updateTilePlaced(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
+        windowLogic.clickOnPossibleLocation(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
         windowLogic.updateEndTurnButton();
         moveCounter++;
     }
@@ -58,18 +59,27 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void clickOnGamePanel(int x, int y) {
-        windowLogic.updateTilePlaced(x , y);
+        windowLogic.clickOnPossibleLocation(x , y);
     }
 
     public void clickOnPlacedTile() {
         windowLogic.clickOnCurrentTile(0.5, 0.5);
     }
 
+    public void clickOffCurrentTile() {
+        windowLogic.clickOffCurrentTile();
+    }
+    /*
+     * Simulating window events
+     * END
+     */
+
     @Override
     public DrawableTile getCurrentTile() {
         return currentTile;
     }
 
+    //<editor-fold desc="Overridden setters">
     @Override
     public void setPossibleFollowerLocations(Set<double[]> followerLocations) {
         this.followerLocations = followerLocations;
@@ -80,7 +90,6 @@ public class FakeWindow implements ViewWindow {
         this.temporaryFollowerLocation = temporaryFollowerLocation;
     }
 
-    //<editor-fold desc="Overridden setters">
     @Override
     public void setConfirmTileButtonEnabled(boolean b) {
         this.nextTurnEnabled = b;
@@ -131,6 +140,11 @@ public class FakeWindow implements ViewWindow {
     public void setCurrentPlayerName(String currentPlayer) {
         this.currentPlayerName = currentPlayer;
     }
+
+    @Override
+    public void setTilePreviewEnabled(boolean b) {
+        this.tilePreviewEnabled = b;
+    }
     //</editor-fold>
 
     //<editor-fold desc="Empty implementations">
@@ -176,16 +190,24 @@ public class FakeWindow implements ViewWindow {
         return tilePreviewEnabled;
     }
 
+    public boolean canTileBeRelocated() {
+        return !windowLogic.isTileConfirmed();
+    }
+
+    public boolean areFollowersLocationsDisplayed() {
+        return windowLogic.isFollowerPlaceDisplayed();
+    }
+
+    public boolean canFollowerBePlaced() {
+        return windowLogic.canFollowerBePlaced();
+    }
+
     public String getTilePreviewName() {
         return currentTile.getFileName();
     }
 
     public TileName getFirstPlacedTileName() {
         return firstPlacedTileName;
-    }
-
-    public boolean canTileBeRelocated() {
-        return !windowLogic.isTileConfirmed();
     }
 
     public Rotation getCurrentTileRotation() {
@@ -208,12 +230,6 @@ public class FakeWindow implements ViewWindow {
         return tilesLeft;
     }
 
-    //</editor-fold>
-
-    public void setTilePreviewEnabled(boolean b) {
-        this.tilePreviewEnabled = b;
-    }
-
     public Set<Coordinates> getPossibleTileLocations() {
         return possibleTileLocations;
     }
@@ -222,17 +238,8 @@ public class FakeWindow implements ViewWindow {
         return tilesOnTable;
     }
 
-
-    public boolean areFollowersLocationsDisplayed() {
-        return windowLogic.isFollowerPlaceDisplayed();
-    }
-
     public Set<double[]> getFollowerLocations() {
         return followerLocations;
-    }
-
-    public boolean canFollowerBePlaced() {
-        return windowLogic.canFollowerBePlaced();
     }
 
     public Set<double[]> getPossibleFollowerLocationsSet() {
@@ -243,7 +250,9 @@ public class FakeWindow implements ViewWindow {
         return windowLogic.getCurrentFollowerLocation();
     }
 
-    public void clickOffCurrentTile() {
-        windowLogic.clickOffCurrentTile();
-    }
+    //</editor-fold>
+
+
+
+
 }

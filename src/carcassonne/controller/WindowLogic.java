@@ -15,7 +15,7 @@ public interface WindowLogic {
 
     GameData getLatestGameData();
 
-    void updateTilePlaced(int x, int y);
+    void clickOnPossibleLocation(int x, int y);
 
     void updateTileConfirmedButton();
 
@@ -37,6 +37,13 @@ public interface WindowLogic {
 
     boolean isTileConfirmed();
 
+    /**
+     * Should be invoked when click on temporarily placed tile happens.
+     *<p>Parameters determine a position within temporary tile in the coordinate system where
+     * top left corner of a tile is the origin.</p>
+     * @param xMultiplier Tile size relative X multiplier such that relativeX = xMultiplier * tileSize;
+     * @param yMultiplier Tile size relative Y multiplier such that relativeY = yMultiplier * tileSize;
+     */
     void clickOnCurrentTile(double xMultiplier, double yMultiplier);
 
     boolean isFollowerPlaceDisplayed();

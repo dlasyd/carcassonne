@@ -65,8 +65,17 @@ public class GameWindowLogic implements WindowLogic {
      * Methods that are invoked by action listeners of GameWindow
      * BEGINNING
      */
+
+    /**
+     * This method must be invoked when an area that represents a tile possible location
+     * is clicked.
+     * <p>The method checks if required conditions are met and passes information to model.</p>
+     *
+     * @param x Logical x of a location
+     * @param y Logical y of a location
+     */
     @Override
-    public void updateTilePlaced(int x, int y) {
+    public void clickOnPossibleLocation(int x, int y) {
         /*
          * Things that are checked as part of window logic:
          * 1) if the tile is already on the table and logical coordinates are the same,
@@ -134,6 +143,13 @@ public class GameWindowLogic implements WindowLogic {
             gameWindow.displayEndgameWindow();
     }
 
+    /**
+     * Should be invoked when click on temporarily placed tile happens.
+     *<p>Parameters determine a position within temporary tile in the coordinate system where
+     * top left corner of a tile is the origin.</p>
+     * @param xMultiplier Tile size relative X multiplier such that relativeX = xMultiplier * tileSize;
+     * @param yMultiplier Tile size relative Y multiplier such that relativeY = yMultiplier * tileSize;
+     */
     @Override
     public void clickOnCurrentTile(double xMultiplier, double yMultiplier) {
         if (canFollowerBePlaced()) {
