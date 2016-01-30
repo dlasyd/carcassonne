@@ -45,8 +45,8 @@ public class FakeWindow implements ViewWindow {
         moveCounter++;
     }
 
-    public void placeFollower(double xM, double yM) {
-        windowLogic.placeFollower(xM, yM);
+    public void clickOnCurrentTile(double xM, double yM) {
+        windowLogic.clickOnCurrentTile(xM, yM);
     }
 
     public void pressConfirmTileButton() {
@@ -62,7 +62,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void clickOnPlacedTile() {
-        windowLogic.clickOnCurrentTile();
+        windowLogic.clickOnCurrentTile(0.5, 0.5);
     }
 
     @Override

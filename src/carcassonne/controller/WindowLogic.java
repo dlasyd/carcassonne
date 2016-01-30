@@ -1,7 +1,6 @@
 package carcassonne.controller;
 
 
-import carcassonne.model.Rotation;
 import carcassonne.view.ViewWindow;
 
 import java.awt.*;
@@ -38,13 +37,11 @@ public interface WindowLogic {
 
     boolean isTileConfirmed();
 
-    void clickOnCurrentTile();
+    void clickOnCurrentTile(double xMultiplier, double yMultiplier);
 
     boolean isFollowerPlaceDisplayed();
 
     Color getCurrentPlayerColor();
-
-    void placeFollower(double xM, double yM);
 
     boolean isTemporaryFollowerDisplayed();
 

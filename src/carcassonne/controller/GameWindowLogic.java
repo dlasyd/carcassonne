@@ -135,17 +135,12 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     @Override
-    public void placeFollower(double xM, double yM) {
-        if (!canFollowerBePlaced()) {
+    public void clickOnCurrentTile(double xMultiplier, double yMultiplier) {
+        if (canFollowerBePlaced()) {
+            placeFollower(xMultiplier, yMultiplier);
             return;
         }
-        currentFollowerLocation = new double [] {xM, yM};
-        gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
-        temporaryFollowerDisplayed = true;
-    }
 
-    @Override
-    public void clickOnCurrentTile() {
         if (!isCurrentTileOnTheTable()) {
             return;
         }
@@ -190,6 +185,12 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public boolean displayPossibleLocations() {
         return !gameEnded;
+    }
+
+    private void placeFollower(double xM, double yM) {
+        currentFollowerLocation = new double [] {xM, yM};
+        gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
+        temporaryFollowerDisplayed = true;
     }
 
     //<editor-fold desc="Getters and setters">

@@ -357,7 +357,7 @@ public class ModelToControllerTest {
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
-        fakeWindow.placeFollower(0.5, 0.5);
+        fakeWindow.clickOnCurrentTile(0.5, 0.5);
         assertEquals("Temporary follower is placed", true, fakeWindow.isTemporaryFollowerPlaced());
     }
 
@@ -393,7 +393,7 @@ public class ModelToControllerTest {
         prepareGame();
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
-        fakeWindow.placeFollower(0.5, 0.85);
+        fakeWindow.clickOnCurrentTile(0.5, 0.85);
         assertTrue("Window should get correct temporary follower location", Arrays.equals(expected, fakeWindow.getCurrentFollowerLocation()));
     }
 
@@ -403,7 +403,7 @@ public class ModelToControllerTest {
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
-        fakeWindow.placeFollower(0.5, 0.5);
+        fakeWindow.clickOnCurrentTile(0.5, 0.5);
         fakeWindow.clickOffCurrentTile();
         assertEquals("Temporary follower should ber removed", false, fakeWindow.isTemporaryFollowerPlaced());
     }
