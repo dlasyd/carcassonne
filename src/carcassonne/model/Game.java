@@ -1,6 +1,7 @@
 package carcassonne.model;
 
 import carcassonne.controller.DataToModel;
+import carcassonne.controller.FollowerMap;
 import carcassonne.controller.GameDataBuilder;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.DrawableTile;
@@ -22,6 +23,7 @@ public class Game implements DataToModel{
     private boolean             finished;
     private boolean             currentTileConfirmed;
     private boolean             followerFriendly;           //determines if a tile has a vacant place for follower
+    private FollowerMap         currentTileFollowerMap;
 
     public static Game getInstance() {
         if (game == null){
@@ -59,6 +61,24 @@ public class Game implements DataToModel{
         table.placeFollower(getCurrentPlayer(), direction);
     }
 
+    @Override
+    public void turnActions(int x, int y, Rotation angle, double[] currentFollower) {
+        Tile tile = getCurrentTile();
+        tile.setCoordinates(x, y);
+        tile.turnRight(angle);
+        table.placeTile(tile);
+        table.placeFollower(getCurrentPlayer(), currentTileFollowerMap.getDirection(currentFollower));
+        if (tilePile.hasTiles()) {
+            nextPlayer();
+            dragTile();
+            notifyController();
+        } else {
+            finished = true;
+            windowLogic.finishGame();
+            notifyController();
+        }
+    }
+
     public void notifyController() {
         windowLogic.update(new GameDataBuilder().setName(getCurrentPlayer().getName()).
                 setPoints("" + getCurrentPlayer().getCurrentPoints()).
@@ -79,7 +99,8 @@ public class Game implements DataToModel{
 
     @Override
     public Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY) {
-        return followerPlacingHelper.getFollowerLocations(getCurrentTile());
+        currentTileFollowerMap = followerPlacingHelper.getFollowerLocations(getCurrentTile());
+        return currentTileFollowerMap.getMultipliers();
     }
 
     //<editor-fold desc="Getters">
@@ -184,10 +205,6 @@ public class Game implements DataToModel{
         game.getTilePile().addTile(Tile.getInstance());
     }
 
-    FollowerPlacingHelper getFollowerPlacingHelper() {
-        return followerPlacingHelper;
-    }
-
     /**
      * An instance of this class has a method that returns all legal locations
      * of possible follower placement on the current tile. Legal is:
@@ -196,11 +213,11 @@ public class Game implements DataToModel{
      */
     class FollowerPlacingHelper {
 
-        Set<double[]> getFollowerLocations(Tile tile) {
-            Set<double[]> result = new HashSet<>();
+        FollowerMap getFollowerLocations(Tile tile) {
+            FollowerMap result = new FollowerMap();
             Set<Feature> features = tile.getFeatures();
             for (Feature feature: features) {
-                result.add(getTileSizeRelativeMultipliers(tile, feature));
+                result.put(getTileSizeRelativeMultipliers(tile, feature), Util.any(tile.getFeatureTileDirections(feature)));
             }
             return result;
         }
@@ -221,9 +238,6 @@ public class Game implements DataToModel{
             }
 
             TileDirections direction = Util.any(directions);
-
-
-
 
             /*
              * Basic rule

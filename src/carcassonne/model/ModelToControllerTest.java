@@ -422,7 +422,7 @@ public class ModelToControllerTest {
     }
 
     @Test
-    public void submittingFollowerPlacesItToRightPosition() {
+    public void submittingFollowerModelHasTileDirection() {
         FakeGame fakeGame = new FakeGame();
 
         table = new Table();
@@ -445,8 +445,36 @@ public class ModelToControllerTest {
 
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(0.5, 0.85);
+        fakeWindow.clickOnCurrentTile(0.5, 0.15);
         fakeWindow.pressEndTurnButton();
-        assertEquals("Follower placed to right position", TileDirections.SOUTH, fakeGame.getLastFollowerTileDirections());
+        assertEquals("Follower placed to right position", TileDirections.NORTH, fakeGame.getLastFollowerTileDirections());
+    }
+
+    @Test
+    public void followerNotSubmittedThenModelGetsNoTileDirection() {
+        FakeGame fakeGame = new FakeGame();
+
+        table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        fakeGame.setTable(table);
+        fakeGame.addPlayer("Anton" , Color.RED);
+        fakeGame.addPlayer("Andrey", Color.YELLOW);
+        fakeGame.getTilePile().addTile(TileName.CITY1);
+
+        windowLogic = new GameWindowLogic();
+        viewWindow = new FakeWindow(windowLogic);
+        windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(fakeGame);
+        fakeGame.setWindowLogic(windowLogic);
+        fakeGame.nextPlayer();
+        fakeGame.dragTile();
+        fakeGame.notifyController();
+        fakeWindow = (FakeWindow) viewWindow;
+
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Follower placed to right position", null, fakeGame.getLastFollowerTileDirections());
     }
 }

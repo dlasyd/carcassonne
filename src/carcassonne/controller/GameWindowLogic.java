@@ -2,6 +2,7 @@ package carcassonne.controller;
 
 import carcassonne.model.Coordinates;
 import carcassonne.model.Rotation;
+import carcassonne.model.TileDirections;
 import carcassonne.view.DrawableTile;
 import carcassonne.view.ViewWindow;
 
@@ -133,7 +134,11 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
-        dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
+        if (temporaryFollowerDisplayed)
+            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, currentFollowerLocation);
+        else
+            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
+
         gameWindow.setEndTurnButtonEnabled(false);
         currentTileOnTheTable = false;
         canFollowerBePlaced = false;
