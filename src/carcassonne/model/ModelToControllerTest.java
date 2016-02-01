@@ -410,26 +410,32 @@ public class ModelToControllerTest {
         assertEquals("Temporary follower should be removed", false, fakeWindow.isTemporaryFollowerPlaced());
     }
 
-
-    /*
-     * Duplicate test
-     */
     @Test
-    public void followerIsPlacedOnRealPositionNoRotation() {
-        ArrayList<Double> expected = new ArrayList<>();
-        expected.add(0.5);
-        expected.add(0.85);
-        ArrayList<Double> coordinatesArray = new ArrayList<>();
+    public void submittingFollowerPlacesItToRightPosition() {
+        FakeGame fakeGame = new FakeGame();
 
-        game.getTilePile().addTile(TileName.CITY1RWE);
-        prepareGame();
-        fakeWindow.clickOnGamePanel(1, 0);
+        table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        fakeGame.setTable(table);
+        fakeGame.addPlayer("Anton" , Color.RED);
+        fakeGame.addPlayer("Andrey", Color.YELLOW);
+        fakeGame.getTilePile().addTile(TileName.CITY1);
+
+        windowLogic = new GameWindowLogic();
+        viewWindow = new FakeWindow(windowLogic);
+        windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(fakeGame);
+        fakeGame.setWindowLogic(windowLogic);
+        fakeGame.nextPlayer();
+        fakeGame.dragTile();
+        fakeGame.notifyController();
+        fakeWindow = (FakeWindow) viewWindow;
+
+        fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
         fakeWindow.clickOnCurrentTile(0.5, 0.85);
-        double[] resultCoordinates = fakeWindow.getCurrentFollowerLocation();
-        coordinatesArray.add(resultCoordinates[0]);
-        coordinatesArray.add(resultCoordinates[1]);
-        assertEquals ("Temporary follower is placed on one of correct locations", expected, coordinatesArray);
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Follower placed to right position", TileDirections.SOUTH, fakeGame.getLastFollowerTileDirections());
     }
-
 }

@@ -148,7 +148,6 @@ public class GameWindowLogic implements WindowLogic {
      *<p>Parameters determine a position of a follower within temporary tile in the coordinate system where
      * top left corner of a tile is the origin.</p>
      * <p>If follower cannot be placed in the current moment, method will invoke clickOnCurrentTile()</p>
-     * @see clickOnCurrentTile()
      * @param xMultiplier Tile size relative X multiplier such that relativeX = xMultiplier * tileSize;
      * @param yMultiplier Tile size relative Y multiplier such that relativeY = yMultiplier * tileSize;
      */

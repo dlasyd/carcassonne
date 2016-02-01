@@ -10,35 +10,16 @@ import java.util.Set;
  * and not intended for distribution.
  * Created by Andrey on 25/01/16.
  */
-public class FakeGame implements DataToModel {
-    private Rotation currentTileRotation = Rotation.DEG_0;
+public class FakeGame extends Game {
+    private TileDirections lastFollowerTileDirections;
 
     @Override
     public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
-        this.currentTileRotation = angle;
+        lastFollowerTileDirections = direction;
+        super.turnActions(x, y, angle, direction);
     }
 
-    @Override
-    public void turnActions(int x, int y, Rotation angle) {
-        this.currentTileRotation = angle;
-    }
-
-    @Override
-    public void turnActions(int x, int y) {
-
-    }
-
-    @Override
-    public void forceNotify() {
-
-    }
-
-    @Override
-    public Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY) {
-        return null;
-    }
-
-    public Rotation getCurrentTileRotation() {
-        return this.currentTileRotation;
+    public TileDirections getLastFollowerTileDirections() {
+        return lastFollowerTileDirections;
     }
 }
