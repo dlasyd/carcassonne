@@ -250,6 +250,10 @@ public class FakeWindow implements ViewWindow {
         return windowLogic.getCurrentFollowerLocation();
     }
 
+    public Set getPlacedFollowers() {
+        return null;
+    }
+
     //</editor-fold>
 
 

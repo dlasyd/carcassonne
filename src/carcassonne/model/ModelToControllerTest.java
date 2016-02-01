@@ -468,4 +468,20 @@ public class ModelToControllerTest {
         fakeWindow.pressEndTurnButton();
         assertEquals("Follower placed to right position", null, fakeGame.getLastFollowerTileDirections());
     }
+
+    @Test
+    public void placedFollowersAreDisplayed() {
+        Set expected = new HashSet();
+
+        setUpFakeGame();
+        fakeGame.getTilePile().addTile(TileName.CITY1);
+        prepareFakeGame();
+
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(0.5, 0.15);
+        fakeWindow.pressEndTurnButton();
+
+        assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
+    }
 }
