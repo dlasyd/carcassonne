@@ -75,6 +75,8 @@ public class ModelToControllerTest {
         add5CrossRoads();
         prepareGame();
         assertEquals("Current player in controller is correct", "Anton", fakeWindow.getCurrentPlayerName());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.pressConfirmTileButton();
         fakeWindow.pressEndTurnButton();
         assertEquals("Current player in controller is correct", "Andrey", fakeWindow.getCurrentPlayerName());
         windowLogic.setGameWindow(viewWindow);
@@ -94,11 +96,16 @@ public class ModelToControllerTest {
     public void endGameWindowRunsWhenGameEnds() {
         add5CrossRoads();
         prepareGame();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
+
+        for (int i = 0; i < 4; i ++) {
+            fakeWindow.clickOnGamePanel();
+            fakeWindow.pressConfirmTileButton();
+            fakeWindow.pressEndTurnButton();
+        }
+
         assertEquals("End game window not displayed", false, fakeWindow.isEndGameWindowDisplayed());
+        fakeWindow.clickOnGamePanel();
+        fakeWindow.pressConfirmTileButton();
         fakeWindow.pressEndTurnButton();
         assertEquals("Game is finished", true, game.isFinished());
         assertEquals("Tile place button disabled", false, fakeWindow.isPlaceTileButtonEnabled());
@@ -110,11 +117,12 @@ public class ModelToControllerTest {
     public void lastTileCorrectButtonBehaviour() {
         add5CrossRoads();
         prepareGame();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
+        for (int i = 0; i < 5; i ++) {
+            fakeWindow.clickOnGamePanel();
+            fakeWindow.pressConfirmTileButton();
+            fakeWindow.pressEndTurnButton();
+        }
+
         assertEquals("Game is finished", true, game.isFinished());
         assertEquals("Tile place button disabled", false, fakeWindow.isPlaceTileButtonEnabled());
         assertEquals("End turn button disabled", false, fakeWindow.isPlaceEndTurnButtonEnabled());
@@ -202,11 +210,13 @@ public class ModelToControllerTest {
     public void endGameLastTileIsDisplayed() {
         add5CrossRoads();
         prepareGame();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
+
+        for (int i = 0; i < 5; i ++) {
+            fakeWindow.clickOnGamePanel();
+            fakeWindow.pressConfirmTileButton();
+            fakeWindow.pressEndTurnButton();
+        }
+
         assertEquals ("Window displays 6 tiles", 6, fakeWindow.getTilesOnTable().size());
     }
 
@@ -247,11 +257,12 @@ public class ModelToControllerTest {
     public void endGamePreviewCurrentTileDisabled() {
         add5CrossRoads();
         prepareGame();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
-        fakeWindow.pressEndTurnButton();
+
+        for (int i = 0; i < 5; i ++) {
+            fakeWindow.clickOnGamePanel();
+            fakeWindow.pressConfirmTileButton();
+            fakeWindow.pressEndTurnButton();
+        }
         assertEquals("Tile preview is disabled", false, fakeWindow.isTilePreviewEnabled());
     }
 

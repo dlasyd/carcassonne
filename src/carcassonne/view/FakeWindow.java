@@ -41,9 +41,9 @@ public class FakeWindow implements ViewWindow {
      * BEGINNING
      */
     public void pressEndTurnButton() {
-        windowLogic.clickOnPossibleLocation(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
-        windowLogic.updateEndTurnButton();
+        //windowLogic.clickOnPossibleLocation(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
         moveCounter++;
+        windowLogic.updateEndTurnButton();
     }
 
     public void clickOnCurrentTile(double xM, double yM) {
