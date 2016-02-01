@@ -6,10 +6,7 @@ import carcassonne.controller.FollowerMap;
 import java.util.Set;
 
 /**
- * This is a part of Carcassonne project.
- * The project is created for learning and practicing java
- * and not intended for distribution.
- * Created by Andrey on 25/01/16.
+ * Class that extends Game with methods used for testing
  */
 public class FakeGame extends Game {
     private TileDirections      lastFollowerTileDirections;

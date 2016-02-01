@@ -23,11 +23,12 @@ import static org.junit.Assert.assertTrue;
  * Created by Andrey on 14/01/16.
  */
 public class ModelToControllerTest {
-    Game game;
-    Table table;
+    Game    game;
+    Table   table;
     WindowLogic windowLogic;
-    ViewWindow viewWindow;
-    FakeWindow fakeWindow;
+    ViewWindow  viewWindow;
+    FakeWindow  fakeWindow;
+    FakeGame    fakeGame;
 
     @Before
     public final void setUp() {
@@ -40,14 +41,6 @@ public class ModelToControllerTest {
         game.addPlayer("Andrey", Color.YELLOW);
     }
 
-    public void add5DifferentTiles() {
-        game.getTilePile().add5DifferentTiles();
-    }
-
-    public void add5CrossRoads() {
-        game.getTilePile().addXCrossroads(5);
-    }
-
     public void prepareGame() {
         windowLogic = new GameWindowLogic();
         viewWindow = new FakeWindow(windowLogic);
@@ -58,6 +51,36 @@ public class ModelToControllerTest {
         game.dragTile();
         game.notifyController();
         fakeWindow = (FakeWindow) viewWindow;
+    }
+
+    public void setUpFakeGame() {
+        fakeGame = new FakeGame();
+
+        table = new Table();
+        RealEstateManager manager = new RealEstateManager(table);
+        table.setRealEstateManager(manager);
+        fakeGame.setTable(table);
+        fakeGame.addPlayer("Anton" , Color.RED);
+        fakeGame.addPlayer("Andrey", Color.YELLOW);
+    }
+
+    public void prepareFakeGame() {
+        windowLogic = new GameWindowLogic();
+        viewWindow = new FakeWindow(windowLogic);
+        windowLogic.setGameWindow(viewWindow);
+        windowLogic.setDataToModel(fakeGame);
+        fakeGame.setWindowLogic(windowLogic);
+        fakeGame.nextPlayer();
+        fakeGame.dragTile();
+        fakeGame.notifyController();
+        fakeWindow = (FakeWindow) viewWindow;
+    }
+    public void add5DifferentTiles() {
+        game.getTilePile().add5DifferentTiles();
+    }
+
+    public void add5CrossRoads() {
+        game.getTilePile().addXCrossroads(5);
     }
 
     @Test
@@ -423,25 +446,9 @@ public class ModelToControllerTest {
 
     @Test
     public void submittingFollowerModelHasTileDirection() {
-        FakeGame fakeGame = new FakeGame();
-
-        table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-        fakeGame.setTable(table);
-        fakeGame.addPlayer("Anton" , Color.RED);
-        fakeGame.addPlayer("Andrey", Color.YELLOW);
+        setUpFakeGame();
         fakeGame.getTilePile().addTile(TileName.CITY1);
-
-        windowLogic = new GameWindowLogic();
-        viewWindow = new FakeWindow(windowLogic);
-        windowLogic.setGameWindow(viewWindow);
-        windowLogic.setDataToModel(fakeGame);
-        fakeGame.setWindowLogic(windowLogic);
-        fakeGame.nextPlayer();
-        fakeGame.dragTile();
-        fakeGame.notifyController();
-        fakeWindow = (FakeWindow) viewWindow;
+        prepareFakeGame();
 
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
@@ -452,25 +459,9 @@ public class ModelToControllerTest {
 
     @Test
     public void followerNotSubmittedThenModelGetsNoTileDirection() {
-        FakeGame fakeGame = new FakeGame();
-
-        table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-        fakeGame.setTable(table);
-        fakeGame.addPlayer("Anton" , Color.RED);
-        fakeGame.addPlayer("Andrey", Color.YELLOW);
+        setUpFakeGame();
         fakeGame.getTilePile().addTile(TileName.CITY1);
-
-        windowLogic = new GameWindowLogic();
-        viewWindow = new FakeWindow(windowLogic);
-        windowLogic.setGameWindow(viewWindow);
-        windowLogic.setDataToModel(fakeGame);
-        fakeGame.setWindowLogic(windowLogic);
-        fakeGame.nextPlayer();
-        fakeGame.dragTile();
-        fakeGame.notifyController();
-        fakeWindow = (FakeWindow) viewWindow;
+        prepareFakeGame();
 
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();

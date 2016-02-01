@@ -21,6 +21,12 @@ public class Util {
         }
     }
 
+    public static <V, K> void addSetElement(Map<K, Set<V>> map, K key, V... values) {
+        for (V value: values) {
+            addSetElement(map, key, value);
+        }
+    }
+
     public static <V, K> void removeSetElement(Map<K, Set<V>> map, K key, V value) {
         if (map.containsKey(key)) {
             Set<V> set = map.get(key);
