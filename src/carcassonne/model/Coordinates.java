@@ -25,6 +25,7 @@ public class Coordinates {
         return y;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof Coordinates))
             return false;
@@ -34,6 +35,7 @@ public class Coordinates {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return (13 * x + 11 * y);
     }
@@ -54,6 +56,7 @@ public class Coordinates {
         return result;
     }
 
+    @Override
     public String toString() {
         return "(" + getX()+", " + getY()+")";
     }

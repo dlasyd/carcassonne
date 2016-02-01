@@ -3,6 +3,7 @@ package carcassonne.model;
 import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.FakeWindow;
+import carcassonne.view.PlacedFollower;
 import carcassonne.view.ViewWindow;
 import org.junit.Before;
 import org.junit.Test;
@@ -472,10 +473,10 @@ public class ModelToControllerTest {
     @Test
     public void placedFollowersAreDisplayed() {
         Set expected = new HashSet();
+        expected.add(new PlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.15}));
 
-        setUpFakeGame();
-        fakeGame.getTilePile().addTile(TileName.CITY1);
-        prepareFakeGame();
+        game.getTilePile().addTile(TileName.CITY1);
+        prepareGame();
 
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();

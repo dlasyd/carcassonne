@@ -46,4 +46,6 @@ public interface ViewWindow {
     void setPossibleFollowerLocations(Set<double[]> followerLocations);
 
     void setCurrentFollowerLocation(double[] temporaryFollowerLocation );
+
+    void setPlacedFollowers(Set<PlacedFollower> placedFollowers);
 }

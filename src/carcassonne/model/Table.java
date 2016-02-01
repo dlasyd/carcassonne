@@ -1,5 +1,7 @@
 package carcassonne.model;
 
+import carcassonne.view.PlacedFollower;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,6 +16,7 @@ public class Table {
     private Tile tilePlacedLast;
     private RealEstateManager realEstateManager;
     private final TilePlacingHelper placementHelper;
+    private Set<PlacedFollower> placedFollowers = new HashSet<>();
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
@@ -113,6 +116,7 @@ public class Table {
         if (realEstateManager.isPartOfRealEstate(tilePlacedLast, direction))
             throw new RuntimeException("Cannot place follower on existing real estate");
         tilePlacedLast.placeFollower(player, direction);
+        placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getFeature(direction)));
         realEstateManager.createAsset(player, tilePlacedLast);
     }
 
@@ -127,4 +131,10 @@ public class Table {
     public Map<Coordinates,Set<Rotation>> getPossibleTileLocationsAndRotations() {
         return placementHelper.getCoordinatesToRotationMap();
     }
+
+    public Set<PlacedFollower> getPlacedFollowers() {
+        return new HashSet<>(placedFollowers);
+    }
+
+
 }

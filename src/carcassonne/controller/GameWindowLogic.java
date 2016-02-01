@@ -60,6 +60,7 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setTilePreviewEnabled(tilePreviewEnabled);
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
+        gameWindow.setPlacedFollowers(gameData.getPlacedFollowers());
     }
 
     /*

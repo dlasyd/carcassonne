@@ -167,6 +167,11 @@ public class GameWindow extends JFrame implements ViewWindow{
     public void setCurrentFollowerLocation(double[] currentFollowerLocation) {
         this.currentFollowerLocation = currentFollowerLocation;
     }
+
+    @Override
+    public void setPlacedFollowers(Set<PlacedFollower> placedFollowers) {
+
+    }
     //</editor-fold>
 
     @Override

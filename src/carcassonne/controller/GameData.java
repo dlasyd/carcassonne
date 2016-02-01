@@ -3,10 +3,9 @@ package carcassonne.controller;
 import carcassonne.model.Coordinates;
 import carcassonne.model.Rotation;
 import carcassonne.model.Tile;
-import carcassonne.view.DrawableTile;
+import carcassonne.view.PlacedFollower;
 
 import java.awt.*;
-import java.awt.image.RasterOp;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,11 +24,12 @@ public class GameData {
     private Tile currentTile;
     private Tile previouslyPlacedTile;
     private Set<Coordinates> possibleTileLocations;
+    private Set<PlacedFollower> placedFollowers;
     private Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
 
     public GameData(String name, String points, String followers, Color playerColor, String tilesLeft,
                     Tile currentTile, Tile previouslyPlacedTile, Set<Coordinates> possibleTileLocations,
-                    Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations) {
+                    Set<PlacedFollower> placedFollowers, Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations) {
         this.name = name;
         this.points = points;
         this.followers = followers;
@@ -38,6 +38,7 @@ public class GameData {
         this.currentTile = currentTile;
         this.previouslyPlacedTile = previouslyPlacedTile;
         this.possibleTileLocations = possibleTileLocations;
+        this.placedFollowers = placedFollowers;
         this.possibleLocationsAndRotations = possibleLocationsAndRotations;
     }
 
@@ -77,4 +78,7 @@ public class GameData {
         return possibleLocationsAndRotations;
     }
 
+    public Set<PlacedFollower> getPlacedFollowers() {
+        return placedFollowers;
+    }
 }

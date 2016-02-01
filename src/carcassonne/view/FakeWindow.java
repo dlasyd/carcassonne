@@ -31,6 +31,7 @@ public class FakeWindow implements ViewWindow {
     private Set<Coordinates> possibleTileLocations;
     private Set<double[]> followerLocations;
     private double[] temporaryFollowerLocation;
+    private Set<PlacedFollower> placedFollowers = new HashSet<>();
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -88,6 +89,11 @@ public class FakeWindow implements ViewWindow {
     @Override
     public void setCurrentFollowerLocation(double[] temporaryFollowerLocation ) {
         this.temporaryFollowerLocation = temporaryFollowerLocation;
+    }
+
+    @Override
+    public void setPlacedFollowers(Set<PlacedFollower> placedFollowers) {
+        this.placedFollowers = placedFollowers;
     }
 
     @Override
@@ -251,7 +257,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public Set getPlacedFollowers() {
-        return null;
+        return placedFollowers;
     }
 
     //</editor-fold>
