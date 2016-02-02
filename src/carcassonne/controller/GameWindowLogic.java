@@ -74,10 +74,14 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setDrawablePlacedFollowersSet(createDrawablePlacedFollowersSet(gameData.getPlacedFollowers()));
     }
 
+    /*
+     * This method removes placed followers from drawablePlacedFollowers
+     * Followers are added during end turn
+     */
     private Set<DrawablePlacedFollower> createDrawablePlacedFollowersSet(Set<PlacedFollower> placedFollowers) {
-        drawablePlacedFollowers.clear();
+        /*drawablePlacedFollowers.clear();
         drawablePlacedFollowers.addAll(placedFollowers.stream().map(placedFollower -> new DrawablePlacedFollower(
-                placedFollower.getCoordinates(), currentFollowerLocation, Color.RED)).collect(Collectors.toList()));
+                placedFollower.getCoordinates(), currentFollowerLocation, Color.RED)).collect(Collectors.toList()));*/
         return new HashSet<>(drawablePlacedFollowers);
     }
 
@@ -154,9 +158,11 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
-        if (temporaryFollowerDisplayed)
+        if (temporaryFollowerDisplayed) {
+            drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
+                    currentFollowerLocation, gameData.getPlayerColor()));
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, currentTileFollowerMap.getDirection(currentFollowerLocation));
-        else
+        } else
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
 
         gameWindow.setEndTurnButtonEnabled(false);
