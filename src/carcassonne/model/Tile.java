@@ -55,7 +55,7 @@ public abstract class Tile {
     abstract Feature                 getFeature(TileDirections direction);
     abstract Set<TileDirections>     getDestinations(TileDirections tileDirection);
     abstract Set<TileDirections>     getOccupiedFeatureDirections();
-    abstract Set<Feature>            getFeatures();
+    public abstract Set<Feature>            getFeatures();
 
     abstract boolean isNoFollower();
     abstract boolean isComplete();

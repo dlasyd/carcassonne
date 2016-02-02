@@ -11,18 +11,11 @@ import java.util.Set;
 public class FakeGame extends Game {
     private TileDirections      lastFollowerTileDirections;
     private FollowerMap         currentTileFollowerMap;
-    private FollowerPlacingHelper   followerPlacingHelper = new FollowerPlacingHelper();
 
     @Override
-    public void turnActions(int x, int y, Rotation angle, double[] follower) {
-        lastFollowerTileDirections = currentTileFollowerMap.getDirection(follower);
-        super.turnActions(x, y, angle, follower);
-    }
-
-    @Override
-    public Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY) {
-        currentTileFollowerMap = followerPlacingHelper.getFollowerLocations(getCurrentTile());
-        return super.getPossibleFollowerLocations(currentTileX, currentTileY);
+    public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
+        lastFollowerTileDirections = direction;
+        super.turnActions(x, y, angle, direction);
     }
 
     public TileDirections getLastFollowerTileDirections() {

@@ -24,5 +24,4 @@ public interface DataToModel {
 
     void forceNotify();
 
-    Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY);
 }

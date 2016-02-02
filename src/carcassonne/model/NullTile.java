@@ -92,7 +92,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    Set<Feature> getFeatures() {
+    public Set<Feature> getFeatures() {
         throw new RuntimeException("The tile is Null");
     }
 

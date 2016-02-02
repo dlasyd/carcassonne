@@ -19,11 +19,9 @@ public class Game implements DataToModel{
     private TilePile            tilePile = new TilePile();
     private ArrayList<Player>   players = new ArrayList<>();
     private Player              currentPlayer;
-    private FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
     private boolean             finished;
     private boolean             currentTileConfirmed;
     private boolean             followerFriendly;           //determines if a tile has a vacant place for follower
-    private FollowerMap         currentTileFollowerMap;
 
     public static Game getInstance() {
         if (game == null){
@@ -57,8 +55,20 @@ public class Game implements DataToModel{
 
     @Override
     public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
-        turnActions(x, y);
+        Tile tile = getCurrentTile();
+        tile.setCoordinates(x, y);
+        tile.turnRight(angle);
+        table.placeTile(tile);
         table.placeFollower(getCurrentPlayer(), direction);
+        if (tilePile.hasTiles()) {
+            nextPlayer();
+            dragTile();
+            notifyController();
+        } else {
+            finished = true;
+            windowLogic.finishGame();
+            notifyController();
+        }
     }
 
     @Override
@@ -67,7 +77,6 @@ public class Game implements DataToModel{
         tile.setCoordinates(x, y);
         tile.turnRight(angle);
         table.placeTile(tile);
-        table.placeFollower(getCurrentPlayer(), currentTileFollowerMap.getDirection(currentFollower));
         if (tilePile.hasTiles()) {
             nextPlayer();
             dragTile();
@@ -96,12 +105,6 @@ public class Game implements DataToModel{
     @Override
     public void forceNotify() {
         notifyController();
-    }
-
-    @Override
-    public Set<double[]> getPossibleFollowerLocations(int currentTileX, int currentTileY) {
-        currentTileFollowerMap = followerPlacingHelper.getFollowerLocations(getCurrentTile());
-        return currentTileFollowerMap.getMultipliers();
     }
 
     //<editor-fold desc="Getters">
@@ -206,197 +209,5 @@ public class Game implements DataToModel{
         game.getTilePile().addTile(Tile.getInstance());
     }
 
-    /**
-     * An instance of this class has a method that returns all legal locations
-     * of possible follower placement on the current tile. Legal is:
-     * 1) 1 per feature
-     * 2) exclude occupied real estate
-     */
-    class FollowerPlacingHelper {
 
-        FollowerMap getFollowerLocations(Tile tile) {
-            FollowerMap result = new FollowerMap();
-            Set<Feature> features = tile.getFeatures();
-            for (Feature feature: features) {
-                result.put(getTileSizeRelativeMultipliers(tile, feature), Util.any(tile.getFeatureTileDirections(feature)));
-            }
-            return result;
-        }
-
-        private double[] getTileSizeRelativeMultipliers(Tile tile, Feature feature) {
-            double[] xyMultipliers = new double[2];
-            /*
-             * get 1 direction pre feature
-             */
-            Set<TileDirections> directions= tile.getFeatureTileDirections(feature);
-
-            if (feature.isCity()) {
-                directions.removeAll(Arrays.asList(NNE, NNW, EES, EEN, WWS, WWN, SSE, SSW));
-            } else if (feature.isLand()) {
-                if (directions.size() > 3) {
-                    directions.removeAll(Arrays.asList(NNE, NNW, EES, EEN, WWS, WWN, SSE, SSW));
-                }
-            }
-
-            TileDirections direction = Util.any(directions);
-
-            /*
-             * Basic rule
-             */
-            switch (direction) {
-                case NNE:
-                    xyMultipliers[0] = 0.85;
-                    xyMultipliers[1] = 0.15;
-                    break;
-                case NNW:
-                    xyMultipliers[0] = 0.15;
-                    xyMultipliers[1] = 0.15;
-                    break;
-                case NORTH:
-                    xyMultipliers[0] = 0.5;
-                    xyMultipliers[1] = 0.15;
-                    break;
-                case SOUTH:
-                    xyMultipliers[0] = 0.5;
-                    xyMultipliers[1] = 0.85;
-                    break;
-                case SSE:
-                    xyMultipliers[0] = 0.85;
-                    xyMultipliers[1] = 0.85;
-                    break;
-                case SSW:
-                    xyMultipliers[0] = 0.15;
-                    xyMultipliers[1] = 0.85;
-                    break;
-                case WEST:
-                    xyMultipliers[0] = 0.15;
-                    xyMultipliers[1] = 0.5;
-                    break;
-                case WWN:
-                    xyMultipliers[0] = 0.15;
-                    xyMultipliers[1] = 0.15;
-                    break;
-                case WWS:
-                    xyMultipliers[0] = 0.15;
-                    xyMultipliers[1] = 0.85;
-                    break;
-            case EAST:
-                    xyMultipliers[0] = 0.85;
-                    xyMultipliers[1] = 0.5;
-                    break;
-                case EEN:
-                    xyMultipliers[0] = 0.85;
-                    xyMultipliers[1] = 0.15;
-                    break;
-                case EES:
-                    xyMultipliers[0] = 0.85;
-                    xyMultipliers[1] = 0.85;
-                    break;
-                case CENTER:
-                    xyMultipliers[0] = 0.5;
-                    xyMultipliers[1] = 0.5;
-                    break;
-
-            }
-
-            /*
-             * Tile specific rules
-             */
-            switch (tile.getName()) {
-                case CITY1:
-                    if(feature.isLand()) {
-                        xyMultipliers[0] = 0.5;
-                        xyMultipliers[1] = 0.6;
-                    }
-                case CITY1RSE:
-                case CITY1RSW:
-                case CITY1RWE:
-                case CITY1RSWE:
-                    if (feature.isRoad() && directions.size() == 2) {
-                        if (directions.contains(TileDirections.WEST) && directions.contains(TileDirections.EAST)) {
-                            xyMultipliers[0] = 0.5;
-                            xyMultipliers[1] = 0.5;
-                        } else if (directions.contains(TileDirections.WEST)) {
-                            xyMultipliers[0] = 0.4;
-                            xyMultipliers[1] = 0.6;
-                        } else {
-                            xyMultipliers[0] = 0.6;
-                            xyMultipliers[1] = 0.6;
-                        }
-                    } else if((feature.isRoad() && directions.size() == 1) ) {
-                        if (directions.contains(TileDirections.WEST)) {
-                            xyMultipliers[0] = 0.3;
-                            xyMultipliers[1] = 0.6;
-                        } else if (directions.contains(TileDirections.EAST)) {
-                            xyMultipliers[0] = 0.8;
-                            xyMultipliers[1] = 0.6;
-                        }
-
-                    } else if(feature.isLand() && directions.contains(TileDirections.WWN)) {
-                        xyMultipliers[0] = 0.15;
-                        xyMultipliers[1] = 0.35;
-                    }
-                    break;
-                case CITY2WE:
-                case CITY2WES:
-                    if (feature.isCity()) {
-                        xyMultipliers[0] = 0.5;
-                        xyMultipliers[1] = 0.45;
-                    } else if (directions.contains(TileDirections.NORTH)) {
-                        xyMultipliers[0] = 0.5;
-                        xyMultipliers[1] = 0.0;
-                    } else {
-                        xyMultipliers[0] = 0.5;
-                        xyMultipliers[1] = 0.9;
-                    }
-                    break;
-                case CITY2NW:
-                case CITY2NWS:
-                    if (feature.isLand()) {
-                        xyMultipliers[0] = 0.65;
-                        xyMultipliers[1] = 0.65;
-                    }
-                case CITY2NWR:
-                case CITY2NWSR:
-                    if (feature.isCity()) {
-                        xyMultipliers[0] = 0.25;
-                        xyMultipliers[1] = 0.25;
-                    } else if (feature.isRoad()) {
-                        xyMultipliers[0] = 0.85;
-                        xyMultipliers[1] = 0.55;
-                    } else if (directions.contains(SSW)){
-                        xyMultipliers[0] = 0.5;
-                        xyMultipliers[1] = 0.65;
-                    }
-                    break;
-                case CITY3:
-                case CITY3R:
-                case CITY3S:
-                case CITY3SR:
-                    if (feature.isCity()) {
-                        xyMultipliers[0] = 0.5;
-                        xyMultipliers[1] = 0.4;
-                    }
-                    if (feature.isLand()) {
-                        if (directions.size() == 3) {
-                            xyMultipliers[0] = 0.6;
-                            xyMultipliers[1] = 0.85;
-                        } else if (directions.contains(TileDirections.SSW)) {
-                            xyMultipliers[0] = 0.25;
-                            xyMultipliers[1] = 0.95;
-                        } else {
-                            xyMultipliers[0] = 0.75;
-                            xyMultipliers[1] = 0.85;
-                        }
-                    }
-                    break;
-
-                case CITY4:
-                    xyMultipliers[0] = 0.5;
-                    xyMultipliers[1] = 0.5;
-                    break;
-            }
-            return xyMultipliers;
-        }
-    }
 }

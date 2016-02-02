@@ -5,7 +5,7 @@ package carcassonne.model;
  */
 class RoadPiece extends Feature {
     @Override
-    boolean isRoad() {
+    public boolean isRoad() {
         return true;
     }
 }

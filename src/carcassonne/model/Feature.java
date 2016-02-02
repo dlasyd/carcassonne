@@ -39,7 +39,7 @@ public class Feature {
         this.follower = follower;
     }
 
-    boolean isCity() {
+    public boolean isCity() {
         return this instanceof CityPiece;
     }
 
@@ -53,11 +53,11 @@ public class Feature {
         return this.getClass().equals(feature.getClass());
     }
 
-    boolean isRoad() {
+    public boolean isRoad() {
         return false;
     }
 
-    boolean isLand() {
+    public boolean isLand() {
         return false;
     }
 }
