@@ -46,6 +46,9 @@ public class Table {
             return Tile.getNullInstance();
     }
 
+    /*
+     * currentTile should be rotated according to user input
+     */
     void placeTile(Tile currentTile) {
         if (placedTiles.containsKey(currentTile.getCoordinates()))
             throw new RuntimeException("Trying to place tile on an occupied space");

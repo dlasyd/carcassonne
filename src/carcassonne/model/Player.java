@@ -2,14 +2,14 @@ package carcassonne.model;
 
 import java.awt.Color;
 
-final class Player {
+public final class Player {
     private String name;
     private Color color;
     private int numberOfFollowers = 7;
     private int numberOfProperties;
     private int currentPoints = 0;
 
-    Player(String name, Color color) {
+    public Player(String name, Color color) {
         this.color = color;
         this.name = name;
     }

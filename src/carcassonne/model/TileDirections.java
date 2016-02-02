@@ -71,7 +71,7 @@ public enum TileDirections {
         return result;
     }
 
-    TileDirections turnRight(Rotation angle) {
+    public TileDirections turnRight(Rotation angle) {
         List<TileDirections> congruentNorth = new ArrayList<>(Arrays.asList(NORTH, EAST, SOUTH, WEST));
         List<TileDirections> congruentNNE   = new ArrayList<>(Arrays.asList(NNE, EES, SSW, WWN));
         List<TileDirections> congruentNNW   = new ArrayList<>(Arrays.asList(NNW, EEN, SSE, WWS));
@@ -100,4 +100,5 @@ public enum TileDirections {
         assert false;
         return TileDirections.CENTER;
     }
+
 }

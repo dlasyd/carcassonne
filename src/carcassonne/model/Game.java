@@ -41,6 +41,9 @@ public class Game implements DataToModel{
         turnActions(x, y, angle, null);
     }
 
+    /*
+     * direction should correspond rotated tile
+     */
     @Override
     public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
         Tile tile = getCurrentTile();

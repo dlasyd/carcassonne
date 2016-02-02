@@ -161,7 +161,9 @@ public class GameWindowLogic implements WindowLogic {
         if (temporaryFollowerDisplayed) {
             drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
                     currentFollowerLocation, gameData.getPlayerColor(), currentTileRotation));
-            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, currentTileFollowerMap.getDirection(currentFollowerLocation));
+            TileDirections rotatedDirection = currentTileFollowerMap.getDirection(currentFollowerLocation);
+            rotatedDirection = rotatedDirection.turnRight(currentTileRotation);
+            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, rotatedDirection);
         } else
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
 

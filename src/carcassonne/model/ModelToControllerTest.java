@@ -32,6 +32,7 @@ public class ModelToControllerTest {
     FakeWindow  fakeWindow;
     FakeGame    fakeGame;
 
+
     @Before
     public final void setUp() {
         game = new Game();
@@ -77,6 +78,7 @@ public class ModelToControllerTest {
         fakeGame.notifyController();
         fakeWindow = (FakeWindow) viewWindow;
     }
+
     public void add5DifferentTiles() {
         game.getTilePile().add5DifferentTiles();
     }
@@ -456,7 +458,7 @@ public class ModelToControllerTest {
         fakeWindow.pressConfirmTileButton();
         fakeWindow.clickOnCurrentTile(0.5, 0.15);
         fakeWindow.pressEndTurnButton();
-        assertEquals("Follower placed to right position", TileDirections.NORTH, fakeGame.getLastFollowerTileDirections());
+        assertEquals("Follower placed to right position", TileDirections.SOUTH, fakeGame.getLastFollowerTileDirections());
     }
 
     @Test
@@ -485,5 +487,30 @@ public class ModelToControllerTest {
         fakeWindow.pressEndTurnButton();
 
         assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
+    }
+
+    @Test
+    public void smallFinishedCastleGives4Points() {
+        /*
+        setUpFakeGame();
+        fakeGame.getTilePile().addTile(TileName.CITY1);
+        fakeGame.getTilePile().addTile(TileName.CITY1);
+        prepareFakeGame();
+        */
+        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(TileName.CITY1);
+        prepareGame();
+
+
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(0.5, 0.15);
+        fakeWindow.pressEndTurnButton();
+
+        fakeWindow.clickOnGamePanel(0, 1);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Follower placed to right position", "4", fakeWindow.getCurrentPoints());
     }
 }
