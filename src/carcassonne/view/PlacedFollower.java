@@ -3,20 +3,13 @@ package carcassonne.view;
 import carcassonne.model.Coordinates;
 import carcassonne.model.Feature;
 
-import java.util.Arrays;
 
 /**
- * Describes the position of placed follower on tile
+ * Describes on which feature the follower is placed
  */
 public class PlacedFollower {
     private Coordinates coordinates;
     private Feature feature;
-    private double[] xyMultiplier;
-
-    public PlacedFollower(Coordinates coordinates, double[] xyMultiplier) {
-        this.coordinates = coordinates;
-        this.xyMultiplier = xyMultiplier;
-    }
 
     public PlacedFollower(Coordinates coordinates, Feature feature) {
         this.coordinates = coordinates;
@@ -25,10 +18,6 @@ public class PlacedFollower {
 
     public Coordinates getCoordinates() {
         return coordinates;
-    }
-
-    public double[] getXyMultiplier() {
-        return xyMultiplier;
     }
 
     public Feature getFeature() {
@@ -41,10 +30,8 @@ public class PlacedFollower {
             return false;
         PlacedFollower placedFollower = (PlacedFollower) obj;
         coordinates.equals(placedFollower.coordinates);
-        Arrays.equals(this.xyMultiplier, placedFollower.xyMultiplier);
         if (this.coordinates.equals(placedFollower.coordinates)
-                /*Arrays.equals(this.xyMultiplier, placedFollower.xyMultiplier)
-                /*&& this.feature == placedFollower.feature*/)
+                && this.feature == placedFollower.feature)
             return true;
         else
             return false;
