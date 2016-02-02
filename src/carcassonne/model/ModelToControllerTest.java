@@ -474,7 +474,7 @@ public class ModelToControllerTest {
     @Test
     public void placedFollowersAreDisplayed() {
         Set<DrawablePlacedFollower> expected = new HashSet();
-        expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.15}, Color.RED));
+        expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.15}, Color.RED, Rotation.DEG_0));
 
         game.getTilePile().addTile(TileName.CITY1);
         prepareGame();

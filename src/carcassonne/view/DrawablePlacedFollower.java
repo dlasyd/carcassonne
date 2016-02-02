@@ -1,6 +1,7 @@
 package carcassonne.view;
 
 import carcassonne.model.Coordinates;
+import carcassonne.model.Rotation;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -10,13 +11,15 @@ import java.util.Arrays;
  */
 public class DrawablePlacedFollower {
     private Coordinates coordinates;
-    private double[] xyMultipliers;
+    private double[] xyMultipliers;     //for 0 rotation
     private Color color;
+    private Rotation rotation;
 
-    public DrawablePlacedFollower(Coordinates coordinates, double[] xyMultipliers, Color color) {
+    public DrawablePlacedFollower(Coordinates coordinates, double[] xyMultipliers, Color color, Rotation rotation) {
         this.coordinates = coordinates;
-        this.xyMultipliers = xyMultipliers;
+        this.xyMultipliers = xyMultipliers.clone();
         this.color = color;
+        this.rotation = rotation;
     }
 
     public Coordinates getCoordinates() {
@@ -29,6 +32,10 @@ public class DrawablePlacedFollower {
 
     public Color getColor() {
         return color;
+    }
+
+    public Rotation getRotation() {
+        return rotation;
     }
 
     @Override
@@ -52,5 +59,14 @@ public class DrawablePlacedFollower {
     public String toString() {
         return coordinates.toString() + " " + Arrays.toString(xyMultipliers) + " " + color.toString();
     }
+
+    public int getTileX() {
+        return coordinates.getX();
+    }
+
+    public int getTileY() {
+        return coordinates.getY();
+    }
+
 
 }

@@ -45,6 +45,7 @@ public class GameWindow extends JFrame implements ViewWindow{
     private Set<double[]> followerLocations;
     private double[] currentFollowerLocation;
     private boolean temporaryFollowerEnabled;
+    private Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -170,7 +171,7 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     @Override
     public void setDrawablePlacedFollowersSet(Set<DrawablePlacedFollower> drawablePlacedFollowers) {
-
+        this.drawablePlacedFollowers = drawablePlacedFollowers;
     }
 
     //</editor-fold>
@@ -344,6 +345,7 @@ public class GameWindow extends JFrame implements ViewWindow{
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
 
             for (DrawableTile tile: tilesOnTable) {
                 g.drawImage(tile.getBufferedImage(),
@@ -374,7 +376,6 @@ public class GameWindow extends JFrame implements ViewWindow{
 
             if (windowLogic.isFollowerPlaceDisplayed()) {
                 g.setColor(windowLogic.getCurrentPlayerColor());
-                Graphics2D g2 = (Graphics2D) g;
                 g2.setStroke(new BasicStroke(2));
                 for (double[] xyMultipliers: followerLocations) {
                     drawFollowerPossibleLocation(g, xyMultipliers);
@@ -383,6 +384,15 @@ public class GameWindow extends JFrame implements ViewWindow{
 
             if (windowLogic.isTemporaryFollowerDisplayed()) {
                 drawPlacedFollower(g, windowLogic.getCurrentFollowerLocation());
+            }
+
+            /*
+             * Previously placed followers
+             */
+            for (DrawablePlacedFollower follower: drawablePlacedFollowers) {
+                g.setColor(follower.getColor());
+                double[] xyMultipliers = rotateMultipliers(follower.getXyMultipliers(), follower.getRotation());
+                drawPreviouslyPlacedFollower(g, xyMultipliers, follower.getTileX(), follower.getTileY());
             }
         }
 
@@ -394,6 +404,7 @@ public class GameWindow extends JFrame implements ViewWindow{
                        (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
                        (int) circleDiameter, (int) circleDiameter);
         }
+
         private void drawPlacedFollower(Graphics g, double[] xyMultipliers) {
             xyMultipliers = rotateMultipliers(xyMultipliers, currentTile.getRotation());
             double circleDiameter = tileSize / 4;
@@ -402,6 +413,16 @@ public class GameWindow extends JFrame implements ViewWindow{
                        (int) (windowLocalY + tileSize * windowLogic.getCurrentTileY() + tileSize * xyMultipliers[1] - circleRadius),
                        (int) circleDiameter, (int) circleDiameter);
         }
+
+        private void drawPreviouslyPlacedFollower(Graphics g, double[] xyMultipliers, int tileX, int tileY) {
+            double circleDiameter = tileSize / 4;
+            double circleRadius   = tileSize / 8;
+            g.fillOval((int) (windowLocalX + tileSize * tileX + tileSize * xyMultipliers[0] - circleRadius),
+                    (int) (windowLocalY + tileSize * tileY + tileSize * xyMultipliers[1] - circleRadius),
+                    (int) circleDiameter, (int) circleDiameter);
+        }
+
+
 
         private double[] rotateMultipliers(double[] xyMultipliers, Rotation angle) {
             switch (angle) {

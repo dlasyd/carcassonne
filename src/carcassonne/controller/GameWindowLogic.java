@@ -160,7 +160,7 @@ public class GameWindowLogic implements WindowLogic {
     public void updateEndTurnButton() {
         if (temporaryFollowerDisplayed) {
             drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
-                    currentFollowerLocation, gameData.getPlayerColor()));
+                    currentFollowerLocation, gameData.getPlayerColor(), currentTileRotation));
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, currentTileFollowerMap.getDirection(currentFollowerLocation));
         } else
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
