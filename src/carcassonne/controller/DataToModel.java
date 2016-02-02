@@ -15,12 +15,9 @@ import java.util.Set;
 public interface DataToModel {
     void turnActions(int x, int y, Rotation angle, TileDirections direction);
 
-    void turnActions(int x, int y, Rotation angle, double[] currentFollower);
-
     void turnActions(int x, int y);
 
     void turnActions(int x, int y, Rotation angle);
-
 
     void forceNotify();
 

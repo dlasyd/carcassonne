@@ -242,7 +242,6 @@ public class GameWindowLogic implements WindowLogic {
 
     private void placeFollower(double xM, double yM) {
         currentFollowerLocation = new double [] {xM, yM};
-        gameWindow.setCurrentFollowerLocation(currentFollowerLocation);
         temporaryFollowerDisplayed = true;
     }
 

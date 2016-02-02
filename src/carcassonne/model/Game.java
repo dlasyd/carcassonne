@@ -38,19 +38,7 @@ public class Game implements DataToModel{
 
     @Override
     public void turnActions(int x, int y, Rotation angle) {
-        Tile tile = getCurrentTile();
-        tile.setCoordinates(x, y);
-        tile.turnRight(angle);
-        table.placeTile(tile);
-        if (tilePile.hasTiles()) {
-            nextPlayer();
-            dragTile();
-            notifyController();
-    } else {
-            finished = true;
-            windowLogic.finishGame();
-            notifyController();
-        }
+        turnActions(x, y, angle, null);
     }
 
     @Override
@@ -59,24 +47,8 @@ public class Game implements DataToModel{
         tile.setCoordinates(x, y);
         tile.turnRight(angle);
         table.placeTile(tile);
-        table.placeFollower(getCurrentPlayer(), direction);
-        if (tilePile.hasTiles()) {
-            nextPlayer();
-            dragTile();
-            notifyController();
-        } else {
-            finished = true;
-            windowLogic.finishGame();
-            notifyController();
-        }
-    }
-
-    @Override
-    public void turnActions(int x, int y, Rotation angle, double[] currentFollower) {
-        Tile tile = getCurrentTile();
-        tile.setCoordinates(x, y);
-        tile.turnRight(angle);
-        table.placeTile(tile);
+        if (direction != null)
+            table.placeFollower(getCurrentPlayer(), direction);
         if (tilePile.hasTiles()) {
             nextPlayer();
             dragTile();
@@ -115,6 +87,7 @@ public class Game implements DataToModel{
     Player getCurrentPlayer() {
         return currentPlayer;
     }
+
     boolean isCurrentTileConfirmed() {
         return currentTileConfirmed;
     }

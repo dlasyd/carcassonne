@@ -36,16 +36,14 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JSlider scaleSlider;
     //</editor-fold>
 
-    private JDialog gameEndWindow = new GameEndWindow();
-    private boolean tilePreviewEnabled;
-    private JPanel tilePreview;
-    private GamePanel gamePanel;
-    private Set<Coordinates> possibleTileLocations;
-    private DrawableTile currentTile;
-    private Set<double[]> followerLocations;
-    private double[] currentFollowerLocation;
-    private boolean temporaryFollowerEnabled;
-    private Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
+    private JDialog         gameEndWindow = new GameEndWindow();
+    private JPanel          tilePreview;
+    private GamePanel       gamePanel;
+    private DrawableTile    currentTile;
+    private boolean         tilePreviewEnabled;
+    private Set<Coordinates>                possibleTileLocations;
+    private Set<double[]>                   followerPossibleLocations;
+    private Set<DrawablePlacedFollower>     drawablePlacedFollowers = new HashSet<>();
 
     public GameWindow(WindowLogic windowLogic) {
         super("Carcassonne");
@@ -161,12 +159,7 @@ public class GameWindow extends JFrame implements ViewWindow{
 
     @Override
     public void setPossibleFollowerLocations(Set<double[]> followerLocations) {
-        this.followerLocations = followerLocations;
-    }
-
-    @Override
-    public void setCurrentFollowerLocation(double[] currentFollowerLocation) {
-        this.currentFollowerLocation = currentFollowerLocation;
+        this.followerPossibleLocations = followerLocations;
     }
 
     @Override
@@ -188,7 +181,6 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     private class TilePreview extends JPanel {
-
         TilePreview() {
         }
 
@@ -202,17 +194,17 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     private class GamePanel extends JPanel {
-        private double windowLocalX = 235;
-        private double windowLocalY = 244;
+        private double  windowLocalX = 235;
+        private double  windowLocalY = 244;
+        private double  previousScaleMultiplier = 2;
+        private double  tileSize = 90;
         private boolean firstMouseDrag = true;
-        private int previousMouseX = 0, previousMouseY = 0;
-        private double tileSize = 90;
-        private int MIN_TILE_SIZE = 45;
-        private int TILE_SIZE_VARIATION = 90;
-        private Set<DrawableTile> tilesOnTable = new HashSet<>();
-        private final int RECTANGLE_DIVIDER = 9;
-        private double rectangleMargin = 10;
-        private double previousScaleMultiplier = 2;
+        private int     previousMouseX = 0, previousMouseY = 0;
+        private int     MIN_TILE_SIZE = 45;
+        private int     TILE_SIZE_VARIATION = 90;
+        private Set<DrawableTile>   tilesOnTable = new HashSet<>();
+        private final int           RECTANGLE_DIVIDER = 9;            // used to compute rectangleMargin of possible tile rectangle
+        private double              rectangleMargin = tileSize / RECTANGLE_DIVIDER;
 
         GamePanel() {
             this.setBackground(Color.GRAY);
@@ -241,8 +233,8 @@ public class GameWindow extends JFrame implements ViewWindow{
                         }
                     }
 
-                    if (followerLocations != null) {
-                        for (double[] followerPosition : followerLocations) {
+                    if (followerPossibleLocations != null) {
+                        for (double[] followerPosition : followerPossibleLocations) {
                             double[] rotatedFollowerPosition = rotateMultipliers(followerPosition, currentTile.getRotation());
                             if ((e.getX() > windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * rotatedFollowerPosition[0] - 12) &&
                                 (e.getX() < windowLocalX + tileSize * windowLogic.getCurrentTileX() + tileSize * rotatedFollowerPosition[0] + 12) &&
@@ -257,24 +249,20 @@ public class GameWindow extends JFrame implements ViewWindow{
                 }
 
                 @Override
-                public void mousePressed(MouseEvent e) {
-
-                }
-
-                @Override
                 public void mouseReleased(MouseEvent e) {
                     firstMouseDrag = true;
                 }
 
+                //<editor-fold desc="Empty implementations">
                 @Override
-                public void mouseEntered(MouseEvent e) {
-
-                }
+                public void mousePressed(MouseEvent e) {}
 
                 @Override
-                public void mouseExited(MouseEvent e) {
+                public void mouseEntered(MouseEvent e) {}
 
-                }
+                @Override
+                public void mouseExited(MouseEvent e) {}
+                //</editor-fold>
             });
             this.addMouseMotionListener(new MouseMotionAdapter() {
                 @Override
@@ -377,7 +365,7 @@ public class GameWindow extends JFrame implements ViewWindow{
             if (windowLogic.isFollowerPlaceDisplayed()) {
                 g.setColor(windowLogic.getCurrentPlayerColor());
                 g2.setStroke(new BasicStroke(2));
-                for (double[] xyMultipliers: followerLocations) {
+                for (double[] xyMultipliers: followerPossibleLocations) {
                     drawFollowerPossibleLocation(g, xyMultipliers);
                 }
             }
@@ -386,9 +374,6 @@ public class GameWindow extends JFrame implements ViewWindow{
                 drawPlacedFollower(g, windowLogic.getCurrentFollowerLocation());
             }
 
-            /*
-             * Previously placed followers
-             */
             for (DrawablePlacedFollower follower: drawablePlacedFollowers) {
                 g.setColor(follower.getColor());
                 double[] xyMultipliers = rotateMultipliers(follower.getXyMultipliers(), follower.getRotation());
@@ -421,8 +406,6 @@ public class GameWindow extends JFrame implements ViewWindow{
                     (int) (windowLocalY + tileSize * tileY + tileSize * xyMultipliers[1] - circleRadius),
                     (int) circleDiameter, (int) circleDiameter);
         }
-
-
 
         private double[] rotateMultipliers(double[] xyMultipliers, Rotation angle) {
             switch (angle) {

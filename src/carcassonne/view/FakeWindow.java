@@ -86,10 +86,6 @@ public class FakeWindow implements ViewWindow {
         this.followerLocations = followerLocations;
     }
 
-    @Override
-    public void setCurrentFollowerLocation(double[] temporaryFollowerLocation ) {
-        this.temporaryFollowerLocation = temporaryFollowerLocation;
-    }
 
     @Override
     public void setDrawablePlacedFollowersSet(Set<DrawablePlacedFollower> drawablePlacedFollowers) {
