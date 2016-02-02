@@ -3,6 +3,7 @@ package carcassonne.view;
 import carcassonne.model.Coordinates;
 
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Contains information required to display placed followers in a game window
@@ -40,11 +41,16 @@ public class DrawablePlacedFollower {
         if (!(obj instanceof DrawablePlacedFollower))
             return false;
         DrawablePlacedFollower other = (DrawablePlacedFollower) obj;
-        if (coordinates.equals(other.coordinates) && xyMultipliers.equals(other.xyMultipliers)
+        if (coordinates.equals(other.coordinates) && Arrays.equals(xyMultipliers, other.xyMultipliers)
                 && color.equals(other.color))
             return true;
         else
             return false;
+    }
+
+    @Override
+    public String toString() {
+        return coordinates.toString() + " " + Arrays.toString(xyMultipliers) + " " + color.toString();
     }
 
 }

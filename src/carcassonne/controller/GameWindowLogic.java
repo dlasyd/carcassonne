@@ -1,12 +1,16 @@
 package carcassonne.controller;
 
 import carcassonne.model.*;
+import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.DrawableTile;
+import carcassonne.view.PlacedFollower;
 import carcassonne.view.ViewWindow;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static carcassonne.model.TileDirections.*;
 import static carcassonne.model.TileDirections.SSW;
@@ -33,6 +37,7 @@ public class GameWindowLogic implements WindowLogic {
     private boolean         canFollowerBePlaced;
     private FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
     private FollowerMap         currentTileFollowerMap;
+    private Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
 
 
     @Override
@@ -47,6 +52,8 @@ public class GameWindowLogic implements WindowLogic {
         if(!gameEnded) {
             tilePreviewEnabled = true;
         }
+
+
 
         updateUI();
         tileConfirmed = false;
@@ -64,7 +71,14 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setTilePreviewEnabled(tilePreviewEnabled);
         gameWindow.setPossibleTileLocations(gameData.getPossibleTileLocations());
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
-        gameWindow.setPlacedFollowers(gameData.getPlacedFollowers());
+        gameWindow.setDrawablePlacedFollowersSet(createDrawablePlacedFollowersSet(gameData.getPlacedFollowers()));
+    }
+
+    private Set<DrawablePlacedFollower> createDrawablePlacedFollowersSet(Set<PlacedFollower> placedFollowers) {
+        drawablePlacedFollowers.clear();
+        drawablePlacedFollowers.addAll(placedFollowers.stream().map(placedFollower -> new DrawablePlacedFollower(
+                placedFollower.getCoordinates(), currentFollowerLocation, Color.RED)).collect(Collectors.toList()));
+        return new HashSet<>(drawablePlacedFollowers);
     }
 
     /*

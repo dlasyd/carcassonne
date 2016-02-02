@@ -169,9 +169,10 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setPlacedFollowers(Set<PlacedFollower> placedFollowers) {
+    public void setDrawablePlacedFollowersSet(Set<DrawablePlacedFollower> drawablePlacedFollowers) {
 
     }
+
     //</editor-fold>
 
     @Override

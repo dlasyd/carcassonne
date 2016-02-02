@@ -31,7 +31,7 @@ public class FakeWindow implements ViewWindow {
     private Set<Coordinates> possibleTileLocations;
     private Set<double[]> followerLocations;
     private double[] temporaryFollowerLocation;
-    private Set<PlacedFollower> placedFollowers = new HashSet<>();
+    private Set<DrawablePlacedFollower> placedFollowers = new HashSet<>();
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -92,8 +92,8 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
-    public void setPlacedFollowers(Set<PlacedFollower> placedFollowers) {
-        this.placedFollowers = placedFollowers;
+    public void setDrawablePlacedFollowersSet(Set<DrawablePlacedFollower> drawablePlacedFollowers) {
+        placedFollowers = drawablePlacedFollowers;
     }
 
     @Override
