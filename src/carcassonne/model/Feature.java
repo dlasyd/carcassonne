@@ -6,10 +6,9 @@ import java.util.Objects;
  * Created by Andrey on 02/12/15.
  * Features of tile are roads, cities, land and cloisters
  */
-public class Feature {
+public class Feature{
     Feature() {
     }
-
     private boolean followerPlaced = false;
     private Follower follower;
 
@@ -27,6 +26,26 @@ public class Feature {
                 return new CityPieceWithShield();
         }
         return new Feature();
+    }
+
+    static Feature createFeature(Feature feature) {
+        Feature copy;
+        if (feature instanceof RoadPiece)
+            copy = new RoadPiece();
+        else if (feature instanceof CloisterPiece)
+            copy = new CloisterPiece();
+        else if (feature instanceof LandPiece)
+            copy = new LandPiece();
+        else if (feature instanceof CityPiece)
+            copy = new CityPiece();
+        else if (feature instanceof CityPieceWithShield)
+            copy = new CityPieceWithShield();
+        else
+            copy = new Feature();
+
+        copy.followerPlaced = feature.followerPlaced;
+        copy.follower = feature.follower;
+        return feature;
     }
 
     boolean isFollowerPlaced() {

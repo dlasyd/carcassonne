@@ -529,12 +529,17 @@ public class ModelToControllerTest {
         expected.add(0.85);
         game.getTilePile().addTile(TileName.CITY3);
         game.getTilePile().addTile(TileName.CITY3);
+        game.getTilePile().addTile(TileName.CITY3);
         prepareGame();
 
 
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(0.5, 0.4);
+        fakeWindow.pressEndTurnButton();
         Set<Double> result = new HashSet<>();
+        fakeWindow.clickOnGamePanel(0, -2);
+        fakeWindow.pressConfirmTileButton();
         for (double[] i: fakeWindow.getPossibleFollowerLocationsSet()) {
             result.add(i[0]);
             result.add(i[1]);

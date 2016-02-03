@@ -70,6 +70,18 @@ public class RealEstateManager {
         finishedRealEstate();
     }
 
+    private void temporaryUpdateRealEstate(Tile tile) {
+        for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
+            realEstate.getRealEstate().update(tile);
+        }
+    }
+
+    private void removeTemporaryUpdate(Tile tile) {
+        for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
+            realEstate.getRealEstate().rollBack(tile);
+        }
+    }
+
     /*
      * If real estate is finished the following happens:
      * 1) Real estate is removed from playerToRealEstateSetMap and realEstateMap
@@ -189,10 +201,10 @@ public class RealEstateManager {
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
         boolean result = false;
         for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
-            table.temporarelyPlaceTile(tilePlacedLast);
+            temporaryUpdateRealEstate(tilePlacedLast);
             result = iRealEstate.getRealEstate().contains(tilePlacedLast, direction);
             if (result == true) {
-                table.removeTemporaryPlacedTile();
+                removeTemporaryUpdate(tilePlacedLast);
                 break;
             }
         }

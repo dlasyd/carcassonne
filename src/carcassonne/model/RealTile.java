@@ -37,7 +37,7 @@ public class RealTile extends Tile {
         this.noFollower = realTile.noFollower;
         this.featureToTileDirections = new HashMap<>(realTile.featureToTileDirections);
         this.propertyMap = new HashMap<>(realTile.propertyMap);
-        this.propertyConnectionMap = realTile.propertyConnectionMap;
+        this.propertyConnectionMap = new HashMap<>(realTile.propertyConnectionMap);
     }
 
     RealTile(TileName tileName) {
@@ -227,12 +227,12 @@ public class RealTile extends Tile {
 
     @Override
     Feature getFeature(TileDirections direction) {
-        return propertyMap.get(direction);
+        return Feature.createFeature(propertyMap.get(direction));
     }
 
     @Override
     public Set<TileDirections> getFeatureTileDirections(Feature feature) {
-        return featureToTileDirections.get(feature);
+        return new HashSet<>(featureToTileDirections.get(feature));
     }
 
     /*

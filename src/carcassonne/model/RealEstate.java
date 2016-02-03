@@ -276,6 +276,10 @@ public abstract class RealEstate {
         addIfCanBeConnectedToRealEstate(tile);
     }
 
+    void rollBack(Tile tile) {
+        tilesAndFeatureTileDirections.remove(tile);
+    }
+
     /*
      * Method used by child class Cloister
      */
