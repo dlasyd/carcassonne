@@ -142,7 +142,7 @@ public class RealEstateTest {
         tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
         table.placeTile(tile_1_0);
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
         table.setRealEstateManager(manager);
         table.placeTile(tile_2_0);
@@ -160,7 +160,7 @@ public class RealEstateTest {
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
         RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
         table.placeTile(tile_1_0);
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
         table.setRealEstateManager(manager);
         tile_2_0.placeFollower(new Player(), TileDirections.EAST);
