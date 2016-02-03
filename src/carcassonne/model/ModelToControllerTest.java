@@ -397,6 +397,7 @@ public class ModelToControllerTest {
         assertEquals("Temporary follower is placed", true, fakeWindow.isTemporaryFollowerPlaced());
     }
 
+    //TODO refactor
     @Test
     public void followerCanBePlacedOnOneOfCorrectPositions() {
         Set<double[]> expected = new HashSet<>();
@@ -519,5 +520,25 @@ public class ModelToControllerTest {
         fakeWindow.clickOnCurrentTile(0.5, 0.15);
         fakeWindow.pressEndTurnButton();
         assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
+    }
+
+    @Test
+    public void notDisplayingPossibleFollowerLocationIfRealEstateOccupied() {
+        Set<Double> expected = new HashSet();
+        expected.add(0.6);
+        expected.add(0.85);
+        game.getTilePile().addTile(TileName.CITY3);
+        game.getTilePile().addTile(TileName.CITY3);
+        prepareGame();
+
+
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
+        Set<Double> result = new HashSet<>();
+        for (double[] i: fakeWindow.getPossibleFollowerLocationsSet()) {
+            result.add(i[0]);
+            result.add(i[1]);
+        }
+        assertEquals("Correct follower possible locations", expected, result);
     }
 }
