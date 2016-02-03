@@ -476,6 +476,7 @@ public class ModelToControllerTest {
         expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.5}, Color.RED, Rotation.DEG_0));
 
         game.getTilePile().addTile(TileName.CITY4);
+        game.getTilePile().addTile(TileName.CITY4);
         prepareGame();
 
         fakeWindow.clickOnGamePanel(0, -1);

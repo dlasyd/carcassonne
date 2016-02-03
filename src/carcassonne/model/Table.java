@@ -139,5 +139,15 @@ public class Table {
         return new HashSet<>(placedFollowers);
     }
 
-
+    //TODO refactor using iterator
+    public void removeFollowerFromTile(Coordinates coordinates) {
+        PlacedFollower followerToRemove = null;
+        for (PlacedFollower placedFollower: placedFollowers) {
+            if (placedFollower.getCoordinates() == coordinates) {
+                followerToRemove = placedFollower;
+            }
+        }
+        if (followerToRemove != null)
+            placedFollowers.remove(followerToRemove);
+    }
 }

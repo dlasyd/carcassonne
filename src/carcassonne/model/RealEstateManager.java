@@ -96,7 +96,8 @@ public class RealEstateManager {
                     player.increaseCurrentPoints(points);
                     for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
                         if (!tile.isNoFollower()) {
-                            tile.getFollowerOwner().returnFollower();
+                            tile.returnFollowerToPlayer();
+                            table.removeFollowerFromTile(tile.getCoordinates());
                         }
                     }
                 }

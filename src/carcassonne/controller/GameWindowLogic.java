@@ -77,8 +77,18 @@ public class GameWindowLogic implements WindowLogic {
     /*
      * This method removes placed followers from drawablePlacedFollowers
      * Followers are added during end turn
+     * TODO refactor iterator
      */
     private Set<DrawablePlacedFollower> createDrawablePlacedFollowersSet(Set<PlacedFollower> placedFollowers) {
+        Set<DrawablePlacedFollower> toRetain = new HashSet<>();
+        for (PlacedFollower placedFollower: placedFollowers) {
+            for (DrawablePlacedFollower drawableFollower: drawablePlacedFollowers) {
+                if (placedFollower.getCoordinates().equals(drawableFollower.getCoordinates())) {
+                    toRetain.add(drawableFollower);
+                }
+            }
+        }
+        drawablePlacedFollowers.retainAll(toRetain);
         /*drawablePlacedFollowers.clear();
         drawablePlacedFollowers.addAll(placedFollowers.stream().map(placedFollower -> new DrawablePlacedFollower(
                 placedFollower.getCoordinates(), currentFollowerLocation, Color.RED)).collect(Collectors.toList()));*/
