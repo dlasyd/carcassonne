@@ -9,6 +9,7 @@ import carcassonne.view.ViewWindow;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -89,9 +90,6 @@ public class GameWindowLogic implements WindowLogic {
             }
         }
         drawablePlacedFollowers.retainAll(toRetain);
-        /*drawablePlacedFollowers.clear();
-        drawablePlacedFollowers.addAll(placedFollowers.stream().map(placedFollower -> new DrawablePlacedFollower(
-                placedFollower.getCoordinates(), currentFollowerLocation, Color.RED)).collect(Collectors.toList()));*/
         return new HashSet<>(drawablePlacedFollowers);
     }
 

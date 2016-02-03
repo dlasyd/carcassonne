@@ -2,10 +2,7 @@ package carcassonne.model;
 
 import carcassonne.view.PlacedFollower;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /*
  * Table on which table games are played, not a table that has rows and columns
@@ -139,15 +136,12 @@ public class Table {
         return new HashSet<>(placedFollowers);
     }
 
-    //TODO refactor using iterator
     public void removeFollowerFromTile(Coordinates coordinates) {
-        PlacedFollower followerToRemove = null;
-        for (PlacedFollower placedFollower: placedFollowers) {
-            if (placedFollower.getCoordinates() == coordinates) {
-                followerToRemove = placedFollower;
+        Iterator<PlacedFollower> iterator = placedFollowers.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getCoordinates().equals(coordinates)) {
+                iterator.remove();
             }
         }
-        if (followerToRemove != null)
-            placedFollowers.remove(followerToRemove);
     }
 }
