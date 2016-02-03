@@ -65,6 +65,11 @@ public class FakeGame implements DataToModel {
         realGame.forceNotify();
     }
 
+    @Override
+    public OwnershipChecker getOwnershipChecker() {
+        return (OwnershipChecker) table;
+    }
+
     //<editor-fold desc="Getters">
     int getNumberOfPlayers() {
         return realGame.getNumberOfPlayers();

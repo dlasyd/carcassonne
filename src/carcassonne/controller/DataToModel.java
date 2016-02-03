@@ -1,5 +1,6 @@
 package carcassonne.controller;
 
+import carcassonne.model.OwnershipChecker;
 import carcassonne.model.Rotation;
 import carcassonne.model.TileDirections;
 
@@ -21,4 +22,5 @@ public interface DataToModel {
 
     void forceNotify();
 
+    OwnershipChecker getOwnershipChecker();
 }

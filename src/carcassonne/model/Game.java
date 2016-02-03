@@ -82,6 +82,11 @@ public class Game implements DataToModel{
         notifyController();
     }
 
+    @Override
+    public OwnershipChecker getOwnershipChecker() {
+        return (OwnershipChecker)table;
+    }
+
     //<editor-fold desc="Getters">
     int getNumberOfPlayers() {
         return players.size();

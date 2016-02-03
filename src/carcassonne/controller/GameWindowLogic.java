@@ -9,9 +9,7 @@ import carcassonne.view.ViewWindow;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static carcassonne.model.TileDirections.*;
 import static carcassonne.model.TileDirections.SSW;
@@ -319,12 +317,22 @@ public class GameWindowLogic implements WindowLogic {
      * 2) exclude occupied real estate
      */
     class FollowerPlacingHelper {
+        //TODO refactor
+        private OwnershipChecker ownershipChecker;
+
+        private OwnershipChecker getOwnershipChecker() {
+            if (ownershipChecker == null)
+                ownershipChecker = dataToModel.getOwnershipChecker();
+            return ownershipChecker;
+        }
 
         FollowerMap getFollowerLocations(Tile tile) {
             FollowerMap result = new FollowerMap();
             Set<Feature> features = tile.getFeatures();
             for (Feature feature: features) {
-                result.put(getTileSizeRelativeMultipliers(tile, feature), Util.any(tile.getFeatureTileDirections(feature)));
+                TileDirections direction = Util.any(tile.getFeatureTileDirections(feature));
+                if (getOwnershipChecker().locationIsLegal(currentTileX, currentTileY, currentTileRotation, direction))
+                    result.put(getTileSizeRelativeMultipliers(tile, feature), direction);
             }
             return result;
         }

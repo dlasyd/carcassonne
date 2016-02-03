@@ -189,9 +189,12 @@ public class RealEstateManager {
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
         boolean result = false;
         for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
+            table.temporarelyPlaceTile(tilePlacedLast);
             result = iRealEstate.getRealEstate().contains(tilePlacedLast, direction);
-            if (result == true)
+            if (result == true) {
+                table.removeTemporaryPlacedTile();
                 break;
+            }
         }
         return result;
     }

@@ -7,7 +7,7 @@ import java.util.*;
 /*
  * Table on which table games are played, not a table that has rows and columns
  */
-public class Table {
+public class Table implements OwnershipChecker{
     private static Table table;
     private Tile currentTile;
     private Tile tilePlacedLast;
@@ -143,5 +143,15 @@ public class Table {
                 iterator.remove();
             }
         }
+    }
+
+    @Override
+    public boolean locationIsLegal(int currentTileX, int currentTileY, Rotation angle, TileDirections direction) {
+        Tile temporaryTile = new RealTile((RealTile) currentTile);
+        temporaryTile.setCoordinates(currentTileX, currentTileY);
+        temporaryTile.turnRight(angle);
+        direction = direction.turnRight(angle);
+        return !realEstateManager.isPartOfRealEstate(temporaryTile, direction);
+        //return true;
     }
 }
