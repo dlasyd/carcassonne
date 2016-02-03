@@ -4,14 +4,11 @@ import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.FakeWindow;
-import carcassonne.view.PlacedFollower;
 import carcassonne.view.ViewWindow;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -476,14 +473,14 @@ public class ModelToControllerTest {
     @Test
     public void placedFollowersAreDisplayed() {
         Set<DrawablePlacedFollower> expected = new HashSet();
-        expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.15}, Color.RED, Rotation.DEG_0));
+        expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.5}, Color.RED, Rotation.DEG_0));
 
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(TileName.CITY4);
         prepareGame();
 
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(0.5, 0.15);
+        fakeWindow.clickOnCurrentTile(0.5, 0.5);
         fakeWindow.pressEndTurnButton();
 
         assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
@@ -491,12 +488,6 @@ public class ModelToControllerTest {
 
     @Test
     public void smallFinishedCastleGives4Points() {
-        /*
-        setUpFakeGame();
-        fakeGame.getTilePile().addTile(TileName.CITY1);
-        fakeGame.getTilePile().addTile(TileName.CITY1);
-        prepareFakeGame();
-        */
         game.getTilePile().addTile(TileName.CITY1);
         game.getTilePile().addTile(TileName.CITY1);
         game.getTilePile().addTile(TileName.CITY1);
@@ -512,5 +503,20 @@ public class ModelToControllerTest {
         fakeWindow.pressConfirmTileButton();
         fakeWindow.pressEndTurnButton();
         assertEquals("Follower placed to right position", "4", fakeWindow.getCurrentPoints());
+    }
+
+    @Test
+    public void smallFinishedCastleFollowerNotOnTable() {
+        Set<DrawablePlacedFollower> expected = new HashSet();
+        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(TileName.CITY1);
+        prepareGame();
+
+
+        fakeWindow.clickOnGamePanel(0, -1);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(0.5, 0.15);
+        fakeWindow.pressEndTurnButton();
+        assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
     }
 }
