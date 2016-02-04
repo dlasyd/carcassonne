@@ -476,8 +476,7 @@ public class ModelToControllerTest {
         Set<DrawablePlacedFollower> expected = new HashSet();
         expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.5}, Color.RED, Rotation.DEG_0));
 
-        game.getTilePile().addTile(TileName.CITY4);
-        game.getTilePile().addTile(TileName.CITY4);
+        game.getTilePile().addTile(TileName.CITY4, TileName.CITY4);
         prepareGame();
 
         fakeWindow.clickOnGamePanel(0, -1);
@@ -490,9 +489,7 @@ public class ModelToControllerTest {
 
     @Test
     public void smallFinishedCastleGives4Points() {
-        game.getTilePile().addTile(TileName.CITY1);
-        game.getTilePile().addTile(TileName.CITY1);
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(TileName.CITY1, TileName.CITY1, TileName.CITY1);
         prepareGame();
 
 
@@ -510,8 +507,7 @@ public class ModelToControllerTest {
     @Test
     public void smallFinishedCastleFollowerNotOnTable() {
         Set<DrawablePlacedFollower> expected = new HashSet();
-        game.getTilePile().addTile(TileName.CITY1);
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(TileName.CITY1, TileName.CITY1);
         prepareGame();
 
 
@@ -527,9 +523,7 @@ public class ModelToControllerTest {
         Set<Double> expected = new HashSet();
         expected.add(0.6);
         expected.add(0.85);
-        game.getTilePile().addTile(TileName.CITY3);
-        game.getTilePile().addTile(TileName.CITY3);
-        game.getTilePile().addTile(TileName.CITY3);
+        game.getTilePile().addTile(TileName.CITY3, TileName.CITY3, TileName.CITY3);
         prepareGame();
 
 

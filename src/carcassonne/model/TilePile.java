@@ -156,6 +156,23 @@ public class TilePile {
         return tilePile;
     }
 
+    public Tile dragTile() {
+        if (tiles.isEmpty())
+            throw new RuntimeException("Trying to drag a tile from an empty pile");
+        int randomIndex = (int) (Math.random() * tiles.size());
+        Tile tile = tiles.get(randomIndex);
+        tiles.remove(randomIndex);
+        return tile;
+    }
+
+    public boolean hasTiles() {
+        return tiles.isEmpty() != true;
+    }
+
+    public int getNumberOfTiles() {
+        return tiles.size();
+    }
+
     public void addXCrossroads(int x) {
         for (int i = 0; i < x; i ++) {
             Tile tile = Tile.getInstance(TileName.ROAD4);
@@ -173,25 +190,8 @@ public class TilePile {
         }
     }
 
-    public int getNumberOfTiles() {
-        return tiles.size();
-    }
-
     public void addTile(Tile tile) {
         tiles.add(tile);
-    }
-
-    public Tile dragTile() {
-        if (tiles.isEmpty())
-            throw new RuntimeException("Trying to drag a tile from an empty pile");
-        int randomIndex = (int) (Math.random() * tiles.size());
-        Tile tile = tiles.get(randomIndex);
-        tiles.remove(randomIndex);
-        return tile;
-    }
-
-    public boolean hasTiles() {
-        return tiles.isEmpty() != true;
     }
 
     public void addTile(TileName tileName) {
