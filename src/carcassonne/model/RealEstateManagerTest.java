@@ -53,6 +53,7 @@ public class RealEstateManagerTest {
         table = new Table();
         manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
+        RealEstate.setTable(table);
     }
 
     @Test
@@ -60,12 +61,12 @@ public class RealEstateManagerTest {
         table = new Table();
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.placeFollower(anton, EAST);
-        realEstate = RealEstate.getInstance(tile_1_0, table);
+        realEstate = RealEstate.getInstance(tile_1_0);
         tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         table.setRealEstateManager(manager);
 
         tile_2_0.placeFollower(anton, EAST);
-        realEstate2 = RealEstate.getInstance(tile_2_0, table);
+        realEstate2 = RealEstate.getInstance(tile_2_0);
         Set<RealEstate> expectedSet = new HashSet<>();
         expectedSet.add(realEstate);
         expectedSet.add(realEstate2);

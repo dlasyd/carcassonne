@@ -10,8 +10,8 @@ import java.util.Set;
  * Created by Andrey on 27/12/15.
  */
 class Castle extends RealEstate{
-    Castle(Tile tile, Table table) {
-        super(tile, table);
+    Castle(Tile tile) {
+        super(tile);
     }
 
     @Override
@@ -23,7 +23,7 @@ class Castle extends RealEstate{
             for (Tile tile : tiles) {
                 Set<TileDirections> directions = tilesAndFeatureTileDirections.get(tile);
                 for (TileDirections direction : directions) {
-                    Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), direction);
+                    Tile neighbour = super.getTable().getNeighbouringTile(tile.getX(), tile.getY(), direction);
                     if (!tilesAndFeatureTileDirections.containsKey(neighbour)) {
                         finished = false;
                         break outer;

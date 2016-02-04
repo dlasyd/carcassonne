@@ -44,9 +44,10 @@ public class RealEstateTest {
     public void setUp() {
         completeCrossroads_0_0 = Tile.getInstance(0, 0);
         table = new Table();
+        RealEstate.setTable(table);
         completeCrossroads_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         completeCrossroads_0_0.placeFollower(new Player(), TileDirections.WEST);
-        realEstate = RealEstate.getInstance(completeCrossroads_0_0, table);
+        realEstate = RealEstate.getInstance(completeCrossroads_0_0);
         tile_0_0 = Tile.getInstance(0 ,0);
         tile_1_0 = Tile.getInstance(1 ,0);
         tile_2_0 = Tile.getInstance(2 ,0);
@@ -124,7 +125,7 @@ public class RealEstateTest {
         Tile nullTile = Tile.getNullInstance();
         tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirections.EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_0_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_0_0);
         realEstate.addTile(nullTile);
     }
 
@@ -132,7 +133,7 @@ public class RealEstateTest {
     public void createRealEstateFistTileHasFollowerOrException() {
         exception.expect(RuntimeException.class);
         tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        RealEstate.getInstance(tile_0_0, table);
+        RealEstate.getInstance(tile_0_0);
     }
 
     @Test
@@ -140,7 +141,7 @@ public class RealEstateTest {
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
         tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
         table.placeTile(tile_1_0);
         RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
@@ -158,7 +159,7 @@ public class RealEstateTest {
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
         table.placeTile(tile_1_0);
         RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
@@ -178,7 +179,7 @@ public class RealEstateTest {
         exception.expect(RuntimeException.class);
         tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirections.WEST);
-        RealEstate realEstate = RealEstate.getInstance(tile_0_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_0_0);
         tile_1_0.placeFollower(new Player(), TileDirections.EAST);
 
         realEstate.addTile(tile_1_0);
@@ -219,11 +220,11 @@ public class RealEstateTest {
         tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_2_0.turnRight(Rotation.DEG_90);
         tile_3_0.turnRight(Rotation.DEG_90);
-        realEstate = RealEstate.getInstance(tile_1_0, table);
+        realEstate = RealEstate.getInstance(tile_1_0);
         table.placeTile(tile_1_0);
-        RealEstateManager manager = new RealEstateManager();
         manager.addAsset(new Player(), realEstate);
         table.setRealEstateManager(manager);
+        RealEstateManager manager = new RealEstateManager(table);
         table.placeTile(tile_2_0);
         table.placeTile(tile_3_0);
 
@@ -240,9 +241,9 @@ public class RealEstateTest {
         tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_3_0.turnRight(Rotation.DEG_90);
         table.placeTile(tile_2_0);
-        realEstate = RealEstate.getInstance(tile_2_0, table);
+        realEstate = RealEstate.getInstance(tile_2_0);
 
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
         table.setRealEstateManager(manager);
 
@@ -269,7 +270,7 @@ public class RealEstateTest {
         tile_2_0.turnRight(Rotation.DEG_90);
         tile_2_0.placeFollower(new Player(), TileDirections.EAST);
 
-        RealEstate realEstate = RealEstate.getInstance(tile_2_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_2_0);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
         assertTrue("Three tiles are added", expected.equals(realEstate.getTileSet()));
@@ -297,7 +298,7 @@ public class RealEstateTest {
 
         table.placeTile(tile_3_0);
         tile_3_0.placeFollower(new Player(), TileDirections.EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_3_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_3_0);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0, tile_5_0));
         assertEquals("Five tiles are added to real estate", expected, realEstate.getTileSet());
@@ -327,7 +328,7 @@ public class RealEstateTest {
         table.placeTile(tile_4_0);
 
         tile_4_0.placeFollower(new Player(), TileDirections.EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_4_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_4_0);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0, tile_5_0, tile_6_0));
         assertEquals("Five tiles are added to real estate", expected, realEstate.getTileSet());
@@ -343,7 +344,7 @@ public class RealEstateTest {
         table.placeTile(tile_0_2);
         table.placeTile(tile_0_1);
         tile_0_1.placeFollower(new Player(), SOUTH);
-        RealEstate realEstate = RealEstate.getInstance(tile_0_1, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_0_1);
         Set<Tile> expected = new HashSet<>();
         expected.add(tile_0_1);
         expected.add(tile_0_2);
@@ -369,7 +370,7 @@ public class RealEstateTest {
         table.placeTile(tile_1_m2);
         table.placeTile(tile_1_0);
         tile_1_0.placeFollower(new Player(), TileDirections.NORTH);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2));
         assertEquals("Six tiles are added to real estate", expected, realEstate.getTileSet());
     }
@@ -393,7 +394,7 @@ public class RealEstateTest {
         table.placeTile(tile_3_m2);
         table.placeTile(tile_1_0);
         tile_1_0.placeFollower(new Player(), TileDirections.NORTH);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2));
         assertEquals("Six tiles are added to real estate", expected, realEstate.getTileSet());
     }
@@ -414,7 +415,7 @@ public class RealEstateTest {
         table.placeTile(tile_2_1);
 
         tile_1_0.placeFollower(new Player(), EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_1, tile_2_0, tile_2_1));
         assertEquals("Road loop added to real estate", expected, realEstate.getTileSet());
@@ -426,7 +427,7 @@ public class RealEstateTest {
      */
     @Test
     public void addingTileToRealEstate() {
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
@@ -437,7 +438,7 @@ public class RealEstateTest {
         tile_3_0.turnRight(Rotation.DEG_90);
         table.placeTile(tile_1_0);
         table.placeTile(tile_2_0);
-        realEstate = RealEstate.getInstance(tile_2_0, table);
+        realEstate = RealEstate.getInstance(tile_2_0);
         manager.addAsset(new Player(), realEstate);
         table.placeTile(tile_3_0);
 
@@ -447,7 +448,7 @@ public class RealEstateTest {
 
     @Test
     public void addToTableDoNotAddToRealEstate() {
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
@@ -458,7 +459,7 @@ public class RealEstateTest {
         tile_2_m1.turnRight(Rotation.DEG_90);
         table.placeTile(tile_1_0);
         table.placeTile(tile_2_0);
-        realEstate = RealEstate.getInstance(tile_2_0, table);
+        realEstate = RealEstate.getInstance(tile_2_0);
         manager.addAsset(new Player(), realEstate);
         table.placeTile(tile_2_m1);
 
@@ -468,7 +469,7 @@ public class RealEstateTest {
 
     @Test
     public void addingTileToRealEstateNotNearCreationTile() {
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
 
         tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
@@ -479,7 +480,7 @@ public class RealEstateTest {
         tile_3_0.turnRight(Rotation.DEG_90);
         table.placeTile(tile_1_0);
         table.placeTile(tile_2_0);
-        realEstate = RealEstate.getInstance(tile_1_0, table);
+        realEstate = RealEstate.getInstance(tile_1_0);
         manager.addAsset(new Player(), realEstate);
         table.placeTile(tile_3_0);
 
@@ -501,8 +502,8 @@ public class RealEstateTest {
         table.placeTile(tile_3_0);
         table.placeTile(tile_2_0);
         table.placeTile(tile_1_0);
-        realEstate = RealEstate.getInstance(tile_1_0, table);
-        RealEstateManager manager = new RealEstateManager();
+        realEstate = RealEstate.getInstance(tile_1_0);
+        RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
         manager.addAsset(new Player(), realEstate);
         table.placeTile(tile_4_0);
@@ -534,9 +535,9 @@ public class RealEstateTest {
 
         table.placeTile(tile_1_0);
         tile_1_0.placeFollower(new Player(), EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
 
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
         table.setRealEstateManager(manager);
 
@@ -578,9 +579,9 @@ public class RealEstateTest {
 
         table.placeTile(tile_1_0);
         tile_1_0.placeFollower(new Player(), EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
 
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
         table.setRealEstateManager(manager);
         table.placeTile(tile_3_0);
@@ -600,7 +601,7 @@ public class RealEstateTest {
 
     @Test
     public void sameWhenUnion() {
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
         Player andrey = new Player();
         Player anton = new Player();
@@ -608,14 +609,14 @@ public class RealEstateTest {
         tile_1_0.turnRight(Rotation.DEG_90);
         tile_1_0.placeFollower(andrey, TileDirections.EAST);
         table.placeTile(tile_1_0);
-        realEstate = RealEstate.getInstance(tile_1_0, table);
+        realEstate = RealEstate.getInstance(tile_1_0);
         manager.addAsset(andrey, realEstate);
 
         tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_3_0.turnRight(Rotation.DEG_90);
         tile_3_0.placeFollower(anton, TileDirections.EAST);
         table.placeTile(tile_3_0);
-        realEstate2 = RealEstate.getInstance(tile_3_0, table);
+        realEstate2 = RealEstate.getInstance(tile_3_0);
         manager.addAsset(andrey, realEstate2);
 
         tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
@@ -720,9 +721,9 @@ public class RealEstateTest {
         tile_2_2.copyFeatures(TilePile.getReferenceTile(CLOISTER));
 
         table.placeTile(tile_1_0);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_1, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_1);
         table.placeTile(tile_1_1);
-        RealEstateManager manager = new RealEstateManager();
+        RealEstateManager manager = new RealEstateManager(table);
         manager.addAsset(new Player(), realEstate);
         table.setRealEstateManager(manager);
         table.placeTile(tile_0_1);

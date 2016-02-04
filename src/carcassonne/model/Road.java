@@ -11,8 +11,8 @@ import java.util.Set;
  */
 class Road extends RealEstate {
 
-    Road(Tile tile, Table table) {
-        super(tile, table);
+    Road(Tile tile) {
+        super(tile);
     }
 
     /*

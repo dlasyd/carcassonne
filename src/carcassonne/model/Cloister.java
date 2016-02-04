@@ -10,8 +10,8 @@ import java.util.HashSet;
  * 1 point for each tile that is part of this real estate. (9 is max)
  */
 class Cloister extends RealEstate {
-    public Cloister(Tile tile, Table table) {
-        super(tile, table);
+    public Cloister(Tile tile) {
+        super(tile);
     }
 
     boolean isFinished() {
@@ -28,8 +28,8 @@ class Cloister extends RealEstate {
         putTile(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
         for (int x = tile.getX() - 1; x < tile.getX() + 2; x++) {
             for (int y = tile.getY() - 1; y < tile.getY() + 2; y++) {
-                if (!table.getTile(x, y).isNull()) {
-                    putTile(table.getTile(x, y), new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+                if (!super.getTable().getTile(x, y).isNull()) {
+                    putTile(super.getTable().getTile(x, y), new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
                 }
             }
         }

@@ -7,8 +7,8 @@ import java.util.*;
  * Owners get 3 points for each finished castle that touches the land
  */
 class Land extends RealEstate {
-    public Land(Tile tile, Table table) {
-        super(tile, table);
+    public Land(Tile tile) {
+        super(tile);
     }
 
     @Override
@@ -40,7 +40,7 @@ class Land extends RealEstate {
 
             for (TileDirections direction: disjointCitiesDirections) {
                 tile.placeFollower(helper, direction);
-                citiesOnLand.add(RealEstate.getInstance(tile, table));
+                citiesOnLand.add(RealEstate.getInstance(tile));
             }
         }
 

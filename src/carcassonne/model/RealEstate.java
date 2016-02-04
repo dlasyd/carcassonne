@@ -8,29 +8,36 @@ import java.util.*;
  */
 public abstract class RealEstate {
     final Map<Tile, Set<TileDirections>> tilesAndFeatureTileDirections = new HashMap<>();
-    final Table table;
+    private static Table table;
     private final ImmutableRealEstate immutableRealEstate;
     boolean finished = false;
     private Tile firstTile;
 
-    public RealEstate(Tile tile, Table table) {
+    public RealEstate(Tile tile) {
         immutableRealEstate = new ImmutableRealEstate(this, tile);
-        this.table = table;
         if (tile.isNoFollower())
             throw new RuntimeException("Cannot create real estate from tile without a follower");
         addTile(tile);
         firstTile = tile;
     }
 
-    static RealEstate getInstance(Tile tile, Table table) {
+    static RealEstate getInstance(Tile tile) {
         if (tile.getOccupiedFeature() instanceof RoadPiece)
-            return new Road(tile, table);
+            return new Road(tile);
         if (tile.getOccupiedFeature() instanceof  CloisterPiece)
-            return new Cloister(tile, table);
+            return new Cloister(tile);
         if (tile.getOccupiedFeature() instanceof  LandPiece)
-            return new Land (tile, table);
+            return new Land (tile);
 
-        return new Castle(tile, table);
+        return new Castle(tile);
+    }
+
+    static void setTable(Table table) {
+        RealEstate.table = table;
+    }
+
+    Table getTable() {
+        return table;
     }
 
     abstract boolean isFinished();
