@@ -75,9 +75,9 @@ public class GameTest {
     public void addPlayerWhenLessThen6() {
         Game game = new Game();
         for (int i = 0; i < 5; i++) {
-            assertTrue ("\nShould be possible to add player number " + i, game.addPlayer());
+            assertTrue ("\nShould be possible to add player number " + i, game.addPlayer("Anton" , Color.RED));
         }
-        assertFalse (game.addPlayer());
+        assertFalse (game.addPlayer("Anton" , Color.RED));
     }
 
     @Test
@@ -90,62 +90,6 @@ public class GameTest {
         Tile currentTile = Tile.getInstance(1, 0, TileName.CITY1);
         table.placeTile(currentTile);
         assertEquals (currentTile, table.getTile(1,0));
-    }
-
-    @Test
-    public void confirmTilePlacement() {
-        assertEquals ("Current Tile is not confirmed", false, game.isCurrentTileConfirmed());
-        game.confirmCurrentTile(1, 2);
-        assertEquals ("Current Tile is confirmed", true, game.isCurrentTileConfirmed());
-    }
-
-    @Test
-    public void ifTileIsNotPlacedRuntimeExceptionWhenCommittingFollower() {
-        exception.expect(RuntimeException.class);
-        game.confirmFollower();
-    }
-
-    @Test
-    public void ifTileNotFollowerFriendlyAndPlaceFollowerThenException() {
-        exception.expect(RuntimeException.class);
-        game.confirmCurrentTile(1,1);
-        game.confirmFollower();
-    }
-
-    @Test
-    public void ifFollowerConfirmedPlayerOwnsOneMoreProperty() {
-        game.nextPlayer();
-        Player player = game.getCurrentPlayer();
-        assertEquals ("\n Number of feature objects in the beginning", 0, player.getNumberOfProperties());
-        game.confirmCurrentTile(1,1);
-        game.setFollowerFriendly(true);
-        game.confirmFollower();
-        assertEquals ("\n Number of feature objects after 1 placed follower", 1, player.getNumberOfProperties());
-    }
-
-    @Test
-    public void followerConfirmedThenPickNextPlayer() {
-        game.nextPlayer();
-        Player player = game.getCurrentPlayer();
-        game.confirmCurrentTile(1,1);
-        game.setFollowerFriendly(true);
-        game.confirmFollower();
-
-        assertEquals ("Should be second player", "Andrey", game.getCurrentPlayer().getName());
-        game.confirmCurrentTile(1,1);
-        game.setFollowerFriendly(true);
-        game.confirmFollower();
-
-        assertEquals ("Back to first player", "Anton", game.getCurrentPlayer().getName());
-    }
-
-    @Test
-    public void nextPlayerPicksNewTile() {
-        game.dragTile();
-        Tile currentTile = game.getCurrentTile();
-        assertNotEquals ("\nCurrent tile should not be null", currentTile, null);
-        assertEquals ("\nCurrent tile should not change before player", game.getCurrentTile(), currentTile);
-        game.nextPlayer();
     }
 
     @Test
@@ -180,34 +124,6 @@ public class GameTest {
          * This is not tested, but the dragTile method is intended to invoke gameFinished() method
          * that makes boolean finished = true; and later will perform other actions
          */
-    }
-
-    @Test
-    public void playerCanPlaceFollowerIFFhasFollowersLeft() {
-        game.nextPlayer();
-        assertEquals ("\nPlayer has avaliable followers, can place a follower",
-                game.getCurrentPlayer().hasAvaliableFollowers(), game.followerCanBePlaced());
-    }
-
-    @Test
-    public void ifFollowerIsPlacedThenNumberOfAvaliableFollowersDecrease() {
-        game.nextPlayer();
-        Player player = game.getCurrentPlayer();
-        game.confirmCurrentTile(1,0);
-        game.setFollowerFriendly(true);
-        game.confirmFollower();
-        assertEquals("\n 6, number of followers after one is placed", 6, player.getNumberOfFollowers());
-    }
-
-    @Test
-    public void ifFollowerIsReturnedThenNumberOfAvaliableFollowersIncrease() {
-        game.nextPlayer();
-        Player player = game.getCurrentPlayer();
-        game.confirmCurrentTile(1,0);
-        game.setFollowerFriendly(true);
-        game.confirmFollower();
-        player.returnFollower();
-        assertEquals("\n 7, number of followers after one is returned", 7, player.getNumberOfFollowers());
     }
 
     @Test

@@ -20,8 +20,6 @@ public class Game implements DataToModel{
     private ArrayList<Player>   players = new ArrayList<>();
     private Player              currentPlayer;
     private boolean             finished;
-    private boolean             currentTileConfirmed;
-    private boolean             followerFriendly;           //determines if a tile has a vacant place for follower
 
     public static Game getInstance() {
         if (game == null){
@@ -42,7 +40,7 @@ public class Game implements DataToModel{
     }
 
     /*
-     * direction should correspond rotated tile
+     * direction should correspond to a rotated tile
      */
     @Override
     public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
@@ -87,47 +85,6 @@ public class Game implements DataToModel{
         return (OwnershipChecker)table;
     }
 
-    //<editor-fold desc="Getters">
-    int getNumberOfPlayers() {
-        return players.size();
-    }
-
-    Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    boolean isCurrentTileConfirmed() {
-        return currentTileConfirmed;
-    }
-
-    public Tile getCurrentTile() {
-        return table.getCurrentTile();
-    }
-
-    public TilePile getTilePile() {
-        return tilePile;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
-    //</editor-fold>
-
-    //<editor-fold desc="Setters">
-    void setFollowerFriendly(boolean followerFriendly) {
-        this.followerFriendly = followerFriendly;
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
-    }
-
-    public void setWindowLogic(WindowLogic windowLogic) {
-        this.windowLogic = windowLogic;
-    }
-    //</editor-fold>
-
     public void nextPlayer() {
         if (currentPlayer == null) {
             currentPlayer = players.get(0);
@@ -145,28 +102,6 @@ public class Game implements DataToModel{
         }
     }
 
-    /*
-     * Adding no param player is used only in testing
-     */
-    boolean addPlayer() {
-        return addPlayer("Default", Color.BLACK);
-    }
-
-    void confirmCurrentTile(int x, int y) {
-        currentTileConfirmed = true;
-    }
-
-    void confirmFollower() {
-        if (!currentTileConfirmed)
-            throw new RuntimeException("Cannot place follower if tile placement is not confirmed");
-        if (!followerFriendly)
-            throw new RuntimeException("Not followerFriendly (no vacant space for a follower)");
-        currentPlayer.increaseNumberOfProperties();
-        currentPlayer.placeFollower();
-        nextPlayer();
-    }
-
-
     public void dragTile() {
         if (tilePile.hasTiles())
             table.setCurrentTile(tilePile.dragTile());
@@ -174,21 +109,37 @@ public class Game implements DataToModel{
             throw new RuntimeException("Trying to drag a tile from an empty pile");
     }
 
-    //TODO rename,
-    //TODO where is it used
-    public boolean followerCanBePlaced() {
-        return true;
+    //<editor-fold desc="Getters">
+    int getNumberOfPlayers() {
+        return players.size();
     }
 
-    /*
-     * This function was not tested with JUnit
-     * Used in testing
-     */
-    public void loadTestTiles() {
-        game.getTilePile().addTile(Tile.getInstance());
-        game.getTilePile().addTile(Tile.getInstance());
-        game.getTilePile().addTile(Tile.getInstance());
+    Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
+    Tile getCurrentTile() {
+        return table.getCurrentTile();
+    }
+
+    public TilePile getTilePile() {
+        return tilePile;
+    }
+
+    boolean isFinished() {
+        return finished;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Setters">
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
+    public void setWindowLogic(WindowLogic windowLogic) {
+        this.windowLogic = windowLogic;
+    }
+    //</editor-fold>
 
 }

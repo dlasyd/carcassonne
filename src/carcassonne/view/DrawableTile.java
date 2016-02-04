@@ -15,7 +15,7 @@ public class DrawableTile {
     private Rotation rotation = Rotation.DEG_0;
 
     public DrawableTile(Tile tile) {
-        assert (tile.getName() != null);
+        assert (tile.getName() != null): "Tile has no TileName";
         if (tile.isNull()) {
             throw new RuntimeException("Cannot create a DrawableTile from null tile");
         }

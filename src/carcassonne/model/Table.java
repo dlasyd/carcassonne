@@ -152,6 +152,5 @@ public class Table implements OwnershipChecker{
         temporaryTile.turnRight(angle);
         direction = direction.turnRight(angle);
         return !realEstateManager.isPartOfRealEstate(temporaryTile, direction);
-        //return true;
     }
 }

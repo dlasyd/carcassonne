@@ -28,7 +28,6 @@ public class FakeGame implements DataToModel {
 
     public FakeGame() {
         realGame = new Game();
-        table = new Table();
         realGame.setTable(table);
     }
 
@@ -79,10 +78,6 @@ public class FakeGame implements DataToModel {
         return realGame.getCurrentPlayer();
     }
 
-    boolean isCurrentTileConfirmed() {
-        return realGame.isCurrentTileConfirmed();
-    }
-
     public Tile getCurrentTile() {
         return realGame.getCurrentTile();
     }
@@ -98,11 +93,9 @@ public class FakeGame implements DataToModel {
     //</editor-fold>
 
     //<editor-fold desc="Setters">
-    void setFollowerFriendly(boolean followerFriendly) {
-        realGame.setFollowerFriendly(followerFriendly);
-    }
 
     public void setTable(Table table) {
+        this.table = table;
         realGame.setTable(table);
     }
 
@@ -117,21 +110,6 @@ public class FakeGame implements DataToModel {
 
     public boolean addPlayer(String name, Color color) {
         return realGame.addPlayer(name, color);
-    }
-
-    /*
-     * Adding no param player is used only in testing
-     */
-    boolean addPlayer() {
-        return realGame.addPlayer();
-    }
-
-    void confirmCurrentTile(int x, int y) {
-        realGame.confirmCurrentTile(x, y);
-    }
-
-    void confirmFollower() {
-        realGame.confirmFollower();
     }
 
     public void dragTile() {
