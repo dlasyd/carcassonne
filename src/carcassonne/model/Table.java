@@ -12,7 +12,7 @@ public class Table implements OwnershipChecker{
     private Tile currentTile;
     private Tile tilePlacedLast;
     private RealEstateManager realEstateManager;
-    private final TilePlacingHelper placementHelper;
+    private final TilePlacingHelper tilePlacementHelper;
     private Set<PlacedFollower> placedFollowers = new HashSet<>();
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
@@ -21,8 +21,12 @@ public class Table implements OwnershipChecker{
     private HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
 
     public Table() {
-        placementHelper = new TilePlacingHelper(this);
+        tilePlacementHelper = new TilePlacingHelper(this);
         placeTile(firstTile);
+    }
+
+    public void setRealEstateManager(RealEstateManager realEstateManager) {
+        this.realEstateManager = realEstateManager;
     }
 
     static Table getInstance() {
@@ -31,63 +35,87 @@ public class Table implements OwnershipChecker{
         return table;
     }
 
-    Tile getFirstTile() {
-        return firstTile;
-    }
-
-    Tile getTile(int i, int j) {
-        Coordinates coord = new Coordinates(i, j);
-        if (placedTiles.get(coord) != null)
-            return placedTiles.get(coord);
-        else
-            return Tile.getNullInstance();
-    }
-
     /*
-     * currentTile should be rotated according to user input
+     * tile should be rotated according to user input
      */
-    void placeTile(Tile currentTile) {
-        if (placedTiles.containsKey(currentTile.getCoordinates()))
+    void placeTile(Tile tile) {
+        tilePlacedLast = tile;
+        if (placedTiles.containsKey(tile.getCoordinates()))
             throw new RuntimeException("Trying to place tile on an occupied space");
-        placedTiles.put(currentTile.getCoordinates(), currentTile);
-        placementHelper.setPlacedTiles(new HashMap<>(placedTiles));
-        tilePlacedLast = currentTile;
-        placementHelper.update(currentTile);
-        notifyObservers(currentTile);
+
+        placedTiles.put(tilePlacedLast.getCoordinates(), tilePlacedLast);
+        tilePlacementHelper.setPlacedTiles(new HashMap<>(placedTiles));
+        tilePlacementHelper.update(tilePlacedLast);
+
+        notifyObservers(tilePlacedLast);
         if (!tilePlacedLast.isNoFollower()) {
-            // if tilePlacedLast direction is not part of existing real estate
             if (realEstateManager.isPartOfRealEstate(tilePlacedLast, tilePlacedLast.getFollowerTileDirection()))
                 throw new RuntimeException("Cannot place follower on existing real estate");
-            //tilePlacedLast = tilePlacedLast.placeFollower(player, direction);
             placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getOccupiedFeature()));
             realEstateManager.createAsset(tilePlacedLast.getFollowerOwner(), tilePlacedLast);
         }
     }
 
-    public int placedTilesAmount() {
-        return placedTiles.size();
+    private void notifyObservers(Tile tile) {
+        if (realEstateManager != null)
+            realEstateManager.update(tile);
     }
 
-    public Tile getCurrentTile() {
+    void removeFollowerFromTile(Coordinates coordinates) {
+        Iterator<PlacedFollower> iterator = placedFollowers.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getCoordinates().equals(coordinates)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    @Override
+    public boolean locationIsLegal(int currentTileX, int currentTileY, Rotation angle, TileDirections direction) {
+        Tile temporaryTile = currentTile.setCoordinates(currentTileX, currentTileY).turnRight(angle);
+        direction = direction.turnRight(angle);
+        return !realEstateManager.isPartOfRealEstate(temporaryTile, direction);
+    }
+
+    //<editor-fold desc="Getters">
+    Tile getFirstTile() {
+        return firstTile;
+    }
+
+    Tile getCurrentTile() {
         return currentTile;
     }
 
-    //TODO refactor, maybe remove
-    public void dragNewCurrentTile() {
-        currentTile = Tile.getInstance();
+    Tile getPreviouslyPlacedTile() {
+        return tilePlacedLast;
     }
 
-    void setCurrentTile(Tile currentTile) {
-        this.currentTile = currentTile;
-        placementHelper.update(currentTile);
-
+    Set<Coordinates> getPossibleTileLocations() {
+        return tilePlacementHelper.getCoordinatesToRotationMap().keySet();
     }
+
+    Map<Coordinates,Set<Rotation>> getPossibleTileLocationsAndRotations() {
+        return tilePlacementHelper.getCoordinatesToRotationMap();
+    }
+
+    Set<PlacedFollower> getPlacedFollowers() {
+        return new HashSet<>(placedFollowers);
+    }
+
 
     HashMap<Coordinates,Tile> getPlacedTiles() {
-        return placedTiles;
+        return new HashMap<>(placedTiles);
     }
 
-    public Tile getNeighbouringTile(int x, int y, TileDirections direction) {
+    Tile getTile(int i, int j) {
+        Coordinates coordinates = new Coordinates(i, j);
+        if (placedTiles.get(coordinates) != null)
+            return placedTiles.get(coordinates);
+        else
+            return Tile.getNullInstance();
+    }
+
+    Tile getNeighbouringTile(int x, int y, TileDirections direction) {
         switch (direction) {
             case NNE:
             case NNW:
@@ -108,55 +136,18 @@ public class Table implements OwnershipChecker{
         }
         return Tile.getNullInstance();
     }
+    //</editor-fold>
 
-    public void setRealEstateManager(RealEstateManager realEstateManager) {
-        this.realEstateManager = realEstateManager;
+    int placedTilesAmount() {
+        return placedTiles.size();
     }
 
-    private void notifyObservers(Tile tile) {
-        //TODO refactor me!
-        if (realEstateManager != null)
-            realEstateManager.update(tile);
+    void setCurrentTile(Tile currentTile) {
+        this.currentTile = currentTile;
+        tilePlacementHelper.update(currentTile);
     }
 
-    public void placeFollower(Player player, TileDirections direction) {
-        // if tilePlacedLast direction is not part of existing real estate
-        if (realEstateManager.isPartOfRealEstate(tilePlacedLast, direction))
-            throw new RuntimeException("Cannot place follower on existing real estate");
-        //tilePlacedLast = tilePlacedLast.placeFollower(player, direction);
-        placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getFeature(direction)));
-        realEstateManager.createAsset(player, tilePlacedLast);
-    }
 
-    public Tile getPreviouslyPlacedTile() {
-        return tilePlacedLast;
-    }
 
-    public Set<Coordinates> getPossibleTileLocations() {
-        return placementHelper.getCoordinatesToRotationMap().keySet();
-    }
 
-    public Map<Coordinates,Set<Rotation>> getPossibleTileLocationsAndRotations() {
-        return placementHelper.getCoordinatesToRotationMap();
-    }
-
-    public Set<PlacedFollower> getPlacedFollowers() {
-        return new HashSet<>(placedFollowers);
-    }
-
-    public void removeFollowerFromTile(Coordinates coordinates) {
-        Iterator<PlacedFollower> iterator = placedFollowers.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().getCoordinates().equals(coordinates)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    @Override
-    public boolean locationIsLegal(int currentTileX, int currentTileY, Rotation angle, TileDirections direction) {
-        Tile temporaryTile = currentTile.setCoordinates(currentTileX, currentTileY).turnRight(angle);
-        direction = direction.turnRight(angle);
-        return !realEstateManager.isPartOfRealEstate(temporaryTile, direction);
-    }
 }

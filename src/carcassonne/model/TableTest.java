@@ -62,7 +62,6 @@ public class TableTest {
         Tile tile1 = table.getCurrentTile();
         assertEquals ("\nCurrent tile should not for no reason", tile1, table.getCurrentTile());
         assertEquals ("\nCurrent tile should not for no reason", table.getCurrentTile(), table.getCurrentTile());
-        table.dragNewCurrentTile();
         assertNotEquals ("\nDragged tile should be a different object", tile1, table.getCurrentTile());
     }
 
