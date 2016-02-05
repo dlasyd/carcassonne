@@ -90,10 +90,6 @@ public class Table implements OwnershipChecker{
         return tilePlacedLast;
     }
 
-    Set<Coordinates> getPossibleTileLocations() {
-        return tilePlacementHelper.getCoordinatesToRotationMap().keySet();
-    }
-
     Map<Coordinates,Set<Rotation>> getPossibleTileLocationsAndRotations() {
         return tilePlacementHelper.getCoordinatesToRotationMap();
     }
@@ -137,10 +133,6 @@ public class Table implements OwnershipChecker{
         return Tile.getNullInstance();
     }
     //</editor-fold>
-
-    int placedTilesAmount() {
-        return placedTiles.size();
-    }
 
     void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;

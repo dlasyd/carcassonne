@@ -54,7 +54,7 @@ public class TableTest {
         Tile tile2 = Tile.getInstance(2, 1, TileName.CLOISTER);
         table.placeTile(tile1);
         table.placeTile(tile2);
-        assertEquals(3, table.placedTilesAmount());
+        assertEquals(3, table.getPlacedTiles().size());
     }
 
     @Test
