@@ -39,7 +39,7 @@ class Land extends RealEstate {
             Set<TileDirections> disjointCitiesDirections = oneDirectionPerDisjointCity(tile);
 
             for (TileDirections direction: disjointCitiesDirections) {
-                tile.placeFollower(helper, direction);
+                tile = tile.placeFollower(helper, direction);
                 citiesOnLand.add(RealEstate.getInstance(tile));
             }
         }

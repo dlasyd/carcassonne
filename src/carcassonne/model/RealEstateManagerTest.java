@@ -1,5 +1,6 @@
 package carcassonne.model;
 
+import com.sun.prism.es2.ES2Graphics;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,15 +38,19 @@ public class RealEstateManagerTest {
 
     public void placeTile(int x, int y, TileName tileName, Rotation rotation) {
         Tile tile = Tile.getInstance(x, y);
-        tile.copyFeatures(TilePile.getReferenceTile(tileName));
-        tile.turnRight(rotation);
+        tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
+        tile = tile.turnRight(rotation);
         table.placeTile(tile);
 
     }
 
     public void placeTile(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirections tileDirection) {
-        placeTile(x, y, tileName, rotation);
-        table.placeFollower(player, tileDirection);
+        Tile tile = Tile.getInstance(x, y);
+        tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
+        tile = tile.turnRight(rotation);
+        tile = tile.placeFollower(player, tileDirection);
+        table.placeTile(tile);
+
     }
 
     @Before
@@ -53,19 +58,18 @@ public class RealEstateManagerTest {
         table = new Table();
         manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
-        RealEstate.setTable(table);
     }
 
     @Test
     public void playerHasRealEstate() {
         table = new Table();
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_1_0.placeFollower(anton, EAST);
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0 = tile_1_0.placeFollower(anton, EAST);
         realEstate = RealEstate.getInstance(tile_1_0);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         table.setRealEstateManager(manager);
 
-        tile_2_0.placeFollower(anton, EAST);
+        tile_2_0 = tile_2_0.placeFollower(anton, EAST);
         realEstate2 = RealEstate.getInstance(tile_2_0);
         Set<RealEstate> expectedSet = new HashSet<>();
         expectedSet.add(realEstate);
@@ -81,16 +85,12 @@ public class RealEstateManagerTest {
      */
     @Test
     public void createAsset() {
-        Table table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_0.turnRight(DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
 
-        table.placeTile(tile_1_0);
-        table.placeTile(tile_2_0);
-        table.placeFollower(anton, WEST);
+        placeTile(1, 0, TileName.ROAD2SW, Rotation.DEG_180);
+        placeTile(2, 0, TileName.ROAD2SW, Rotation.DEG_0, anton, WEST);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0));
         Set<RealEstate> resultRealEstate = manager.getAssets(anton);
@@ -103,16 +103,11 @@ public class RealEstateManagerTest {
 
     @Test
     public void isPartOfRealEstate() {
-        Table table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_0.turnRight(DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-
-        table.placeTile(tile_1_0);
-        table.placeFollower(anton, EAST);
-        table.placeTile(tile_2_0);
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        placeTile(1, 0, TileName.ROAD2SW, Rotation.DEG_180, anton, EAST);
+        placeTile(2, 0, TileName.ROAD2SW, Rotation.DEG_0);
         assertTrue("Part of real estate", manager.isPartOfRealEstate(tile_2_0, WEST));
         assertFalse("Part of real estate", manager.isPartOfRealEstate(tile_2_0, EAST));
     }
@@ -129,28 +124,21 @@ public class RealEstateManagerTest {
 
     @Test
     public void assetUnionThreesomeSameTile() {
-        Table table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_2_0 = tile_2_0.turnRight(DEG_180);
+        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_0_1 = tile_0_1.turnRight(DEG_180);
+        tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0.turnRight(DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_2_0.turnRight(DEG_180);
-        tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1.turnRight(DEG_180);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
-        table.placeTile(tile_1_0);
-        table.placeFollower(anton, SOUTH);
-        table.placeTile(tile_2_0);
-        table.placeFollower(andrey, SOUTH);
-        table.placeTile(tile_0_1);
-        table.placeFollower(lena, EAST);
-        table.placeTile(tile_2_1);
+        placeTile(1, 0, TileName.CITY1RWE, Rotation.DEG_180, anton, SOUTH);
+        placeTile(2, 0, TileName.CITY1RWE, Rotation.DEG_180, andrey, SOUTH);
+        placeTile(0, 1, TileName.CITY2NW,  Rotation.DEG_180, lena, EAST);
+        placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);
 
-        //tile that unites real estate of three players
-        table.placeTile(tile_1_1);
+        placeTile(1, 1, TileName.CITY3, Rotation.DEG_0);
 
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
                 new HashSet<Tile>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
@@ -165,26 +153,20 @@ public class RealEstateManagerTest {
 
     @Test
     public void assetUnionThreesomeStepByStep() {
-        Table table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_2_0 = tile_2_0.turnRight(DEG_180);
+        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_0_1 = tile_0_1.turnRight(DEG_180);
+        tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0.turnRight(DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_2_0.turnRight(DEG_180);
-        tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1.turnRight(DEG_180);
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
-        table.placeTile(tile_1_0);
-        table.placeFollower(anton, SOUTH);
-        table.placeTile(tile_0_1);
-        table.placeFollower(lena, EAST);
-        table.placeTile(tile_1_1);  //first union
-        table.placeTile(tile_2_0);
-        table.placeFollower(andrey, SOUTH);
-        table.placeTile(tile_2_1);  //second union
+        placeTile(1, 0, TileName.CITY1RWE, Rotation.DEG_180, anton, SOUTH);
+        placeTile(0, 1, TileName.CITY2NW,  Rotation.DEG_180, lena, EAST);
+        placeTile(1, 1, TileName.CITY3,    Rotation.DEG_0);     //first union
+        placeTile(2, 0, TileName.CITY1RWE, Rotation.DEG_180, andrey, SOUTH);
+        placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);     //second union
 
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
                 new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
@@ -211,9 +193,15 @@ public class RealEstateManagerTest {
 
     @Test
     public void realEstateChangeOwner2to1() {
-        Table table = new Table();
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY2NWR));
+        tile_2_0 = tile_2_0.turnRight(DEG_180);
+        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_0_1 = tile_0_1.turnRight(DEG_180);
+        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
+        tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+
 
         Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
         expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(SOUTH, SSE, SSW )));
@@ -222,23 +210,11 @@ public class RealEstateManagerTest {
         expectedRealEstate.put(tile_1_1, new HashSet<>(Arrays.asList(NNE, NNW, NORTH, WWN, WWS, WEST, EEN, EES, EAST)));
         expectedRealEstate.put(tile_2_1, new HashSet<>(Arrays.asList(NNE, NNW, NORTH, WWN, WWS, WEST)));
 
-        tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0.turnRight(DEG_180);
-        tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY2NWR));
-        tile_2_0.turnRight(DEG_180);
-        tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1.turnRight(DEG_180);
-        tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
-        tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-
-        table.placeTile(tile_1_0);
-        table.placeFollower(andrey, SOUTH);
-        table.placeTile(tile_2_0);
-        table.placeFollower(anton, SOUTH);
-        table.placeTile(tile_0_1);
-        table.placeFollower(anton, SOUTH);
-        table.placeTile(tile_1_1);
-        table.placeTile(tile_2_1);
+        placeTile(1, 0, TileName.CITY1RWE, Rotation.DEG_180, andrey, SOUTH);
+        placeTile(2, 0, TileName.CITY2NWR, Rotation.DEG_180, anton, SOUTH);
+        placeTile(0, 1, TileName.CITY2NW,  Rotation.DEG_180, anton, SOUTH);
+        placeTile(1, 1, TileName.CITY3,    Rotation.DEG_0);
+        placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);
 
         Map<Tile, Set<TileDirections>> antonRealEstate;
 

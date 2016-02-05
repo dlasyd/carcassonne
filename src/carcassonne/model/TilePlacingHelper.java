@@ -32,9 +32,8 @@ class TilePlacingHelper {
         return new HashMap<>(coordinatesToRotationMap);
     }
 
-    public void update(Tile dontChangeTile) {
+    public void update(Tile tile) {
         coordinatesToRotationMap.clear();
-        Tile tile = new RealTile((RealTile) dontChangeTile);
         /*
          * 1) tiles around existing tiles are eligible
          * 2) for each rotation check continuity of each eligible tile
@@ -70,7 +69,7 @@ class TilePlacingHelper {
                     Util.addSetElement(coordinatesToRotationMap, coordinate, rotation);
 
             }
-            tile.turnRight(Rotation.DEG_90);
+            tile = tile.turnRight(Rotation.DEG_90);
         }
         coordinatesToRotationMap.keySet().removeAll(placedTiles.keySet());
     }

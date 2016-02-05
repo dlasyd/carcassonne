@@ -11,4 +11,5 @@ public class LandPiece extends Feature {
     public boolean isLand() {
         return true;
     }
+
 }

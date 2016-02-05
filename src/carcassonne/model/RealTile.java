@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Immutable
+ *
  * This is a part of Carcassonne project.
+ *
  * The project is created for learning and practicing java
  * and not intended for distribution.
  * Created by Andrey on 06/12/15.
@@ -18,6 +21,7 @@ public class RealTile extends Tile {
     private Feature occupiedFeature = null;
     private Follower follower;
     private boolean noFollower = true;
+    private TileDirections followerTileDirection;
     private HashMap<Feature,Set<TileDirections>> featureToTileDirections = new HashMap<>();
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
 
@@ -35,6 +39,7 @@ public class RealTile extends Tile {
         this.occupiedFeature = realTile.occupiedFeature;
         this.follower = realTile.follower;
         this.noFollower = realTile.noFollower;
+        this.followerTileDirection = realTile.followerTileDirection;
         this.featureToTileDirections = new HashMap<>(realTile.featureToTileDirections);
         this.propertyMap = new HashMap<>(realTile.propertyMap);
         this.propertyConnectionMap = new HashMap<>(realTile.propertyConnectionMap);
@@ -45,24 +50,33 @@ public class RealTile extends Tile {
     }
 
     RealTile(int x, int y) {
-        setCoordinates(x, y);
+        coordinates = new Coordinates (x, y);
     }
 
-    public void turnRight(Rotation angle) {
-        rotateValueSet(featureToTileDirections, angle);
-        rotateKeys(propertyConnectionMap, angle);
-        rotateValueSet(propertyConnectionMap, angle);
-        rotateKeys(propertyMap, angle);
-        int index = ((currentRotation.ordinal() + angle.ordinal()) % 4);
-        currentRotation = Rotation.values()[((currentRotation.ordinal() + angle.ordinal()) % 4)];
+    @Override
+    public Tile turnRight(Rotation angle) {
+        RealTile newTile = new RealTile(this);
+        newTile.rotateValueSet(newTile.featureToTileDirections, angle);
+        newTile.rotateKeys(newTile.propertyConnectionMap, angle);
+        newTile.rotateValueSet(newTile.propertyConnectionMap, angle);
+        newTile.rotateKeys(newTile.propertyMap, angle);
+        newTile.currentRotation = Rotation.values()[((newTile.currentRotation.ordinal() + angle.ordinal()) % 4)];
+        return newTile;
     }
 
     @Override
     public boolean featureEqual(Tile tile) {
         RealTile otherTile = (RealTile) tile;
-        return this.featureToTileDirections.equals(otherTile.featureToTileDirections) &
-                this.propertyMap.equals(otherTile.propertyMap) &
-                this.propertyConnectionMap.equals(otherTile.propertyConnectionMap);
+
+        /*
+         * featureToTileDirections and propertyConnectionMap are not checked because they
+         * change together with propertyMap and contain the same information packed differently
+         */
+        for (TileDirections direction: propertyMap.keySet()) {
+            if (!this.propertyMap.get(direction).isSameType(otherTile.propertyMap.get(direction)))
+                return false;
+        }
+        return true;
     }
 
     @Override
@@ -71,15 +85,12 @@ public class RealTile extends Tile {
     }
 
     @Override
-    public void copyFeatures(Tile referenceTile) {
-        featureToTileDirections = ((RealTile) referenceTile).featureToTileDirections;
-        propertyMap = ((RealTile) referenceTile).propertyMap;
-        propertyConnectionMap = ((RealTile) referenceTile).propertyConnectionMap;
-    }
-
-    @Override
-    public TileName getName() {
-        return tileName;
+    public Tile copyFeatures(Tile referenceTile) {
+        RealTile newTile = new RealTile(this);
+        newTile.featureToTileDirections = ((RealTile) referenceTile).featureToTileDirections;
+        newTile.propertyMap = ((RealTile) referenceTile).propertyMap;
+        newTile.propertyConnectionMap = ((RealTile) referenceTile).propertyConnectionMap;
+        return newTile;
     }
 
     @Override
@@ -92,6 +103,7 @@ public class RealTile extends Tile {
         return true;
     }
 
+    @Override
     public Rotation getCurrentRotation() {
         return currentRotation;
     }
@@ -120,54 +132,37 @@ public class RealTile extends Tile {
         }
     }
 
-    void setCoordinates(int x, int y) {
-        coordinates = new Coordinates (x, y);
-    }
-
-    public int getX() {
-        return coordinates.getX();
-    }
-
-    public int getY() {
-        return coordinates.getY();
+    @Override
+    Tile setCoordinates(int x, int y) {
+        RealTile newTile = new RealTile(this);
+        newTile.coordinates = new Coordinates (x, y);
+        return newTile;
     }
 
     @Override
-    public boolean isNull() {
-        return false;
-    }
-
-    public Coordinates getCoordinates() {
-        if (coordinates == null)
-            throw new RuntimeException("Tile has no coordinates");
-        return coordinates;
-    }
-
-    public boolean isNoFollower() {
-        return noFollower;
-    }
-
-    public void placeFollower(Player player, Feature feature) {
-        noFollower = false;
-        occupiedFeature = feature;
-        follower = new Follower(player);
+    public Tile placeFollower(Player player, Feature feature) {
+        RealTile newTile = new RealTile(this);
+        newTile.noFollower = false;
+        newTile.occupiedFeature = feature;
+        newTile.follower = new Follower(player);
         player.placeFollower();
+        return newTile;
     }
 
-    public void placeFollower(Player player, TileDirections direction) {
+    @Override
+    public Tile placeFollower(Player player, TileDirections direction) {
         if (propertyMap.get(direction) == null)
             throw new RuntimeException("Cannot place follower using tileDirection because there is no corresponding feature");
-        placeFollower(player, propertyMap.get(direction));
+        followerTileDirection = direction;
+        return placeFollower(player, propertyMap.get(direction));
     }
 
-    public Set<TileDirections> getDestinations(TileDirections dir) {
-        return new HashSet<>(propertyConnectionMap.get(dir));
-    }
-
+    @Override
     public void addFeature(Feature feature, TileDirections direction) {
         addFeature(feature, new TileDirections[]{direction});
     }
 
+    @Override
     public void addFeature(Feature feature, TileDirections... directions) {
         checkIfDirectionIsNotOccupied(directions);
 
@@ -186,10 +181,12 @@ public class RealTile extends Tile {
         }
     }
 
+    @Override
     public boolean hasCloister() {
         return propertyMap.containsKey(TileDirections.CENTER);
     }
 
+    @Override
     public boolean isComplete() {
         Set keys = new HashSet<>(propertyMap.keySet());
         switch (keys.size()) {
@@ -201,22 +198,33 @@ public class RealTile extends Tile {
         return false;
     }
 
-    public Set<Feature> getFeatures() {
-        return new HashSet<>(featureToTileDirections.keySet());
-    }
-
-    public Feature getOccupiedFeature() {
-        if (isNoFollower())
-            throw new RuntimeException("Trying to get feature containing follower from tile with no follower");
-        return occupiedFeature;
-    }
-
-    public void returnFollowerToPlayer() {
+    @Override
+    public Tile returnFollowerToPlayer() {
         if (isNoFollower())
             throw new RuntimeException("Trying to return follower from tile that hasn't got one");
-        follower.getPlayer().returnFollower();
-        follower = null;
-        noFollower = true;
+        RealTile newTile = new RealTile(this);
+        newTile.follower.getPlayer().returnFollower();
+        newTile.follower = null;
+        newTile.noFollower = true;
+        return newTile;
+    }
+
+    //<editor-fold desc="Getters">
+
+    @Override
+    public boolean hasCoordinates() {
+        return coordinates != null;
+    }
+
+    @Override
+    public boolean isNull() {
+        return false;
+    }
+
+
+    @Override
+    public boolean isNoFollower() {
+        return noFollower;
     }
 
     @Override
@@ -226,13 +234,13 @@ public class RealTile extends Tile {
     }
 
     @Override
-    Feature getFeature(TileDirections direction) {
-        return Feature.createFeature(propertyMap.get(direction));
+    public TileName getName() {
+        return tileName;
     }
 
     @Override
-    public Set<TileDirections> getFeatureTileDirections(Feature feature) {
-        return new HashSet<>(featureToTileDirections.get(feature));
+    Feature getFeature(TileDirections direction) {
+        return Feature.createFeature(propertyMap.get(direction));
     }
 
     /*
@@ -249,17 +257,95 @@ public class RealTile extends Tile {
     }
 
     @Override
-    public boolean hasCoordinates() {
-        return coordinates != null;
-    }
-
     public Set<TileDirections> getOccupiedFeatureDirections() {
         return new HashSet<>(featureToTileDirections.get(getOccupiedFeature()));
     }
 
+    @Override
+    public Set<TileDirections> getFeatureTileDirections(Feature feature) {
+        return new HashSet<>(featureToTileDirections.get(feature));
+    }
+
+    @Override
+    public Set<Feature> getFeatures() {
+        return new HashSet<>(featureToTileDirections.keySet());
+    }
+
+    @Override
+    public Feature getOccupiedFeature() {
+        if (isNoFollower())
+            throw new RuntimeException("Trying to get feature containing follower from tile with no follower");
+        return occupiedFeature;
+    }
+
+    @Override
+    public Set<TileDirections> getDestinations(TileDirections dir) {
+        return new HashSet<>(propertyConnectionMap.get(dir));
+    }
+
+    @Override
+    public Coordinates getCoordinates() {
+        if (coordinates == null)
+            throw new RuntimeException("Tile has no coordinates");
+        return coordinates;
+    }
+
+    @Override
+    public int getX() {
+        return coordinates.getX();
+    }
+
+    @Override
+    public int getY() {
+        return coordinates.getY();
+    }
+
+    @Override
+    public TileDirections getFollowerTileDirection() {
+        return followerTileDirection;
+    }
+//</editor-fold>
+
+    @Override
     public String toString() {
         if (hasCoordinates())
             return "T(" + getX() + "," + getY() + ")";
         else return "Not placed yet";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RealTile))
+            return false;
+
+        RealTile that = (RealTile) obj;
+
+        if (this.tileName != that.tileName || this.currentRotation != that.currentRotation)
+            return false;
+
+        if ((this.coordinates == null) ? that.coordinates != null : !this.coordinates.equals(that.coordinates))
+            return false;
+
+        /*
+         * Because all feature instances are equal only to themselves, when comparing collections that contain them
+         * method isSameType() should be used
+         */
+
+        for (TileDirections direction: propertyMap.keySet()) {
+            if (!this.propertyMap.get(direction).isSameType(that.propertyMap.get(direction)))
+                return false;
+        }
+
+        /*
+         * featureToTileDirections and propertyConnectionMap are not checked because they
+         * change together with propertyMap and contain the same information packed differently
+         */
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
     }
 }

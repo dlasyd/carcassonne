@@ -13,7 +13,7 @@ public abstract class Tile {
 
     public static Tile getInstance(TileName tileName) {
         Tile tile = new RealTile(tileName);
-        tile.copyFeatures(TilePile.getReferenceTile(tileName));
+        tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
         return tile;
     }
 
@@ -23,8 +23,8 @@ public abstract class Tile {
 
     public static Tile getInstance(int x, int y, TileName tileName) {
         Tile tile = new RealTile(tileName);
-        tile.copyFeatures(TilePile.getReferenceTile(tileName));
-        tile.setCoordinates(x, y);
+        tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
+        tile = tile.setCoordinates(x, y);
         return tile;
     }
 
@@ -32,13 +32,13 @@ public abstract class Tile {
     public abstract boolean isContinuous(Tile tile, TileDirections direction);
     public abstract boolean featureEqual(Tile roadTile);
     public abstract boolean directionsEqual(Tile referenceTile);
-    public abstract void    turnRight(Rotation angle);
-    public abstract void    copyFeatures(Tile referenceTile);
+    public abstract Tile    turnRight(Rotation angle);
+    public abstract Tile    copyFeatures(Tile referenceTile);
 
-    abstract void setCoordinates(int x, int y);
-    abstract void placeFollower(Player player, Feature feature);
-    abstract void placeFollower(Player player, TileDirections direction);
-    abstract void returnFollowerToPlayer();
+    abstract Tile setCoordinates(int x, int y);
+    abstract Tile placeFollower(Player player, Feature feature);
+    abstract Tile placeFollower(Player player, TileDirections direction);
+    abstract Tile returnFollowerToPlayer();
     abstract void addFeature(Feature feature, TileDirections direction);
     abstract void addFeature(Feature feature, TileDirections... directions);
 
@@ -61,6 +61,8 @@ public abstract class Tile {
     abstract boolean isComplete();
     public abstract boolean hasCoordinates();
     abstract boolean hasCloister();
+
+    public abstract TileDirections getFollowerTileDirection();
 
     //</editor-fold>
 }

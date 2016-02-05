@@ -27,7 +27,7 @@ public class TileTest {
 
     @Test
     public void setXYgetXY() {
-        tile.setCoordinates(0, 0);
+        tile = tile.setCoordinates(0, 0);
         assertEquals("X coordinate", 0, tile.getX());
         assertEquals("Y coordinate", 0, tile.getY());
     }
@@ -48,7 +48,7 @@ public class TileTest {
     @Test
     public void hasCoordinates() {
         assertFalse(tile.hasCoordinates());
-        tile.setCoordinates(0, 0);
+        tile = tile.setCoordinates(0, 0);
         assertTrue(tile.hasCoordinates());
     }
 
@@ -70,7 +70,7 @@ public class TileTest {
 
     @Test
     public void ifFollowerPlacedThenNoFollowersFalse() {
-        tile.placeFollower(player, Feature.createFeature(FeatureType.CITY));
+        tile = tile.placeFollower(player, Feature.createFeature(FeatureType.CITY));
         assertEquals("Follower is placed on tile", false, tile.isNoFollower());
     }
 
@@ -254,8 +254,8 @@ public class TileTest {
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
-        tile.placeFollower(player, feature);
-        assertEquals("Feature object that follower is placed on", feature, tile.getOccupiedFeature());
+        tile = tile.placeFollower(player, feature);
+        assertTrue("Feature object that follower is placed on", feature.isSameType(tile.getOccupiedFeature()));
     }
 
     @Test
@@ -267,10 +267,10 @@ public class TileTest {
         Feature feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WEST);
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
-        tile.placeFollower(player, feature);
+        tile = tile.placeFollower(player, feature);
         assertEquals("Number of followers a player has", 6, player.getNumberOfFollowers());
         assertFalse("Tile has a follower", tile.isNoFollower());
-        tile.returnFollowerToPlayer();
+        tile = tile.returnFollowerToPlayer();
         assertTrue("Tile should not have follower", tile.isNoFollower());
         assertEquals("Number of followers a player has", 7, player.getNumberOfFollowers());
     }
@@ -279,7 +279,7 @@ public class TileTest {
     public void returnFollowerWhenNoFollowerThenRuntimeException() {
         assertTrue("There are no followers", tile.isNoFollower());
         exception.expect(RuntimeException.class);
-        tile.returnFollowerToPlayer();
+        tile = tile.returnFollowerToPlayer();
     }
 
     @Test
@@ -289,7 +289,7 @@ public class TileTest {
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
-        tile.placeFollower(player, feature);
+        tile = tile.placeFollower(player, feature);
         HashSet<TileDirections> directionsSet = new HashSet<>();
         directionsSet.add(TileDirections.WEST);
         assertTrue("Returns tileDirection set of follower containing feature", directionsSet.equals(tile.getOccupiedFeatureDirections()));
@@ -306,7 +306,7 @@ public class TileTest {
         assertTrue("Tile has no followers", tile.isNoFollower());
         Feature feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WEST);
-        tile.placeFollower(new Player(), TileDirections.WEST);
+        tile = tile.placeFollower(new Player(), TileDirections.WEST);
         assertFalse("Tile has a follower", tile.isNoFollower());
 
         Set<TileDirections> expected = new HashSet<>();
@@ -350,8 +350,8 @@ public class TileTest {
         Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
-        tile.placeFollower(new Player(), EAST);
-        tile.turnRight(Rotation.DEG_90);
+        tile = tile.placeFollower(new Player(), EAST);
+        tile = tile.turnRight(Rotation.DEG_90);
         Set<TileDirections> expected = new HashSet<>(Arrays.asList(SOUTH, SSE, EES, EAST));
         assertEquals("TileDirection of rotated tile", expected, tile.getOccupiedFeatureDirections());
     }
@@ -361,8 +361,8 @@ public class TileTest {
         Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
-        tile.placeFollower(new Player(), EAST);
-        tile.turnRight(Rotation.DEG_270);
+        tile = tile.placeFollower(new Player(), EAST);
+        tile = tile.turnRight(Rotation.DEG_270);
         Set<TileDirections> expected = new HashSet<>(Arrays.asList(NORTH, WWN, NNW, WEST));
         assertEquals("TileDirection of rotated tile", expected, tile.getOccupiedFeatureDirections());
     }
@@ -372,8 +372,8 @@ public class TileTest {
         Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, CENTER);
-        tile.placeFollower(new Player(), CENTER);
-        tile.turnRight(Rotation.DEG_270);
+        tile = tile.placeFollower(new Player(), CENTER);
+        tile = tile.turnRight(Rotation.DEG_270);
         Set<TileDirections> expected = new HashSet<>(Collections.singletonList(CENTER));
         assertEquals("TileDirection of rotating CENTER and END", expected, tile.getOccupiedFeatureDirections());
     }
@@ -383,7 +383,7 @@ public class TileTest {
         Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
-        tile.turnRight(Rotation.DEG_90);
+        tile = tile.turnRight(Rotation.DEG_90);
         Set<TileDirections> expected = new HashSet<>(Arrays.asList(SOUTH, SSE, EES, EAST));
         assertEquals("TileDirection of rotated tile", expected, tile.getDestinations(SOUTH));
     }
@@ -398,7 +398,7 @@ public class TileTest {
         roadTile.addFeature(feature1, SOUTH, EAST);
         roadTile.addFeature(feature2, EES, SSE);
         roadTile.addFeature(feature3, roadTile.getUnoccupiedDirections());
-        roadTile.turnRight(Rotation.DEG_90);
+        roadTile = roadTile.turnRight(Rotation.DEG_90);
 
         Tile expectedTile = Tile.getInstance(2,0);
         expectedTile.addFeature(feature1, SOUTH, WEST);
@@ -411,7 +411,7 @@ public class TileTest {
     @Test
     public void copyFeatures() {
         Tile tile = Tile.getInstance();
-        tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+        tile = tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
         assertTrue("New tile is feature equal", tile.directionsEqual(TilePile.getReferenceTile(TileName.ROAD4)));
     }
 
@@ -419,7 +419,7 @@ public class TileTest {
     public void smallCityContinuous() {
         Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
         Tile tile2 = Tile.getInstance(TileName.CITY1);
-        tile2.turnRight(Rotation.DEG_180);
+        tile2 = tile2.turnRight(Rotation.DEG_180);
         assertEquals("Small city is continuous", true, tile1.isContinuous(tile2, TileDirections.SOUTH));
     }
 
@@ -439,9 +439,9 @@ public class TileTest {
     @Test
     public void rotationChangesWhenTurned() {
         Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
-        tile1.turnRight(Rotation.DEG_180);
+        tile1 = tile1.turnRight(Rotation.DEG_180);
         assertEquals("Rotation saved after turn", Rotation.DEG_180, tile1.getCurrentRotation());
-        tile1.turnRight(Rotation.DEG_270);
+        tile1 = tile1.turnRight(Rotation.DEG_270);
         assertEquals("Rotation saved after turn", Rotation.DEG_90, tile1.getCurrentRotation());
     }
 

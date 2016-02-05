@@ -79,4 +79,14 @@ public class Feature{
     public boolean isLand() {
         return false;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 42;
+    }
 }

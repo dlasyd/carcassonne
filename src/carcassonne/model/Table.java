@@ -54,6 +54,14 @@ public class Table implements OwnershipChecker{
         tilePlacedLast = currentTile;
         placementHelper.update(currentTile);
         notifyObservers(currentTile);
+        if (!tilePlacedLast.isNoFollower()) {
+            // if tilePlacedLast direction is not part of existing real estate
+            if (realEstateManager.isPartOfRealEstate(tilePlacedLast, tilePlacedLast.getFollowerTileDirection()))
+                throw new RuntimeException("Cannot place follower on existing real estate");
+            //tilePlacedLast = tilePlacedLast.placeFollower(player, direction);
+            placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getOccupiedFeature()));
+            realEstateManager.createAsset(tilePlacedLast.getFollowerOwner(), tilePlacedLast);
+        }
     }
 
     public int placedTilesAmount() {
@@ -115,7 +123,7 @@ public class Table implements OwnershipChecker{
         // if tilePlacedLast direction is not part of existing real estate
         if (realEstateManager.isPartOfRealEstate(tilePlacedLast, direction))
             throw new RuntimeException("Cannot place follower on existing real estate");
-        tilePlacedLast.placeFollower(player, direction);
+        //tilePlacedLast = tilePlacedLast.placeFollower(player, direction);
         placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getFeature(direction)));
         realEstateManager.createAsset(player, tilePlacedLast);
     }
@@ -147,10 +155,9 @@ public class Table implements OwnershipChecker{
 
     @Override
     public boolean locationIsLegal(int currentTileX, int currentTileY, Rotation angle, TileDirections direction) {
-        Tile temporaryTile = new RealTile((RealTile) currentTile);
-        temporaryTile.setCoordinates(currentTileX, currentTileY);
-        temporaryTile.turnRight(angle);
+        currentTile = currentTile.setCoordinates(currentTileX, currentTileY);
+        currentTile = currentTile.turnRight(angle);
         direction = direction.turnRight(angle);
-        return !realEstateManager.isPartOfRealEstate(temporaryTile, direction);
+        return !realEstateManager.isPartOfRealEstate(currentTile, direction);
     }
 }

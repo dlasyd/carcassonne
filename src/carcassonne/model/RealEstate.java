@@ -94,7 +94,7 @@ public abstract class RealEstate {
         return result;
     }
 
-    private void addAdjacentTiles(Tile tile) {
+    void addAdjacentTiles(Tile tile) {
         Map<Tile, Set<TileDirections>> adjacentTiles = new HashMap<>();
         Set<TileDirections> occupiedFeatureDirections = tilesAndFeatureTileDirections.get(tile);
         assert(occupiedFeatureDirections != null);
@@ -119,7 +119,7 @@ public abstract class RealEstate {
     private Map<Tile, Set<TileDirections>> findAdjacentTiles(Tile tile, TileDirections directionWithFeature, Tile loopBreakingTile) {
         Map<Tile, Set<TileDirections>> result = new HashMap<>();
 
-        if (tile == loopBreakingTile) {
+        if (tile.equals(loopBreakingTile)) {
             return result;
         }
 

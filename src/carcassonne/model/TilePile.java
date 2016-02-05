@@ -176,7 +176,7 @@ public class TilePile {
     public void addXCrossroads(int x) {
         for (int i = 0; i < x; i ++) {
             Tile tile = Tile.getInstance(TileName.ROAD4);
-            tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+            tile = tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
             addTile(tile);
         }
     }
@@ -185,7 +185,7 @@ public class TilePile {
         TileName[] tileNames = {TileName.ROAD4, TileName.ROAD3, TileName.CITY1RWE, TileName.CITY1, TileName.CITY11NE};
         for (TileName tileName : tileNames) {
             Tile tile = Tile.getInstance(tileName);
-            tile.copyFeatures(TilePile.getReferenceTile(tileName));
+            tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
             addTile(tile);
         }
     }

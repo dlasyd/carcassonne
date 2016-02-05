@@ -132,7 +132,7 @@ public class RealEstateManager {
                     player.increaseCurrentPoints(points);
                     for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
                         if (!tile.isNoFollower()) {
-                            tile.returnFollowerToPlayer();
+                            tile = tile.returnFollowerToPlayer();
                             table.removeFollowerFromTile(tile.getCoordinates());
                         }
                     }
@@ -225,7 +225,9 @@ public class RealEstateManager {
     }
 
     /*
-     * This method is run by an instance that implements OwnershipChecker interface
+     * This method is run by an instance that implements OwnershipChecker interface to check
+     * whether or not a possible follower position should be displayed and
+     * by the table instance to check if Runtime Exception should be thrown
      */
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
         boolean result = false;

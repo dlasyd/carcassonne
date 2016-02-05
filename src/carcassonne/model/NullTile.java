@@ -27,7 +27,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    void setCoordinates(int x, int y) {
+    Tile setCoordinates(int x, int y) {
 
         throw new RuntimeException("The tile is Null");
     }
@@ -53,13 +53,18 @@ public class NullTile extends Tile{
     }
 
     @Override
-    void placeFollower(Player player, Feature feature) {
+    public TileDirections getFollowerTileDirection() {
+        return null;
+    }
+
+    @Override
+    Tile placeFollower(Player player, Feature feature) {
 
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    void placeFollower(Player player, TileDirections direction) {
+    Tile placeFollower(Player player, TileDirections direction) {
 
         throw new RuntimeException("The tile is Null");
     }
@@ -102,7 +107,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    void returnFollowerToPlayer() {
+    Tile returnFollowerToPlayer() {
         throw new RuntimeException("The tile is Null");
     }
 
@@ -122,7 +127,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public void turnRight(Rotation angle) {
+    public Tile turnRight(Rotation angle) {
         throw new RuntimeException("The tile is Null");
 
     }
@@ -138,7 +143,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public void copyFeatures(Tile referenceTile) {
+    public Tile copyFeatures(Tile referenceTile) {
         throw new RuntimeException("The tile is Null");
 
     }

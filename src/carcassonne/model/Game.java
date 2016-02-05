@@ -45,11 +45,11 @@ public class Game implements DataToModel{
     @Override
     public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
         Tile tile = getCurrentTile();
-        tile.setCoordinates(x, y);
-        tile.turnRight(angle);
-        table.placeTile(tile);
+        tile = tile.setCoordinates(x, y);
+        tile = tile.turnRight(angle);
         if (direction != null)
-            table.placeFollower(getCurrentPlayer(), direction);
+            tile = tile.placeFollower(getCurrentPlayer(), direction);
+        table.placeTile(tile);
         if (tilePile.hasTiles()) {
             nextPlayer();
             dragTile();

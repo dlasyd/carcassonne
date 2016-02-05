@@ -8,4 +8,5 @@ class RoadPiece extends Feature {
     public boolean isRoad() {
         return true;
     }
+
 }
