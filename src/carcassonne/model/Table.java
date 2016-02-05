@@ -155,8 +155,8 @@ public class Table implements OwnershipChecker{
 
     @Override
     public boolean locationIsLegal(int currentTileX, int currentTileY, Rotation angle, TileDirections direction) {
-        currentTile = currentTile.setCoordinates(currentTileX, currentTileY);
-        currentTile = currentTile.turnRight(angle);
+        Tile temporaryTile = currentTile.setCoordinates(currentTileX, currentTileY);
+        temporaryTile = currentTile.turnRight(angle);
         direction = direction.turnRight(angle);
         return !realEstateManager.isPartOfRealEstate(currentTile, direction);
     }

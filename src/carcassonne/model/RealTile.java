@@ -60,7 +60,7 @@ public class RealTile extends Tile {
         newTile.rotateKeys(newTile.propertyConnectionMap, angle);
         newTile.rotateValueSet(newTile.propertyConnectionMap, angle);
         newTile.rotateKeys(newTile.propertyMap, angle);
-        newTile.currentRotation = Rotation.values()[((newTile.currentRotation.ordinal() + angle.ordinal()) % 4)];
+        newTile.currentRotation = Rotation.values()[((currentRotation.ordinal() + angle.ordinal()) % 4)];
         return newTile;
     }
 
