@@ -240,6 +240,11 @@ public abstract class RealEstate {
         return result;
     }
 
+    /*
+     * (from the rules of the game)
+     * A legitimate owner is an owner who has the most followers placed on real estate.
+     * Real estate will have several legitimate owners if there is a tie.
+     */
     Set<Player> getLegitimateOwners() {
         Map<Player, Integer> numberOfPlacedFollowers = new HashMap<>();
         int maximumPlayerPresence = 1;

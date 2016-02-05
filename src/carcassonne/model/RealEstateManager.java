@@ -45,19 +45,10 @@ public class RealEstateManager {
     Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToRealEstateSetMap() {
         return playerToRealEstateSetMap;
     }
-
     //</editor-fold>
-    /*
-     * used for testing purposes only
-     */
 
     void addAsset(Player player, RealEstate realEstate) {
-        if (playerToRealEstateSetMap.containsKey(player)) {
-            Set<RealEstate.ImmutableRealEstate> assets = playerToRealEstateSetMap.get(player);
-            assets.add(realEstate.getImmutableRealEstate());
-        } else {
-            playerToRealEstateSetMap.put(player, new HashSet<>(Arrays.asList(realEstate.getImmutableRealEstate())));
-        }
+        Util.addSetElement(playerToRealEstateSetMap, player, realEstate.getImmutableRealEstate());
         realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
     }
 
