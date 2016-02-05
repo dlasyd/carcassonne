@@ -17,7 +17,6 @@ public class RealTile extends Tile {
     private Feature occupiedFeature = null;
     private Follower follower;
     private boolean noFollower = true;
-    private TileDirections followerTileDirection;
     private HashMap<Feature,Set<TileDirections>> featureToTileDirections = new HashMap<>();
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
 
@@ -35,7 +34,6 @@ public class RealTile extends Tile {
         this.occupiedFeature = realTile.occupiedFeature;
         this.follower = realTile.follower;
         this.noFollower = realTile.noFollower;
-        this.followerTileDirection = realTile.followerTileDirection;
         this.featureToTileDirections = new HashMap<>(realTile.featureToTileDirections);
         this.propertyMap = new HashMap<>(realTile.propertyMap);
         this.propertyConnectionMap = new HashMap<>(realTile.propertyConnectionMap);
@@ -129,7 +127,6 @@ public class RealTile extends Tile {
     public Tile placeFollower(Player player, TileDirections direction) {
         if (propertyMap.get(direction) == null)
             throw new RuntimeException("Cannot place follower using tileDirection because there is no corresponding feature");
-        followerTileDirection = direction;
         return placeFollower(player, propertyMap.get(direction));
     }
 
@@ -275,11 +272,17 @@ public class RealTile extends Tile {
         return coordinates.getY();
     }
 
+    /*
+     * This method is used in placeTile(...) method of Table
+     *
+     * It does not matter which of occupied feature TileDirections is returned, they
+     * are logically equivalent
+     */
     @Override
     public TileDirections getFollowerTileDirection() {
-        return followerTileDirection;
+        return Util.any(featureToTileDirections.get(occupiedFeature));
     }
-//</editor-fold>
+    //</editor-fold>
 
     @Override
     public boolean featureEqual(Tile tile) {
