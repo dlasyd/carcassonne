@@ -61,6 +61,9 @@ public class Table implements OwnershipChecker{
             realEstateManager.update(tile);
     }
 
+    /*
+     * Invoked by finishedRealEstate() method of RealEstateManager
+     */
     void removeFollowerFromTile(Coordinates coordinates) {
         Iterator<PlacedFollower> iterator = placedFollowers.iterator();
         while (iterator.hasNext()) {
@@ -68,6 +71,15 @@ public class Table implements OwnershipChecker{
                 iterator.remove();
             }
         }
+    }
+
+    /*
+     * Used by Game's method dragTile. An instance of Game uses it's instance of TilePile to
+     * get a new tile and passes it to table using this method
+     */
+    void setCurrentTile(Tile currentTile) {
+        this.currentTile = currentTile;
+        tilePlacementHelper.update(currentTile);
     }
 
     @Override
@@ -133,13 +145,4 @@ public class Table implements OwnershipChecker{
         return Tile.getNullInstance();
     }
     //</editor-fold>
-
-    void setCurrentTile(Tile currentTile) {
-        this.currentTile = currentTile;
-        tilePlacementHelper.update(currentTile);
-    }
-
-
-
-
 }
