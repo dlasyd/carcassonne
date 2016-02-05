@@ -65,13 +65,13 @@ public class TileTest {
 
     @Test
     public void ifFollowerNotPlacedThenNoFollowers() {
-        assertEquals("No followers placed", true, tile.isNoFollower());
+        assertEquals("No followers placed", false, tile.hasFollower());
     }
 
     @Test
     public void ifFollowerPlacedThenNoFollowersFalse() {
         tile = tile.placeFollower(player, Feature.createFeature(FeatureType.CITY));
-        assertEquals("Follower is placed on tile", false, tile.isNoFollower());
+        assertEquals("Follower is placed on tile", true, tile.hasFollower());
     }
 
     @Test
@@ -269,15 +269,15 @@ public class TileTest {
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.SOUTH);
         tile = tile.placeFollower(player, feature);
         assertEquals("Number of followers a player has", 6, player.getNumberOfFollowers());
-        assertFalse("Tile has a follower", tile.isNoFollower());
+        assertTrue("Tile has a follower", tile.hasFollower());
         tile = tile.returnFollowerToPlayer();
-        assertTrue("Tile should not have follower", tile.isNoFollower());
+        assertFalse("Tile should not have follower", tile.hasFollower());
         assertEquals("Number of followers a player has", 7, player.getNumberOfFollowers());
     }
 
     @Test
     public void returnFollowerWhenNoFollowerThenRuntimeException() {
-        assertTrue("There are no followers", tile.isNoFollower());
+        assertFalse("There are no followers", tile.hasFollower());
         exception.expect(RuntimeException.class);
         tile = tile.returnFollowerToPlayer();
     }
@@ -303,11 +303,11 @@ public class TileTest {
 
     @Test
     public void placeFollowerOnDirectionCorrectTileDirection() {
-        assertTrue("Tile has no followers", tile.isNoFollower());
+        assertFalse("Tile has no followers", tile.hasFollower());
         Feature feature = Feature.createFeature(FeatureType.CITY);
         tile.addFeature(feature, TileDirections.WEST);
         tile = tile.placeFollower(new Player(), TileDirections.WEST);
-        assertFalse("Tile has a follower", tile.isNoFollower());
+        assertTrue("Tile has a follower", tile.hasFollower());
 
         Set<TileDirections> expected = new HashSet<>();
         expected.add(TileDirections.WEST);

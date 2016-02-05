@@ -6,13 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Immutable
- *
- * This is a part of Carcassonne project.
- *
- * The project is created for learning and practicing java
- * and not intended for distribution.
- * Created by Andrey on 06/12/15.
+ * RealTile represents a tile from a game. There are 3 instance variable Collections that represent
+ * connection between features of the tile and tileDirections. They are based on the same data and changed together.
+ * This redundancy exists to make retrieving data easier.
  */
 public class RealTile extends Tile {
     private TileName tileName;
@@ -63,27 +59,7 @@ public class RealTile extends Tile {
         newTile.currentRotation = Rotation.values()[((currentRotation.ordinal() + angle.ordinal()) % 4)];
         return newTile;
     }
-
-    @Override
-    public boolean featureEqual(Tile tile) {
-        RealTile otherTile = (RealTile) tile;
-
-        /*
-         * featureToTileDirections and propertyConnectionMap are not checked because they
-         * change together with propertyMap and contain the same information packed differently
-         */
-        for (TileDirections direction: propertyMap.keySet()) {
-            if (!this.propertyMap.get(direction).isSameType(otherTile.propertyMap.get(direction)))
-                return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean directionsEqual(Tile referenceTile) {
-        return this.propertyConnectionMap.equals(((RealTile) referenceTile).propertyConnectionMap);
-    }
-
+    
     @Override
     public Tile copyFeatures(Tile referenceTile) {
         RealTile newTile = new RealTile(this);
@@ -200,7 +176,7 @@ public class RealTile extends Tile {
 
     @Override
     public Tile returnFollowerToPlayer() {
-        if (isNoFollower())
+        if (!hasFollower())
             throw new RuntimeException("Trying to return follower from tile that hasn't got one");
         RealTile newTile = new RealTile(this);
         newTile.follower.getPlayer().returnFollower();
@@ -210,7 +186,6 @@ public class RealTile extends Tile {
     }
 
     //<editor-fold desc="Getters">
-
     @Override
     public boolean hasCoordinates() {
         return coordinates != null;
@@ -223,8 +198,8 @@ public class RealTile extends Tile {
 
 
     @Override
-    public boolean isNoFollower() {
-        return noFollower;
+    public boolean hasFollower() {
+        return noFollower != true;
     }
 
     @Override
@@ -273,7 +248,7 @@ public class RealTile extends Tile {
 
     @Override
     public Feature getOccupiedFeature() {
-        if (isNoFollower())
+        if (!hasFollower())
             throw new RuntimeException("Trying to get feature containing follower from tile with no follower");
         return occupiedFeature;
     }
@@ -307,10 +282,23 @@ public class RealTile extends Tile {
 //</editor-fold>
 
     @Override
-    public String toString() {
-        if (hasCoordinates())
-            return "T(" + getX() + "," + getY() + ")";
-        else return "Not placed yet";
+    public boolean featureEqual(Tile tile) {
+        RealTile otherTile = (RealTile) tile;
+
+        /*
+         * featureToTileDirections and propertyConnectionMap are not checked because they
+         * change together with propertyMap and contain the same information packed differently
+         */
+        for (TileDirections direction: propertyMap.keySet()) {
+            if (!this.propertyMap.get(direction).isSameType(otherTile.propertyMap.get(direction)))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean directionsEqual(Tile referenceTile) {
+        return this.propertyConnectionMap.equals(((RealTile) referenceTile).propertyConnectionMap);
     }
 
     @Override
@@ -347,5 +335,12 @@ public class RealTile extends Tile {
     @Override
     public int hashCode() {
         return 1;
+    }
+
+    @Override
+    public String toString() {
+        if (hasCoordinates())
+            return "T(" + getX() + "," + getY() + ")";
+        else return "Not placed yet";
     }
 }

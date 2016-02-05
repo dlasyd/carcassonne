@@ -33,7 +33,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    boolean isNoFollower() {
+    boolean hasFollower() {
         throw new RuntimeException("The tile is Null");
     }
 

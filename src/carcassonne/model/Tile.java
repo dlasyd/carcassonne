@@ -57,7 +57,7 @@ public abstract class Tile {
     abstract Set<TileDirections>     getOccupiedFeatureDirections();
     public abstract Set<Feature>            getFeatures();
 
-    abstract boolean isNoFollower();
+    abstract boolean hasFollower();
     abstract boolean isComplete();
     public abstract boolean hasCoordinates();
     abstract boolean hasCloister();

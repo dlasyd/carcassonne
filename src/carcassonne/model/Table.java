@@ -48,7 +48,7 @@ public class Table implements OwnershipChecker{
         tilePlacementHelper.update(tilePlacedLast);
 
         notifyObservers(tilePlacedLast);
-        if (!tilePlacedLast.isNoFollower()) {
+        if (tilePlacedLast.hasFollower()) {
             if (realEstateManager.isPartOfRealEstate(tilePlacedLast, tilePlacedLast.getFollowerTileDirection()))
                 throw new RuntimeException("Cannot place follower on existing real estate");
             placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getOccupiedFeature()));

@@ -131,7 +131,7 @@ public class RealEstateManager {
                     Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
                     player.increaseCurrentPoints(points);
                     for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
-                        if (!tile.isNoFollower()) {
+                        if (tile.hasFollower()) {
                             tile = tile.returnFollowerToPlayer();
                             table.removeFollowerFromTile(tile.getCoordinates());
                         }

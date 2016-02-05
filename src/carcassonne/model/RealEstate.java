@@ -15,7 +15,7 @@ public abstract class RealEstate {
 
     public RealEstate(Tile tile) {
         immutableRealEstate = new ImmutableRealEstate(this, tile);
-        if (tile.isNoFollower())
+        if (! tile.hasFollower())
             throw new RuntimeException("Cannot create real estate from tile without a follower");
         addTile(tile);
         firstTile = tile;
@@ -141,9 +141,9 @@ public abstract class RealEstate {
 
     private boolean addedFeatureUnoccupied(Tile newTile) {
         Set<Tile> tiles = new HashSet<>(tilesAndFeatureTileDirections.keySet());
-        if (!newTile.isNoFollower()) {
+        if (newTile.hasFollower()) {
             for (Tile existingTile : tiles) {
-                if (existingTile.isNoFollower())
+                if (! existingTile.hasFollower())
                     return true;
 
                 Set<TileDirections> existingDirections = existingTile.getOccupiedFeatureDirections();
@@ -244,7 +244,7 @@ public abstract class RealEstate {
         Map<Player, Integer> numberOfPlacedFollowers = new HashMap<>();
         int maximumPlayerPresence = 1;
         for (Tile tile: tilesAndFeatureTileDirections.keySet()) {
-            if (!tile.isNoFollower()) {
+            if (tile.hasFollower()) {
                 Player player = tile.getFollowerOwner();
                 if (numberOfPlacedFollowers.containsKey(player)) {
                     int count = numberOfPlacedFollowers.get(player);
