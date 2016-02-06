@@ -19,12 +19,8 @@ public class DrawableTile {
         if (tile.isNull()) {
             throw new RuntimeException("Cannot create a DrawableTile from null tile");
         }
+        this.tile = tile;
 
-        if (tile.hasCoordinates()) {
-            this.tile = Tile.getInstance(tile.getX(), tile.getY(), tile.getName());
-        } else {
-            this.tile = Tile.getInstance(tile.getName());
-        }
         image = new javaxt.io.Image("res/tiles/" + this.getFileName());
 
         /*
