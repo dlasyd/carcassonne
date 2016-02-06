@@ -23,7 +23,6 @@ public class GameData {
     private String tilesLeft;
     private Tile currentTile;
     private Tile previouslyPlacedTile;
-    private Set<Coordinates> possibleTileLocations;
     private Set<PlacedFollower> placedFollowers;
     private Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
 
@@ -37,7 +36,6 @@ public class GameData {
         this.tilesLeft = tilesLeft;
         this.currentTile = currentTile;
         this.previouslyPlacedTile = previouslyPlacedTile;
-        this.possibleTileLocations = possibleTileLocations;
         this.placedFollowers = placedFollowers;
         this.possibleLocationsAndRotations = possibleLocationsAndRotations;
     }
@@ -68,10 +66,6 @@ public class GameData {
 
     public Tile getPreviouslyPlacedTile() {
         return previouslyPlacedTile;
-    }
-
-    public Set<Coordinates> getPossibleTileLocations() {
-        return possibleTileLocations;
     }
 
     public Map<Coordinates, Set<Rotation>> getPossibleLocationsAndRotations() {

@@ -17,13 +17,6 @@ class TilePlacingHelper {
         this.table = table;
     }
 
-    //TODO remove
-    public Set<Coordinates> getCoordinatesSet(Tile tile) {
-        Set<Coordinates> result = new HashSet<>();
-        result.add(new Coordinates(0, 1));
-        return result;
-    }
-
     public void setPlacedTiles(HashMap<Coordinates,Tile> placedTiles) {
         this.placedTiles = placedTiles;
     }

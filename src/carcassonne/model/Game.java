@@ -81,7 +81,7 @@ public class Game implements DataToModel{
 
     @Override
     public OwnershipChecker getOwnershipChecker() {
-        return (OwnershipChecker)table;
+        return table;
     }
 
     public void nextPlayer() {
