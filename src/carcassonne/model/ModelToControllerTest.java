@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -523,7 +524,7 @@ public class ModelToControllerTest {
         Set<Double> expected = new HashSet();
         expected.add(0.6);
         expected.add(0.85);
-        game.getTilePile().addTile(TileName.CITY3, TileName.CITY3, TileName.CITY3);
+        game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4);
         prepareGame();
 
 
@@ -539,5 +540,35 @@ public class ModelToControllerTest {
             result.add(i[1]);
         }
         assertEquals("Correct follower possible locations", expected, result);
+    }
+
+    @Test
+    /*
+     * Each turn number of points and followers should be updated for all players
+     */
+    public void importantInformationIsDisplayedForAllPlayers() {
+        ArrayList<ArrayList<String>> expected = new ArrayList<>();
+        expected.add(new ArrayList(Arrays.asList("Anton", "2", "6")));
+        expected.add(new ArrayList(Arrays.asList("Andrey", "4", "5")));
+
+        game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4,
+                TileName.ROAD4, TileName.ROAD4);
+        prepareGame();
+
+        turnActions(1, 0, 0.15, 0.5);
+        turnActions(2, 0, 0.15, 0.5);
+        turnActions(3, 0, 0.15, 0.5);
+        //turnActions(4, 0, 0.15, 0.5);
+        //turnActions(5, 0, 0.15, 0.5);
+
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        assertEquals("Correct information is displayed", expected, result);
+    }
+
+    public void turnActions(int x, int y, double mx, double my) {
+        fakeWindow.clickOnGamePanel(x, y);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(mx, my);
+        fakeWindow.pressEndTurnButton();
     }
 }
