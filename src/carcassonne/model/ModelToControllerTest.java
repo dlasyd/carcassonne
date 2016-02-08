@@ -548,8 +548,8 @@ public class ModelToControllerTest {
      */
     public void importantInformationIsDisplayedForAllPlayers() {
         ArrayList<ArrayList<String>> expected = new ArrayList<>();
-        expected.add(new ArrayList(Arrays.asList("Anton", "2", "6")));
-        expected.add(new ArrayList(Arrays.asList("Andrey", "4", "5")));
+        expected.add(new ArrayList(Arrays.asList("Anton", "2", "5")));
+        expected.add(new ArrayList(Arrays.asList("Andrey", "4", "7")));
 
         game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4,
                 TileName.ROAD4, TileName.ROAD4);
@@ -558,8 +558,8 @@ public class ModelToControllerTest {
         turnActions(1, 0, 0.15, 0.5);
         turnActions(2, 0, 0.15, 0.5);
         turnActions(3, 0, 0.15, 0.5);
-        //turnActions(4, 0, 0.15, 0.5);
-        //turnActions(5, 0, 0.15, 0.5);
+        turnActions(4, 0, 0.15, 0.5);
+        turnActions(5, 0, 0.15, 0.5);
 
         ArrayList<ArrayList<String>> result = new ArrayList<>();
         assertEquals("Correct information is displayed", expected, result);
