@@ -524,7 +524,7 @@ public class ModelToControllerTest {
         Set<Double> expected = new HashSet();
         expected.add(0.6);
         expected.add(0.85);
-        game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4);
+        game.getTilePile().addTile(TileName.CITY3, TileName.CITY3, TileName.CITY3);
         prepareGame();
 
 
