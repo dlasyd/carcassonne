@@ -6,6 +6,7 @@ import carcassonne.model.Tile;
 import carcassonne.view.PlacedFollower;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class GameDataBuilder {
     private Set<Coordinates> possibleTileLocations;
     private Set<PlacedFollower> placedFollowers;
     private Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
+    private ArrayList<String[]> playersStats;
 
     public GameDataBuilder setName(String name) {
         this.name = name;
@@ -71,7 +73,12 @@ public class GameDataBuilder {
         return this;
     }
 
+    public GameDataBuilder setPlayersStats(ArrayList<String[]> playersStats) {
+        this.playersStats = playersStats;
+        return this;
+    }
+
     public GameData createGameData() {
-        return new GameData(name, points, followers, playerColor, tilesLeft, currentTile, previouslyPlacedTile, possibleTileLocations, placedFollowers, possibleLocationsAndRotations);
+        return new GameData(name, points, followers, playerColor, tilesLeft, currentTile, previouslyPlacedTile, possibleTileLocations, placedFollowers, possibleLocationsAndRotations, playersStats);
     }
 }

@@ -548,11 +548,11 @@ public class ModelToControllerTest {
         expected.add(new HashMap());
         expected.add(new HashMap());
         expected.get(0).put(0, "Anton");
-        expected.get(0).put(1, "2");
-        expected.get(0).put(2, "5");
+        expected.get(0).put(1, "6");
+        expected.get(0).put(2, "4");
         expected.get(1).put(0, "Andrey");
-        expected.get(1).put(1, "4");
-        expected.get(1).put(2, "7");
+        expected.get(1).put(1, "7");
+        expected.get(1).put(2, "4");
 
         game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4,
                 TileName.ROAD4, TileName.ROAD4);

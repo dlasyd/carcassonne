@@ -29,7 +29,7 @@ public class StartGame {
         //game.getTilePile().add5DifferentTiles();
         //game.getTilePile().addTile(CITY1, CITY1RSE, CITY1RSW, CITY1RWE, CITY1RSWE);
         //game.getTilePile().addTile(CITY3, CITY3SR, CITY3S, CITY3R);
-        //game.getTilePile().addTile(CITY2NW, CITY2NWR, CITY2NWS, CITY2NWSR);
+        //game.getTilePile().addTile(ROAD4, ROAD4, ROAD4, ROAD4, ROAD4, ROAD4);
         game.getTilePile().addEveryTileOnce();
         game.nextPlayer();
         game.dragTile();

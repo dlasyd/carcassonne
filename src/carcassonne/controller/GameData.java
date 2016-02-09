@@ -6,6 +6,8 @@ import carcassonne.model.Tile;
 import carcassonne.view.PlacedFollower;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,10 +27,12 @@ public class GameData {
     private Tile previouslyPlacedTile;
     private Set<PlacedFollower> placedFollowers;
     private Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
+    private ArrayList<String[]> playersStats;
 
     public GameData(String name, String points, String followers, Color playerColor, String tilesLeft,
                     Tile currentTile, Tile previouslyPlacedTile, Set<Coordinates> possibleTileLocations,
-                    Set<PlacedFollower> placedFollowers, Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations) {
+                    Set<PlacedFollower> placedFollowers, Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations,
+                    ArrayList<String[]> playersStats) {
         this.name = name;
         this.points = points;
         this.followers = followers;
@@ -38,6 +42,7 @@ public class GameData {
         this.previouslyPlacedTile = previouslyPlacedTile;
         this.placedFollowers = placedFollowers;
         this.possibleLocationsAndRotations = possibleLocationsAndRotations;
+        this.playersStats = playersStats;
     }
 
     public String getName() {
@@ -74,5 +79,9 @@ public class GameData {
 
     public Set<PlacedFollower> getPlacedFollowers() {
         return placedFollowers;
+    }
+
+    public ArrayList<String[]> getPlayersStats() {
+        return playersStats;
     }
 }

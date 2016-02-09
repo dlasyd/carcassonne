@@ -71,7 +71,17 @@ public class Game implements DataToModel{
                 setPreviouslyPlacedTile(table.getPreviouslyPlacedTile()).
                 setPossibleLocationsAndRotations(table.getPossibleTileLocationsAndRotations()).
                 setPlacedFollowers(table.getPlacedFollowers()).
+                setPlayersStats(createPlayersStats()).
                 createGameData());
+    }
+
+    private ArrayList<String[]> createPlayersStats() {
+        ArrayList<String[]> result = new ArrayList<>();
+        for (Player player: players) {
+            result.add(new String[] {player.getName(),
+                    "" + player.getNumberOfFollowers(), "" + player.getCurrentPoints()});
+        }
+        return result;
     }
 
     @Override

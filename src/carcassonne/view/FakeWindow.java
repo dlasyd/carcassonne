@@ -112,8 +112,10 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
-    public void setTableValue(String value, int col, int row) {
-        currentTableData.get(col).put(row, value);
+    public void setTableRowValues(int row, String[] values) {
+        currentTableData.get(row).put(0, values[0]);
+        currentTableData.get(row).put(1, values[1]);
+        currentTableData.get(row).put(2, values[2]);
     }
 
     @Override

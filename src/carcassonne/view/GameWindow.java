@@ -11,10 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is a part of Carcassonne project.
@@ -67,8 +64,10 @@ public class GameWindow extends JFrame implements ViewWindow{
 
         tableData = new AbstractTableModel() {
             private String columnNames[] = {"Player", "Followers", "Points"};
-            private ArrayList<String[]> rowData= new ArrayList<>(Collections.singletonList(new String[] {
+            private ArrayList<String[]> rowData= new ArrayList<>(Arrays.asList(new String[]{
                     "Player1", "-1", "-1"
+            },new String[]{
+                    "Player2", "-1", "-1"
             }));
 
             @Override
@@ -216,8 +215,10 @@ public class GameWindow extends JFrame implements ViewWindow{
     }
 
     @Override
-    public void setTableValue(String value, int col, int row) {
-        tableData.setValueAt(value, col, row);
+    public void setTableRowValues(int row, String[] values) {
+        tableData.setValueAt(values[0], row, 0);
+        tableData.setValueAt(values[1], row, 1);
+        tableData.setValueAt(values[2], row, 2);
     }
     //</editor-fold>
 

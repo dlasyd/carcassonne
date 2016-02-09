@@ -31,7 +31,7 @@ public interface ViewWindow {
 
     void addTileOnTable(DrawableTile tile);
 
-    void setTableValue(String value, int col, int row);
+    void setTableRowValues(int row, String[] data);
 
     void displayEndgameWindow();
 

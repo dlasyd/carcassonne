@@ -7,9 +7,7 @@ import carcassonne.view.PlacedFollower;
 import carcassonne.view.ViewWindow;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static carcassonne.model.TileDirections.*;
 import static carcassonne.model.TileDirections.SSW;
@@ -75,7 +73,11 @@ public class GameWindowLogic implements WindowLogic {
     }
 
     private void updateTable() {
-        gameWindow.setTableValue(gameData.getPoints(), 0, 0);
+        int rowCounter = 0;
+        for (String[] values: gameData.getPlayersStats()) {
+            gameWindow.setTableRowValues(rowCounter, values);
+            rowCounter++;
+        }
     }
 
     /*
