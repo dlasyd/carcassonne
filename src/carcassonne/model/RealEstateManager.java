@@ -123,6 +123,7 @@ public class RealEstateManager {
                     player.increaseCurrentPoints(points);
                     for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
                         if (tile.hasFollower() &&
+                                tile.getFollowerOwner() == player &&
                                 currentImmutableRE.getRealEstate()
                                         .getTilesAndFeatureTileDirections().get(tile)
                                         .contains(tile.getFollowerTileDirection())) {

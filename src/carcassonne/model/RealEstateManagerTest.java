@@ -304,4 +304,14 @@ public class RealEstateManagerTest {
         assertEquals("Anton has 7 followers after city is finished", 7, anton.getNumberOfFollowers());
     }
 
+    @Test
+    public void roadUnion() {
+        placeTile(1, 1, ROAD4, DEG_0, anton, EAST);
+        placeTile(3, 1, ROAD4, DEG_0, andrey, WEST);
+        placeTile(2, 1, ROAD2NS, DEG_90);
+        assertEquals("Anton has 7 followers after city is finished", 7, anton.getNumberOfFollowers());
+        assertEquals("Andrey has 7 followers after city is finished", 7, andrey.getNumberOfFollowers());
+
+    }
+
 }

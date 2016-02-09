@@ -219,6 +219,7 @@ public class GameWindow extends JFrame implements ViewWindow{
         tableData.setValueAt(values[0], row, 0);
         tableData.setValueAt(values[1], row, 1);
         tableData.setValueAt(values[2], row, 2);
+        repaint();
     }
     //</editor-fold>
 
