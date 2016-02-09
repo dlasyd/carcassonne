@@ -298,7 +298,7 @@ public class RealEstateManagerTest {
     }
 
     @Test
-    public void tileReturnedAfterRealEstateIsFinished() {
+    public void followerReturnedAfterRealEstateIsFinished() {
         placeTile(1, 1, CITY1, DEG_180, anton, SOUTH);
         placeTile(1, 2, CITY1, DEG_0);
         assertEquals("Anton has 7 followers after city is finished", 7, anton.getNumberOfFollowers());
@@ -311,7 +311,17 @@ public class RealEstateManagerTest {
         placeTile(2, 1, ROAD2NS, DEG_90);
         assertEquals("Anton has 7 followers after city is finished", 7, anton.getNumberOfFollowers());
         assertEquals("Andrey has 7 followers after city is finished", 7, andrey.getNumberOfFollowers());
+    }
 
+    @Test
+    public void separatedLandThreeCities() {
+        placeTile(0, -1, TileName.CITY1RSE, Rotation.DEG_180, anton, EAST);
+        placeTile(0, 1,  TileName.CITY1,    Rotation.DEG_180, andrey, NORTH);
+        placeTile(0, 2,  TileName.CITY1RWE, Rotation.DEG_0, anton, SOUTH);
+        manager.addPointsForUnfinishedRealEstate();
+
+        assertEquals("Anton has 9 points",  6, anton.getCurrentPoints());
+        assertEquals("Andrey has 6 points", 3, andrey.getCurrentPoints());
     }
 
 }

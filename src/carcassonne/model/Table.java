@@ -144,5 +144,9 @@ public class Table implements OwnershipChecker{
         }
         return Tile.getNullInstance();
     }
+
+    void addEndGamePoints() {
+        realEstateManager.addPointsForUnfinishedRealEstate();
+    }
     //</editor-fold>
 }

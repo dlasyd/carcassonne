@@ -56,6 +56,7 @@ public class Game implements DataToModel{
             notifyController();
         } else {
             finished = true;
+            table.addEndGamePoints();
             windowLogic.finishGame();
             notifyController();
         }

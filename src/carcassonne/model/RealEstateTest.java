@@ -23,6 +23,7 @@ public class RealEstateTest {
     public Table table;
     public RealEstateManager manager;
     public Player anton = new Player();
+    public Player andrey = new Player();
 
     public void placeTile(int x, int y, TileName tileName, Rotation rotation) {
         Tile tile = Tile.getInstance(x, y);
@@ -770,4 +771,6 @@ public class RealEstateTest {
         placeTile(2, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
         assertEquals("Anton has 5 followers", 5, anton.getNumberOfFollowers());
     }
+
+
 }
