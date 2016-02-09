@@ -570,4 +570,24 @@ public class ModelToControllerTest {
 
         assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
     }
+
+    @Test
+    public void endGamePointsAreDisplayed() {
+        ArrayList<Map<Integer, String>> expected = new ArrayList<>();
+        expected.add(new HashMap());
+        expected.add(new HashMap());
+        expected.get(0).put(0, "Anton");
+        expected.get(0).put(1, "6");
+        expected.get(0).put(2, "1");
+        expected.get(1).put(0, "Andrey");
+        expected.get(1).put(1, "7");
+        expected.get(1).put(2, "0");
+
+        game.getTilePile().addTile(TileName.ROAD4);
+        prepareGame();
+
+        turnActions(1, 0, 0.85, 0.5);
+
+        assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
+    }
 }
