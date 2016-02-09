@@ -6,6 +6,7 @@ import carcassonne.model.Rotation;
 import carcassonne.model.TileName;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,7 @@ public class FakeWindow implements ViewWindow {
     private Set<double[]> followerLocations;
     private double[] temporaryFollowerLocation;
     private Set<DrawablePlacedFollower> placedFollowers = new HashSet<>();
+    private ArrayList<ArrayList<String>> currentTableData = new ArrayList<>();
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -259,6 +261,10 @@ public class FakeWindow implements ViewWindow {
 
     public Set getPlacedFollowers() {
         return placedFollowers;
+    }
+
+    public ArrayList<ArrayList<String>> getCurrentTableData() {
+        return currentTableData;
     }
 
     //</editor-fold>

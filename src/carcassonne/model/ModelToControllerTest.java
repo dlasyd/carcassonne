@@ -561,7 +561,7 @@ public class ModelToControllerTest {
         turnActions(4, 0, 0.15, 0.5);
         turnActions(5, 0, 0.15, 0.5);
 
-        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        ArrayList<ArrayList<String>> result = fakeWindow.getCurrentTableData();
         assertEquals("Correct information is displayed", expected, result);
     }
 
