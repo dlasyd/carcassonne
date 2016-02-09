@@ -31,6 +31,8 @@ public interface ViewWindow {
 
     void addTileOnTable(DrawableTile tile);
 
+    void setTableValue(String value, int col, int row);
+
     void displayEndgameWindow();
 
     void setTilePreviewEnabled(boolean b);

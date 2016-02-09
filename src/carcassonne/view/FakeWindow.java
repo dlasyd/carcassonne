@@ -109,6 +109,11 @@ public class FakeWindow implements ViewWindow {
     }
 
     @Override
+    public void setTableValue(String value, int col, int row) {
+
+    }
+
+    @Override
     public void setNumberOfFollowers(String numberOfFollowers) {
         this.numberOfFollowers = numberOfFollowers;
     }

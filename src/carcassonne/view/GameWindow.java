@@ -11,6 +11,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,9 +66,14 @@ public class GameWindow extends JFrame implements ViewWindow{
         gamePanelArea.add(gamePanel);
 
         tableData = new AbstractTableModel() {
+            private String columnNames[] = {"Player", "Followers", "Points"};
+            private ArrayList<String[]> rowData= new ArrayList<>(Collections.singletonList(new String[] {
+                    "Player1", "-1", "-1"
+            }));
+
             @Override
             public int getRowCount() {
-                return 3;
+                return rowData.size();
             }
 
             @Override
@@ -76,12 +83,22 @@ public class GameWindow extends JFrame implements ViewWindow{
 
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
-                return "Anton";
+                return rowData.get(rowIndex)[columnIndex];
+            }
+
+            @Override
+            public String getColumnName(int col) {
+                return columnNames[col];
+            }
+
+            @Override
+            public void setValueAt(Object value, int row, int col) {
+                rowData.get(row)[col] = value.toString();
             }
         };
 
         playersStatsTable = new JTable(tableData);
-        playersStatsTable.setPreferredScrollableViewportSize(new Dimension(100, 80));
+        playersStatsTable.setPreferredScrollableViewportSize(new Dimension(100, 80));   //too wide without this line
 
         tableScrollPane = new JScrollPane(playersStatsTable);
         tableContainer.add(tableScrollPane);
@@ -198,6 +215,10 @@ public class GameWindow extends JFrame implements ViewWindow{
         this.drawablePlacedFollowers = drawablePlacedFollowers;
     }
 
+    @Override
+    public void setTableValue(String value, int col, int row) {
+        tableData.setValueAt(value, col, row);
+    }
     //</editor-fold>
 
     @Override
