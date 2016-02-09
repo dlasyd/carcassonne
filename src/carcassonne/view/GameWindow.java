@@ -7,6 +7,8 @@ import carcassonne.model.Rotation;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashSet;
@@ -34,10 +36,14 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JButton confirmTileButton;
     private JLabel currentPoints;
     private JSlider scaleSlider;
+    private JPanel tableContainer;
     //</editor-fold>
 
     private JDialog         gameEndWindow = new GameEndWindow();
     private JPanel          tilePreview;
+    private JScrollPane     tableScrollPane;
+    private JTable          playersStatsTable;
+    private TableModel      tableData;
     private GamePanel       gamePanel;
     private DrawableTile    currentTile;
     private boolean         tilePreviewEnabled;
@@ -57,6 +63,30 @@ public class GameWindow extends JFrame implements ViewWindow{
         gamePanel = new GamePanel();
         gamePanelArea.add(gamePanel);
 
+        tableData = new AbstractTableModel() {
+            @Override
+            public int getRowCount() {
+                return 3;
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 3;
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                return "Anton";
+            }
+        };
+
+        playersStatsTable = new JTable(tableData);
+        playersStatsTable.setPreferredScrollableViewportSize(new Dimension(100, 80));
+
+        tableScrollPane = new JScrollPane(playersStatsTable);
+        tableContainer.add(tableScrollPane);
+
+        //<editor-fold desc="Listeners">
         endTurnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,6 +119,7 @@ public class GameWindow extends JFrame implements ViewWindow{
                 scaleSlider.setValue(value);
             }
         });
+        //</editor-fold>
     }
 
     //<editor-fold desc="Setters used by controller">
