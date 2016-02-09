@@ -763,4 +763,11 @@ public class RealEstateTest {
         placeTile(0, 2, TileName.CITY1, Rotation.DEG_90);
         assertEquals("Three tile castle with one shield is 8 points", 8, anton.getCurrentPoints());
     }
+
+    @Test
+    public void TwoCloistersNextToEachOtherArePossible() {
+        placeTile(1, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
+        placeTile(2, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
+        assertEquals("Anton has 5 followers", 5, anton.getNumberOfFollowers());
+    }
 }

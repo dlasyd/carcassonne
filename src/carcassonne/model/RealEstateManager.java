@@ -223,10 +223,15 @@ public class RealEstateManager {
      * This method is run by an instance that implements OwnershipChecker interface to check
      * whether or not a possible follower position should be displayed and
      * by the table instance to check if Runtime Exception should be thrown
+     *
+     * According to the rules of ther game, Cloisters should be excluded from this check.
+     *
      */
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
         boolean result = false;
         for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
+            if (iRealEstate.getRealEstate() instanceof Cloister)
+                break;
             temporaryUpdateRealEstate(tilePlacedLast);
             result = iRealEstate.getRealEstate().contains(tilePlacedLast, direction);
             if (result == true) {
