@@ -50,8 +50,6 @@ public class GameWindowLogic implements WindowLogic {
             tilePreviewEnabled = true;
         }
 
-
-
         updateUI();
         updateTable();
         tileConfirmed = false;

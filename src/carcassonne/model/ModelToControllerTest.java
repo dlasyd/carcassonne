@@ -82,6 +82,19 @@ public class ModelToControllerTest {
         game.getTilePile().addXCrossroads(5);
     }
 
+    public void turnActions(int x, int y, double mx, double my) {
+        fakeWindow.clickOnGamePanel(x, y);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(mx, my);
+        fakeWindow.pressEndTurnButton();
+    }
+
+    public void turnActions(int x, int y) {
+        fakeWindow.clickOnGamePanel(x, y);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.pressEndTurnButton();
+    }
+
     @Test
     public void dataIsPushed() {
         add5DifferentTiles();
@@ -449,12 +462,9 @@ public class ModelToControllerTest {
         setUpFakeGame();
         fakeGame.getTilePile().addTile(TileName.CITY1);
         prepareFakeGame();
-
-        fakeWindow.clickOnGamePanel(0, -1);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(0.5, 0.15);
-        fakeWindow.pressEndTurnButton();
-        assertEquals("Follower placed to right position", TileDirections.SOUTH, fakeGame.getLastFollowerTileDirections());
+        turnActions(0, -1, 0.5, 0.15);
+        assertTrue("Follower placed to right position", Arrays.asList(TileDirections.SOUTH, TileDirections.SSE,
+                TileDirections.SSW).contains(fakeGame.getLastFollowerTileDirections()));
     }
 
     @Test
@@ -462,10 +472,7 @@ public class ModelToControllerTest {
         setUpFakeGame();
         fakeGame.getTilePile().addTile(TileName.CITY1);
         prepareFakeGame();
-
-        fakeWindow.clickOnGamePanel(0, -1);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.pressEndTurnButton();
+        turnActions(0, -1);
         assertEquals("Follower placed to right position", null, fakeGame.getLastFollowerTileDirections());
     }
 
@@ -473,15 +480,9 @@ public class ModelToControllerTest {
     public void placedFollowersAreDisplayed() {
         Set<DrawablePlacedFollower> expected = new HashSet();
         expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.5}, Color.RED, Rotation.DEG_0));
-
         game.getTilePile().addTile(TileName.CITY4, TileName.CITY4);
         prepareGame();
-
-        fakeWindow.clickOnGamePanel(0, -1);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(0.5, 0.5);
-        fakeWindow.pressEndTurnButton();
-
+        turnActions(0, -1, 0.5, 0.5);
         assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
     }
 
@@ -489,16 +490,8 @@ public class ModelToControllerTest {
     public void smallFinishedCastleGives4Points() {
         game.getTilePile().addTile(TileName.CITY1, TileName.CITY1, TileName.CITY1);
         prepareGame();
-
-
-        fakeWindow.clickOnGamePanel(0, -1);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(0.5, 0.15);
-        fakeWindow.pressEndTurnButton();
-
-        fakeWindow.clickOnGamePanel(0, 1);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.pressEndTurnButton();
+        turnActions(0, -1, 0.5, 0.15);
+        turnActions(0, 1);
         assertEquals("Follower placed to right position", "4", fakeWindow.getCurrentPoints());
     }
 
@@ -507,12 +500,7 @@ public class ModelToControllerTest {
         Set<DrawablePlacedFollower> expected = new HashSet();
         game.getTilePile().addTile(TileName.CITY1, TileName.CITY1);
         prepareGame();
-
-
-        fakeWindow.clickOnGamePanel(0, -1);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(0.5, 0.15);
-        fakeWindow.pressEndTurnButton();
+        turnActions(0, -1, 0.5, 0.15);
         assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
     }
 
@@ -525,10 +513,7 @@ public class ModelToControllerTest {
         prepareGame();
 
 
-        fakeWindow.clickOnGamePanel(0, -1);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(0.5, 0.4);
-        fakeWindow.pressEndTurnButton();
+        turnActions(0, -1, 0.5, 0.4);
         Set<Double> result = new HashSet<>();
         fakeWindow.clickOnGamePanel(0, -2);
         fakeWindow.pressConfirmTileButton();
@@ -565,12 +550,5 @@ public class ModelToControllerTest {
         turnActions(5, 0, 0.15, 0.5);
 
         assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
-    }
-
-    public void turnActions(int x, int y, double mx, double my) {
-        fakeWindow.clickOnGamePanel(x, y);
-        fakeWindow.pressConfirmTileButton();
-        fakeWindow.clickOnCurrentTile(mx, my);
-        fakeWindow.pressEndTurnButton();
     }
 }
