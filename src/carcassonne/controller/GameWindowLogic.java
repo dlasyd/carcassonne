@@ -55,6 +55,7 @@ public class GameWindowLogic implements WindowLogic {
 
 
         updateUI();
+        updateTable();
         tileConfirmed = false;
         gameWindow.setConfirmTileButtonText("Confirm tile");
         gameWindow.setConfirmTileButtonEnabled(false);
@@ -71,6 +72,10 @@ public class GameWindowLogic implements WindowLogic {
         gameWindow.setPossibleTileLocations(gameData.getPossibleLocationsAndRotations().keySet());
         gameWindow.addTileOnTable(new DrawableTile(gameData.getPreviouslyPlacedTile()));
         gameWindow.setDrawablePlacedFollowersSet(createDrawablePlacedFollowersSet(gameData.getPlacedFollowers()));
+    }
+
+    private void updateTable() {
+        gameWindow.setTableValue(gameData.getPoints(), 0, 0);
     }
 
     /*

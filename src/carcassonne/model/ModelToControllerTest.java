@@ -9,10 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -547,9 +544,15 @@ public class ModelToControllerTest {
      * Each turn number of points and followers should be updated for all players
      */
     public void importantInformationIsDisplayedForAllPlayers() {
-        ArrayList<ArrayList<String>> expected = new ArrayList<>();
-        expected.add(new ArrayList(Arrays.asList("Anton", "2", "5")));
-        expected.add(new ArrayList(Arrays.asList("Andrey", "4", "7")));
+        ArrayList<Map<Integer, String>> expected = new ArrayList<>();
+        expected.add(new HashMap());
+        expected.add(new HashMap());
+        expected.get(0).put(0, "Anton");
+        expected.get(0).put(1, "2");
+        expected.get(0).put(2, "5");
+        expected.get(1).put(0, "Andrey");
+        expected.get(1).put(1, "4");
+        expected.get(1).put(2, "7");
 
         game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4,
                 TileName.ROAD4, TileName.ROAD4);
@@ -561,8 +564,7 @@ public class ModelToControllerTest {
         turnActions(4, 0, 0.15, 0.5);
         turnActions(5, 0, 0.15, 0.5);
 
-        ArrayList<ArrayList<String>> result = fakeWindow.getCurrentTableData();
-        assertEquals("Correct information is displayed", expected, result);
+        assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
     }
 
     public void turnActions(int x, int y, double mx, double my) {

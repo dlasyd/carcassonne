@@ -6,9 +6,7 @@ import carcassonne.model.Rotation;
 import carcassonne.model.TileName;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class simulates a game window. It is used for testing controller.
@@ -33,10 +31,13 @@ public class FakeWindow implements ViewWindow {
     private Set<double[]> followerLocations;
     private double[] temporaryFollowerLocation;
     private Set<DrawablePlacedFollower> placedFollowers = new HashSet<>();
-    private ArrayList<ArrayList<String>> currentTableData = new ArrayList<>();
+    private ArrayList<Map<Integer,String>> currentTableData = new ArrayList<>();
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
+
+        currentTableData.add(new HashMap<>());
+        currentTableData.add(new HashMap<>());
     }
 
     /*
@@ -112,7 +113,7 @@ public class FakeWindow implements ViewWindow {
 
     @Override
     public void setTableValue(String value, int col, int row) {
-
+        currentTableData.get(col).put(row, value);
     }
 
     @Override
@@ -263,7 +264,7 @@ public class FakeWindow implements ViewWindow {
         return placedFollowers;
     }
 
-    public ArrayList<ArrayList<String>> getCurrentTableData() {
+    public ArrayList<Map<Integer, String>> getCurrentTableData() {
         return currentTableData;
     }
 
