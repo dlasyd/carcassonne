@@ -103,7 +103,7 @@ public abstract class RealEstate {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
             if (!neighbour.isNull() && !tilesAndFeatureTileDirections.containsKey(neighbour)) {
                 adjacentTiles.put(neighbour, neighbour.getDestinations(tileDirections.getNeighbour()));
-                adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), tile));
+                adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), new HashSet<>(), tile));
             }
         }
 
@@ -116,24 +116,22 @@ public abstract class RealEstate {
      * loopBreakingTile is a tile that is used to create RealEstate(in constructor)
      * example of importance: looped road
      */
-    private Map<Tile, Set<TileDirections>> findAdjacentTiles(Tile tile, TileDirections directionWithFeature, Tile loopBreakingTile) {
+    private Map<Tile, Set<TileDirections>> findAdjacentTiles(Tile startTile,TileDirections directionWithFeature, Set<Tile> visitedTiles, Tile loopBreakingTile) {
         Map<Tile, Set<TileDirections>> result = new HashMap<>();
 
-        if (tile.equals(loopBreakingTile)) {
+        if (startTile.equals(loopBreakingTile)) {
             return result;
         }
 
-        /*
-         * removes TileDirections that lead back
-         */
-        Set<TileDirections> currentTileFeatureDirections = tile.getDestinations(directionWithFeature);
+        Set<TileDirections> currentTileFeatureDirections = startTile.getDestinations(directionWithFeature);
         currentTileFeatureDirections.removeAll(directionWithFeature.getEdge());
         for (TileDirections direction: currentTileFeatureDirections) {
-            Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(),  direction);
+            Tile neighbour = table.getNeighbouringTile(startTile.getX(), startTile.getY(),  direction);
 
-            if (! neighbour.isNull()) {
+            if (!neighbour.isNull() && !visitedTiles.contains(neighbour)) {
+                visitedTiles.add(neighbour);
                 result.put(neighbour, neighbour.getDestinations(direction.getNeighbour()));
-                result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), loopBreakingTile));
+                result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), visitedTiles, loopBreakingTile));
             }
         }
         return result;

@@ -784,6 +784,6 @@ public class RealEstateTest {
         placeTile(-1, -4, TileName.CITY1RSWE, Rotation.DEG_180);
         placeTile(0,  -5, TileName.CITY2WE,   Rotation.DEG_90, anton, SOUTH);
         manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Anton has 11 points for unfinished castle", 11, anton.getCurrentPoints());
+        assertEquals("Anton has 12 points for unfinished castle", 12, anton.getCurrentPoints());
     }
 }
