@@ -2,7 +2,7 @@ package carcassonne.model;
 
 import java.awt.Color;
 
-public final class Player {
+public class Player {
     private String name;
     private Color color;
     private int numberOfFollowers = 7;
@@ -28,14 +28,22 @@ public final class Player {
         return numberOfFollowers;
     }
 
-    void placeFollower() {
+    void increaseNumberOfFollowers() {
+        numberOfFollowers++;
+    }
+
+    void decreaseNumberOfFollowers() {
         numberOfFollowers--;
+    }
+
+    void placeFollower() {
+        decreaseNumberOfFollowers();
         if (numberOfFollowers < 0)
             throw new RuntimeException("Number of followers that a player has is less than 0 " + name);
     }
 
     void returnFollower() {
-        numberOfFollowers++;
+        increaseNumberOfFollowers();
         if (numberOfFollowers > 7)
             throw new RuntimeException("Number of followers that a player has is more than 7");
     }

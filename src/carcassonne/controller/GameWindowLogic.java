@@ -84,7 +84,6 @@ public class GameWindowLogic implements WindowLogic {
     /*
      * This method removes placed followers from drawablePlacedFollowers
      * Followers are added during end turn
-     * TODO refactor iterator
      */
     private Set<DrawablePlacedFollower> createDrawablePlacedFollowersSet(Set<PlacedFollower> placedFollowers) {
         Set<DrawablePlacedFollower> toRetain = new HashSet<>();
@@ -366,7 +365,6 @@ public class GameWindowLogic implements WindowLogic {
             Set<Feature> features = tile.getFeatures();
             for (Feature feature: features) {
                 TileDirections direction = Util.any(tile.getFeatureTileDirections(feature));
-                // add numberOfFollowers in hand check
                 if (getOwnershipChecker().locationIsLegal(currentTileX, currentTileY, currentTileRotation, direction))
                     result.put(getTileSizeRelativeMultipliers(tile, feature), direction);
             }
@@ -544,6 +542,13 @@ public class GameWindowLogic implements WindowLogic {
                 case CITY4:
                     xyMultipliers[0] = 0.5;
                     xyMultipliers[1] = 0.5;
+                    break;
+
+                case ROAD2NS:
+                    if (feature.isRoad()) {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.15;
+                    }
                     break;
             }
             return xyMultipliers;

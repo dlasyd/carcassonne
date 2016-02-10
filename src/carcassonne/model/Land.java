@@ -36,7 +36,7 @@ class Land extends RealEstate {
 
         Set<RealEstate> citiesOnLand = new HashSet<>();
 
-        Player helper = new Player();
+        Player helper = new FakePlayer();
         for (Tile tile: tilesWithCity) {
             Set<TileDirections> disjointCitiesDirections = oneDirectionPerDisjointCity(tile);
 
