@@ -11,6 +11,8 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.*;
 
+import static carcassonne.model.Rotation.*;
+import static carcassonne.model.TileName.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -91,6 +93,25 @@ public class ModelToControllerTest {
 
     public void turnActions(int x, int y) {
         fakeWindow.clickOnGamePanel(x, y);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.pressEndTurnButton();
+    }
+
+    public void turnActions(int x, int y, int clickCounter, double mx, double my) {
+        fakeWindow.clickOnGamePanel(x, y);
+        for (int i = 0; i < clickCounter; i++) {
+            fakeWindow.clickOnPlacedTile();
+        }
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnCurrentTile(mx, my);
+        fakeWindow.pressEndTurnButton();
+    }
+
+    public void turnActions(int x, int y, int clickCounter) {
+        fakeWindow.clickOnGamePanel(x, y);
+        for (int i = 0; i < clickCounter; i++) {
+            fakeWindow.clickOnPlacedTile();
+        }
         fakeWindow.pressConfirmTileButton();
         fakeWindow.pressEndTurnButton();
     }
@@ -180,8 +201,8 @@ public class ModelToControllerTest {
 
     @Test
     public void tilePreviewDisplaysDifferentTiles() {
-        game.getTilePile().addTile(TileName.CITY1RWE);
-        game.getTilePile().addTile(TileName.ROAD3);
+        game.getTilePile().addTile(CITY1RWE);
+        game.getTilePile().addTile(ROAD3);
         prepareGame();
         Set<String> tileNames = new HashSet<>();
         Set<String> expected = new HashSet<>(Arrays.asList("road3.png", "city1rwe.png"));
@@ -206,7 +227,7 @@ public class ModelToControllerTest {
     public void fistTileIsCorrect() {
         add5DifferentTiles();
         prepareGame();
-        assertEquals("First tile is correct", TileName.CITY1RWE, fakeWindow.getFirstPlacedTileName());
+        assertEquals("First tile is correct", CITY1RWE, fakeWindow.getFirstPlacedTileName());
     }
 
     @Test
@@ -221,7 +242,7 @@ public class ModelToControllerTest {
         game.setTable(table);
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
-        game.getTilePile().addTile(TileName.ROAD3);
+        game.getTilePile().addTile(ROAD3);
 
         windowLogic = new GameWindowLogic();
         viewWindow = new FakeWindow(windowLogic);
@@ -282,10 +303,10 @@ public class ModelToControllerTest {
     public void rotateTileWhenClickOnPlacedTile() {
         add5CrossRoads();
         prepareGame();
-        assertEquals("Tile isn't rotated", Rotation.DEG_0, fakeWindow.getCurrentTileRotation());
+        assertEquals("Tile isn't rotated", DEG_0, fakeWindow.getCurrentTileRotation());
         fakeWindow.clickOnGamePanel();
         fakeWindow.clickOnPlacedTile();
-        assertEquals("Tile is rotated", Rotation.DEG_90, fakeWindow.getCurrentTileRotation());
+        assertEquals("Tile is rotated", DEG_90, fakeWindow.getCurrentTileRotation());
     }
 
     @Test
@@ -310,7 +331,7 @@ public class ModelToControllerTest {
         game.setTable(table);
         game.addPlayer("Anton" , Color.RED);
         game.addPlayer("Andrey", Color.YELLOW);
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(CITY1);
 
         windowLogic = new GameWindowLogic();
         viewWindow = new FakeWindow(windowLogic);
@@ -323,25 +344,25 @@ public class ModelToControllerTest {
         fakeWindow = (FakeWindow) viewWindow;
 
         fakeWindow.clickOnGamePanel(0, -1);
-        assertEquals("Tile is rotated legally when placed", Rotation.DEG_180, fakeWindow.getCurrentTileRotation());
+        assertEquals("Tile is rotated legally when placed", DEG_180, fakeWindow.getCurrentTileRotation());
     }
 
     @Test
     public void whenClickOnTileOnlyLegalRotation() {
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(CITY1);
         prepareGame();
         fakeWindow.clickOnGamePanel(0, 1);
         fakeWindow.clickOnPlacedTile();
-        assertEquals("Current tile rotation is correct", Rotation.DEG_180, fakeWindow.getCurrentTileRotation());
+        assertEquals("Current tile rotation is correct", DEG_180, fakeWindow.getCurrentTileRotation());
         fakeWindow.clickOnPlacedTile();
-        assertEquals("Current tile rotation is correct", Rotation.DEG_270, fakeWindow.getCurrentTileRotation());
+        assertEquals("Current tile rotation is correct", DEG_270, fakeWindow.getCurrentTileRotation());
         fakeWindow.clickOnPlacedTile();
-        assertEquals("Incorrect rotation is skipped", Rotation.DEG_90, fakeWindow.getCurrentTileRotation());
+        assertEquals("Incorrect rotation is skipped", DEG_90, fakeWindow.getCurrentTileRotation());
     }
 
     @Test
     public void placesForFollowersAreDisplayedWhenNecessary() {
-        game.getTilePile().addTile(TileName.ROAD3);
+        game.getTilePile().addTile(ROAD3);
         prepareGame();
         assertEquals("Spaces for followers are displayed", false, fakeWindow.areFollowersLocationsDisplayed());
         fakeWindow.clickOnGamePanel(0, 1);
@@ -354,7 +375,7 @@ public class ModelToControllerTest {
 
     @Test
     public void windowReceivesFollowerLocationData() {
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(CITY1);
         prepareGame();
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
@@ -363,7 +384,7 @@ public class ModelToControllerTest {
 
     @Test
     public void followerCantBePlacedBeforeTileIsConfirmed() {
-        game.getTilePile().addTile(TileName.CITY1RWE);
+        game.getTilePile().addTile(CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         assertEquals("Follower cannot be placed", false, fakeWindow.canFollowerBePlaced());
@@ -371,7 +392,7 @@ public class ModelToControllerTest {
 
     @Test
     public void followerCanBePlacedAfterTileIsConfirmed() {
-        game.getTilePile().addTile(TileName.CITY1RWE);
+        game.getTilePile().addTile(CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
@@ -380,7 +401,7 @@ public class ModelToControllerTest {
 
     @Test
     public void followerCantBePlacedAfterUnconfirmed() {
-        game.getTilePile().addTile(TileName.CITY1RWE);
+        game.getTilePile().addTile(CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
@@ -390,7 +411,7 @@ public class ModelToControllerTest {
 
     @Test
     public void followerCantBePlacedAfterEndTurnButton() {
-        game.getTilePile().addTile(TileName.CITY1RWE);
+        game.getTilePile().addTile(CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
@@ -400,7 +421,7 @@ public class ModelToControllerTest {
 
     @Test
     public void temporaryFollowerIsPlaced() {
-        game.getTilePile().addTile(TileName.CITY1RWE);
+        game.getTilePile().addTile(CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
@@ -415,7 +436,7 @@ public class ModelToControllerTest {
         expected.add(new double[] {0.5, 0.6});
         expected.add(new double[] {0.5, 0.15});
 
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(CITY1);
         prepareGame();
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
@@ -437,7 +458,7 @@ public class ModelToControllerTest {
          * expected location differed from previous test because tile will be turn upside down automatically
          */
         double[] expected = new double[]{0.5, 0.85};
-        game.getTilePile().addTile(TileName.CITY1);
+        game.getTilePile().addTile(CITY1);
         prepareGame();
         fakeWindow.clickOnGamePanel(0, -1);
         fakeWindow.pressConfirmTileButton();
@@ -447,7 +468,7 @@ public class ModelToControllerTest {
 
     @Test
     public void clickAwayFromCurrentTileRemovesTemporaryFollower() {
-        game.getTilePile().addTile(TileName.CITY1RWE);
+        game.getTilePile().addTile(CITY1RWE);
         prepareGame();
         fakeWindow.clickOnGamePanel(1, 0);
         fakeWindow.pressConfirmTileButton();
@@ -460,7 +481,7 @@ public class ModelToControllerTest {
     @Test
     public void submittingFollowerModelHasTileDirection() {
         setUpFakeGame();
-        fakeGame.getTilePile().addTile(TileName.CITY1);
+        fakeGame.getTilePile().addTile(CITY1);
         prepareFakeGame();
         turnActions(0, -1, 0.5, 0.15);
         assertTrue("Follower placed to right position", Arrays.asList(TileDirections.SOUTH, TileDirections.SSE,
@@ -470,7 +491,7 @@ public class ModelToControllerTest {
     @Test
     public void followerNotSubmittedThenModelGetsNoTileDirection() {
         setUpFakeGame();
-        fakeGame.getTilePile().addTile(TileName.CITY1);
+        fakeGame.getTilePile().addTile(CITY1);
         prepareFakeGame();
         turnActions(0, -1);
         assertEquals("Follower placed to right position", null, fakeGame.getLastFollowerTileDirections());
@@ -479,8 +500,8 @@ public class ModelToControllerTest {
     @Test
     public void placedFollowersAreDisplayed() {
         Set<DrawablePlacedFollower> expected = new HashSet();
-        expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.5}, Color.RED, Rotation.DEG_0));
-        game.getTilePile().addTile(TileName.CITY4, TileName.CITY4);
+        expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.5}, Color.RED, DEG_0));
+        game.getTilePile().addTile(CITY4, CITY4);
         prepareGame();
         turnActions(0, -1, 0.5, 0.5);
         assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
@@ -488,7 +509,7 @@ public class ModelToControllerTest {
 
     @Test
     public void smallFinishedCastleGives4Points() {
-        game.getTilePile().addTile(TileName.CITY1, TileName.CITY1, TileName.CITY1);
+        game.getTilePile().addTile(CITY1, CITY1, CITY1);
         prepareGame();
         turnActions(0, -1, 0.5, 0.15);
         turnActions(0, 1);
@@ -498,7 +519,7 @@ public class ModelToControllerTest {
     @Test
     public void smallFinishedCastleFollowerNotOnTable() {
         Set<DrawablePlacedFollower> expected = new HashSet();
-        game.getTilePile().addTile(TileName.CITY1, TileName.CITY1);
+        game.getTilePile().addTile(CITY1, CITY1);
         prepareGame();
         turnActions(0, -1, 0.5, 0.15);
         assertEquals("Placed follower is displayed on correct tile and position", expected, fakeWindow.getPlacedFollowers());
@@ -509,7 +530,7 @@ public class ModelToControllerTest {
         Set<Double> expected = new HashSet();
         expected.add(0.6);
         expected.add(0.85);
-        game.getTilePile().addTile(TileName.CITY3, TileName.CITY3, TileName.CITY3);
+        game.getTilePile().addTile(CITY3, CITY3, CITY3);
         prepareGame();
 
 
@@ -539,8 +560,8 @@ public class ModelToControllerTest {
         expected.get(1).put(1, "7");
         expected.get(1).put(2, "4");
 
-        game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4,
-                TileName.ROAD4, TileName.ROAD4);
+        game.getTilePile().addTile(ROAD4, ROAD4, ROAD4, ROAD4,
+                ROAD4, ROAD4);
         prepareGame();
 
         turnActions(1, 0, 0.15, 0.5);
@@ -564,8 +585,8 @@ public class ModelToControllerTest {
         expected.get(1).put(1, "7");
         expected.get(1).put(2, "0");
 
-        game.getTilePile().addTile(TileName.ROAD4, TileName.ROAD4, TileName.ROAD4, TileName.ROAD4,
-                TileName.ROAD4, TileName.ROAD4);
+        game.getTilePile().addTile(ROAD4, ROAD4, ROAD4, ROAD4,
+                ROAD4, ROAD4);
         prepareGame();
 
         assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
@@ -583,7 +604,7 @@ public class ModelToControllerTest {
         expected.get(1).put(1, "7");
         expected.get(1).put(2, "0");
 
-        game.getTilePile().addTile(TileName.ROAD4);
+        game.getTilePile().addTile(ROAD4);
         prepareGame();
 
         turnActions(1, 0, 0.85, 0.5);
@@ -594,7 +615,7 @@ public class ModelToControllerTest {
     @Test
     public void ifZeroFollowersNoFollowerLocationsDisplayed() {
         for (int i = 0; i < 15; i++) {
-            game.getTilePile().addTile(TileName.CLOISTER);
+            game.getTilePile().addTile(CLOISTER);
         }
         prepareGame();
         for (int i = 0; i < 7; i++) {
@@ -605,5 +626,38 @@ public class ModelToControllerTest {
         fakeWindow.pressConfirmTileButton();
         assertEquals("If player has no followers then there are no follower possible locations",
                 0, fakeWindow.getFollowerLocations().size());
+    }
+
+    @Test
+    public void playerShouldHaveMoreThan0FollowersWhenGameEnds() {
+        game.getTilePile().setNonRandom(true);
+        game.getTilePile().addTile(CITY3S, CITY2NW, CITY2NWSR, CITY2NWR, CITY3, CITY1RSW, CITY1RWE, CITY2WES,
+                CLOISTER, CITY1RSWE, ROAD2NS, ROAD3, CITY11WE, CLOISTERR, CITY2WE, CITY4, CITY1, CITY3R,
+                CITY2NWS, CITY11NE, CITY1RSE, ROAD4, CITY3SR, ROAD2SW);
+        prepareGame();
+        turnActions(0, -1, 0, 0.5, 0.4);
+        turnActions(1, -1, 0, 0.65, 0.65);
+        turnActions(1, -2, 1, 0.5, 0.65);
+        turnActions(0, -2, 0);
+        turnActions(0, 1, 0);
+        turnActions(2, -2, 0, 0.5, 0.15);
+        turnActions(2, -3, 0, 0.15, 0.35);
+        turnActions(-1, 1, 0);
+        turnActions(-1, -1, 0, 0.5, 0.5);
+        turnActions(1, -3, 0, 0.5, 0.15);
+        turnActions(2, -1, 0, 0.5, 0.15);
+        turnActions(0, -3, 0, 0.85, 0.5);
+        turnActions(1, -4, 0, 0.15, 0.5);
+        turnActions(-1, -2, 0, 0.5, 0.5);
+        turnActions(1, -5, 0);
+        turnActions(0, 2, 0);
+        turnActions(1, -6, 0, 0.5, 0.6);
+        turnActions(3, -3, 0, 0.5, 0.85);
+        turnActions(2, -4, 0, 0.65, 0.65);
+        turnActions(2, -6, 0);
+        turnActions(3, -6, 0, 0.5, 0.15);
+        turnActions(2, 0, 0);
+        turnActions(4, -6, 0, 0.75, 0.85);
+        turnActions(3, -1, 0);
     }
 }

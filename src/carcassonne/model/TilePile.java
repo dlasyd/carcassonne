@@ -8,6 +8,7 @@ import static carcassonne.model.TileDirections.*;
 public class TilePile {
     private static TilePile tilePile;
     private ArrayList<Tile> tiles = new ArrayList<Tile>();
+    private boolean         nonRandom;
 
     public static Tile getReferenceTile(TileName tileName) {
         Tile tile = Tile.getInstance();
@@ -159,10 +160,16 @@ public class TilePile {
     public Tile dragTile() {
         if (tiles.isEmpty())
             throw new RuntimeException("Trying to drag a tile from an empty pile");
-        int randomIndex = (int) (Math.random() * tiles.size());
-        Tile tile = tiles.get(randomIndex);
-        tiles.remove(randomIndex);
-        return tile;
+        if (nonRandom) {
+            Tile tile = tiles.get(0);
+            tiles.remove(0);
+            return tile;
+        } else {
+            int randomIndex = (int) (Math.random() * tiles.size());
+            Tile tile = tiles.get(randomIndex);
+            tiles.remove(randomIndex);
+            return tile;
+        }
     }
 
     public boolean hasTiles() {
@@ -208,5 +215,9 @@ public class TilePile {
         for (TileName name: TileName.values()) {
             addTile(name);
         }
+    }
+
+    public void setNonRandom(boolean nonRandom) {
+        this.nonRandom = nonRandom;
     }
 }

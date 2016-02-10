@@ -35,7 +35,10 @@ public class GameWindowLogic implements WindowLogic {
     private FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
     private FollowerMap         currentTileFollowerMap;
     private Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
-
+    private final boolean         LOG = true;
+    private int clickOnCurrentTile;
+    private ArrayList<String> debugTileNames = new ArrayList<>();
+    private ArrayList<String> debugTurnActions = new ArrayList<>();
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -172,6 +175,28 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
+        if (LOG) {
+            System.out.println("--------------");
+            System.out.println("--------------");
+            if (temporaryFollowerDisplayed)
+                debugTurnActions.add("turnActions(" + currentTileX + ", " + currentTileY  + ", " + clickOnCurrentTile + ", " +
+                        currentFollowerLocation[0] + ", " + currentFollowerLocation[1] + ");");
+            else
+                debugTurnActions.add("turnActions(" + currentTileX + ", " + currentTileY +
+                        ", " + clickOnCurrentTile + ");");
+
+            debugTileNames.add(gameData.getCurrentTile().getName().toString() + ", ");
+
+            for (String text: debugTileNames)
+                System.out.print(text);
+
+            System.out.println("--");
+
+            for (String text: debugTurnActions)
+                System.out.println(text);
+
+
+        }
         if (temporaryFollowerDisplayed) {
             drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
                     currentFollowerLocation, gameData.getPlayerColor(), currentTileRotation));
@@ -188,6 +213,8 @@ public class GameWindowLogic implements WindowLogic {
         currentTileRotation = Rotation.DEG_0;
         if (gameEnded)
             gameWindow.displayEndgameWindow();
+
+        clickOnCurrentTile = 0;
     }
 
     /**
@@ -225,6 +252,7 @@ public class GameWindowLogic implements WindowLogic {
         }
         gameWindow.getCurrentTile().setRotation(currentTileRotation);
         gameWindow.repaintWindow();
+        clickOnCurrentTile++;
     }
 
     @Override
