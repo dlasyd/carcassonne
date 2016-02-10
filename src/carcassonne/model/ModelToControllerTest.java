@@ -660,4 +660,26 @@ public class ModelToControllerTest {
         turnActions(4, -6, 0, 0.75, 0.85);
         turnActions(3, -1, 0);
     }
+
+    @Test
+    public void exceptionIfPlacedOnOccupiedLand() {
+        game.getTilePile().setNonRandom(true);
+        game.getTilePile().addTile(CITY2NWSR, CITY1, ROAD3, CITY11WE, CITY2NW, CITY1RSE, CLOISTERR, ROAD4,
+                CITY2WE, CITY2NWS, CITY2NWR, CITY1RWE, ROAD2NS, CLOISTER);
+        prepareGame();
+        turnActions(0, -1, 0);
+        turnActions(1, -1, 0, 0.5, 0.15);
+        turnActions(-1, 0, 2, 0.5, 0.85);
+        turnActions(2, -1, 0, 0.85, 0.5);
+        turnActions(2, -2, 0, 0.25, 0.25);
+        turnActions(2, 0, 0, 0.15, 0.5);
+        turnActions(1, 0, 0, 0.5, 0.5);
+        turnActions(-1, -1, 0, 0.5, 0.85);
+        turnActions(3, -2, 0, 0.5, 0.9);
+        turnActions(4, -2, 0);
+        turnActions(-1, -2, 0, 0.85, 0.55);
+        turnActions(-2, -2, 0, 0.5, 0.15);
+        turnActions(-1, 1, 0, 0.5, 0.15);
+        turnActions(0, 1, 0, 0.5, 0.15);
+    }
 }

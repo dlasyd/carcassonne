@@ -550,6 +550,13 @@ public class GameWindowLogic implements WindowLogic {
                         xyMultipliers[1] = 0.15;
                     }
                     break;
+
+                case CLOISTER:
+                    if (feature.isLand()) {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.15;
+                    }
+                    break;
             }
             return xyMultipliers;
         }
