@@ -27,8 +27,10 @@ class Land extends RealEstate {
 
         for (Tile tile: allLandTiles) {
             for (Feature feature: tile.getFeatures()) {
-                if (feature.isCity())
+                if (feature.isCity() &&
+                        tile.featureBordersWith(feature, this.getTilesAndFeatureTileDirections().get(tile)))
                     tilesWithCity.add(tile);
+
             }
         }
 

@@ -284,6 +284,29 @@ public class RealTile extends Tile {
     }
     //</editor-fold>
 
+    /**
+     * This method is invoked by Land getPoints() method.
+     * It is used to know weather or not a city that is a feature of one of the land tiles "touches" that land
+     *
+     * @param feature a feature of a tile that you are checking
+     * @param expectedTileDirections of a different feature
+     * @return true if feature and tile directions are next to each other at least at one expectedTileDirection
+     */
+    @Override
+    public boolean featureBordersWith(Feature feature, Set<TileDirections> expectedTileDirections) {
+        Set<TileDirections> adjacentTileDirections = new HashSet<>();
+        Set<TileDirections> currentFeatureTileDirections = featureToTileDirections.get(feature);
+        for (TileDirections direction: currentFeatureTileDirections) {
+            adjacentTileDirections.addAll(direction.getAdjacentDirections());
+        }
+        adjacentTileDirections.removeAll(currentFeatureTileDirections);
+        adjacentTileDirections.retainAll(expectedTileDirections);
+
+        boolean debug = adjacentTileDirections.size() > 0 ? true : false;
+
+        return adjacentTileDirections.size() > 0 ? true : false;
+    }
+
     @Override
     public boolean featureEqual(Tile tile) {
         RealTile otherTile = (RealTile) tile;

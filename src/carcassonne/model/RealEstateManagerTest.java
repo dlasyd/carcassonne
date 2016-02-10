@@ -317,11 +317,11 @@ public class RealEstateManagerTest {
     public void separatedLandThreeCities() {
         placeTile(0, -1, TileName.CITY1RSE, Rotation.DEG_180, anton, EAST);
         placeTile(0, 1,  TileName.CITY1,    Rotation.DEG_180, andrey, NORTH);
-        placeTile(0, 2,  TileName.CITY1RWE, Rotation.DEG_0, anton, SOUTH);
+        placeTile(0, 2,  TileName.CITY1RWE, Rotation.DEG_0, anton, WWN);
         manager.addPointsForUnfinishedRealEstate();
 
-        assertEquals("Anton has 9 points",  6, anton.getCurrentPoints());
-        assertEquals("Andrey has 6 points", 3, andrey.getCurrentPoints());
+        assertEquals("Anton has 6 points",  6, anton.getCurrentPoints());
+        assertEquals("Andrey has 3 points", 3, andrey.getCurrentPoints());
     }
 
 }

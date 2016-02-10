@@ -101,4 +101,60 @@ public enum TileDirections {
         return TileDirections.CENTER;
     }
 
+    public Collection<TileDirections> getAdjacentDirections() {
+        HashSet<TileDirections> result = new HashSet<>();
+        switch (this) {
+            case SOUTH:
+                result.add(SSW);
+                result.add(SSE);
+                break;
+            case NORTH:
+                result.add(NNW);
+                result.add(NNE);
+                break;
+            case EAST:
+                result.add(EEN);
+                result.add(EES);
+                break;
+            case WEST:
+                result.add(WWS);
+                result.add(WWN);
+                break;
+            case WWN:
+                result.add(WEST);
+                result.add(NNW);
+                break;
+            case EEN:
+                result.add(EAST);
+                result.add(NNE);
+                break;
+            case WWS:
+                result.add(WEST);
+                result.add(SSW);
+                break;
+            case EES:
+                result.add(EAST);
+                result.add(SSE);
+                break;
+            case NNE:
+                result.add(NORTH);
+                result.add(EEN);
+                break;
+            case SSE:
+                result.add(SOUTH);
+                result.add(EES);
+                break;
+            case NNW:
+                result.add(NORTH);
+                result.add(WWN);
+                break;
+            case SSW:
+                result.add(SOUTH);
+                result.add(WWS);
+                break;
+            default:
+                assert (false);
+        }
+        return result;
+    }
 }

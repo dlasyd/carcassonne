@@ -758,7 +758,7 @@ public class RealEstateTest {
     }
 
     @Test
-    public void CastleWithOneShield() {
+    public void castleWithOneShield() {
         placeTile(1, 1, TileName.CITY1, Rotation.DEG_180, anton, SOUTH);
         placeTile(1, 2, TileName.CITY2NWS, Rotation.DEG_0);
         placeTile(0, 2, TileName.CITY1, Rotation.DEG_90);
@@ -766,11 +766,24 @@ public class RealEstateTest {
     }
 
     @Test
-    public void TwoCloistersNextToEachOtherArePossible() {
+    public void twoCloistersNextToEachOtherArePossible() {
         placeTile(1, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
         placeTile(2, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
         assertEquals("Anton has 5 followers", 5, anton.getNumberOfFollowers());
     }
 
-
+    @Test
+    public void bigUnfinishedCastleGivesALotOfPoints() {
+        placeTile(0,  -1, TileName.CITY11WE,  Rotation.DEG_90);
+        placeTile(0,  -2, TileName.CITY2WES,  Rotation.DEG_90);
+        placeTile(0,  -3, TileName.CITY4,     Rotation.DEG_0);
+        placeTile(-1, -3, TileName.CITY2NW,   Rotation.DEG_90);
+        placeTile(1,  -3, TileName.CITY2NWR,  Rotation.DEG_0);
+        placeTile(0,  -4, TileName.CITY3R,    Rotation.DEG_90);
+        placeTile(1,  -4, TileName.CITY2NWSR, Rotation.DEG_270);
+        placeTile(-1, -4, TileName.CITY1RSWE, Rotation.DEG_180);
+        placeTile(0,  -5, TileName.CITY2WE,   Rotation.DEG_90, anton, SOUTH);
+        manager.addPointsForUnfinishedRealEstate();
+        assertEquals("Anton has 11 points for unfinished castle", 11, anton.getCurrentPoints());
+    }
 }

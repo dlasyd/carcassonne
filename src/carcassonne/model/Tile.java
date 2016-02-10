@@ -64,6 +64,9 @@ public abstract class Tile {
 
     public abstract TileDirections getFollowerTileDirection();
 
+    public abstract boolean featureBordersWith(Feature feature, Set<TileDirections> tileDirections);
+
+
     //</editor-fold>
 }
 

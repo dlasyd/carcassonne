@@ -58,6 +58,11 @@ public class NullTile extends Tile{
     }
 
     @Override
+    public boolean featureBordersWith(Feature feature, Set<TileDirections> tileDirectionses) {
+        return false;
+    }
+
+    @Override
     Tile placeFollower(Player player, Feature feature) {
 
         throw new RuntimeException("The tile is Null");
