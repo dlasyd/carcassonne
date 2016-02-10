@@ -16,10 +16,6 @@ public final class Player {
 
     Player() {}
 
-    void increaseNumberOfProperties() {
-        numberOfProperties++;
-    }
-
     String getName() {
         return name;
     }
@@ -35,7 +31,7 @@ public final class Player {
     void placeFollower() {
         numberOfFollowers--;
         if (numberOfFollowers < 0)
-            throw new RuntimeException("Number of followers that a player has is less than 0");
+            throw new RuntimeException("Number of followers that a player has is less than 0 " + name);
     }
 
     void returnFollower() {
