@@ -103,7 +103,7 @@ public abstract class RealEstate {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
             if (!neighbour.isNull() && !tilesAndFeatureTileDirections.containsKey(neighbour)) {
                 adjacentTiles.put(neighbour, neighbour.getDestinations(tileDirections.getNeighbour()));
-                adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), new HashSet<>(), tile));
+                adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), new HashSet<>()));
             }
         }
 
@@ -112,16 +112,9 @@ public abstract class RealEstate {
 
     /*
      * Method uses recursion
-     *
-     * loopBreakingTile is a tile that is used to create RealEstate(in constructor)
-     * example of importance: looped road
      */
-    private Map<Tile, Set<TileDirections>> findAdjacentTiles(Tile startTile,TileDirections directionWithFeature, Set<Tile> visitedTiles, Tile loopBreakingTile) {
+    private Map<Tile, Set<TileDirections>> findAdjacentTiles(Tile startTile,TileDirections directionWithFeature, Set<Tile> visitedTiles) {
         Map<Tile, Set<TileDirections>> result = new HashMap<>();
-
-        if (startTile.equals(loopBreakingTile)) {
-            return result;
-        }
 
         Set<TileDirections> currentTileFeatureDirections = startTile.getDestinations(directionWithFeature);
         currentTileFeatureDirections.removeAll(directionWithFeature.getEdge());
@@ -131,7 +124,7 @@ public abstract class RealEstate {
             if (!neighbour.isNull() && !visitedTiles.contains(neighbour)) {
                 visitedTiles.add(neighbour);
                 result.put(neighbour, neighbour.getDestinations(direction.getNeighbour()));
-                result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), visitedTiles, loopBreakingTile));
+                result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), visitedTiles));
             }
         }
         return result;
