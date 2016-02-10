@@ -59,7 +59,7 @@ public class GameWindowLogic implements WindowLogic {
 
     private void updateUI() {
         gameWindow.setCurrentPlayerName(gameData.getName());
-        gameWindow.setNumberOfFollowers(gameData.getFollowers());
+        gameWindow.setNumberOfFollowers("" + gameData.getFollowers());
         gameWindow.setCurrentPoints(gameData.getPoints());
         gameWindow.setPlayerColorRemainder(gameData.getPlayerColor());
         gameWindow.setTilesNumber(gameData.getTilesLeft());
@@ -161,7 +161,10 @@ public class GameWindowLogic implements WindowLogic {
             canFollowerBePlaced = true;
             currentTileFollowerMap = followerPlacingHelper.getFollowerLocations(gameData.getCurrentTile());
             gameWindow.setConfirmTileButtonText("Relocate tile");
-            gameWindow.setPossibleFollowerLocations(currentTileFollowerMap.getMultipliers());
+            if (gameData.getFollowers() != 0)
+                gameWindow.setPossibleFollowerLocations(currentTileFollowerMap.getMultipliers());
+            else
+                gameWindow.setPossibleFollowerLocations(new HashSet<>());
             gameWindow.setEndTurnButtonEnabled(true);
         }
         gameWindow.repaintWindow();
@@ -322,7 +325,6 @@ public class GameWindowLogic implements WindowLogic {
      * 2) exclude occupied real estate
      */
     class FollowerPlacingHelper {
-        //TODO refactor
         private OwnershipChecker ownershipChecker;
 
         private OwnershipChecker getOwnershipChecker() {
@@ -336,6 +338,7 @@ public class GameWindowLogic implements WindowLogic {
             Set<Feature> features = tile.getFeatures();
             for (Feature feature: features) {
                 TileDirections direction = Util.any(tile.getFeatureTileDirections(feature));
+                // add numberOfFollowers in hand check
                 if (getOwnershipChecker().locationIsLegal(currentTileX, currentTileY, currentTileRotation, direction))
                     result.put(getTileSizeRelativeMultipliers(tile, feature), direction);
             }

@@ -13,7 +13,7 @@ import java.util.Set;
 public class GameDataBuilder {
     private String name;
     private String points;
-    private String followers;
+    private int followers;
     private Color playerColor;
     private String tilesLeft;
     private Tile currentTile;
@@ -33,7 +33,7 @@ public class GameDataBuilder {
         return this;
     }
 
-    public GameDataBuilder setFollowers(String followers) {
+    public GameDataBuilder setFollowers(int followers) {
         this.followers = followers;
         return this;
     }

@@ -593,16 +593,16 @@ public class ModelToControllerTest {
 
     @Test
     public void ifZeroFollowersNoFollowerLocationsDisplayed() {
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 15; i++) {
             game.getTilePile().addTile(TileName.CLOISTER);
         }
         prepareGame();
         for (int i = 0; i < 7; i++) {
-            turnActions(2*i, 1, 0.5, 0.5);
-            turnActions(2*i + 1, 1);
+            turnActions(2 * i,     1, 0.5, 0.5);
+            turnActions(2 * i + 1, 1);
         }
-        fakeWindow.clickOnGamePanel(16, 1);
-
+        fakeWindow.clickOnGamePanel(14, 1);
+        fakeWindow.pressConfirmTileButton();
         assertEquals("If player has no followers then there are no follower possible locations",
                 0, fakeWindow.getFollowerLocations().size());
     }

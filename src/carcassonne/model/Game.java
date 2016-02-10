@@ -65,7 +65,7 @@ public class Game implements DataToModel{
     public void notifyController() {
         windowLogic.update(new GameDataBuilder().setName(getCurrentPlayer().getName()).
                 setPoints("" + getCurrentPlayer().getCurrentPoints()).
-                setFollowers("" + getCurrentPlayer().getNumberOfFollowers()).
+                setFollowers(getCurrentPlayer().getNumberOfFollowers()).
                 setPlayerColor(getCurrentPlayer().getColor()).
                 setTilesLeft("" + tilePile.getNumberOfTiles()).
                 setCurrentTile(table.getCurrentTile()).

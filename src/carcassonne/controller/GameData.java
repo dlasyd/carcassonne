@@ -20,7 +20,7 @@ import java.util.Set;
 public class GameData {
     private String name;
     private String points;
-    private String followers;
+    private int followers;
     private Color playerColor;
     private String tilesLeft;
     private Tile currentTile;
@@ -29,7 +29,7 @@ public class GameData {
     private Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
     private ArrayList<String[]> playersStats;
 
-    public GameData(String name, String points, String followers, Color playerColor, String tilesLeft,
+    public GameData(String name, String points, int followers, Color playerColor, String tilesLeft,
                     Tile currentTile, Tile previouslyPlacedTile, Set<Coordinates> possibleTileLocations,
                     Set<PlacedFollower> placedFollowers, Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations,
                     ArrayList<String[]> playersStats) {
@@ -53,8 +53,8 @@ public class GameData {
         return "" + points;
     }
 
-    public String getFollowers() {
-        return "" + followers;
+    public int getFollowers() {
+        return followers;
     }
 
     public Color getPlayerColor() {
