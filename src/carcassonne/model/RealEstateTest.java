@@ -459,7 +459,7 @@ public class RealEstateTest {
         table.placeTile(tile_2_m1);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0));
-        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
+        assertEquals("Two tiles are added", expected, realEstate.getTileSet());
     }
 
     @Test
@@ -785,5 +785,35 @@ public class RealEstateTest {
         placeTile(0,  -5, TileName.CITY2WE,   Rotation.DEG_90, anton, SOUTH);
         manager.addPointsForUnfinishedRealEstate();
         assertEquals("Anton has 12 points for unfinished castle", 12, anton.getCurrentPoints());
+    }
+
+    @Test
+    public void cloisterWithRoadConnectedToLand() {
+        exception.expect(RuntimeException.class);
+        placeTile(1, 0, TileName.CLOISTERR, Rotation.DEG_90, anton, SOUTH);
+        placeTile(0, 1, TileName.CLOISTERR, Rotation.DEG_90, anton, SSE);
+    }
+
+    @Test
+    public void correctLandWhenCloisterWithRoad() {
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_1_0 = tile_1_0.turnRight(Rotation.DEG_90);
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CLOISTERR));
+        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_0);
+        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
+        expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(WWN, EEN, SSE, SSW, SOUTH, WWS, EES )));
+        expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(WWN, NNW, NORTH, NNE, EEN, EAST,
+                EES, SSE, SOUTH, SSW, WWS)));
+
+        placeTile(1, 0, TileName.ROAD2NS, Rotation.DEG_90);
+        placeTile(2, 0, TileName.CLOISTERR, Rotation.DEG_90, anton, SOUTH);
+
+
+        Map<Tile, Set<TileDirections>> antonRealEstate;
+
+        ArrayList<RealEstate> antons = new ArrayList<>(manager.getAssets(anton));
+        antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
+
+        assertEquals("Anton has specific asset", expectedRealEstate, antonRealEstate);
     }
 }

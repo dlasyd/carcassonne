@@ -177,15 +177,23 @@ public abstract class RealEstate {
         for (int i = 0; i < 4; i++) {
             Tile t = table.getTile(aroundCoordinates[i][0], aroundCoordinates[i][1]);
             if (! t.isNull() && tilesAndFeatureTileDirections.containsKey(t)) {
-                Set<TileDirections> directions = tilesAndFeatureTileDirections.get(t);
+                Set<TileDirections> directionsThatBelongToRealEstate = tilesAndFeatureTileDirections.get(t);
                 Set<TileDirections> targetEdge = neighbourDirection[i].getNeighbour().getEdge();
+
                 for (TileDirections edge: targetEdge) {
-                    if (directions.contains(edge)) {
+                    if (directionsThatBelongToRealEstate.contains(edge)) {
                         tilesAndFeatureTileDirections.put(tile, tile.getDestinations(edge.getNeighbour()));
                         addAdjacentTiles(tile);
                         break outer;
                     }
                 }
+                /*for (TileDirections direction: directions) {
+                    if (tile.getFeature(direction.getNeighbour()).isSameType(t.getFeature(direction))) {
+                        tilesAndFeatureTileDirections.put(tile, tile.getDestinations(direction.getNeighbour()));
+                        addAdjacentTiles(tile);
+                        break outer;
+                    }
+                }*/
             }
         }
     }

@@ -10,6 +10,7 @@ public class RealEstateManager {
     private Map<RealEstate.ImmutableRealEstate, Set<Player>> realEstateMap = new HashMap<>();
     private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToFinishedRealEstate = new HashMap();
     private final Table table;
+    private final boolean LOG = true;
 
     public RealEstateManager(Table table) {
         this.table = table;
@@ -230,6 +231,9 @@ public class RealEstateManager {
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
         boolean result = false;
         for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
+            if (LOG) {
+                System.out.print("\nisPartOfRealEstate (" + tilePlacedLast + ", " + direction +")");
+            }
             if (iRealEstate.getRealEstate() instanceof Cloister)
                 break;
             temporaryUpdateRealEstate(tilePlacedLast);

@@ -35,7 +35,7 @@ public class GameWindowLogic implements WindowLogic {
     private FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
     private FollowerMap         currentTileFollowerMap;
     private Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
-    private final boolean         LOG = true;
+    private final boolean         LOG = false;
     private int clickOnCurrentTile;
     private ArrayList<String> debugTileNames = new ArrayList<>();
     private ArrayList<String> debugTurnActions = new ArrayList<>();
@@ -175,7 +175,7 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public void updateEndTurnButton() {
         if (LOG) {
-            System.out.println("--------------");
+            System.out.println("\n--------------");
             System.out.println("--------------");
             if (temporaryFollowerDisplayed)
                 debugTurnActions.add("turnActions(" + currentTileX + ", " + currentTileY  + ", " + clickOnCurrentTile + ", " +
@@ -199,8 +199,11 @@ public class GameWindowLogic implements WindowLogic {
         if (temporaryFollowerDisplayed) {
             drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
                     currentFollowerLocation, gameData.getPlayerColor(), currentTileRotation));
-            TileDirections rotatedDirection = currentTileFollowerMap.getDirection(currentFollowerLocation);
-            rotatedDirection = rotatedDirection.turnRight(currentTileRotation);
+            TileDirections direction = currentTileFollowerMap.getDirection(currentFollowerLocation);
+            if (direction == null)
+                throw new RuntimeException("Trying to place follower on illegal position in controller");
+
+            TileDirections rotatedDirection = direction.turnRight(currentTileRotation);
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, rotatedDirection);
         } else
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
@@ -557,6 +560,11 @@ public class GameWindowLogic implements WindowLogic {
                         xyMultipliers[1] = 0.15;
                     }
                     break;
+                case CLOISTERR:
+                    if (feature.isLand()) {
+                        xyMultipliers[0] = 0.85;
+                        xyMultipliers[1] = 0.15;
+                    }
             }
             return xyMultipliers;
         }
