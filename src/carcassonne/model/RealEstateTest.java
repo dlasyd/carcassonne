@@ -796,12 +796,14 @@ public class RealEstateTest {
 
     @Test
     public void correctLandWhenCloisterWithRoad() {
+        tile_0_0 = tile_0_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
         tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
         tile_1_0 = tile_1_0.turnRight(Rotation.DEG_90);
         tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CLOISTERR));
         tile_2_0 = tile_2_0.turnRight(Rotation.DEG_0);
         Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
-        expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(WWN, EEN, SSE, SSW, SOUTH, WWS, EES )));
+        expectedRealEstate.put(tile_0_0, new HashSet<>(Arrays.asList(WWN, EEN, WWS, EES, SOUTH, SSW, SSE)));
+        expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(WWN, EEN, SSE, SSW, SOUTH, WWS, EES, NNE, NNW, NORTH )));
         expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(WWN, NNW, NORTH, NNE, EEN, EAST,
                 EES, SSE, SOUTH, SSW, WWS)));
 
@@ -813,7 +815,22 @@ public class RealEstateTest {
 
         ArrayList<RealEstate> antons = new ArrayList<>(manager.getAssets(anton));
         antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
+        Map<Tile, Set<TileDirections>> resultForComparison = new HashMap<>();
 
-        assertEquals("Anton has specific asset", expectedRealEstate, antonRealEstate);
+        for (Map.Entry<Tile, Set<TileDirections>> entry: antonRealEstate.entrySet()) {
+            switch (entry.getKey().getCoordinates().getX()) {
+                case 0:
+                    resultForComparison.put(tile_0_0, entry.getValue());
+                    break;
+                case 1:
+                    resultForComparison.put(tile_1_0, entry.getValue());
+                    break;
+                case 2:
+                    resultForComparison.put(tile_2_0, entry.getValue());
+                    break;
+            }
+        }
+
+        assertEquals("Anton has specific asset", expectedRealEstate, resultForComparison);
     }
 }

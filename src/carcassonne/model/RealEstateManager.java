@@ -10,7 +10,7 @@ public class RealEstateManager {
     private Map<RealEstate.ImmutableRealEstate, Set<Player>> realEstateMap = new HashMap<>();
     private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToFinishedRealEstate = new HashMap();
     private final Table table;
-    private final boolean LOG = true;
+    private final boolean LOG = false;
 
     public RealEstateManager(Table table) {
         this.table = table;
