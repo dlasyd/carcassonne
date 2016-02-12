@@ -687,4 +687,24 @@ public class ModelToControllerTest {
         }
         assertEquals(true, result);
     }
+
+    @Test
+    public void ifNoPlaceToPlaceTileItIsSkipper() {
+        ArrayList<Map<Integer, String>> expected = new ArrayList<>();
+        expected.add(new HashMap());
+        expected.add(new HashMap());
+        expected.get(0).put(0, "Anton");
+        expected.get(0).put(1, "7");
+        expected.get(0).put(2, "0");
+        expected.get(1).put(0, "Andrey");
+        expected.get(1).put(1, "6");
+        expected.get(1).put(2, "2");
+
+        game.getTilePile().setNonRandom(true);
+        game.getTilePile().addTile(CITY1, CITY4, CLOISTER);
+        prepareGame();
+        turnActions(0, -1);
+        turnActions(0, -2, 0.5, 0.5);
+        assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
+    }
 }
