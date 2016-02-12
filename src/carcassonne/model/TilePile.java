@@ -1,9 +1,14 @@
 package carcassonne.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import static carcassonne.model.FeatureType.*;
 import static carcassonne.model.TileDirections.*;
+import static carcassonne.model.TileName.*;
+import static carcassonne.model.TileName.CLOISTER;
 
 public class TilePile {
     private static TilePile tilePile;
@@ -136,11 +141,11 @@ public class TilePile {
                 tile.addFeature(Feature.createFeature(LAND), EES, SSE);
                 break;
             case CLOISTER:
-                tile.addFeature(Feature.createFeature(CLOISTER), CENTER);
+                tile.addFeature(Feature.createFeature(FeatureType.CLOISTER), CENTER);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
             case CLOISTERR:
-                tile.addFeature(Feature.createFeature(CLOISTER), CENTER);
+                tile.addFeature(Feature.createFeature(FeatureType.CLOISTER), CENTER);
                 tile.addFeature(Feature.createFeature(ROAD), SOUTH);
                 tile.addFeature(Feature.createFeature(LAND), tile.getUnoccupiedDirections());
                 break;
@@ -182,14 +187,14 @@ public class TilePile {
 
     public void addXCrossroads(int x) {
         for (int i = 0; i < x; i ++) {
-            Tile tile = Tile.getInstance(TileName.ROAD4);
-            tile = tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+            Tile tile = Tile.getInstance(ROAD4);
+            tile = tile.copyFeatures(TilePile.getReferenceTile(ROAD4));
             addTile(tile);
         }
     }
 
     public void add5DifferentTiles() {
-        TileName[] tileNames = {TileName.ROAD4, TileName.ROAD3, TileName.CITY1RWE, TileName.CITY1, TileName.CITY11NE};
+        TileName[] tileNames = {ROAD4, ROAD3, CITY1RWE, CITY1, CITY11NE};
         for (TileName tileName : tileNames) {
             Tile tile = Tile.getInstance(tileName);
             tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
@@ -211,10 +216,49 @@ public class TilePile {
         }
     }
 
+    public void addTile(TileName name, int amount) {
+        for (int i = 0; i < amount; i ++) {
+            addTile(name);
+        }
+    }
+
     public void addEveryTileOnce() {
         for (TileName name: TileName.values()) {
             addTile(name);
         }
+    }
+
+    public void addRealTileSet() {
+        Map<TileName, Integer> tileAmount = new HashMap<>();
+        tileAmount.put(CITY4,     1);
+        tileAmount.put(CITY3,     3);
+        tileAmount.put(CITY3S,    1);
+        tileAmount.put(CITY3R,    1);
+        tileAmount.put(CITY3SR,   2);
+        tileAmount.put(CITY2WE,   1);
+        tileAmount.put(CITY2WES,  2);
+        tileAmount.put(CITY2NW,   3);
+        tileAmount.put(CITY2NWS,  2);
+        tileAmount.put(CITY2NWR,  3);
+        tileAmount.put(CITY2NWSR, 2);
+        tileAmount.put(CITY11NE,  2);
+        tileAmount.put(CITY11WE,  3);
+        tileAmount.put(CITY1,     5);
+        tileAmount.put(CITY1RSE,  3);
+        tileAmount.put(CITY1RSW,  3);
+        tileAmount.put(CITY1RSWE, 3);
+        tileAmount.put(CITY1RWE,  3);
+        tileAmount.put(CLOISTER,  4);
+        tileAmount.put(CLOISTERR, 2);
+        tileAmount.put(ROAD2NS,   8);
+        tileAmount.put(ROAD2SW,   9);
+        tileAmount.put(ROAD3,     4);
+        tileAmount.put(ROAD4,     1);
+
+        for (Map.Entry<TileName, Integer> entry: tileAmount.entrySet()) {
+            addTile(entry.getKey(), entry.getValue());
+        }
+
     }
 
     public void setNonRandom(boolean nonRandom) {
