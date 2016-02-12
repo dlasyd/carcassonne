@@ -53,6 +53,8 @@ public class Game implements DataToModel{
         if (tilePile.hasTiles()) {
             nextPlayer();
             dragTile();
+            if (table.getPossibleTileLocationsAndRotations().size() == 0)
+                dragTile();
             notifyController();
         } else {
             finished = true;
