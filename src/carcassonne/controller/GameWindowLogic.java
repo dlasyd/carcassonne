@@ -35,7 +35,7 @@ public class GameWindowLogic implements WindowLogic {
     private FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
     private FollowerMap         currentTileFollowerMap;
     private Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
-    private final boolean         LOG = false;
+    private final boolean         LOG = true;
     private int clickOnCurrentTile;
     private ArrayList<String> debugTileNames = new ArrayList<>();
     private ArrayList<String> debugTurnActions = new ArrayList<>();

@@ -101,16 +101,13 @@ public abstract class RealEstate {
 
         for (TileDirections tileDirections : occupiedFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
-            if (!neighbour.isNull() && !tilesAndFeatureTileDirections.containsKey(neighbour)) {
+            if (!neighbour.isNull() ) {
                 Util.addSetElement(adjacentTiles, neighbour, neighbour.getDestinations(tileDirections.getNeighbour()));
-                Map<Tile, Set<TileDirections>> test = findAdjacentTiles(neighbour,
-                        tileDirections.getNeighbour(), new HashSet<>());
                 Util.addAllSetElements(adjacentTiles, findAdjacentTiles(neighbour, tileDirections.getNeighbour(), new HashSet<>()));
-                //adjacentTiles.putAll(findAdjacentTiles(neighbour, tileDirections.getNeighbour(), new HashSet<>()));
             }
         }
 
-        tilesAndFeatureTileDirections.putAll(adjacentTiles);
+        Util.addAllSetElements(tilesAndFeatureTileDirections, adjacentTiles);
     }
 
     /*
@@ -190,13 +187,6 @@ public abstract class RealEstate {
                         break outer;
                     }
                 }
-                /*for (TileDirections direction: directions) {
-                    if (tile.getFeature(direction.getNeighbour()).isSameType(t.getFeature(direction))) {
-                        tilesAndFeatureTileDirections.put(tile, tile.getDestinations(direction.getNeighbour()));
-                        addAdjacentTiles(tile);
-                        break outer;
-                    }
-                }*/
             }
         }
     }

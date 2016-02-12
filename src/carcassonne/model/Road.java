@@ -25,17 +25,23 @@ class Road extends RealEstate {
         if (super.finished == true)
             return true;
         else {
+            Map<Tile, Set<TileDirections>> realEstateData = super.getTilesAndFeatureTileDirections();
+
             /*
              * two ends case
              */
             int end = 0;
-            Map<Tile, Set<TileDirections>> realEstateData = super.getTilesAndFeatureTileDirections();
             for (Tile tile: realEstateData.keySet()) {
                 end += (realEstateData.get(tile).size() == 1) ? 1: 0;
+
+                if ((tile.getName() == TileName.ROAD4 || tile.getName() == TileName.ROAD3) &&
+                        realEstateData.get(tile).size() == 2)
+                    end += 2;
             }
             assert (end < 3);
             if (end == 2)
                 super.finished = true;
+
 
         }
 

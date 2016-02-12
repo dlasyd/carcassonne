@@ -820,10 +820,10 @@ public class RealEstateTest {
 
     @Test
     public void loopedRoadWithCrossroadsFinished() {
-        placeTile(1, 1, ROAD2NS, Rotation.DEG_270);
-        placeTile(2, 1, ROAD2NS, Rotation.DEG_0, anton, SOUTH);
+        placeTile(1, 1, ROAD2SW, Rotation.DEG_270);
+        placeTile(2, 1, ROAD2SW, Rotation.DEG_0, anton, SOUTH);
         placeTile(2, 2, ROAD3, Rotation.DEG_180);
-        placeTile(1, 2, ROAD2NS, Rotation.DEG_180);
+        placeTile(1, 2, ROAD2SW, Rotation.DEG_180);
 
         assertEquals("Anton gets 4 points for finished road", 4, anton.getCurrentPoints());
     }
