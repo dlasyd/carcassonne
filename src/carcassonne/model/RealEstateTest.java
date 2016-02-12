@@ -26,7 +26,7 @@ public class RealEstateTest {
     public Player andrey = new Player();
 
     public void placeTile(int x, int y, TileName tileName, Rotation rotation) {
-        Tile tile = Tile.getInstance(x, y);
+        Tile tile = Tile.getInstance(x, y, tileName);
         tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
         tile = tile.turnRight(rotation);
         table.placeTile(tile);
@@ -34,7 +34,7 @@ public class RealEstateTest {
     }
 
     public void placeTile(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirections tileDirection) {
-        Tile tile = Tile.getInstance(x, y);
+        Tile tile = Tile.getInstance(x, y, tileName);
         tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
         tile = tile.turnRight(rotation);
         tile = tile.placeFollower(player, tileDirection);
@@ -212,10 +212,10 @@ public class RealEstateTest {
 
     @Test
     public void addThirdTileToPropertyFollowerOnFirst() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0 = Tile.getInstance(1, 0, ROAD4);
         tile_1_0 = tile_1_0.placeFollower(new Player(), TileDirections.EAST);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS);
+        tile_3_0 = Tile.getInstance(3, 0, ROAD2NS);
         tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
         tile_3_0 = tile_3_0.turnRight(Rotation.DEG_90);
 
@@ -607,10 +607,10 @@ public class RealEstateTest {
 
     @Test
     public void checkTileDirectionsOfRealEstate() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0 = Tile.getInstance(1, 0, ROAD2SW);
         tile_1_0 = tile_1_0.turnRight(Rotation.DEG_180);
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
+        tile_3_0 = Tile.getInstance(3, 0, ROAD2SW);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS);
         tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
 
         Map<Tile, Set<TileDirections>> expected = new HashMap<>();
@@ -634,8 +634,9 @@ public class RealEstateTest {
     @Test
     public void completeRealEstateAddedProperly() {
         table.setRealEstateManager(manager);
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
+
+        tile_1_0 = Tile.getInstance(1, 0, ROAD4);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD4);
 
         placeTile(1, 0, TileName.ROAD4, Rotation.DEG_0);
         placeTile(2, 0, TileName.ROAD4, Rotation.DEG_0, new Player(), WEST);
@@ -796,11 +797,12 @@ public class RealEstateTest {
 
     @Test
     public void correctLandWhenCloisterWithRoad() {
-        tile_0_0 = tile_0_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
+        tile_0_0 = Tile.getInstance(0, 0, CITY1RWE);
+        tile_1_0 = Tile.getInstance(1, 0, ROAD2NS);
         tile_1_0 = tile_1_0.turnRight(Rotation.DEG_90);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CLOISTERR));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_0);
+        tile_2_0 = Tile.getInstance(2, 0, CLOISTERR);
+        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
+
         Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
         expectedRealEstate.put(tile_0_0, new HashSet<>(Arrays.asList(WWN, EEN, WWS, EES, SOUTH, SSW, SSE)));
         expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(WWN, EEN, SSE, SSW, SOUTH, WWS, EES, NNE, NNW, NORTH )));
@@ -815,22 +817,7 @@ public class RealEstateTest {
 
         ArrayList<RealEstate> antons = new ArrayList<>(manager.getAssets(anton));
         antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
-        Map<Tile, Set<TileDirections>> resultForComparison = new HashMap<>();
 
-        for (Map.Entry<Tile, Set<TileDirections>> entry: antonRealEstate.entrySet()) {
-            switch (entry.getKey().getCoordinates().getX()) {
-                case 0:
-                    resultForComparison.put(tile_0_0, entry.getValue());
-                    break;
-                case 1:
-                    resultForComparison.put(tile_1_0, entry.getValue());
-                    break;
-                case 2:
-                    resultForComparison.put(tile_2_0, entry.getValue());
-                    break;
-            }
-        }
-
-        assertEquals("Anton has specific asset", expectedRealEstate, resultForComparison);
+        assertEquals("Anton has specific asset", expectedRealEstate, antonRealEstate);
     }
 }
