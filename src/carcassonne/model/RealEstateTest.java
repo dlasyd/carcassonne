@@ -812,12 +812,20 @@ public class RealEstateTest {
         placeTile(1, 0, TileName.ROAD2NS, Rotation.DEG_90);
         placeTile(2, 0, TileName.CLOISTERR, Rotation.DEG_90, anton, SOUTH);
 
-
-        Map<Tile, Set<TileDirections>> antonRealEstate;
-
         ArrayList<RealEstate> antons = new ArrayList<>(manager.getAssets(anton));
-        antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
+        Map<Tile, Set<TileDirections>> antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
 
         assertEquals("Anton has specific asset", expectedRealEstate, antonRealEstate);
     }
+
+    @Test
+    public void loopedRoadWithCrossroadsFinished() {
+        placeTile(1, 1, ROAD2NS, Rotation.DEG_270);
+        placeTile(2, 1, ROAD2NS, Rotation.DEG_0, anton, SOUTH);
+        placeTile(2, 2, ROAD3, Rotation.DEG_180);
+        placeTile(1, 2, ROAD2NS, Rotation.DEG_180);
+
+        assertEquals("Anton gets 4 points for finished road", 4, anton.getCurrentPoints());
+    }
+
 }
