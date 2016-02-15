@@ -1,9 +1,6 @@
 package carcassonne.model;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * RealTile represents a tile from a game. There are 3 instance variable Collections that represent
@@ -234,8 +231,8 @@ public class RealTile extends Tile {
     }
 
     @Override
-    public Set<TileDirections> getFeatureTileDirections(Feature feature) {
-        return new HashSet<>(featureToTileDirections.get(feature));
+    public LinkedHashSet<TileDirections> getFeatureTileDirections(Feature feature) {
+        return new LinkedHashSet<>(featureToTileDirections.get(feature));
     }
 
     @Override
@@ -280,7 +277,7 @@ public class RealTile extends Tile {
      */
     @Override
     public TileDirections getFollowerTileDirection() {
-        return Util.any(featureToTileDirections.get(occupiedFeature));
+        return featureToTileDirections.get(occupiedFeature).iterator().next();
     }
     //</editor-fold>
 

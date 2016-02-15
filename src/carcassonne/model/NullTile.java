@@ -1,5 +1,6 @@
 package carcassonne.model;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -87,7 +88,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public Set<TileDirections> getFeatureTileDirections(Feature feature) {
+    public LinkedHashSet<TileDirections> getFeatureTileDirections(Feature feature) {
         return null;
     }
 

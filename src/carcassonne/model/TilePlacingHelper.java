@@ -59,7 +59,7 @@ class TilePlacingHelper {
                 }
 
                 if (!continuityBroken)
-                    Util.addSetElement(coordinatesToRotationMap, coordinate, rotation);
+                    Util.addLinkedSetElement(coordinatesToRotationMap, coordinate, rotation);
 
             }
             tile = tile.turnRight(Rotation.DEG_90);

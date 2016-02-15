@@ -1,5 +1,6 @@
 package carcassonne.model;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public abstract class Tile {
@@ -43,7 +44,7 @@ public abstract class Tile {
     abstract void addFeature(Feature feature, TileDirections... directions);
 
     //<editor-fold desc="Getters">
-    public abstract Set<TileDirections> getFeatureTileDirections(Feature feature);
+    public abstract LinkedHashSet<TileDirections> getFeatureTileDirections(Feature feature);
     public abstract Rotation         getCurrentRotation();
     public abstract Coordinates      getCoordinates();
     public abstract int              getX();

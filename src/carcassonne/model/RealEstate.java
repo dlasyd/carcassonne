@@ -102,7 +102,7 @@ public abstract class RealEstate {
         for (TileDirections tileDirections : occupiedFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirections);
             if (!neighbour.isNull() ) {
-                Util.addSetElement(adjacentTiles, neighbour, neighbour.getDestinations(tileDirections.getNeighbour()));
+                Util.addLinkedSetElement(adjacentTiles, neighbour, neighbour.getDestinations(tileDirections.getNeighbour()));
                 Util.addAllSetElements(adjacentTiles, findAdjacentTiles(neighbour, tileDirections.getNeighbour(), new HashSet<>()));
             }
         }

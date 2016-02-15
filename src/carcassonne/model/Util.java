@@ -1,9 +1,6 @@
 package carcassonne.model;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is a part of Carcassonne project.
@@ -12,30 +9,30 @@ import java.util.Set;
  * Created by Andrey on 27/12/15.
  */
 public class Util {
-    public static <V, K> void addSetElement(Map<K, Set<V>> map, K key, V value) {
+    public static <V, K> void addLinkedSetElement(Map<K, Set<V>> map, K key, V value) {
         if (map.containsKey(key)) {
             Set<V> set = map.get(key);
             set.add(value);
         } else {
-            map.put(key, new HashSet<V>(Collections.singletonList(value)));
+            map.put(key, new LinkedHashSet<V>(Collections.singletonList(value)));
         }
     }
 
-    public static <V, K> void addSetElement(Map<K, Set<V>> map, K key, V... values) {
+    public static <V, K> void addLinkedSetElement(Map<K, Set<V>> map, K key, V... values) {
         for (V value: values) {
-            addSetElement(map, key, value);
+            addLinkedSetElement(map, key, value);
         }
     }
 
-    public static <V, K> void addSetElement(Map<K, Set<V>> map, K key, Set<V> values) {
+    public static <V, K> void addLinkedSetElement(Map<K, Set<V>> map, K key, Set<V> values) {
         for (V value: values) {
-            addSetElement(map, key, value);
+            addLinkedSetElement(map, key, value);
         }
     }
 
     public static <V, K> void addAllSetElements(Map<K, Set<V>> receiver, Map<K, Set<V>> donor) {
         for (Map.Entry<K, Set<V>> element: donor.entrySet()) {
-            addSetElement(receiver, element.getKey(), element.getValue());
+            addLinkedSetElement(receiver, element.getKey(), element.getValue());
         }
     }
 
@@ -49,12 +46,6 @@ public class Util {
     }
 
     public static <T> T any(Set<T> set) {
-        if (set.isEmpty())
-            throw new RuntimeException("Cannot return element of empty set");
-        for (T t: set) {
-            return t;
-        }
-        assert false;
-        return null;
+        throw new RuntimeException("This should not be used");
     }
 }

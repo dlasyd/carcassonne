@@ -224,7 +224,12 @@ public class RealEstateTest {
         placeTile(3, 0, TileName.ROAD2NS, Rotation.DEG_90);
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
-        assertEquals("Three tiles are added", expected, Util.any(manager.getAssets(anton)).getTileSet());
+        RealEstate antons = null;
+        for (RealEstate r: manager.getAssets(anton)) {
+            antons = r;
+            break;
+        }
+        assertEquals("Three tiles are added", expected, antons.getTileSet());
     }
 
     @Test

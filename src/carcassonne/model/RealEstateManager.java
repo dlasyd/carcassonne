@@ -49,7 +49,7 @@ public class RealEstateManager {
     //</editor-fold>
 
     void addAsset(Player player, RealEstate realEstate) {
-        Util.addSetElement(playerToRealEstateSetMap, player, realEstate.getImmutableRealEstate());
+        Util.addLinkedSetElement(playerToRealEstateSetMap, player, realEstate.getImmutableRealEstate());
         realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
     }
 
@@ -119,7 +119,7 @@ public class RealEstateManager {
             if (currentImmutableRE.getRealEstate().isFinished()) {
                 int points = currentImmutableRE.getRealEstate().getPoints();
                 for (Player player: realEstateMap.get(currentImmutableRE)) {
-                    Util.addSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
+                    Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
                     Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
                     player.increaseCurrentPoints(points);
                     for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
@@ -150,7 +150,7 @@ public class RealEstateManager {
         if (allRealEstateObjects.isEmpty())
             return;
 
-        Set<Set<RealEstate.ImmutableRealEstate>> duplicatesSets = findDuplicatesInSet(allRealEstateObjects);
+        Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> duplicatesSets = findDuplicatesInSet(allRealEstateObjects);
 
         for (Set<RealEstate.ImmutableRealEstate> set: duplicatesSets) {
             mergeRealEstate(set);
@@ -165,8 +165,12 @@ public class RealEstateManager {
      * Used by realEstateUnion()
      */
     private void mergeRealEstate(Set<RealEstate.ImmutableRealEstate> duplicateRealEstate) {
-        Set<Player> ownersOfDuplicateRealEstate = Util.any(duplicateRealEstate).getRealEstate().getLegitimateOwners();
-        RealEstate.ImmutableRealEstate masterRealEstate = Util.any(duplicateRealEstate).getRealEstate().getImmutableRealEstate();
+        Set<Player> ownersOfDuplicateRealEstate = duplicateRealEstate
+                .iterator().next()
+                .getRealEstate().getLegitimateOwners();
+        RealEstate.ImmutableRealEstate masterRealEstate = duplicateRealEstate
+                .iterator().next()
+                .getRealEstate().getImmutableRealEstate();
 
         realEstateMap.keySet().removeAll(duplicateRealEstate);
         realEstateMap.put(masterRealEstate, ownersOfDuplicateRealEstate);
@@ -178,16 +182,16 @@ public class RealEstateManager {
         }
 
         for (Player player: ownersOfDuplicateRealEstate)
-            Util.addSetElement(playerToRealEstateSetMap, player, masterRealEstate);
+            Util.addLinkedSetElement(playerToRealEstateSetMap, player, masterRealEstate);
     }
 
     /*
      * Used by realEstateUnion()
      * Uses recursion
      */
-    private Set<Set<RealEstate.ImmutableRealEstate>> findDuplicatesInSet(Set<RealEstate.ImmutableRealEstate> data) {
-        Set<Set<RealEstate.ImmutableRealEstate>> result = new HashSet<>();
-        Set<RealEstate.ImmutableRealEstate> duplicatesFound = new HashSet<>();
+    private Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> findDuplicatesInSet(Set<RealEstate.ImmutableRealEstate> data) {
+        Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> result = new LinkedHashSet<>();
+        LinkedHashSet<RealEstate.ImmutableRealEstate> duplicatesFound = new LinkedHashSet<>();
         for (RealEstate.ImmutableRealEstate comparedRealEstate: data) {
             for (RealEstate.ImmutableRealEstate someRealEstate: data) {
                 if (comparedRealEstate.getRealEstate().equals(someRealEstate.getRealEstate()))
@@ -250,7 +254,7 @@ public class RealEstateManager {
         for (RealEstate.ImmutableRealEstate currentImmutableRE: realEstateMap.keySet()) {
             int points = currentImmutableRE.getRealEstate().getPoints();
             for (Player player: realEstateMap.get(currentImmutableRE)) {
-                Util.addSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
+                Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
                 Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
                 player.increaseCurrentPoints(points);
             }

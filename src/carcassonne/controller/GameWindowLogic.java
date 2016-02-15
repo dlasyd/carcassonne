@@ -367,7 +367,8 @@ public class GameWindowLogic implements WindowLogic {
             FollowerMap result = new FollowerMap();
             Set<Feature> features = tile.getFeatures();
             for (Feature feature: features) {
-                TileDirections direction = Util.any(tile.getFeatureTileDirections(feature));
+                TileDirections direction = tile.getFeatureTileDirections(feature)
+                        .iterator().next();
                 if (getOwnershipChecker().locationIsLegal(currentTileX, currentTileY, currentTileRotation, direction))
                     result.put(getTileSizeRelativeMultipliers(tile, feature), direction);
             }
@@ -379,7 +380,7 @@ public class GameWindowLogic implements WindowLogic {
             /*
              * get 1 direction pre feature
              */
-            Set<TileDirections> directions= tile.getFeatureTileDirections(feature);
+            LinkedHashSet<TileDirections> directions= tile.getFeatureTileDirections(feature);
 
             if (feature.isCity()) {
                 directions.removeAll(Arrays.asList(NNE, NNW, EES, EEN, WWS, WWN, SSE, SSW));
@@ -389,7 +390,7 @@ public class GameWindowLogic implements WindowLogic {
                 }
             }
 
-            TileDirections direction = Util.any(directions);
+            TileDirections direction = directions.iterator().next();
 
             /*
              * Basic rule
