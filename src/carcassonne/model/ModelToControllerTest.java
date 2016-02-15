@@ -707,4 +707,38 @@ public class ModelToControllerTest {
         turnActions(0, -2, 0.5, 0.5);
         assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
     }
+
+    @Test
+    public void correctPossibleFollowerLocationsIfRelocateTile() {
+        game.getTilePile().setNonRandom(true);
+        game.getTilePile().addTile(CITY2WES, CITY2WES, CITY2NWR, ROAD2SW, CITY3, CITY3R, CITY2NWSR, ROAD2SW);
+        prepareGame();
+        turnActions(0, -1, 0);
+        turnActions(0, 1, 0);
+        turnActions(0, -2, 0);
+        turnActions(1, -1, 1, 0.15, 0.5);
+        turnActions(1, -2, 0);
+        turnActions(2, -1, 0);
+        turnActions(-1, -2, 0);
+        fakeWindow.clickOnGamePanel(1, 0);
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.pressConfirmTileButton();
+        fakeWindow.clickOnGamePanel(-1, 0);
+        fakeWindow.pressConfirmTileButton();
+
+        /*
+         * Change double array to ArrayList for readability
+         */
+        Set<java.util.List<Double>> result = new HashSet<>();
+        for (double[] array: fakeWindow.getPossibleFollowerLocationsSet()) {
+            result.add(Arrays.asList(array[0], array[1]));
+        }
+
+        Set<java.util.List<Double>> expected = new HashSet<>();
+        expected.add(Arrays.asList(0.5, 0.15));
+        expected.add(Arrays.asList(0.15, 0.85));
+        expected.add(Arrays.asList(0.15, 0.5));
+
+        assertEquals("Correct follower locations", expected, result);
+    }
 }
