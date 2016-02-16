@@ -708,6 +708,10 @@ public class ModelToControllerTest {
         assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
     }
 
+    /*
+     * TODO
+     * only works when run alone
+     */
     @Test
     public void correctPossibleFollowerLocationsIfRelocateTile() {
         game.getTilePile().setNonRandom(true);
@@ -716,7 +720,7 @@ public class ModelToControllerTest {
         turnActions(0, -1, 0);
         turnActions(0, 1, 0);
         turnActions(0, -2, 0);
-        turnActions(1, -1, 1, 0.15, 0.5);
+        turnActions(1, -1, 1, 0.4, 0.4);
         turnActions(1, -2, 0);
         turnActions(2, -1, 0);
         turnActions(-1, -2, 0);
@@ -735,10 +739,42 @@ public class ModelToControllerTest {
         }
 
         Set<java.util.List<Double>> expected = new HashSet<>();
-        expected.add(Arrays.asList(0.5, 0.15));
+        expected.add(Arrays.asList(0.4, 0.4));
         expected.add(Arrays.asList(0.15, 0.85));
+        expected.add(Arrays.asList(0.85, 0.15));
+
+        assertEquals("Correct follower locations", expected, result);
+    }
+
+    @Test
+    public void correctPossibleFollowerLocation_mediumCastle() {
+        game.getTilePile().setNonRandom(true);
+        game.getTilePile().addTile(ROAD3, CLOISTER, CITY1RSWE, CITY2WES, CITY11WE);
+        prepareGame();
+        turnActions(1, 0, 0, 0.15, 0.5);
+        turnActions(1, -1, 0, 0.5, 0.5);
+        turnActions(-1, 0, 2, 0.3, 0.6);
+        turnActions(0, -1, 0, 0.5, 0.45);
+        //turnActions(0, -2, 0, 0.85, 0.5);
+
+        fakeWindow.clickOnGamePanel(1, -2);
+        fakeWindow.clickOnPlacedTile();
+        fakeWindow.pressConfirmTileButton();
+
+        /*
+         * Change double array to ArrayList for readability
+         */
+        Set<java.util.List<Double>> result = new HashSet<>();
+        for (double[] array: fakeWindow.getPossibleFollowerLocationsSet()) {
+            result.add(Arrays.asList(array[0], array[1]));
+        }
+
+        Set<java.util.List<Double>> expected = new HashSet<>();
+        expected.add(Arrays.asList(0.5, 0.15));
         expected.add(Arrays.asList(0.15, 0.5));
 
         assertEquals("Correct follower locations", expected, result);
     }
+
+
 }

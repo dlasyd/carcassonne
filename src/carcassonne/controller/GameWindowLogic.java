@@ -555,6 +555,19 @@ public class GameWindowLogic implements WindowLogic {
                     }
                     break;
 
+                case ROAD2SW:
+                    if (feature.isRoad()) {
+                        xyMultipliers[0] = 0.4;
+                        xyMultipliers[1] = 0.4;
+                    } else if (feature.isLand() && directions.contains(TileDirections.SSW)) {
+                        xyMultipliers[0] = 0.15;
+                        xyMultipliers[1] = 0.85;
+                    } else {
+                        xyMultipliers[0] = 0.85;
+                        xyMultipliers[1] = 0.15;
+                    }
+                    break;
+
                 case CLOISTER:
                     if (feature.isLand()) {
                         xyMultipliers[0] = 0.5;

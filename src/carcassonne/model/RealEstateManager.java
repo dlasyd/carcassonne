@@ -239,7 +239,7 @@ public class RealEstateManager {
                 break;
             RealEstate temporaryRealEstate = RealEstate.getCopy(iRealEstate.getRealEstate());
             temporaryRealEstate.update(tilePlacedLast);
-            return temporaryRealEstate.contains(tilePlacedLast, direction);
+            result = temporaryRealEstate.contains(tilePlacedLast, direction) == true ? true: result;
         }
         return result;
     }

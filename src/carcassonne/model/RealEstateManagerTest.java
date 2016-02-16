@@ -21,6 +21,8 @@ public class RealEstateManagerTest {
     public Player anton = new Player("anton", null);
     public Player andrey = new Player("andrey", null);
     public Player lena = new Player("lena", null);
+    public Tile tile_0_m1 = Tile.getInstance(0, -1);
+    public Tile tile_m1_m1 = Tile.getInstance(-1, -1);
     public Tile tile_1_0 = Tile.getInstance(1, 0);
     public Tile tile_2_0 = Tile.getInstance(2, 0);
     public Tile tile_3_0 = Tile.getInstance(3, 0);
@@ -110,6 +112,18 @@ public class RealEstateManagerTest {
         placeTile(2, 0, TileName.ROAD2SW, Rotation.DEG_0);
         assertTrue("Part of real estate", manager.isPartOfRealEstate(tile_2_0, WEST));
         assertFalse("Part of real estate", manager.isPartOfRealEstate(tile_2_0, EAST));
+    }
+
+    @Test
+    public void isPartOfRealEstate_castle() {
+        tile_0_m1 = tile_0_m1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_0_m1 = tile_0_m1.turnRight(DEG_270);
+        tile_m1_m1 = tile_m1_m1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+        tile_m1_m1 = tile_m1_m1.turnRight(DEG_90);
+        placeTile(0, -1, TileName.CITY2NW, Rotation.DEG_270, anton, SOUTH);
+
+        assertTrue ("Part of real estate", manager.isPartOfRealEstate(tile_m1_m1, EAST));
+        assertFalse("Part of real estate", manager.isPartOfRealEstate(tile_m1_m1, WEST));
     }
 
     @Test
