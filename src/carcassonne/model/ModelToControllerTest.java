@@ -745,33 +745,4 @@ public class ModelToControllerTest {
         assertEquals("Correct follower locations", expected, result);
     }
 
-    @Test
-    public void correctPossibleFollowerLocation_mediumCastle() {
-        game.getTilePile().setNonRandom(true);
-        game.getTilePile().addTile(ROAD3, CLOISTER, CITY1RSWE, CITY2WES, CITY11WE);
-        prepareGame();
-        turnActions(1, 0, 0);
-        turnActions(1, -1, 0, 0.5, 0.5);
-        turnActions(-1, 0, 2);
-        turnActions(0, -1, 0, 0.5, 0.45);
-
-        fakeWindow.clickOnGamePanel(0, -2);
-        fakeWindow.pressConfirmTileButton();
-
-        /*
-         * Change double array to ArrayList for readability
-         */
-        Set<java.util.List<Double>> result = new HashSet<>();
-        for (double[] array: fakeWindow.getPossibleFollowerLocationsSet()) {
-            result.add(Arrays.asList(array[0], array[1]));
-        }
-
-        Set<java.util.List<Double>> expected = new HashSet<>();
-        expected.add(Arrays.asList(0.5, 0.15));
-        expected.add(Arrays.asList(0.15, 0.5));
-
-        assertEquals("Correct follower locations", expected, result);
-    }
-
-
 }

@@ -260,6 +260,7 @@ public class GameWindowLogic implements WindowLogic {
         if (temporaryFollowerDisplayed) {
             temporaryFollowerDisplayed = false;
         }
+        clickOnCurrentTile = 0;
     }
     /*
      * Methods that are invoked by action listeners of GameWindow

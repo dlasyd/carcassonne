@@ -1,7 +1,5 @@
 package carcassonne.model;
 
-import java.util.Set;
-
 /**
  * Created by Andrey on 02/12/15.
  * Features of tile are roads, cities, land and cloisters
