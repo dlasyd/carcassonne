@@ -1,6 +1,5 @@
 package carcassonne.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,7 +15,7 @@ class Castle extends RealEstate{
 
     @Override
     public boolean isFinished() {
-        if (super.finished == false) {
+        if (!super.finished) {
             boolean finished = true;
             Set<Tile> tiles = super.getTileSet();
             outer:

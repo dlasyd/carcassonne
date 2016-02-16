@@ -2,7 +2,6 @@ package carcassonne.controller;
 
 import carcassonne.model.TileDirections;
 
-import java.awt.geom.Arc2D;
 import java.util.*;
 
 /**
@@ -48,10 +47,8 @@ public class FollowerMap {
 
         @Override
         public boolean equals(Object obj) {
-            if (!(obj instanceof FollowerMultipliers))
-                return false;
+            return obj instanceof FollowerMultipliers && Arrays.equals(((FollowerMultipliers) obj).multipliers, multipliers);
 
-            return Arrays.equals(((FollowerMultipliers) obj).multipliers, multipliers);
         }
     }
 }

@@ -8,9 +8,8 @@ import java.util.*;
 public class RealEstateManager {
     private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToRealEstateSetMap = new HashMap<>();
     private Map<RealEstate.ImmutableRealEstate, Set<Player>> realEstateMap = new HashMap<>();
-    private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToFinishedRealEstate = new HashMap();
+    private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToFinishedRealEstate = new HashMap<>();
     private final Table table;
-    private final boolean LOG = false;
 
     public RealEstateManager(Table table) {
         this.table = table;
@@ -76,27 +75,6 @@ public class RealEstateManager {
         }
         realEstateUnion();
         finishedRealEstate();
-    }
-
-    /*
-     * Method is used when determining if a follower can be placed on a feature of a tile.
-     * It is only possible if that feature is not part of any real estate.
-     * Used by isPartOfRealEstate() method
-     */
-    private void temporaryUpdateRealEstate(Tile tile) {
-        for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
-            realEstate.getRealEstate().update(tile);
-        }
-    }
-
-    /*
-     * undo the changes of temporaryUpdateRealEstate method
-     * Used by isPartOfRealEstate() method
-     */
-    private void removeTemporaryUpdate(Tile tile) {
-        for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
-            realEstate.getRealEstate().rollBack(tile);
-        }
     }
 
     /*
@@ -239,7 +217,7 @@ public class RealEstateManager {
                 continue;
             RealEstate temporaryRealEstate = RealEstate.getCopy(iRealEstate.getRealEstate());
             temporaryRealEstate.update(tilePlacedLast);
-            result = temporaryRealEstate.contains(tilePlacedLast, direction) == true ? true: result;
+            result = temporaryRealEstate.contains(tilePlacedLast, direction) || result;
         }
         return result;
     }

@@ -231,10 +231,8 @@ public abstract class RealEstate {
          * on the border with recipient tile
          */
 
-        for (TileDirections direction: neighbourFeatureDirections) {
-            direction = direction.getNeighbour();
-            return recipient.getDestinations(direction);
-        }
+        if (neighbourFeatureDirections.iterator().hasNext())
+            return recipient.getDestinations(neighbourFeatureDirections.iterator().next());
 
         return result;
     }

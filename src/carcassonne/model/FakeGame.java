@@ -2,12 +2,10 @@ package carcassonne.model;
 
 import carcassonne.controller.DataToModel;
 import carcassonne.controller.FollowerMap;
-import carcassonne.controller.GameDataBuilder;
 import carcassonne.controller.WindowLogic;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Class that extends Game with methods used for testing
@@ -66,7 +64,7 @@ public class FakeGame implements DataToModel {
 
     @Override
     public OwnershipChecker getOwnershipChecker() {
-        return (OwnershipChecker) table;
+        return table;
     }
 
     //<editor-fold desc="Getters">

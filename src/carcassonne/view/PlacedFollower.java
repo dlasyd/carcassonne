@@ -30,11 +30,8 @@ public class PlacedFollower {
             return false;
         PlacedFollower placedFollower = (PlacedFollower) obj;
         coordinates.equals(placedFollower.coordinates);
-        if (this.coordinates.equals(placedFollower.coordinates)
-                && this.feature == placedFollower.feature)
-            return true;
-        else
-            return false;
+        return this.coordinates.equals(placedFollower.coordinates)
+                && this.feature == placedFollower.feature;
     }
 
     @Override

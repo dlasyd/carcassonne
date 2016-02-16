@@ -52,11 +52,8 @@ public class Player {
         return numberOfProperties;
     }
 
-    public boolean hasAvaliableFollowers() {
-        if (numberOfFollowers > 0)
-            return true;
-        else
-            return false;
+    public boolean hasAvailableFollowers() {
+        return numberOfFollowers > 0;
     }
 
     public int getCurrentPoints() {

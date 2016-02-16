@@ -155,11 +155,11 @@ public class RealEstateManagerTest {
         placeTile(1, 1, TileName.CITY3, Rotation.DEG_0);
 
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
-                new HashSet<Tile>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(anton),
-                new HashSet<Tile>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
         assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(lena),
-                new HashSet<Tile>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
         assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
         assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(lena));
         assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));

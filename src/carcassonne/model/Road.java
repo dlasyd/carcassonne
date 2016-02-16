@@ -22,7 +22,7 @@ class Road extends RealEstate {
      */
     @Override
     public boolean isFinished() {
-        if (super.finished == true)
+        if (super.finished)
             return true;
         else {
             Map<Tile, Set<TileDirections>> realEstateData = super.getTilesAndFeatureTileDirections();

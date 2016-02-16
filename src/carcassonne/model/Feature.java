@@ -36,10 +36,10 @@ public class Feature{
             copy = new CloisterPiece();
         else if (feature instanceof LandPiece)
             copy = new LandPiece();
-        else if (feature instanceof CityPiece)
-            copy = new CityPiece();
         else if (feature instanceof CityPieceWithShield)
             copy = new CityPieceWithShield();
+        else if (feature instanceof CityPiece)
+            copy = new CityPiece();
         else
             copy = new Feature();
 
@@ -49,7 +49,7 @@ public class Feature{
     }
 
     boolean isFollowerPlaced() {
-        return follower == null ? false : true;
+        return follower != null;
     }
 
     void setFollower(Follower follower) {

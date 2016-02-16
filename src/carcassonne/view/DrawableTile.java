@@ -41,10 +41,7 @@ public class DrawableTile {
     }
 
     public boolean noCoordinates() {
-        if (tile.getCoordinates() == null)
-            return true;
-        else
-            return false;
+        return tile.getCoordinates() == null;
     }
 
     int getX() {

@@ -52,10 +52,10 @@ public class PlayerTest {
     @Test
     public void noAvaliableFollowers() {
         for (int i = 0; i < 7; i++) {
-            assertEquals ("Has follower", true, anton.hasAvaliableFollowers());
+            assertEquals ("Has follower", true, anton.hasAvailableFollowers());
             anton.placeFollower();
         }
-        assertEquals ("Has follower", false, anton.hasAvaliableFollowers());
+        assertEquals ("Has follower", false, anton.hasAvailableFollowers());
     }
 
     /*

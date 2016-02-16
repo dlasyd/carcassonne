@@ -10,7 +10,6 @@ import java.awt.*;
 import java.util.*;
 
 import static carcassonne.model.TileDirections.*;
-import static carcassonne.model.TileDirections.SSW;
 
 /**
  * This is a part of Carcassonne project.
@@ -231,7 +230,6 @@ public class GameWindowLogic implements WindowLogic {
     public void clickOnCurrentTile(double xMultiplier, double yMultiplier) {
         if (canFollowerBePlaced()) {
             placeFollower(xMultiplier, yMultiplier);
-            return;
         } else {
             clickOffCurrentTile();
         }

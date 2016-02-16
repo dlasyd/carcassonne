@@ -193,7 +193,7 @@ public class RealTile extends Tile {
 
     @Override
     public boolean hasFollower() {
-        return noFollower != true;
+        return !noFollower;
     }
 
     @Override
@@ -299,9 +299,7 @@ public class RealTile extends Tile {
         adjacentTileDirections.removeAll(currentFeatureTileDirections);
         adjacentTileDirections.retainAll(expectedTileDirections);
 
-        boolean debug = adjacentTileDirections.size() > 0 ? true : false;
-
-        return adjacentTileDirections.size() > 0 ? true : false;
+        return adjacentTileDirections.size() > 0;
     }
 
     @Override

@@ -14,7 +14,7 @@ public class Util {
             Set<V> set = map.get(key);
             set.add(value);
         } else {
-            map.put(key, new LinkedHashSet<V>(Collections.singletonList(value)));
+            map.put(key, new LinkedHashSet<>(Collections.singletonList(value)));
         }
     }
 

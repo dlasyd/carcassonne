@@ -12,7 +12,7 @@ import static carcassonne.model.TileName.CLOISTER;
 
 public class TilePile {
     private static TilePile tilePile;
-    private ArrayList<Tile> tiles = new ArrayList<Tile>();
+    private ArrayList<Tile> tiles = new ArrayList<>();
     private boolean         nonRandom;
 
     public static Tile getReferenceTile(TileName tileName) {
@@ -178,7 +178,7 @@ public class TilePile {
     }
 
     public boolean hasTiles() {
-        return tiles.isEmpty() != true;
+        return !tiles.isEmpty();
     }
 
     public int getNumberOfTiles() {

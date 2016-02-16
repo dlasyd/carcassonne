@@ -225,10 +225,8 @@ public class RealEstateTest {
 
         Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
         RealEstate antons = null;
-        for (RealEstate r: manager.getAssets(anton)) {
-            antons = r;
-            break;
-        }
+
+        antons = manager.getAssets(anton).iterator().next();
         assertEquals("Three tiles are added", expected, antons.getTileSet());
     }
 
@@ -629,10 +627,7 @@ public class RealEstateTest {
 
         Set<RealEstate.ImmutableRealEstate> keys = manager.getRealEstateImmutableSet();
         Map<Tile, Set<TileDirections>> realResult = new HashMap<>();
-        for (RealEstate.ImmutableRealEstate key: keys) {
-            realResult = key.getRealEstate().getTilesAndFeatureTileDirections();
-            break;
-        }
+        realResult = keys.iterator().next().getRealEstate().getTilesAndFeatureTileDirections();
         assertEquals("Tiles and tile directions", expected, realResult);
     }
 

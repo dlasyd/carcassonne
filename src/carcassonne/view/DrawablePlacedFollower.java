@@ -48,11 +48,8 @@ public class DrawablePlacedFollower {
         if (!(obj instanceof DrawablePlacedFollower))
             return false;
         DrawablePlacedFollower other = (DrawablePlacedFollower) obj;
-        if (coordinates.equals(other.coordinates) && Arrays.equals(xyMultipliers, other.xyMultipliers)
-                && color.equals(other.color))
-            return true;
-        else
-            return false;
+        return coordinates.equals(other.coordinates) && Arrays.equals(xyMultipliers, other.xyMultipliers)
+                && color.equals(other.color);
     }
 
     @Override

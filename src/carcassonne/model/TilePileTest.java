@@ -7,8 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.beans.ExceptionListener;
-
 public class TilePileTest {
     public TilePile tilePile;
     @Rule

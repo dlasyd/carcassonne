@@ -429,7 +429,6 @@ public class ModelToControllerTest {
         assertEquals("Temporary follower is placed", true, fakeWindow.isTemporaryFollowerPlaced());
     }
 
-    //TODO refactor
     @Test
     public void followerCanBePlacedOnOneOfCorrectPositions() {
         Set<double[]> expected = new HashSet<>();
@@ -499,7 +498,7 @@ public class ModelToControllerTest {
 
     @Test
     public void placedFollowersAreDisplayed() {
-        Set<DrawablePlacedFollower> expected = new HashSet();
+        Set<DrawablePlacedFollower> expected = new HashSet<>();
         expected.add(new DrawablePlacedFollower(new Coordinates(0, -1), new double[] {0.5, 0.5}, Color.RED, DEG_0));
         game.getTilePile().addTile(CITY4, CITY4);
         prepareGame();
@@ -518,7 +517,7 @@ public class ModelToControllerTest {
 
     @Test
     public void smallFinishedCastleFollowerNotOnTable() {
-        Set<DrawablePlacedFollower> expected = new HashSet();
+        Set<DrawablePlacedFollower> expected = new HashSet<>();
         game.getTilePile().addTile(CITY1, CITY1);
         prepareGame();
         turnActions(0, -1, 0.5, 0.15);
@@ -527,7 +526,7 @@ public class ModelToControllerTest {
 
     @Test
     public void notDisplayingPossibleFollowerLocationIfRealEstateOccupied() {
-        Set<Double> expected = new HashSet();
+        Set<Double> expected = new HashSet<>();
         expected.add(0.6);
         expected.add(0.85);
         game.getTilePile().addTile(CITY3, CITY3, CITY3);
@@ -551,8 +550,8 @@ public class ModelToControllerTest {
      */
     public void importantInformationIsDisplayedForAllPlayers() {
         ArrayList<Map<Integer, String>> expected = new ArrayList<>();
-        expected.add(new HashMap());
-        expected.add(new HashMap());
+        expected.add(new HashMap<>());
+        expected.add(new HashMap<>());
         expected.get(0).put(0, "Anton");
         expected.get(0).put(1, "6");
         expected.get(0).put(2, "4");
@@ -576,8 +575,8 @@ public class ModelToControllerTest {
     @Test
     public void tableHasDataInTheBeginning() {
         ArrayList<Map<Integer, String>> expected = new ArrayList<>();
-        expected.add(new HashMap());
-        expected.add(new HashMap());
+        expected.add(new HashMap<>());
+        expected.add(new HashMap<>());
         expected.get(0).put(0, "Anton");
         expected.get(0).put(1, "7");
         expected.get(0).put(2, "0");
@@ -595,8 +594,8 @@ public class ModelToControllerTest {
     @Test
     public void endGamePointsAreDisplayed() {
         ArrayList<Map<Integer, String>> expected = new ArrayList<>();
-        expected.add(new HashMap());
-        expected.add(new HashMap());
+        expected.add(new HashMap<>());
+        expected.add(new HashMap<>());
         expected.get(0).put(0, "Anton");
         expected.get(0).put(1, "6");
         expected.get(0).put(2, "1");
@@ -691,8 +690,8 @@ public class ModelToControllerTest {
     @Test
     public void ifNoPlaceToPlaceTileItIsSkipper() {
         ArrayList<Map<Integer, String>> expected = new ArrayList<>();
-        expected.add(new HashMap());
-        expected.add(new HashMap());
+        expected.add(new HashMap<>());
+        expected.add(new HashMap<>());
         expected.get(0).put(0, "Anton");
         expected.get(0).put(1, "7");
         expected.get(0).put(2, "0");

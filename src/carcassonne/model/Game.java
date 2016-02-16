@@ -1,16 +1,11 @@
 package carcassonne.model;
 
 import carcassonne.controller.DataToModel;
-import carcassonne.controller.FollowerMap;
 import carcassonne.controller.GameDataBuilder;
 import carcassonne.controller.WindowLogic;
-import carcassonne.view.DrawableTile;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.util.*;
-
-import static carcassonne.model.TileDirections.*;
 
 public class Game implements DataToModel{
     private static Game game;
