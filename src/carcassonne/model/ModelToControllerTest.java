@@ -751,14 +751,12 @@ public class ModelToControllerTest {
         game.getTilePile().setNonRandom(true);
         game.getTilePile().addTile(ROAD3, CLOISTER, CITY1RSWE, CITY2WES, CITY11WE);
         prepareGame();
-        turnActions(1, 0, 0, 0.15, 0.5);
+        turnActions(1, 0, 0);
         turnActions(1, -1, 0, 0.5, 0.5);
-        turnActions(-1, 0, 2, 0.3, 0.6);
+        turnActions(-1, 0, 2);
         turnActions(0, -1, 0, 0.5, 0.45);
-        //turnActions(0, -2, 0, 0.85, 0.5);
 
-        fakeWindow.clickOnGamePanel(1, -2);
-        fakeWindow.clickOnPlacedTile();
+        fakeWindow.clickOnGamePanel(0, -2);
         fakeWindow.pressConfirmTileButton();
 
         /*

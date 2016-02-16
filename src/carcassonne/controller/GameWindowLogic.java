@@ -489,6 +489,12 @@ public class GameWindowLogic implements WindowLogic {
                         xyMultipliers[1] = 0.35;
                     }
                     break;
+                case CITY11WE:
+                    if (feature.isLand()) {
+                        xyMultipliers[0] = 0.5;
+                        xyMultipliers[1] = 0.15;
+                    }
+                    break;
                 case CITY2WE:
                 case CITY2WES:
                     if (feature.isCity()) {

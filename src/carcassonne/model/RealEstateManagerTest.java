@@ -383,4 +383,6 @@ public class RealEstateManagerTest {
         antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
         assertEquals("RealEstate unchanged", expectedRealEstate, antonRealEstate);
     }
+
+
 }

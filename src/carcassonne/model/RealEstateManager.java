@@ -236,7 +236,7 @@ public class RealEstateManager {
         boolean result = false;
         for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
             if (iRealEstate.getRealEstate() instanceof Cloister)
-                break;
+                continue;
             RealEstate temporaryRealEstate = RealEstate.getCopy(iRealEstate.getRealEstate());
             temporaryRealEstate.update(tilePlacedLast);
             result = temporaryRealEstate.contains(tilePlacedLast, direction) == true ? true: result;
