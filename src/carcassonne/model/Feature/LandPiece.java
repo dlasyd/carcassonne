@@ -1,4 +1,4 @@
-package carcassonne.model;
+package carcassonne.model.feature;
 
 /**
  * This is a part of Carcassonne project.
@@ -6,5 +6,10 @@ package carcassonne.model;
  * and not intended for distribution.
  * Created by Andrey on 06/01/16.
  */
-public class CloisterPiece extends Feature{
+public class LandPiece extends Feature {
+    @Override
+    public boolean isLand() {
+        return true;
+    }
+
 }

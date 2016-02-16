@@ -1,4 +1,4 @@
-package carcassonne.model;
+package carcassonne.model.feature;
 
 /**
  * This is a part of Carcassonne project.

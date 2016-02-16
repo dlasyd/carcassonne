@@ -1,5 +1,7 @@
-package carcassonne.model;
+package carcassonne.model.feature;
 
+import carcassonne.model.Follower;
+import carcassonne.model.Player;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

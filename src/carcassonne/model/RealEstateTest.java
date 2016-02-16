@@ -1,5 +1,7 @@
 package carcassonne.model;
 
+import carcassonne.model.feature.Feature;
+import carcassonne.model.feature.FeatureType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -1,6 +1,7 @@
 package carcassonne.controller;
 
 import carcassonne.model.*;
+import carcassonne.model.feature.Feature;
 import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.DrawableTile;
 import carcassonne.view.PlacedFollower;

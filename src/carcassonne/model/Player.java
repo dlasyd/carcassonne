@@ -14,7 +14,7 @@ public class Player {
         this.name = name;
     }
 
-    Player() {}
+    public Player() {}
 
     String getName() {
         return name;

@@ -3,6 +3,8 @@ package carcassonne.model;
 import static carcassonne.model.TileDirections.*;
 import static org.junit.Assert.*;
 
+import carcassonne.model.feature.Feature;
+import carcassonne.model.feature.FeatureType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -255,7 +257,7 @@ public class TileTest {
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
         tile = tile.placeFollower(player, feature);
-        assertTrue("Feature object that follower is placed on", feature.isSameType(tile.getOccupiedFeature()));
+        assertTrue("feature object that follower is placed on", feature.isSameType(tile.getOccupiedFeature()));
     }
 
     @Test

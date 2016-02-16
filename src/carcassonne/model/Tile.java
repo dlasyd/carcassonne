@@ -1,5 +1,7 @@
 package carcassonne.model;
 
+import carcassonne.model.feature.Feature;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 

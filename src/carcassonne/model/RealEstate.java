@@ -1,5 +1,9 @@
 package carcassonne.model;
 
+import carcassonne.model.feature.CloisterPiece;
+import carcassonne.model.feature.LandPiece;
+import carcassonne.model.feature.RoadPiece;
+
 import java.util.*;
 
 /**
@@ -31,9 +35,9 @@ public abstract class RealEstate {
     static RealEstate getInstance(Tile tile) {
         if (tile.getOccupiedFeature() instanceof RoadPiece)
             return new Road(tile);
-        if (tile.getOccupiedFeature() instanceof  CloisterPiece)
+        if (tile.getOccupiedFeature() instanceof CloisterPiece)
             return new Cloister(tile);
-        if (tile.getOccupiedFeature() instanceof  LandPiece)
+        if (tile.getOccupiedFeature() instanceof LandPiece)
             return new Land (tile);
 
         return new Castle(tile);
@@ -227,7 +231,7 @@ public abstract class RealEstate {
 
         neighbourFeatureDirections.retainAll(edge);
         /*
-         * neighbourFeatureDirections now contains TileDirections of Feature that continues onto recipient tile
+         * neighbourFeatureDirections now contains TileDirections of feature that continues onto recipient tile
          * on the border with recipient tile
          */
 
