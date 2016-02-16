@@ -1,9 +1,9 @@
 package carcassonne.view;
 
 import carcassonne.controller.WindowLogic;
-import carcassonne.model.Coordinates;
-import carcassonne.model.Rotation;
-import carcassonne.model.TileName;
+import carcassonne.model.tile.Coordinates;
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.TileName;
 
 import java.awt.*;
 import java.util.*;

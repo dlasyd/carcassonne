@@ -1,8 +1,9 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
-import static carcassonne.model.TileDirections.*;
+import static carcassonne.model.tile.TileDirections.*;
 import static org.junit.Assert.*;
 
+import carcassonne.model.Player;
 import carcassonne.model.feature.Feature;
 import carcassonne.model.feature.FeatureType;
 import org.junit.Before;

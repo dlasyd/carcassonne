@@ -1,7 +1,7 @@
 package carcassonne.model.realEstate;
 
-import carcassonne.model.Tile;
-import carcassonne.model.TileDirections;
+import carcassonne.model.tile.Tile;
+import carcassonne.model.tile.TileDirections;
 
 import java.util.Collections;
 import java.util.HashSet;

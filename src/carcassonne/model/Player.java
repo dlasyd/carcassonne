@@ -36,13 +36,13 @@ public class Player {
         numberOfFollowers--;
     }
 
-    void placeFollower() {
+    public void placeFollower() {
         decreaseNumberOfFollowers();
         if (numberOfFollowers < 0)
             throw new RuntimeException("Number of followers that a player has is less than 0 " + name);
     }
 
-    void returnFollower() {
+    public void returnFollower() {
         increaseNumberOfFollowers();
         if (numberOfFollowers > 7)
             throw new RuntimeException("Number of followers that a player has is more than 7");

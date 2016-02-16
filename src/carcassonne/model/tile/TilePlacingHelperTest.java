@@ -1,12 +1,14 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
+import carcassonne.model.Table;
+import carcassonne.model.Util;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static carcassonne.model.Rotation.*;
+import static carcassonne.model.tile.Rotation.*;
 import static org.junit.Assert.*;
 
 /**

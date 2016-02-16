@@ -1,5 +1,6 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
+import carcassonne.model.Player;
 import carcassonne.model.feature.Feature;
 
 import java.util.LinkedHashSet;
@@ -38,7 +39,7 @@ public abstract class Tile {
     public abstract Tile    turnRight(Rotation angle);
     public abstract Tile    copyFeatures(Tile referenceTile);
 
-    abstract Tile setCoordinates(int x, int y);
+    public abstract Tile setCoordinates(int x, int y);
     abstract Tile placeFollower(Player player, Feature feature);
     public abstract Tile placeFollower(Player player, TileDirections direction);
     public abstract Tile returnFollowerToPlayer();

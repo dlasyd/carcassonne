@@ -1,11 +1,11 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import static carcassonne.model.TileDirections.*;
+import static carcassonne.model.tile.TileDirections.*;
 
 import static org.junit.Assert.*;
 

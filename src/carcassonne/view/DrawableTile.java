@@ -1,6 +1,8 @@
 package carcassonne.view;
 
-import carcassonne.model.*;
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.Tile;
+import carcassonne.model.tile.TileName;
 
 import java.awt.*;
 

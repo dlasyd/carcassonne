@@ -1,11 +1,8 @@
 package carcassonne.controller;
 
 import carcassonne.model.OwnershipChecker;
-import carcassonne.model.Rotation;
-import carcassonne.model.TileDirections;
-
-import java.util.HashSet;
-import java.util.Set;
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.TileDirections;
 
 /**
  * This is a part of Carcassonne project.

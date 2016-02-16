@@ -3,6 +3,10 @@ package carcassonne.model;
 import carcassonne.controller.DataToModel;
 import carcassonne.controller.GameDataBuilder;
 import carcassonne.controller.WindowLogic;
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.Tile;
+import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TilePile;
 
 import java.awt.*;
 import java.util.*;
@@ -11,7 +15,7 @@ public class Game implements DataToModel{
     private static Game game;
     private Table               table;
     private WindowLogic         windowLogic;
-    private TilePile            tilePile = new TilePile();
+    private TilePile tilePile = new TilePile();
     private ArrayList<Player>   players = new ArrayList<>();
     private Player              currentPlayer;
     private boolean             finished;

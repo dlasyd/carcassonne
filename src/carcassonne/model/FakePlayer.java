@@ -7,11 +7,11 @@ package carcassonne.model;
  * Created by Andrey on 11/02/16.
  */
 public class FakePlayer extends Player {
-    void placeFollower() {
+    public void placeFollower() {
         decreaseNumberOfFollowers();
     }
 
-    void returnFollower() {
+    public void returnFollower() {
         increaseNumberOfFollowers();
      }
 }

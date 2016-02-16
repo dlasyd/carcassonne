@@ -1,5 +1,8 @@
 package carcassonne.model;
 
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.TileDirections;
+
 /**
  * This is a part of Carcassonne project.
  * The project is created for learning and practicing java

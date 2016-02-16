@@ -3,6 +3,8 @@ package carcassonne.model;
 import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.tile.Tile;
+import carcassonne.model.tile.TileName;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;
 import org.junit.Before;

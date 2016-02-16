@@ -1,6 +1,7 @@
 package carcassonne.model;
 
 import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.tile.*;
 import carcassonne.view.PlacedFollower;
 
 import java.util.*;
@@ -112,7 +113,7 @@ public class Table implements OwnershipChecker{
     }
 
 
-    HashMap<Coordinates,Tile> getPlacedTiles() {
+    public HashMap<Coordinates,Tile> getPlacedTiles() {
         return new HashMap<>(placedTiles);
     }
 

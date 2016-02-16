@@ -1,5 +1,6 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
+import carcassonne.model.Player;
 import carcassonne.model.feature.Feature;
 
 import java.util.*;
@@ -106,7 +107,7 @@ public class RealTile extends Tile {
     }
 
     @Override
-    Tile setCoordinates(int x, int y) {
+    public Tile setCoordinates(int x, int y) {
         RealTile newTile = new RealTile(this);
         newTile.coordinates = new Coordinates (x, y);
         return newTile;

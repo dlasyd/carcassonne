@@ -1,8 +1,8 @@
 package carcassonne.view;
 
 import carcassonne.controller.WindowLogic;
-import carcassonne.model.Coordinates;
-import carcassonne.model.Rotation;
+import carcassonne.model.tile.Coordinates;
+import carcassonne.model.tile.Rotation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

@@ -1,4 +1,4 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
 import carcassonne.model.feature.Feature;
 import carcassonne.model.feature.FeatureType;
@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static carcassonne.model.feature.FeatureType.*;
-import static carcassonne.model.TileDirections.*;
-import static carcassonne.model.TileName.*;
-import static carcassonne.model.TileName.CLOISTER;
+import static carcassonne.model.tile.TileDirections.*;
+import static carcassonne.model.tile.TileName.*;
+import static carcassonne.model.tile.TileName.CLOISTER;
 
 public class TilePile {
     private static TilePile tilePile;

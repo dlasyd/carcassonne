@@ -4,6 +4,10 @@ import carcassonne.controller.DataToModel;
 import carcassonne.controller.FollowerMap;
 import carcassonne.controller.WindowLogic;
 import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.Tile;
+import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TilePile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,13 +20,13 @@ public class FakeGame implements DataToModel {
     private Table               table;
     private RealEstateManager realEstateManager;
     private WindowLogic         windowLogic;
-    private TilePile            tilePile = new TilePile();
+    private TilePile tilePile = new TilePile();
     private ArrayList<Player>   players = new ArrayList<>();
     private Player              currentPlayer;
     private boolean             finished;
     private boolean             currentTileConfirmed;
     private boolean             followerFriendly;           //determines if a tile has a vacant place for follower
-    private TileDirections      lastFollowerTileDirections;
+    private TileDirections lastFollowerTileDirections;
     private FollowerMap         currentTileFollowerMap;
 
     public FakeGame() {

@@ -1,6 +1,6 @@
 package carcassonne.model.feature;
 
-import carcassonne.model.Follower;
+import carcassonne.model.tile.Follower;
 
 /**
  * Created by Andrey on 02/12/15.

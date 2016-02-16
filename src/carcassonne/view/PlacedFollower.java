@@ -1,6 +1,6 @@
 package carcassonne.view;
 
-import carcassonne.model.Coordinates;
+import carcassonne.model.tile.Coordinates;
 import carcassonne.model.feature.Feature;
 
 

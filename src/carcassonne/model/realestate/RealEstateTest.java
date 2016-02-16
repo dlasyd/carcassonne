@@ -3,6 +3,7 @@ package carcassonne.model.realEstate;
 import carcassonne.model.*;
 import carcassonne.model.feature.Feature;
 import carcassonne.model.feature.FeatureType;
+import carcassonne.model.tile.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,9 +11,9 @@ import org.junit.rules.ExpectedException;
 
 import java.util.*;
 
-import static carcassonne.model.TileName.*;
+import static carcassonne.model.tile.TileName.*;
 import static org.junit.Assert.*;
-import static carcassonne.model.TileDirections.*;
+import static carcassonne.model.tile.TileDirections.*;
 
 /**
  * This test class tests a lot of real game situations to make sure that RealEstate class behaves properly

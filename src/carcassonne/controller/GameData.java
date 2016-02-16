@@ -1,13 +1,12 @@
 package carcassonne.controller;
 
-import carcassonne.model.Coordinates;
-import carcassonne.model.Rotation;
-import carcassonne.model.Tile;
+import carcassonne.model.tile.Coordinates;
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.Tile;
 import carcassonne.view.PlacedFollower;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 

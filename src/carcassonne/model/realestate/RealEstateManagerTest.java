@@ -3,14 +3,15 @@ package carcassonne.model.realEstate;
 import carcassonne.model.*;
 import carcassonne.model.feature.Feature;
 import carcassonne.model.feature.FeatureType;
+import carcassonne.model.tile.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
 
-import static carcassonne.model.Rotation.*;
-import static carcassonne.model.TileDirections.*;
-import static carcassonne.model.TileName.*;
+import static carcassonne.model.tile.Rotation.*;
+import static carcassonne.model.tile.TileDirections.*;
+import static carcassonne.model.tile.TileName.*;
 import static org.junit.Assert.*;
 
 /**

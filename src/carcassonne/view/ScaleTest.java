@@ -1,6 +1,6 @@
 package carcassonne.view;
 
-import carcassonne.model.Coordinates;
+import carcassonne.model.tile.Coordinates;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;

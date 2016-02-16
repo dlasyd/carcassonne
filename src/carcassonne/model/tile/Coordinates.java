@@ -1,4 +1,4 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
 import java.util.HashSet;
 import java.util.Set;

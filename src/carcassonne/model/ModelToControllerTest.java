@@ -3,6 +3,8 @@ package carcassonne.model;
 import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.tile.Coordinates;
+import carcassonne.model.tile.TileDirections;
 import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;
@@ -12,8 +14,8 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.*;
 
-import static carcassonne.model.Rotation.*;
-import static carcassonne.model.TileName.*;
+import static carcassonne.model.tile.Rotation.*;
+import static carcassonne.model.tile.TileName.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

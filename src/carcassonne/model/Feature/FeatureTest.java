@@ -1,6 +1,6 @@
 package carcassonne.model.feature;
 
-import carcassonne.model.Follower;
+import carcassonne.model.tile.Follower;
 import carcassonne.model.Player;
 import org.junit.Rule;
 import org.junit.Test;

@@ -1,4 +1,7 @@
-package carcassonne.model;
+package carcassonne.model.tile;
+
+import carcassonne.model.Table;
+import carcassonne.model.Util;
 
 import java.util.*;
 
@@ -8,12 +11,12 @@ import java.util.*;
  *
  * Created by Andrey on 19/01/16.
  */
-class TilePlacingHelper {
+public class TilePlacingHelper {
     private HashMap<Coordinates,Tile> placedTiles;
     private Map<Coordinates, Set<Rotation>> coordinatesToRotationMap = new HashMap<>();
     private Table table;
 
-    TilePlacingHelper(Table table) {
+    public TilePlacingHelper(Table table) {
         this.table = table;
     }
 

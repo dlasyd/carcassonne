@@ -1,5 +1,6 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
+import carcassonne.model.Player;
 import carcassonne.model.feature.Feature;
 
 import java.util.LinkedHashSet;
@@ -30,7 +31,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    Tile setCoordinates(int x, int y) {
+    public Tile setCoordinates(int x, int y) {
 
         throw new RuntimeException("The tile is Null");
     }

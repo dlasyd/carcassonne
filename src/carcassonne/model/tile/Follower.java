@@ -1,4 +1,6 @@
-package carcassonne.model;
+package carcassonne.model.tile;
+
+import carcassonne.model.Player;
 
 /**
  * Created by Andrey on 01/12/15.

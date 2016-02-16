@@ -2,6 +2,10 @@ package carcassonne.controller;
 
 import carcassonne.model.*;
 import carcassonne.model.feature.Feature;
+import carcassonne.model.tile.Coordinates;
+import carcassonne.model.tile.Rotation;
+import carcassonne.model.tile.Tile;
+import carcassonne.model.tile.TileDirections;
 import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.DrawableTile;
 import carcassonne.view.PlacedFollower;
@@ -10,7 +14,7 @@ import carcassonne.view.ViewWindow;
 import java.awt.*;
 import java.util.*;
 
-import static carcassonne.model.TileDirections.*;
+import static carcassonne.model.tile.TileDirections.*;
 
 /**
  * This is a part of Carcassonne project.
@@ -27,7 +31,7 @@ public class GameWindowLogic implements WindowLogic {
     private GameData        gameData;
     private ViewWindow      gameWindow;
     private DataToModel     dataToModel;
-    private Rotation        currentTileRotation = Rotation.DEG_0;
+    private Rotation currentTileRotation = Rotation.DEG_0;
     private Set<Rotation>   possibleCurrentTileRotations;
     private double[]        currentFollowerLocation;
     private boolean         temporaryFollowerDisplayed;

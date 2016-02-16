@@ -1,4 +1,4 @@
-package carcassonne.model;
+package carcassonne.model.tile;
 
 /**
  * This is a part of Carcassonne project.

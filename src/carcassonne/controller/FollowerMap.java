@@ -1,6 +1,6 @@
 package carcassonne.controller;
 
-import carcassonne.model.TileDirections;
+import carcassonne.model.tile.TileDirections;
 
 import java.util.*;
 
