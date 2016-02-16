@@ -4,14 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Coordinates {
-    private int x, y;
-    private Rotation rotation;
+    private final int x;
+    private final int y;
+    private final Rotation rotation;
 
     public Coordinates(int x, int y) {
         this(x, y, Rotation.DEG_0);
     }
 
-    Coordinates (int x, int y, Rotation r) {
+    private Coordinates(int x, int y, Rotation r) {
         this.x = x;
         this.y = y;
         this.rotation = r;
@@ -30,9 +31,7 @@ public class Coordinates {
         if (!(o instanceof Coordinates))
             return false;
         Coordinates coord = (Coordinates) o;
-        if (x == coord.getX() && y == coord.getY())
-            return true;
-        return false;
+        return x == coord.getX() && y == coord.getY();
     }
 
     @Override

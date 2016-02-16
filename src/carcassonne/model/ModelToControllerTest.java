@@ -147,7 +147,7 @@ public class ModelToControllerTest {
         prepareGame();
         assertEquals("Current player in controller is correct", "Anton", fakeWindow.getCurrentPlayerName());
         assertEquals("Score in controller is correct", "0", fakeWindow.getCurrentPoints());
-        assertEquals("Followers number is correct", "7", fakeWindow.getNumberOfFollwers());
+        assertEquals("Followers number is correct", "7", fakeWindow.getNumberOfFollowers());
         assertEquals("Tiles left", "4", fakeWindow.getTilesLeft());
     }
 

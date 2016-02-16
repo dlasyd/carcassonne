@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Class that extends Game with methods used for testing
  */
 public class FakeGame implements DataToModel {
-    private Game                realGame;
+    private final Game                realGame;
     private Table               table;
     private RealEstateManager realEstateManager;
     private WindowLogic         windowLogic;

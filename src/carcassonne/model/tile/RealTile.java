@@ -27,7 +27,7 @@ public class RealTile extends Tile {
 
     RealTile() {}
 
-    RealTile(RealTile realTile) {
+    private RealTile(RealTile realTile) {
         this.tileName = realTile.tileName;
         this.coordinates = realTile.coordinates;
         this.currentRotation = realTile.currentRotation;
@@ -114,7 +114,7 @@ public class RealTile extends Tile {
     }
 
     @Override
-    public Tile placeFollower(Player player, Feature feature) {
+    Tile placeFollower(Player player, Feature feature) {
         RealTile newTile = new RealTile(this);
         newTile.noFollower = false;
         newTile.occupiedFeature = feature;

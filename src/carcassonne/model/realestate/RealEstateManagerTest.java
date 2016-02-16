@@ -220,7 +220,7 @@ public class RealEstateManagerTest {
         tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
 
 
-        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
+        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap<>();
         expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(SOUTH, SSE, SSW )));
         expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(SSW, SSE, SOUTH, EES, EEN, EAST)));
         expectedRealEstate.put(tile_0_1, new HashSet<>(Arrays.asList(SSW, SSE, SOUTH, EES, EEN, EAST)));
@@ -364,9 +364,9 @@ public class RealEstateManagerTest {
         tile_2_m1 = tile_2_m1.turnRight(DEG_90);
 
 
-        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
+        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap<>();
         expectedRealEstate.put(tile_1_m1, new HashSet<>(Arrays.asList(SOUTH, EAST)));
-        expectedRealEstate.put(tile_2_m1, new HashSet<>(Arrays.asList(WEST)));
+        expectedRealEstate.put(tile_2_m1, new HashSet<>(Collections.singletonList(WEST)));
 
         ArrayList<RealEstate> antons;
         Map<Tile, Set<TileDirections>> antonRealEstate;

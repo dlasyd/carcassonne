@@ -13,8 +13,8 @@ import java.util.*;
  */
 public class TilePlacingHelper {
     private HashMap<Coordinates,Tile> placedTiles;
-    private Map<Coordinates, Set<Rotation>> coordinatesToRotationMap = new HashMap<>();
-    private Table table;
+    private final Map<Coordinates, Set<Rotation>> coordinatesToRotationMap = new HashMap<>();
+    private final Table table;
 
     public TilePlacingHelper(Table table) {
         this.table = table;
@@ -24,7 +24,7 @@ public class TilePlacingHelper {
         this.placedTiles = placedTiles;
     }
 
-    public Map getCoordinatesToRotationMap() {
+    public Map<Coordinates, Set<Rotation>> getCoordinatesToRotationMap() {
         return new HashMap<>(coordinatesToRotationMap);
     }
 

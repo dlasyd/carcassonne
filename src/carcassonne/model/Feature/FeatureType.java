@@ -7,5 +7,5 @@ package carcassonne.model.feature;
  * Created by Andrey on 04/01/16.
  */
 public enum FeatureType {
-    ROAD, CITY, CLOISTER, LAND, CITY_SHIELD;
+    ROAD, CITY, CLOISTER, LAND, CITY_SHIELD
 }

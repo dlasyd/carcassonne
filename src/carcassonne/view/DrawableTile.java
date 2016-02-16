@@ -54,7 +54,7 @@ public class DrawableTile {
         return tile.getY();
     }
 
-    public void turnRight() {
+    private void turnRight() {
         image.rotate(90);
         rotation = Rotation.values()[(rotation.ordinal() + 1) % 4];
     }

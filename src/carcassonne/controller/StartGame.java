@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * This class creates all necessary objects, does all the preparation and starts the game
  */
-public class StartGame {
+class StartGame {
     public static void main(String[] args) {
         /*
          * prepare game

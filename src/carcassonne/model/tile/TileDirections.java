@@ -2,9 +2,6 @@ package carcassonne.model.tile;
 
 import java.util.*;
 
-/**
- * Created by Andrey on 03/12/15.
- */
 public enum TileDirections {
     /*
      * WWN = WEST WEST NORTH

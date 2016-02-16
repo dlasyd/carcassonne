@@ -15,12 +15,12 @@ public class Table implements OwnershipChecker{
     private Tile tilePlacedLast;
     private RealEstateManager realEstateManager;
     private final TilePlacingHelper tilePlacementHelper;
-    private Set<PlacedFollower> placedFollowers = new HashSet<>();
+    private final Set<PlacedFollower> placedFollowers = new HashSet<>();
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
     private final Tile firstTile = Tile.getInstance(0, 0, TileName.CITY1RWE);
-    private HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
+    private final HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
 
     public Table() {
         tilePlacementHelper = new TilePlacingHelper(this);

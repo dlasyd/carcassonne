@@ -11,7 +11,7 @@ import java.util.*;
  * Created by Andrey on 01/02/16.
  */
 public class FollowerMap {
-    private Map<FollowerMultipliers, TileDirections> multipliersToFeatureMap = new HashMap<>();
+    private final Map<FollowerMultipliers, TileDirections> multipliersToFeatureMap = new HashMap<>();
 
     public void put(double[] xyMultipliers, TileDirections direction) {
         multipliersToFeatureMap.put(new FollowerMultipliers(xyMultipliers), direction);
@@ -30,7 +30,7 @@ public class FollowerMap {
     }
 
     class FollowerMultipliers {
-        private double[] multipliers;
+        private final double[] multipliers;
 
         FollowerMultipliers(double[] multipliers) {
             this.multipliers = multipliers;

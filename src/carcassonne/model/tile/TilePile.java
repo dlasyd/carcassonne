@@ -14,7 +14,7 @@ import static carcassonne.model.tile.TileName.CLOISTER;
 
 public class TilePile {
     private static TilePile tilePile;
-    private ArrayList<Tile> tiles = new ArrayList<>();
+    private final ArrayList<Tile> tiles = new ArrayList<>();
     private boolean         nonRandom;
 
     public static Tile getReferenceTile(TileName tileName) {
@@ -218,7 +218,7 @@ public class TilePile {
         }
     }
 
-    public void addTile(TileName name, int amount) {
+    private void addTile(TileName name, int amount) {
         for (int i = 0; i < amount; i ++) {
             addTile(name);
         }

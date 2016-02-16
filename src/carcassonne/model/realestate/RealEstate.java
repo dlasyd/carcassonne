@@ -21,7 +21,7 @@ public abstract class RealEstate {
     boolean finished = false;
     private Tile firstTile;
 
-    public RealEstate(Tile tile) {
+    RealEstate(Tile tile) {
         immutableRealEstate = new ImmutableRealEstate(this, tile);
         if (!tile.hasFollower())
             throw new RuntimeException("Cannot create real estate from tile without a follower");
@@ -110,7 +110,7 @@ public abstract class RealEstate {
         return result;
     }
 
-    void addAdjacentTiles(Tile tile) {
+    private void addAdjacentTiles(Tile tile) {
         Map<Tile, Set<TileDirections>> adjacentTiles = new HashMap<>();
         Set<TileDirections> occupiedFeatureDirections = tilesAndFeatureTileDirections.get(tile);
         assert(occupiedFeatureDirections != null);

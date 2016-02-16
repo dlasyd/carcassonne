@@ -8,14 +8,11 @@ import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Andrey on 03/12/15.
- */
 public class FeatureTest {
-    Feature feature = Feature.createFeature(FeatureType.CITY);
+    private final Feature feature = Feature.createFeature(FeatureType.CITY);
 
     @Rule
-    public ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void isFollowerPlacedInBeginning() {

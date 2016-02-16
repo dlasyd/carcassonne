@@ -10,10 +10,10 @@ import java.util.Arrays;
  * Contains information required to display placed followers in a game window
  */
 public class DrawablePlacedFollower {
-    private Coordinates coordinates;
-    private double[] xyMultipliers;     //for 0 rotation
-    private Color color;
-    private Rotation rotation;
+    private final Coordinates coordinates;
+    private final double[] xyMultipliers;     //for 0 rotation
+    private final Color color;
+    private final Rotation rotation;
 
     public DrawablePlacedFollower(Coordinates coordinates, double[] xyMultipliers, Color color, Rotation rotation) {
         this.coordinates = coordinates;

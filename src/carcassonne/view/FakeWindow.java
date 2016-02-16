@@ -14,9 +14,9 @@ import java.util.*;
  * Data can be retrieved by FakeWindow getters
  */
 public class FakeWindow implements ViewWindow {
-    String currentPlayerName = "";
-    int moveCounter = 0;
-    private WindowLogic windowLogic;
+    private String currentPlayerName = "";
+    private int moveCounter = 0;
+    private final WindowLogic windowLogic;
     private String currentPoints;
     private String numberOfFollowers;
     private String tilesLeft;
@@ -25,13 +25,13 @@ public class FakeWindow implements ViewWindow {
     private boolean endGameWindowDisplayed;
     private boolean tilePreviewEnabled;
     private DrawableTile currentTile;
-    private Set<DrawableTile> tilesOnTable = new HashSet<>();
+    private final Set<DrawableTile> tilesOnTable = new HashSet<>();
     private TileName firstPlacedTileName;
     private Set<Coordinates> possibleTileLocations;
     private Set<double[]> followerLocations;
     private double[] temporaryFollowerLocation;
     private Set<DrawablePlacedFollower> placedFollowers = new HashSet<>();
-    private ArrayList<Map<Integer,String>> currentTableData = new ArrayList<>();
+    private final ArrayList<Map<Integer,String>> currentTableData = new ArrayList<>();
 
     public FakeWindow(WindowLogic windowLogic) {
         this.windowLogic = windowLogic;
@@ -234,7 +234,7 @@ public class FakeWindow implements ViewWindow {
         return currentPoints;
     }
 
-    public String getNumberOfFollwers() {
+    public String getNumberOfFollowers() {
         return numberOfFollowers;
     }
 

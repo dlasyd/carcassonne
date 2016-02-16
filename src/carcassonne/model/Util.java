@@ -45,7 +45,4 @@ public class Util {
         }
     }
 
-    public static <T> T any(Set<T> set) {
-        throw new RuntimeException("This should not be used");
-    }
 }

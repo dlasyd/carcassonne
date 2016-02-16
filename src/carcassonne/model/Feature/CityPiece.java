@@ -9,10 +9,6 @@ package carcassonne.model.feature;
 public class CityPiece extends Feature {
     @Override
     public boolean isSameType(Feature feature) {
-        if (feature instanceof CityPiece || feature instanceof  CityPieceWithShield) {
-            return true;
-        } else {
-            return super.isSameType(feature);
-        }
+        return feature instanceof CityPiece || feature instanceof CityPieceWithShield || super.isSameType(feature);
     }
 }

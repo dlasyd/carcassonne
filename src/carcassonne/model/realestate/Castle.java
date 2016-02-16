@@ -18,7 +18,7 @@ class Castle extends RealEstate{
     }
 
     @Override
-    public boolean isFinished() {
+    boolean isFinished() {
         if (!super.finished) {
             boolean finished = true;
             Set<Tile> tiles = super.getTileSet();

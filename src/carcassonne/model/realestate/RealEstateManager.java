@@ -10,9 +10,9 @@ import java.util.*;
  *
  */
 public class RealEstateManager {
-    private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToRealEstateSetMap = new HashMap<>();
-    private Map<RealEstate.ImmutableRealEstate, Set<Player>> realEstateMap = new HashMap<>();
-    private Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToFinishedRealEstate = new HashMap<>();
+    private final Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToRealEstateSetMap = new HashMap<>();
+    private final Map<RealEstate.ImmutableRealEstate, Set<Player>> realEstateMap = new HashMap<>();
+    private final Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToFinishedRealEstate = new HashMap<>();
     private final Table table;
 
     public RealEstateManager(Table table) {
@@ -211,7 +211,7 @@ public class RealEstateManager {
      * whether or not a possible follower position should be displayed and
      * by the table instance to check if Runtime Exception should be thrown
      *
-     * According to the rules of ther game, Cloisters should be excluded from this check.
+     * According to the rules of the game, Cloisters should be excluded from this check.
      *
      */
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {

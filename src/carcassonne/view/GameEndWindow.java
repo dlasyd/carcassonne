@@ -3,7 +3,7 @@ package carcassonne.view;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class GameEndWindow extends JDialog {
+class GameEndWindow extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;

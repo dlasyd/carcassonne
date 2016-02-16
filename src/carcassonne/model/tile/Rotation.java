@@ -7,5 +7,5 @@ package carcassonne.model.tile;
  * Created by Andrey on 09/12/15.
  */
 public enum Rotation {
-    DEG_0, DEG_90, DEG_180, DEG_270;
+    DEG_0, DEG_90, DEG_180, DEG_270
 }

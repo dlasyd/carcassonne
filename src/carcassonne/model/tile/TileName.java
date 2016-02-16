@@ -30,5 +30,5 @@ public enum TileName {
     ROAD2NS,
     ROAD2SW,
     ROAD3,
-    ROAD4;
+    ROAD4
 }

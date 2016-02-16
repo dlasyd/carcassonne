@@ -20,8 +20,8 @@ public class GameTest {
     @Rule
     public ExpectedException exception =
             ExpectedException.none();
-    Game game;
-    Table table;
+    private Game game;
+    private Table table;
 
     @Before
     public final void setUp() {

@@ -6,13 +6,10 @@ import java.util.HashSet;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Andrey on 02/12/15.
- */
 public class CoordinatesTest {
-    public Coordinates coordinates = new Coordinates(0, 0);
-    public HashSet<Coordinates> coordinatesSet = new HashSet<>();
-    public HashSet<Coordinates> expectedSet = new HashSet<>();
+    private Coordinates coordinates = new Coordinates(0, 0);
+    private HashSet<Coordinates> coordinatesSet = new HashSet<>();
+    private HashSet<Coordinates> expectedSet = new HashSet<>();
 
     @Test
     public void noRotationByDefault() {

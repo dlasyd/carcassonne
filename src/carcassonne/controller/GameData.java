@@ -17,16 +17,16 @@ import java.util.Set;
  * Created by Andrey on 12/01/16.
  */
 public class GameData {
-    private String name;
-    private String points;
-    private int followers;
-    private Color playerColor;
-    private String tilesLeft;
-    private Tile currentTile;
-    private Tile previouslyPlacedTile;
-    private Set<PlacedFollower> placedFollowers;
-    private Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
-    private ArrayList<String[]> playersStats;
+    private final String name;
+    private final String points;
+    private final int followers;
+    private final Color playerColor;
+    private final String tilesLeft;
+    private final Tile currentTile;
+    private final Tile previouslyPlacedTile;
+    private final Set<PlacedFollower> placedFollowers;
+    private final Map<Coordinates, Set<Rotation>> possibleLocationsAndRotations;
+    private final ArrayList<String[]> playersStats;
 
     public GameData(String name, String points, int followers, Color playerColor, String tilesLeft,
                     Tile currentTile, Tile previouslyPlacedTile, Set<Coordinates> possibleTileLocations,

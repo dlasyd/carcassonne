@@ -15,8 +15,8 @@ public class Game implements DataToModel{
     private static Game game;
     private Table               table;
     private WindowLogic         windowLogic;
-    private TilePile tilePile = new TilePile();
-    private ArrayList<Player>   players = new ArrayList<>();
+    private final TilePile tilePile = new TilePile();
+    private final ArrayList<Player>   players = new ArrayList<>();
     private Player              currentPlayer;
     private boolean             finished;
 

@@ -17,8 +17,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TileTest {
-    public Tile tile;
-    public Player player = new Player();
+    private Tile tile;
+    private Player player = new Player();
 
     @Rule
     public ExpectedException exception = ExpectedException.none();

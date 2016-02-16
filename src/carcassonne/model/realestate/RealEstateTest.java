@@ -645,11 +645,11 @@ public class RealEstateTest {
         placeTile(1, 0, TileName.ROAD4, Rotation.DEG_0);
         placeTile(2, 0, TileName.ROAD4, Rotation.DEG_0, new Player(), WEST);
 
-        Map<Tile, Set<TileDirections>> expected = new HashMap();
+        Map<Tile, Set<TileDirections>> expected = new HashMap<>();
         expected.put(tile_2_0, new HashSet<>(Collections.singletonList(WEST)));
         expected.put(tile_1_0, new HashSet<>(Collections.singletonList(EAST)));
 
-        Map<Tile, Set<TileDirections>> tileToTileDirections = new HashMap();
+        Map<Tile, Set<TileDirections>> tileToTileDirections = new HashMap<>();
 
         /*
          * TODO refactor this ugly thing
@@ -671,11 +671,6 @@ public class RealEstateTest {
         boolean h = tile1.equals(tile2);
         assertEquals("Equal tiles are equal", tile1, tile2);
         assertEquals ("Tile consist of correct tileDirections", expected, tileToTileDirections);
-    }
-
-    @Test
-    public void roadIsFinishedWhenLoop() {
-
     }
 
     @Test
@@ -807,7 +802,7 @@ public class RealEstateTest {
         tile_2_0 = Tile.getInstance(2, 0, CLOISTERR);
         tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
 
-        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
+        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap<>();
         expectedRealEstate.put(tile_0_0, new HashSet<>(Arrays.asList(WWN, EEN, WWS, EES, SOUTH, SSW, SSE)));
         expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(WWN, EEN, SSE, SSW, SOUTH, WWS, EES, NNE, NNW, NORTH )));
         expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(WWN, NNW, NORTH, NNE, EEN, EAST,

@@ -6,9 +6,6 @@ import carcassonne.model.feature.Feature;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-/**
- * Created by Andrey on 06/12/15.
- */
 public class NullTile extends Tile{
     @Override
     public boolean isNull() {
@@ -62,7 +59,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public boolean featureBordersWith(Feature feature, Set<TileDirections> tileDirectionses) {
+    public boolean featureBordersWith(Feature feature, Set<TileDirections> tileDirections) {
         return false;
     }
 

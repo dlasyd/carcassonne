@@ -38,12 +38,12 @@ public class GameWindow extends JFrame implements ViewWindow{
     private JPanel tableContainer;
     //</editor-fold>
 
-    private JDialog         gameEndWindow = new GameEndWindow();
-    private JPanel          tilePreview;
-    private JScrollPane     tableScrollPane;
-    private JTable          playersStatsTable;
-    private TableModel      tableData;
-    private GamePanel       gamePanel;
+    private final JDialog         gameEndWindow = new GameEndWindow();
+    private final JPanel          tilePreview;
+    private final JScrollPane     tableScrollPane;
+    private final JTable          playersStatsTable;
+    private final TableModel      tableData;
+    private final GamePanel       gamePanel;
     private DrawableTile    currentTile;
     private boolean         tilePreviewEnabled;
     private Set<Coordinates>                possibleTileLocations;
@@ -63,8 +63,8 @@ public class GameWindow extends JFrame implements ViewWindow{
         gamePanelArea.add(gamePanel);
 
         tableData = new AbstractTableModel() {
-            private String columnNames[] = {"Player", "Followers", "Points"};
-            private ArrayList<String[]> rowData= new ArrayList<>(Arrays.asList(new String[]{
+            private final String[] columnNames = {"Player", "Followers", "Points"};
+            private final ArrayList<String[]> rowData= new ArrayList<>(Arrays.asList(new String[]{
                     "Player1", "-1", "-1"
             },new String[]{
                     "Player2", "-1", "-1"
@@ -254,9 +254,9 @@ public class GameWindow extends JFrame implements ViewWindow{
         private double  tileSize = 90;
         private boolean firstMouseDrag = true;
         private int     previousMouseX = 0, previousMouseY = 0;
-        private int     MIN_TILE_SIZE = 45;
-        private int     TILE_SIZE_VARIATION = 90;
-        private Set<DrawableTile>   tilesOnTable = new HashSet<>();
+        private final int     MIN_TILE_SIZE = 45;
+        private final int     TILE_SIZE_VARIATION = 90;
+        private final Set<DrawableTile>   tilesOnTable = new HashSet<>();
         private final int           RECTANGLE_DIVIDER = 9;            // used to compute rectangleMargin of possible tile rectangle
         private double              rectangleMargin = tileSize / RECTANGLE_DIVIDER;
 
@@ -343,10 +343,6 @@ public class GameWindow extends JFrame implements ViewWindow{
                     repaint();
                 }
 
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    super.mouseMoved(e);
-                }
             });
         }
 

@@ -36,13 +36,13 @@ public class GameWindowLogic implements WindowLogic {
     private double[]        currentFollowerLocation;
     private boolean         temporaryFollowerDisplayed;
     private boolean         canFollowerBePlaced;
-    private FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
+    private final FollowerPlacingHelper followerPlacingHelper = new FollowerPlacingHelper();
     private FollowerMap         currentTileFollowerMap;
-    private Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
+    private final Set<DrawablePlacedFollower> drawablePlacedFollowers = new HashSet<>();
     private final boolean         LOG = true;
     private int clickOnCurrentTile;
-    private ArrayList<String> debugTileNames = new ArrayList<>();
-    private ArrayList<String> debugTurnActions = new ArrayList<>();
+    private final ArrayList<String> debugTileNames = new ArrayList<>();
+    private final ArrayList<String> debugTurnActions = new ArrayList<>();
 
     @Override
     public void setGameWindow(ViewWindow gameWindow) {
@@ -314,11 +314,6 @@ public class GameWindowLogic implements WindowLogic {
     @Override
     public boolean isTileConfirmed() {
         return tileConfirmed;
-    }
-
-    @Override
-    public GameData getLatestGameData() {
-        return null;
     }
 
     @Override

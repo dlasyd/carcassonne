@@ -8,21 +8,19 @@ import org.junit.Before;
 
 import java.awt.*;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * This is a part of Carcassonne project.
  * The project is created for learning and practicing java
  * and not intended for distribution.
  * Created by Andrey on 02/02/16.
  */
-public class FunctionalTest {
-    FakeGame        fakeGame;
-    Game            game;
-    Table           table;
-    WindowLogic     windowLogic;
-    ViewWindow      viewWindow;
-    FakeWindow      fakeWindow;
+class FunctionalTest {
+    private FakeGame        fakeGame;
+    private Game            game;
+    private Table           table;
+    private WindowLogic     windowLogic;
+    private ViewWindow      viewWindow;
+    private FakeWindow      fakeWindow;
 
     @Before
     public final void setUp() {

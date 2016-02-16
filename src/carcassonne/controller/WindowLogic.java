@@ -6,14 +6,12 @@ import carcassonne.view.ViewWindow;
 import java.awt.*;
 
 /**
- * Created by Andrey on 01/12/15.
+ * An interface for controller
  */
 public interface WindowLogic {
     void setGameWindow(ViewWindow gameWindow);
 
     void update(GameData gameData);
-
-    GameData getLatestGameData();
 
     void clickOnPossibleLocation(int x, int y);
 

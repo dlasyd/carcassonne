@@ -50,7 +50,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void noAvaliableFollowers() {
+    public void noAvailableFollowers() {
         for (int i = 0; i < 7; i++) {
             assertEquals ("Has follower", true, anton.hasAvailableFollowers());
             anton.placeFollower();
