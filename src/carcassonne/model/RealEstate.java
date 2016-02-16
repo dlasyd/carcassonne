@@ -21,6 +21,13 @@ public abstract class RealEstate {
         firstTile = tile;
     }
 
+    static RealEstate getCopy(RealEstate realEstate) {
+        RealEstate newRealEstate = RealEstate.getInstance(realEstate.firstTile);
+        Util.addAllSetElements(newRealEstate.tilesAndFeatureTileDirections,
+                realEstate.tilesAndFeatureTileDirections);
+        return newRealEstate;
+    }
+
     static RealEstate getInstance(Tile tile) {
         if (tile.getOccupiedFeature() instanceof RoadPiece)
             return new Road(tile);

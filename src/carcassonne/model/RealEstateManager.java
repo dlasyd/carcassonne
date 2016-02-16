@@ -235,17 +235,11 @@ public class RealEstateManager {
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
         boolean result = false;
         for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
-            if (LOG) {
-                System.out.print("\nisPartOfRealEstate (" + tilePlacedLast + ", " + direction +")");
-            }
             if (iRealEstate.getRealEstate() instanceof Cloister)
                 break;
-            temporaryUpdateRealEstate(tilePlacedLast);
-            result = iRealEstate.getRealEstate().contains(tilePlacedLast, direction);
-            if (result == true) {
-                removeTemporaryUpdate(tilePlacedLast);
-                break;
-            }
+            RealEstate temporaryRealEstate = RealEstate.getCopy(iRealEstate.getRealEstate());
+            temporaryRealEstate.update(tilePlacedLast);
+            return temporaryRealEstate.contains(tilePlacedLast, direction);
         }
         return result;
     }
