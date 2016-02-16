@@ -1,9 +1,8 @@
-package carcassonne.model.feature;
+package carcassonne.model.Feature;
 
 import carcassonne.model.tile.Follower;
 
 /**
- * Created by Andrey on 02/12/15.
  * Features of tile are roads, cities, land and cloisters
  */
 public class Feature{
@@ -53,7 +52,7 @@ public class Feature{
 
     public void setFollower(Follower follower) {
         if (isFollowerPlaced())
-            throw new RuntimeException("Trying to place follower on feature element that already has one");
+            throw new RuntimeException("Trying to place follower on Feature element that already has one");
         this.follower = follower;
     }
 

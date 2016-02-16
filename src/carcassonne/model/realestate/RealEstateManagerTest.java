@@ -1,8 +1,8 @@
-package carcassonne.model.realEstate;
+package carcassonne.model.realestate;
 
 import carcassonne.model.*;
-import carcassonne.model.feature.Feature;
-import carcassonne.model.feature.FeatureType;
+import carcassonne.model.Feature.Feature;
+import carcassonne.model.Feature.FeatureType;
 import carcassonne.model.tile.*;
 import org.junit.Before;
 import org.junit.Test;

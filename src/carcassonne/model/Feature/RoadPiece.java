@@ -1,4 +1,4 @@
-package carcassonne.model.feature;
+package carcassonne.model.Feature;
 
 /**
  * This class represents parts of tile that are pieces of road

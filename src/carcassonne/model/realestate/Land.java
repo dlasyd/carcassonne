@@ -1,10 +1,10 @@
-package carcassonne.model.realEstate;
+package carcassonne.model.realestate;
 
 import carcassonne.model.FakePlayer;
 import carcassonne.model.Player;
 import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;
-import carcassonne.model.feature.Feature;
+import carcassonne.model.Feature.Feature;
 
 import java.util.*;
 
@@ -70,7 +70,7 @@ class Land extends RealEstate {
                 TileDirections.WEST, TileDirections.EAST, TileDirections.NORTH, TileDirections.SOUTH));
 
         /*
-         * One tile can have two disjoint city feature sets, so every tile should be checked twice
+         * One tile can have two disjoint city Feature sets, so every tile should be checked twice
          */
         Set<TileDirections> remainingDirectionsToCheck = new HashSet<>(directionsToCheck);
         disjointCitiesDirections = addOneCityDirection(tile, directionsToCheck);

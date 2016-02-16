@@ -3,7 +3,7 @@ package carcassonne.model;
 import carcassonne.controller.DataToModel;
 import carcassonne.controller.FollowerMap;
 import carcassonne.controller.WindowLogic;
-import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.realestate.RealEstateManager;
 import carcassonne.model.tile.Rotation;
 import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;

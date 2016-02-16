@@ -1,13 +1,13 @@
 package carcassonne.model.tile;
 
-import carcassonne.model.feature.Feature;
-import carcassonne.model.feature.FeatureType;
+import carcassonne.model.Feature.Feature;
+import carcassonne.model.Feature.FeatureType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static carcassonne.model.feature.FeatureType.*;
+import static carcassonne.model.Feature.FeatureType.*;
 import static carcassonne.model.tile.TileDirections.*;
 import static carcassonne.model.tile.TileName.*;
 import static carcassonne.model.tile.TileName.CLOISTER;

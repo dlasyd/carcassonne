@@ -1,7 +1,7 @@
 package carcassonne.model.tile;
 
 import carcassonne.model.Player;
-import carcassonne.model.feature.Feature;
+import carcassonne.model.Feature.Feature;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

@@ -1,7 +1,7 @@
 package carcassonne.controller;
 
 import carcassonne.model.*;
-import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.realestate.RealEstateManager;
 import carcassonne.view.GameWindow;
 
 import java.awt.*;

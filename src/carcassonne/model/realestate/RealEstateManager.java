@@ -1,4 +1,4 @@
-package carcassonne.model.realEstate;
+package carcassonne.model.realestate;
 
 import carcassonne.model.*;
 import carcassonne.model.tile.Tile;
@@ -7,7 +7,8 @@ import carcassonne.model.tile.TileDirections;
 import java.util.*;
 
 /**
- *
+ * Has data about real estate and its owners
+ * Handles union and changing of owner
  */
 public class RealEstateManager {
     private final Map<Player, Set<RealEstate.ImmutableRealEstate>> playerToRealEstateSetMap = new HashMap<>();

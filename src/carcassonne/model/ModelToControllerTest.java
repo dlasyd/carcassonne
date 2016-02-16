@@ -2,7 +2,7 @@ package carcassonne.model;
 
 import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
-import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.realestate.RealEstateManager;
 import carcassonne.model.tile.Coordinates;
 import carcassonne.model.tile.TileDirections;
 import carcassonne.view.DrawablePlacedFollower;

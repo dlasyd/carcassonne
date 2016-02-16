@@ -1,8 +1,8 @@
-package carcassonne.model.realEstate;
+package carcassonne.model.realestate;
 
 import carcassonne.model.*;
-import carcassonne.model.feature.Feature;
-import carcassonne.model.feature.FeatureType;
+import carcassonne.model.Feature.Feature;
+import carcassonne.model.Feature.FeatureType;
 import carcassonne.model.tile.*;
 import org.junit.Before;
 import org.junit.Rule;
@@ -356,7 +356,7 @@ public class RealEstateTest {
     /*
      * Applies to next two tests
      * This test of a complex real estate, both x and y change, one of the tile has more than 1 direction,
-     * several TileDirections that characterise feature belong to one side of a tile
+     * several TileDirections that characterise Feature belong to one side of a tile
      */
     @Test
     public void createPropertyFromLessComplexPreviousTilePlacement() {

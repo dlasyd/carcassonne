@@ -4,8 +4,8 @@ import static carcassonne.model.tile.TileDirections.*;
 import static org.junit.Assert.*;
 
 import carcassonne.model.Player;
-import carcassonne.model.feature.Feature;
-import carcassonne.model.feature.FeatureType;
+import carcassonne.model.Feature.Feature;
+import carcassonne.model.Feature.FeatureType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -258,7 +258,7 @@ public class TileTest {
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.NORTH);
         tile.addFeature(Feature.createFeature(FeatureType.CITY), TileDirections.WWN, TileDirections.NNW);
         tile = tile.placeFollower(player, feature);
-        assertTrue("feature object that follower is placed on", feature.isSameType(tile.getOccupiedFeature()));
+        assertTrue("Feature object that follower is placed on", feature.isSameType(tile.getOccupiedFeature()));
     }
 
     @Test
@@ -295,7 +295,7 @@ public class TileTest {
         tile = tile.placeFollower(player, feature);
         HashSet<TileDirections> directionsSet = new HashSet<>();
         directionsSet.add(TileDirections.WEST);
-        assertTrue("Returns tileDirection set of follower containing feature", directionsSet.equals(tile.getOccupiedFeatureDirections()));
+        assertTrue("Returns tileDirection set of follower containing Feature", directionsSet.equals(tile.getOccupiedFeatureDirections()));
     }
 
     @Test
@@ -314,7 +314,7 @@ public class TileTest {
 
         Set<TileDirections> expected = new HashSet<>();
         expected.add(TileDirections.WEST);
-        assertTrue("TileDirection of feature with follower", expected.equals(tile.getOccupiedFeatureDirections()));
+        assertTrue("TileDirection of Feature with follower", expected.equals(tile.getOccupiedFeatureDirections()));
     }
 
     @Test
@@ -415,7 +415,7 @@ public class TileTest {
     public void copyFeatures() {
         Tile tile = Tile.getInstance();
         tile = tile.copyFeatures(TilePile.getReferenceTile(TileName.ROAD4));
-        assertTrue("New tile is feature equal", tile.directionsEqual(TilePile.getReferenceTile(TileName.ROAD4)));
+        assertTrue("New tile is Feature equal", tile.directionsEqual(TilePile.getReferenceTile(TileName.ROAD4)));
     }
 
     @Test

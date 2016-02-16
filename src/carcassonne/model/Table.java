@@ -1,6 +1,6 @@
 package carcassonne.model;
 
-import carcassonne.model.realEstate.RealEstateManager;
+import carcassonne.model.realestate.RealEstateManager;
 import carcassonne.model.tile.*;
 import carcassonne.view.PlacedFollower;
 

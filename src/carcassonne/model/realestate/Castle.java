@@ -1,16 +1,13 @@
-package carcassonne.model.realEstate;
+package carcassonne.model.realestate;
 
 import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;
-import carcassonne.model.feature.Feature;
+import carcassonne.model.Feature.Feature;
 
 import java.util.Set;
 
 /**
- * This is a part of Carcassonne project.
- * The project is created for learning and practicing java
- * and not intended for distribution.
- * Created by Andrey on 27/12/15.
+ * Castle is a real estate that consists of City features
  */
 class Castle extends RealEstate{
     Castle(Tile tile) {

@@ -1,11 +1,5 @@
-package carcassonne.model.feature;
+package carcassonne.model.Feature;
 
-/**
- * This is a part of Carcassonne project.
- * The project is created for learning and practicing java
- * and not intended for distribution.
- * Created by Andrey on 06/01/16.
- */
 public class CityPiece extends Feature {
     @Override
     public boolean isSameType(Feature feature) {

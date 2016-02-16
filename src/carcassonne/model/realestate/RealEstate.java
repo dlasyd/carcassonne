@@ -1,9 +1,9 @@
-package carcassonne.model.realEstate;
+package carcassonne.model.realestate;
 
 import carcassonne.model.*;
-import carcassonne.model.feature.CloisterPiece;
-import carcassonne.model.feature.LandPiece;
-import carcassonne.model.feature.RoadPiece;
+import carcassonne.model.Feature.CloisterPiece;
+import carcassonne.model.Feature.LandPiece;
+import carcassonne.model.Feature.RoadPiece;
 import carcassonne.model.tile.Coordinates;
 import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;
@@ -73,7 +73,7 @@ public abstract class RealEstate {
         if (! validCoordinates(tile))
             throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
         if (! addedFeatureUnoccupied(tile))
-            throw new RuntimeException("Trying to add occupied feature to existing real estate");
+            throw new RuntimeException("Trying to add occupied Feature to existing real estate");
     }
 
     /*
@@ -216,7 +216,7 @@ public abstract class RealEstate {
             } else if (neighbour.getY() == recipient.getY() - 1) {
                 recipientBorder = TileDirections.NORTH;
             } else {
-                throw new RuntimeException("Trying to get continuation of feature from illegally placed tiles");
+                throw new RuntimeException("Trying to get continuation of Feature from illegally placed tiles");
             }
         } else if (neighbour.getY() == recipient.getY()) {
             if (neighbour.getX() == recipient.getX() + 1) {
@@ -224,11 +224,11 @@ public abstract class RealEstate {
             } else if (neighbour.getX() == recipient.getX() - 1) {
                 recipientBorder = TileDirections.WEST;
             } else {
-                throw new RuntimeException("Trying to get continuation of feature from illegally placed tiles");
+                throw new RuntimeException("Trying to get continuation of Feature from illegally placed tiles");
             }
 
         } else {
-            throw new RuntimeException("Trying to get continuation of feature from illegally placed tiles");
+            throw new RuntimeException("Trying to get continuation of Feature from illegally placed tiles");
         }
 
         Set<TileDirections> neighbourFeatureDirections = tilesAndFeatureTileDirections.get(neighbour);
@@ -236,7 +236,7 @@ public abstract class RealEstate {
 
         neighbourFeatureDirections.retainAll(edge);
         /*
-         * neighbourFeatureDirections now contains TileDirections of feature that continues onto recipient tile
+         * neighbourFeatureDirections now contains TileDirections of Feature that continues onto recipient tile
          * on the border with recipient tile
          */
 

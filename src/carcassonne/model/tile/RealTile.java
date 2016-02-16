@@ -1,7 +1,7 @@
 package carcassonne.model.tile;
 
 import carcassonne.model.Player;
-import carcassonne.model.feature.Feature;
+import carcassonne.model.Feature.Feature;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ public class RealTile extends Tile {
     private HashMap<TileDirections, Feature> propertyMap = new HashMap<>();
 
     /*
-     * A feature can "connect" one TileDirections with the other. For example, a road from EAST to WEST
+     * A Feature can "connect" one TileDirections with the other. For example, a road from EAST to WEST
      */
     private HashMap<TileDirections, Set<TileDirections>> propertyConnectionMap = new HashMap<>();
 
@@ -126,7 +126,7 @@ public class RealTile extends Tile {
     @Override
     public Tile placeFollower(Player player, TileDirections direction) {
         if (propertyMap.get(direction) == null)
-            throw new RuntimeException("Cannot place follower using tileDirection because there is no corresponding feature");
+            throw new RuntimeException("Cannot place follower using tileDirection because there is no corresponding Feature");
         return placeFollower(player, propertyMap.get(direction));
     }
 
@@ -150,7 +150,7 @@ public class RealTile extends Tile {
     private void checkIfDirectionIsNotOccupied(TileDirections... directions) {
         for (TileDirections direction: directions) {
             if (propertyMap.containsKey(direction))
-                throw new RuntimeException("Cannot rewrite objects of feature on tile");
+                throw new RuntimeException("Cannot rewrite objects of Feature on tile");
         }
     }
 
@@ -246,7 +246,7 @@ public class RealTile extends Tile {
     @Override
     public Feature getOccupiedFeature() {
         if (!hasFollower())
-            throw new RuntimeException("Trying to get feature containing follower from tile with no follower");
+            throw new RuntimeException("Trying to get Feature containing follower from tile with no follower");
         return occupiedFeature;
     }
 
@@ -275,7 +275,7 @@ public class RealTile extends Tile {
     /*
      * This method is used in placeTile(...) method of Table
      *
-     * It does not matter which of occupied feature TileDirections is returned, they
+     * It does not matter which of occupied Feature TileDirections is returned, they
      * are logically equivalent
      */
     @Override
@@ -286,11 +286,11 @@ public class RealTile extends Tile {
 
     /**
      * This method is invoked by Land getPoints() method.
-     * It is used to know weather or not a city that is a feature of one of the land tiles "touches" that land
+     * It is used to know weather or not a city that is a Feature of one of the land tiles "touches" that land
      *
-     * @param feature a feature of a tile that you are checking
-     * @param expectedTileDirections of a different feature
-     * @return true if feature and tile directions are next to each other at least at one expectedTileDirection
+     * @param feature a Feature of a tile that you are checking
+     * @param expectedTileDirections of a different Feature
+     * @return true if Feature and tile directions are next to each other at least at one expectedTileDirection
      */
     @Override
     public boolean featureBordersWith(Feature feature, Set<TileDirections> expectedTileDirections) {
@@ -339,7 +339,7 @@ public class RealTile extends Tile {
             return false;
 
         /*
-         * Because all feature instances are equal only to themselves, when comparing collections that contain them
+         * Because all Feature instances are equal only to themselves, when comparing collections that contain them
          * method isSameType() should be used
          */
 

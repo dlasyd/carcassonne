@@ -1,4 +1,4 @@
-package carcassonne.model.feature;
+package carcassonne.model.Feature;
 
 import carcassonne.model.tile.Follower;
 import carcassonne.model.Player;
@@ -16,13 +16,13 @@ public class FeatureTest {
 
     @Test
     public void isFollowerPlacedInBeginning() {
-        assertEquals ("Follower not placed on feature", false, feature.isFollowerPlaced());
+        assertEquals ("Follower not placed on Feature", false, feature.isFollowerPlaced());
     }
 
     @Test
     public void followerPlacedThenTrue() {
         feature.setFollower(new Follower(new Player()));
-        assertEquals ("Follower placed on feature", true, feature.isFollowerPlaced());
+        assertEquals ("Follower placed on Feature", true, feature.isFollowerPlaced());
     }
 
     @Test

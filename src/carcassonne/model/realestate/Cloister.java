@@ -1,4 +1,4 @@
-package carcassonne.model.realEstate;
+package carcassonne.model.realestate;
 
 import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;

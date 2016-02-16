@@ -1,11 +1,11 @@
 package carcassonne.view;
 
 import carcassonne.model.tile.Coordinates;
-import carcassonne.model.feature.Feature;
+import carcassonne.model.Feature.Feature;
 
 
 /**
- * Describes on which feature the follower is placed
+ * Describes on which Feature the follower is placed
  */
 public class PlacedFollower {
     private Coordinates coordinates;

@@ -1,7 +1,7 @@
 package carcassonne.controller;
 
 import carcassonne.model.*;
-import carcassonne.model.feature.Feature;
+import carcassonne.model.Feature.Feature;
 import carcassonne.model.tile.Coordinates;
 import carcassonne.model.tile.Rotation;
 import carcassonne.model.tile.Tile;
@@ -350,7 +350,7 @@ public class GameWindowLogic implements WindowLogic {
     /**
      * An instance of this class has a method that returns all legal locations
      * of possible follower placement on the current tile. Legal is:
-     * 1) 1 per feature
+     * 1) 1 per Feature
      * 2) exclude occupied real estate
      */
     class FollowerPlacingHelper {
@@ -377,7 +377,7 @@ public class GameWindowLogic implements WindowLogic {
         private double[] getTileSizeRelativeMultipliers(Tile tile, Feature feature) {
             double[] xyMultipliers = new double[2];
             /*
-             * get 1 direction pre feature
+             * get 1 direction pre Feature
              */
             LinkedHashSet<TileDirections> directions= tile.getFeatureTileDirections(feature);
 
