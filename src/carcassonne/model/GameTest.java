@@ -134,7 +134,6 @@ public class GameTest {
         game.nextPlayer();
         assertEquals ("first player name", "Anton", game.getCurrentPlayer().getName());
     }
-
 }
 
 

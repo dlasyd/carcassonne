@@ -10,17 +10,17 @@ import java.util.*;
  * Table on which table games are played, not a table that has rows and columns
  */
 public class Table implements OwnershipChecker{
-    private static Table table;
-    private Tile currentTile;
-    private Tile tilePlacedLast;
-    private RealEstateManager realEstateManager;
-    private final TilePlacingHelper tilePlacementHelper;
-    private final Set<PlacedFollower> placedFollowers = new HashSet<>();
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
     private final Tile firstTile = Tile.getInstance(0, 0, TileName.CITY1RWE);
-    private final HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
+    private static Table table;
+    private Tile                currentTile;
+    private Tile                tilePlacedLast;
+    private RealEstateManager   realEstateManager;
+    private final TilePlacingHelper             tilePlacementHelper;
+    private final Set<PlacedFollower>           placedFollowers = new HashSet<>();
+    private final HashMap<Coordinates, Tile>    placedTiles = new HashMap<>();
 
     public Table() {
         tilePlacementHelper = new TilePlacingHelper(this);

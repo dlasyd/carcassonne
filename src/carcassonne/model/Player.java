@@ -6,7 +6,6 @@ public class Player {
     private String name;
     private Color color;
     private int numberOfFollowers = 7;
-    private int numberOfProperties;
     private int currentPoints = 0;
 
     public Player(String name, Color color) {
@@ -46,10 +45,6 @@ public class Player {
         increaseNumberOfFollowers();
         if (numberOfFollowers > 7)
             throw new RuntimeException("Number of followers that a player has is more than 7");
-    }
-
-    public int getNumberOfProperties() {
-        return numberOfProperties;
     }
 
     public boolean hasAvailableFollowers() {

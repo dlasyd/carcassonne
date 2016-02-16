@@ -8,8 +8,6 @@ import java.util.*;
 /**
  * This class builds a collection of legal coordinates for current tile
  * to be placed on based on continuity of tile features.
- *
- * Created by Andrey on 19/01/16.
  */
 public class TilePlacingHelper {
     private HashMap<Coordinates,Tile> placedTiles;
