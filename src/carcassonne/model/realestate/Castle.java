@@ -1,5 +1,7 @@
-package carcassonne.model;
+package carcassonne.model.realEstate;
 
+import carcassonne.model.Tile;
+import carcassonne.model.TileDirections;
 import carcassonne.model.feature.Feature;
 
 import java.util.Set;

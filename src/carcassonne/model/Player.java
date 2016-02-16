@@ -24,7 +24,7 @@ public class Player {
         return color;
     }
 
-    int getNumberOfFollowers() {
+    public int getNumberOfFollowers() {
         return numberOfFollowers;
     }
 

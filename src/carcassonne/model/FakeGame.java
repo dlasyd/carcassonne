@@ -3,6 +3,7 @@ package carcassonne.model;
 import carcassonne.controller.DataToModel;
 import carcassonne.controller.FollowerMap;
 import carcassonne.controller.WindowLogic;
+import carcassonne.model.realEstate.RealEstateManager;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class FakeGame implements DataToModel {
     private Game                realGame;
     private Table               table;
-    private RealEstateManager   realEstateManager;
+    private RealEstateManager realEstateManager;
     private WindowLogic         windowLogic;
     private TilePile            tilePile = new TilePile();
     private ArrayList<Player>   players = new ArrayList<>();

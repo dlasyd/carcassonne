@@ -1,5 +1,6 @@
-package carcassonne.model;
+package carcassonne.model.realEstate;
 
+import carcassonne.model.*;
 import carcassonne.model.feature.Feature;
 import carcassonne.model.feature.FeatureType;
 import org.junit.Before;

@@ -40,10 +40,10 @@ public abstract class Tile {
 
     abstract Tile setCoordinates(int x, int y);
     abstract Tile placeFollower(Player player, Feature feature);
-    abstract Tile placeFollower(Player player, TileDirections direction);
-    abstract Tile returnFollowerToPlayer();
+    public abstract Tile placeFollower(Player player, TileDirections direction);
+    public abstract Tile returnFollowerToPlayer();
     abstract void addFeature(Feature feature, TileDirections direction);
-    abstract void addFeature(Feature feature, TileDirections... directions);
+    public abstract void addFeature(Feature feature, TileDirections... directions);
 
     //<editor-fold desc="Getters">
     public abstract LinkedHashSet<TileDirections> getFeatureTileDirections(Feature feature);
@@ -53,15 +53,15 @@ public abstract class Tile {
     public abstract int              getY();
     public abstract TileDirections[] getUnoccupiedDirections();
     public abstract TileName         getName();
-    abstract Feature                 getOccupiedFeature();
-    abstract Player                  getFollowerOwner();
-    abstract Feature                 getFeature(TileDirections direction);
-    abstract Set<TileDirections>     getDestinations(TileDirections tileDirection);
-    abstract Set<TileDirections>     getOccupiedFeatureDirections();
+    public abstract Feature                 getOccupiedFeature();
+    public abstract Player                  getFollowerOwner();
+    public abstract Feature                 getFeature(TileDirections direction);
+    public abstract Set<TileDirections>     getDestinations(TileDirections tileDirection);
+    public abstract Set<TileDirections>     getOccupiedFeatureDirections();
     public abstract Set<Feature>            getFeatures();
 
-    abstract boolean hasFollower();
-    abstract boolean isComplete();
+    public abstract boolean hasFollower();
+    public abstract boolean isComplete();
     public abstract boolean hasCoordinates();
     abstract boolean hasCloister();
 

@@ -1,10 +1,10 @@
 package carcassonne.controller;
 
 import carcassonne.model.*;
+import carcassonne.model.realEstate.RealEstateManager;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.awt.*;
 

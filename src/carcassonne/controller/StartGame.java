@@ -1,11 +1,10 @@
 package carcassonne.controller;
 
 import carcassonne.model.*;
+import carcassonne.model.realEstate.RealEstateManager;
 import carcassonne.view.GameWindow;
 
 import java.awt.*;
-
-import static carcassonne.model.TileName.*;
 
 /**
  * This class creates all necessary objects, does all the preparation and starts the game

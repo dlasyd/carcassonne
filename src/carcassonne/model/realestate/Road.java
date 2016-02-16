@@ -1,4 +1,8 @@
-package carcassonne.model;
+package carcassonne.model.realEstate;
+
+import carcassonne.model.Tile;
+import carcassonne.model.TileDirections;
+import carcassonne.model.TileName;
 
 import java.util.Map;
 import java.util.Set;

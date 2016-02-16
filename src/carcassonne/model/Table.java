@@ -1,5 +1,6 @@
 package carcassonne.model;
 
+import carcassonne.model.realEstate.RealEstateManager;
 import carcassonne.view.PlacedFollower;
 
 import java.util.*;
@@ -38,7 +39,7 @@ public class Table implements OwnershipChecker{
     /*
      * tile should be rotated according to user input
      */
-    void placeTile(Tile tile) {
+    public void placeTile(Tile tile) {
         tilePlacedLast = tile;
         if (placedTiles.containsKey(tile.getCoordinates()))
             throw new RuntimeException("Trying to place tile on an occupied space");
@@ -64,7 +65,7 @@ public class Table implements OwnershipChecker{
     /*
      * Invoked by finishedRealEstate() method of RealEstateManager
      */
-    void removeFollowerFromTile(Coordinates coordinates) {
+    public void removeFollowerFromTile(Coordinates coordinates) {
         Iterator<PlacedFollower> iterator = placedFollowers.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().getCoordinates().equals(coordinates)) {
@@ -90,7 +91,7 @@ public class Table implements OwnershipChecker{
     }
 
     //<editor-fold desc="Getters">
-    Tile getFirstTile() {
+    public Tile getFirstTile() {
         return firstTile;
     }
 
@@ -115,7 +116,7 @@ public class Table implements OwnershipChecker{
         return new HashMap<>(placedTiles);
     }
 
-    Tile getTile(int i, int j) {
+    public Tile getTile(int i, int j) {
         Coordinates coordinates = new Coordinates(i, j);
         if (placedTiles.get(coordinates) != null)
             return placedTiles.get(coordinates);
@@ -123,7 +124,7 @@ public class Table implements OwnershipChecker{
             return Tile.getNullInstance();
     }
 
-    Tile getNeighbouringTile(int x, int y, TileDirections direction) {
+    public Tile getNeighbouringTile(int x, int y, TileDirections direction) {
         switch (direction) {
             case NNE:
             case NNW:

@@ -1,4 +1,7 @@
-package carcassonne.model;
+package carcassonne.model.realEstate;
+
+import carcassonne.model.Tile;
+import carcassonne.model.TileDirections;
 
 import java.util.Collections;
 import java.util.HashSet;

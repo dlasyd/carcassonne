@@ -199,7 +199,7 @@ public class RealTile extends Tile {
     }
 
     @Override
-    Player getFollowerOwner() {
+    public Player getFollowerOwner() {
         assert (follower != null);
         return follower.getPlayer();
     }
@@ -210,7 +210,7 @@ public class RealTile extends Tile {
     }
 
     @Override
-    Feature getFeature(TileDirections direction) {
+    public Feature getFeature(TileDirections direction) {
         return Feature.createFeature(propertyMap.get(direction));
     }
 

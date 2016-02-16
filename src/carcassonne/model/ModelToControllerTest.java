@@ -2,6 +2,7 @@ package carcassonne.model;
 
 import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
+import carcassonne.model.realEstate.RealEstateManager;
 import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;

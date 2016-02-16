@@ -36,12 +36,12 @@ public class NullTile extends Tile{
     }
 
     @Override
-    boolean hasFollower() {
+    public boolean hasFollower() {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    boolean isComplete() {
+    public boolean isComplete() {
         throw new RuntimeException("The tile is Null");
     }
 
@@ -72,7 +72,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    Tile placeFollower(Player player, TileDirections direction) {
+    public Tile placeFollower(Player player, TileDirections direction) {
 
         throw new RuntimeException("The tile is Null");
     }
@@ -84,7 +84,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    void addFeature(Feature feature, TileDirections... directions) {
+    public void addFeature(Feature feature, TileDirections... directions) {
 
         throw new RuntimeException("The tile is Null");
     }
@@ -95,12 +95,12 @@ public class NullTile extends Tile{
     }
 
     @Override
-    Set<TileDirections> getDestinations(TileDirections tileDirection) {
+    public Set<TileDirections> getDestinations(TileDirections tileDirection) {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    Set<TileDirections> getOccupiedFeatureDirections() {
+    public Set<TileDirections> getOccupiedFeatureDirections() {
         throw new RuntimeException("The tile is Null");
     }
 
@@ -110,22 +110,22 @@ public class NullTile extends Tile{
     }
 
     @Override
-    Feature getOccupiedFeature() {
+    public Feature getOccupiedFeature() {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    Tile returnFollowerToPlayer() {
+    public Tile returnFollowerToPlayer() {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    Player getFollowerOwner() {
+    public Player getFollowerOwner() {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    Feature getFeature(TileDirections direction) {
+    public Feature getFeature(TileDirections direction) {
         return null;
     }
 
