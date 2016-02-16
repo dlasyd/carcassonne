@@ -324,4 +324,49 @@ public class RealEstateManagerTest {
         assertEquals("Andrey has 3 points", 3, andrey.getCurrentPoints());
     }
 
+    @Test
+    public void isPartOfRealEstate_doesNotChangeRealEstate() {
+        placeTile (0, -1, CITY2WES,  DEG_90);
+        placeTile (0,  1, CITY2WES,  DEG_0);
+        placeTile (0, -2, CITY2NWR,  DEG_180);
+        placeTile (1, -1, ROAD2SW,   DEG_270, anton, EAST);
+        placeTile (1, -2, CITY3,     DEG_0);
+        placeTile (2, -1, CITY3R,    DEG_90);
+        placeTile(-1, -2, CITY2NWSR, DEG_0);
+
+        Tile testedTile = Tile.getInstance(1, 0);
+        testedTile = testedTile.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        testedTile = testedTile.turnRight(DEG_90);
+
+        Tile tile_1_m1 = Tile.getInstance(1, -1);
+        tile_1_m1 = tile_1_m1.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_m1 = tile_1_m1.turnRight(DEG_270);
+        tile_1_m1 = tile_1_m1.placeFollower(anton, EAST);
+        tile_2_m1 = Tile.getInstance(2, -1);
+        tile_2_m1 = tile_2_m1.copyFeatures(TilePile.getReferenceTile(CITY3R));
+        tile_2_m1 = tile_2_m1.turnRight(DEG_90);
+
+
+        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap();
+        expectedRealEstate.put(tile_1_m1, new HashSet<>(Arrays.asList(SOUTH, EAST)));
+        expectedRealEstate.put(tile_2_m1, new HashSet<>(Arrays.asList(WEST)));
+
+        ArrayList<RealEstate> antons;
+        Map<Tile, Set<TileDirections>> antonRealEstate;
+
+        assertTrue("Part of real estate", manager.isPartOfRealEstate(testedTile, NORTH));
+        antons = new ArrayList<>(manager.getAssets(anton));
+        antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
+        assertEquals("RealEstate unchanged", expectedRealEstate, antonRealEstate);
+
+        assertFalse(manager.isPartOfRealEstate(testedTile, NNW));
+        antons = new ArrayList<>(manager.getAssets(anton));
+        antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
+        assertEquals("RealEstate unchanged", expectedRealEstate, antonRealEstate);
+
+        assertFalse(manager.isPartOfRealEstate(testedTile, SOUTH));
+        antons = new ArrayList<>(manager.getAssets(anton));
+        antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
+        assertEquals("RealEstate unchanged", expectedRealEstate, antonRealEstate);
+    }
 }
