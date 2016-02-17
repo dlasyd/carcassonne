@@ -827,4 +827,17 @@ public class RealEstateTest {
         assertEquals("Anton gets 4 points for finished road", 4, anton.getCurrentPoints());
     }
 
+    @Test
+    public void cloistersCloseToEachOther_finishCorrectly() {
+        placeTile(0, -1, CITY1RSE, Rotation.DEG_180);
+        placeTile(1, 0, ROAD4, Rotation.DEG_0);
+        placeTile(1, -1, CLOISTERR, Rotation.DEG_0, anton, CENTER);
+        placeTile(0, -2, CITY2NWSR, Rotation.DEG_0);
+        placeTile(2, 0, CITY3SR, Rotation.DEG_90);
+        placeTile(1, -2, ROAD2SW, Rotation.DEG_90);
+        placeTile(2, -2, CLOISTER, Rotation.DEG_0, anton, CENTER);
+        placeTile(2, -1, CITY11NE, Rotation.DEG_90);
+        assertEquals("Anton gets 9 points for one finished cloister", 9, anton.getCurrentPoints());
+    }
+
 }

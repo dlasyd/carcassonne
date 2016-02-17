@@ -2,9 +2,12 @@ package carcassonne.controller;
 
 import carcassonne.model.*;
 import carcassonne.model.realestate.RealEstateManager;
+import carcassonne.model.tile.TileName;
 import carcassonne.view.GameWindow;
 
 import java.awt.*;
+
+import static carcassonne.model.tile.TileName.*;
 
 /**
  * This class creates all necessary objects, does all the preparation and starts the game
@@ -27,8 +30,10 @@ class StartGame {
         //game.getTilePile().addTile(CITY3, CITY3SR, CITY3S, CITY3R);
         //game.getTilePile().addTile(CITY1RSE, CITY11NE, CITY2NWR, CITY11WE, CITY1RSE, CLOISTER, ROAD3, CITY2NWSR);
         //game.getTilePile().addEveryTileOnce();
-        game.getTilePile().addRealTileSet();
-        //game.getTilePile().setNonRandom(true);
+        //game.getTilePile().addRealTileSet();
+        game.getTilePile().addTile(CLOISTER, CITY1RSE, ROAD4, CLOISTERR, ROAD2SW, CITY2NWSR, CITY3SR,
+                ROAD2SW, ROAD3, CLOISTER, ROAD2SW, CITY11NE, ROAD2SW, CITY1RSWE, ROAD2SW);
+        game.getTilePile().setNonRandom(true);
         game.nextPlayer();
         game.dragTile();
 

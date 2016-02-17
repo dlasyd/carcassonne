@@ -362,6 +362,10 @@ public abstract class RealEstate {
     Map<Tile, Set<TileDirections>> getTilesAndFeatureTileDirections() {
         return tilesAndFeatureTileDirections;
     }
+
+    public boolean isCloister() {
+        return false;
+    }
     /*
      * Getters and setters end
      */

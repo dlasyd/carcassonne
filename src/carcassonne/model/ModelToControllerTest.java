@@ -748,4 +748,38 @@ public class ModelToControllerTest {
         assertEquals("Correct follower locations", expected, result);
     }
 
+    @Test
+    public void twoCloistersCompleteOne_otherMistakenlyThoughtToBeComplete() {
+        game.getTilePile().setNonRandom(true);
+        game.getTilePile().addTile(CLOISTER, CITY1RSE, ROAD4, CLOISTERR, ROAD2SW, CITY2NWSR, CITY3SR, ROAD2SW, ROAD3,
+                CLOISTER, ROAD2SW, CITY11NE, ROAD2SW, CITY1RSWE, ROAD2SW, CITY1);
+        prepareGame();
+        turnActions(0, 1, 0);
+        turnActions(0, -1, 0);
+        turnActions(1, 0, 0);
+        turnActions(1, -1, 0, 0.5, 0.5);
+        turnActions(-1, 0, 1);
+        turnActions(0, -2, 0);
+        turnActions(2, 0, 0);
+        turnActions(1, -2, 0);
+        turnActions(-1, 1, 0);
+        turnActions(2, -2, 3, 0.5, 0.5);
+        turnActions(1, 1, 0);
+        turnActions(2, -1, 0);
+        turnActions(-1, 2, 1);
+        turnActions(3, -1, 0);
+        turnActions(0, 2, 0);
+
+        ArrayList<Map<Integer, String>> expected = new ArrayList<>();
+        expected.add(new HashMap<>());
+        expected.add(new HashMap<>());
+        expected.get(0).put(0, "Anton");
+        expected.get(0).put(1, "7");
+        expected.get(0).put(2, "0");
+        expected.get(1).put(0, "Andrey");
+        expected.get(1).put(1, "6");
+        expected.get(1).put(2, "9");
+
+        assertEquals("Correct information is displayed in table", expected, fakeWindow.getCurrentTableData());
+    }
 }

@@ -47,4 +47,9 @@ class Cloister extends RealEstate {
             }
         }
     }
+
+    @Override
+    public boolean isCloister() {
+        return true;
+    }
 }

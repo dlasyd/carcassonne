@@ -105,18 +105,29 @@ public class RealEstateManager {
                     Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
                     Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
                     player.increaseCurrentPoints(points);
-                    for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
-                        if (tile.hasFollower() &&
-                                tile.getFollowerOwner() == player &&
-                                currentImmutableRE.getRealEstate()
-                                        .getTilesAndFeatureTileDirections().get(tile)
-                                        .contains(tile.getFollowerTileDirection())) {
-                            tile = tile.returnFollowerToPlayer();
-                            table.removeFollowerFromTile(tile.getCoordinates());
-                        }
-                    }
+                    removeFollowersFromFinishedRealEstate(currentImmutableRE.getRealEstate(), player);
                 }
                 realEstateMap.remove(currentImmutableRE);
+            }
+        }
+    }
+
+    /*
+     * Different rules cloister and for road/city
+     */
+    private void removeFollowersFromFinishedRealEstate(RealEstate realEstate, Player player) {
+        if (realEstate.isCloister()) {
+            realEstate.getFirstTile().returnFollowerToPlayer();
+            table.removeFollowerFromTile(realEstate.getFirstTile().getCoordinates());
+            return;
+        }
+        for (Tile tile: realEstate.getTileSet()) {
+            if (tile.hasFollower() &&
+                    tile.getFollowerOwner() == player &&
+                    realEstate.getTilesAndFeatureTileDirections().get(tile)
+                            .contains(tile.getFollowerTileDirection())) {
+                tile = tile.returnFollowerToPlayer();
+                table.removeFollowerFromTile(tile.getCoordinates());
             }
         }
     }
