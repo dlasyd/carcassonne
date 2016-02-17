@@ -5,6 +5,7 @@ import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Has data about real estate and its owners
@@ -27,11 +28,9 @@ public class RealEstateManager {
 
     //<editor-fold desc="Getters">
     Set<RealEstate> getAssets(Player player) {
-        Set<RealEstate> result = new HashSet<>();
-        for (RealEstate.ImmutableRealEstate realEstate: playerToRealEstateSetMap.get(player)) {
-            result.add(realEstate.getRealEstate());
-        }
-        return result;
+        return playerToRealEstateSetMap.get(player).stream()
+                .map(RealEstate.ImmutableRealEstate::getRealEstate)
+                .collect(Collectors.toSet());
     }
 
 
@@ -75,9 +74,7 @@ public class RealEstateManager {
      * Update method is called by table object when a new tile is placed on the table
      */
     public void update(Tile tile) {
-        for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
-            realEstate.getRealEstate().update(tile);
-        }
+        realEstateMap.keySet().stream().forEach(realEstate -> realEstate.getRealEstate().update(tile));
         realEstateUnion();
         finishedRealEstate();
     }
@@ -105,20 +102,28 @@ public class RealEstateManager {
                     Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
                     Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
                     player.increaseCurrentPoints(points);
-                    for (Tile tile: currentImmutableRE.getRealEstate().getTileSet()) {
-                        if (tile.hasFollower() &&
-                                tile.getFollowerOwner() == player &&
-                                currentImmutableRE.getRealEstate()
-                                        .getTilesAndFeatureTileDirections().get(tile)
-                                        .contains(tile.getFollowerTileDirection())) {
-                            tile = tile.returnFollowerToPlayer();
-                            table.removeFollowerFromTile(tile.getCoordinates());
-                        }
-                    }
+                    currentImmutableRE.getRealEstate().getTileSet().stream()
+                            .filter(tile -> tile.hasFollower() && tile.getFollowerOwner() == player)
+                            .filter(tile -> currentImmutableRE.getRealEstate().getTilesAndFeatureTileDirections()
+                                    .get(tile).contains(tile.getFollowerTileDirection()))
+                            .map(tile -> tile.returnFollowerToPlayer())
+                            .forEach(tile -> table.removeFollowerFromTile(tile.getCoordinates()));
+
+
                 }
                 realEstateMap.remove(currentImmutableRE);
             }
         }
+/*
+        allRealEstate.stream()
+                .filter(immutable -> immutable.getRealEstate().isFinished())
+                .forEach(immutable -> {
+                    realEstateMap.get(immutable).stream().forEach(player ->{
+
+                    });
+                });
+
+*/
     }
 
     /*
@@ -135,9 +140,7 @@ public class RealEstateManager {
 
         Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> duplicatesSets = findDuplicatesInSet(allRealEstateObjects);
 
-        for (Set<RealEstate.ImmutableRealEstate> set: duplicatesSets) {
-            mergeRealEstate(set);
-        }
+        duplicatesSets.stream().forEach(set -> mergeRealEstate(set));
 
     }
 
