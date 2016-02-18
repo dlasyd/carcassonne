@@ -3,6 +3,7 @@ package carcassonne.controller;
 import carcassonne.model.tile.TileDirections;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This is a part of Carcassonne project.
@@ -18,10 +19,9 @@ public class FollowerMap {
     }
 
     public Set<double[]> getMultipliers() {
-        HashSet<double []> result = new HashSet<>();
-        for (FollowerMultipliers multiplier: multipliersToFeatureMap.keySet()) {
-            result.add(multiplier.getMultipliers());
-        }
+        HashSet<double []> result = multipliersToFeatureMap.keySet().stream()
+                .map(FollowerMultipliers::getMultipliers)
+                .collect(Collectors.toCollection(HashSet::new));
         return result;
     }
 

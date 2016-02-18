@@ -196,6 +196,7 @@ public class RealEstateManagerTest {
         assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
     }
 
+    //TODO check me using debug
     @Test
     public void doubleUnionWhenTilePlaced() {
         placeTile(1, 0, ROAD2NS, DEG_90, anton, EAST);

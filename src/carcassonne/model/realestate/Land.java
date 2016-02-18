@@ -4,9 +4,9 @@ import carcassonne.model.FakePlayer;
 import carcassonne.model.Player;
 import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;
-import carcassonne.model.Feature.Feature;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Land is never finished.
@@ -32,12 +32,11 @@ class Land extends RealEstate {
         Set<Tile> tilesWithCity = new HashSet<>();
 
         for (Tile tile: allLandTiles) {
-            for (Feature feature: tile.getFeatures()) {
-                if (feature.isCity() &&
+            tilesWithCity.addAll(tile.getFeatures().stream()
+                    .filter(feature -> feature.isCity() &&
                         tile.featureBordersWith(feature, this.getTilesAndFeatureTileDirections().get(tile)))
-                    tilesWithCity.add(tile);
-
-            }
+                    .map(feature -> tile)
+                    .collect(Collectors.toList()));
         }
 
         Set<RealEstate> citiesOnLand = new HashSet<>();
@@ -64,8 +63,6 @@ class Land extends RealEstate {
      * Returns a set of TileDirections, one TileDirection per disjoint city
      */
     private Set<TileDirections> oneDirectionPerDisjointCity(Tile tile) {
-        Set<TileDirections> disjointCitiesDirections = new HashSet<>();
-
         Set<TileDirections> directionsToCheck = new HashSet<>(Arrays.asList(
                 TileDirections.WEST, TileDirections.EAST, TileDirections.NORTH, TileDirections.SOUTH));
 
@@ -73,7 +70,8 @@ class Land extends RealEstate {
          * One tile can have two disjoint city Feature sets, so every tile should be checked twice
          */
         Set<TileDirections> remainingDirectionsToCheck = new HashSet<>(directionsToCheck);
-        disjointCitiesDirections = addOneCityDirection(tile, directionsToCheck);
+        Set<TileDirections> disjointCitiesDirections = addOneCityDirection(tile, directionsToCheck);
+
         remainingDirectionsToCheck.removeAll(disjointCitiesDirections);
         disjointCitiesDirections.addAll(addOneCityDirection(tile, remainingDirectionsToCheck));
         disjointCitiesDirections.retainAll(directionsToCheck);
@@ -85,9 +83,7 @@ class Land extends RealEstate {
         for (TileDirections tileDirection: directionsToCheck) {
             if (tile.getFeature(tileDirection).isCity()) {
                 disjointCitiesDirections.add(tileDirection);
-                for (TileDirections cityDirections: tile.getDestinations(tileDirection)) {
-                    disjointCitiesDirections.add(cityDirections);
-                }
+                disjointCitiesDirections.addAll(tile.getDestinations(tileDirection));
                 break;
             }
         }

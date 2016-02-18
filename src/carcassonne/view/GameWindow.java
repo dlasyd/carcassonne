@@ -103,12 +103,7 @@ public class GameWindow extends JFrame implements ViewWindow{
         tableContainer.add(tableScrollPane);
 
         //<editor-fold desc="Listeners">
-        endTurnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                windowLogic.updateEndTurnButton();
-            }
-        });
+        endTurnButton.addActionListener(e -> windowLogic.updateEndTurnButton());
 
         confirmTileButton.addActionListener(new ActionListener() {
             @Override
@@ -118,13 +113,9 @@ public class GameWindow extends JFrame implements ViewWindow{
         });
 
         setVisible(true);
-        scaleSlider.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                JSlider source = (JSlider)e.getSource();
-                gamePanel.changeScale(source.getValue());
-            }
+        scaleSlider.addChangeListener(e -> {
+            JSlider source = (JSlider)e.getSource();
+            gamePanel.changeScale(source.getValue());
         });
 
         this.addMouseWheelListener(new MouseWheelListener() {

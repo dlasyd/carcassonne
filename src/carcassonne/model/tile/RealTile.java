@@ -4,6 +4,7 @@ import carcassonne.model.Player;
 import carcassonne.model.Feature.Feature;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * RealTile represents a tile from a game. There are 3 instance variable Collections that represent
@@ -98,10 +99,9 @@ public class RealTile extends Tile {
         for (T type: keySet) {
             Set<TileDirections> directionsToRotate = map.get(type);
             map.remove(type);
-            Set<TileDirections> rotatedDirections = new HashSet<>();
-            for (TileDirections direction: directionsToRotate) {
-                rotatedDirections.add(direction.turnRight(angle));
-            }
+            Set<TileDirections> rotatedDirections = directionsToRotate.stream()
+                    .map(direction -> direction.turnRight(angle))
+                    .collect(Collectors.toSet());
             map.put(type, rotatedDirections);
         }
     }

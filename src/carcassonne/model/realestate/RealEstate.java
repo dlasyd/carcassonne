@@ -9,6 +9,7 @@ import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * RealEstate is a class that creates abstract objects from features of several tiles that are connected
@@ -176,8 +177,7 @@ public abstract class RealEstate {
     }
 
     private Set<Coordinates> extractCoordinatesSet(Set<Tile> tiles) {
-        Set<Coordinates> result = new HashSet<>();
-        for (Tile tile: tiles) result.add(tile.getCoordinates());
+        Set<Coordinates> result = tiles.stream().map(Tile::getCoordinates).collect(Collectors.toSet());
         return result;
     }
 

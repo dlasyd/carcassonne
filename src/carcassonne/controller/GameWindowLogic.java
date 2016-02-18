@@ -13,6 +13,7 @@ import carcassonne.view.ViewWindow;
 
 import java.awt.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static carcassonne.model.tile.TileDirections.*;
 
@@ -91,13 +92,11 @@ public class GameWindowLogic implements WindowLogic {
      */
     private Set<DrawablePlacedFollower> createDrawablePlacedFollowersSet(Set<PlacedFollower> placedFollowers) {
         Set<DrawablePlacedFollower> toRetain = new HashSet<>();
-        for (PlacedFollower placedFollower: placedFollowers) {
-            for (DrawablePlacedFollower drawableFollower: drawablePlacedFollowers) {
-                if (placedFollower.getCoordinates().equals(drawableFollower.getCoordinates())) {
-                    toRetain.add(drawableFollower);
-                }
-            }
-        }
+        placedFollowers.stream().forEach(placedFollower -> {
+            toRetain.addAll(drawablePlacedFollowers.stream()
+                    .filter(drawableFollower -> placedFollower.getCoordinates().equals(drawableFollower.getCoordinates()))
+                    .collect(Collectors.toList()));
+        });
         drawablePlacedFollowers.retainAll(toRetain);
         return new HashSet<>(drawablePlacedFollowers);
     }
@@ -190,13 +189,11 @@ public class GameWindowLogic implements WindowLogic {
 
             debugTileNames.add(gameData.getCurrentTile().getName().toString() + ", ");
 
-            for (String text: debugTileNames)
-                System.out.print(text);
+            debugTileNames.forEach(System.out::print);
 
             System.out.println("--");
 
-            for (String text: debugTurnActions)
-                System.out.println(text);
+            debugTurnActions.stream().forEach(System.out::println);
 
 
         }

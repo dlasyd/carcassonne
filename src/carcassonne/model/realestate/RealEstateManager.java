@@ -5,6 +5,7 @@ import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirections;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Has data about real estate and its owners
@@ -27,11 +28,9 @@ public class RealEstateManager {
 
     //<editor-fold desc="Getters">
     Set<RealEstate> getAssets(Player player) {
-        Set<RealEstate> result = new HashSet<>();
-        for (RealEstate.ImmutableRealEstate realEstate: playerToRealEstateSetMap.get(player)) {
-            result.add(realEstate.getRealEstate());
-        }
-        return result;
+        return playerToRealEstateSetMap.get(player).stream()
+                .map(RealEstate.ImmutableRealEstate::getRealEstate)
+                .collect(Collectors.toSet());
     }
 
 
@@ -67,8 +66,6 @@ public class RealEstateManager {
         }
 
         realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
-        realEstateUnion();
-        finishedRealEstate();
     }
 
     /*
@@ -98,18 +95,18 @@ public class RealEstateManager {
          * 3) Each tile of a castle has an end or a CITY4 - wrong
          */
         Set<RealEstate.ImmutableRealEstate> allRealEstate = new HashSet<>(realEstateMap.keySet());
-        for (RealEstate.ImmutableRealEstate currentImmutableRE: allRealEstate) {
-            if (currentImmutableRE.getRealEstate().isFinished()) {
-                int points = currentImmutableRE.getRealEstate().getPoints();
-                for (Player player: realEstateMap.get(currentImmutableRE)) {
-                    Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
-                    Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
-                    player.increaseCurrentPoints(points);
-                    removeFollowersFromFinishedRealEstate(currentImmutableRE.getRealEstate(), player);
-                }
-                realEstateMap.remove(currentImmutableRE);
-            }
-        }
+        allRealEstate.stream()
+                .filter(currentImmutableRE -> currentImmutableRE.getRealEstate().isFinished())
+                .forEach(currentImmutableRE -> {
+                    int points = currentImmutableRE.getRealEstate().getPoints();
+                    for (Player player : realEstateMap.get(currentImmutableRE)) {
+                        Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
+                        Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
+                        player.increaseCurrentPoints(points);
+                        removeFollowersFromFinishedRealEstate(currentImmutableRE.getRealEstate(), player);
+                    }
+            realEstateMap.remove(currentImmutableRE);
+        });
     }
 
     /*
@@ -146,9 +143,7 @@ public class RealEstateManager {
 
         Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> duplicatesSets = findDuplicatesInSet(allRealEstateObjects);
 
-        for (Set<RealEstate.ImmutableRealEstate> set: duplicatesSets) {
-            mergeRealEstate(set);
-        }
+        duplicatesSets.forEach(this::mergeRealEstate);
 
     }
 
@@ -181,16 +176,14 @@ public class RealEstateManager {
 
     /*
      * Used by realEstateUnion()
-     * Uses recursion
      */
     private Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> findDuplicatesInSet(Set<RealEstate.ImmutableRealEstate> data) {
         Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> result = new LinkedHashSet<>();
         LinkedHashSet<RealEstate.ImmutableRealEstate> duplicatesFound = new LinkedHashSet<>();
         for (RealEstate.ImmutableRealEstate comparedRealEstate: data) {
-            for (RealEstate.ImmutableRealEstate someRealEstate: data) {
-                if (comparedRealEstate.getRealEstate().equals(someRealEstate.getRealEstate()))
-                    duplicatesFound.add(someRealEstate);
-            }
+            duplicatesFound.addAll(data.stream()
+                    .filter(someRealEstate -> comparedRealEstate.getRealEstate().equals(someRealEstate.getRealEstate()))
+                    .collect(Collectors.toList()));
             if (duplicatesFound.size() > 1)
                 break;
             else
@@ -211,11 +204,9 @@ public class RealEstateManager {
      * Used by mergeRealEstate()
      */
     public static boolean assetSetContainsRealEstateWithTileSet(Set<RealEstate> assets, HashSet<Tile> tiles) {
-        for (RealEstate realEstate: assets) {
-            if (realEstate.getTileSet().equals(tiles))
-                return true;
-        }
-        return false;
+        return assets.stream()
+                .map(realEstate -> realEstate.getTileSet().equals(tiles))
+                .reduce(false, (acc, element) -> element || acc);
     }
 
     /*
@@ -227,15 +218,14 @@ public class RealEstateManager {
      *
      */
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
-        boolean result = false;
-        for (RealEstate.ImmutableRealEstate iRealEstate: realEstateMap.keySet()) {
-            if (iRealEstate.getRealEstate() instanceof Cloister)
-                continue;
-            RealEstate temporaryRealEstate = RealEstate.getCopy(iRealEstate.getRealEstate());
-            temporaryRealEstate.update(tilePlacedLast);
-            result = temporaryRealEstate.contains(tilePlacedLast, direction) || result;
-        }
-        return result;
+        return
+        realEstateMap.keySet().stream()
+                .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
+                .map(immutableRealEstate -> {
+                    RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
+                    temporaryRealEstate.update(tilePlacedLast);
+                    return temporaryRealEstate.contains(tilePlacedLast, direction);})
+                .reduce(false, (acc, element) -> acc = element || acc);
     }
 
     public void addPointsForUnfinishedRealEstate() {
@@ -247,5 +237,7 @@ public class RealEstateManager {
                 player.increaseCurrentPoints(points);
             }
         }
+
+
     }
 }
