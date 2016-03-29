@@ -6,7 +6,7 @@ import carcassonne.controller.WindowLogic;
 import carcassonne.model.realestate.RealEstateManager;
 import carcassonne.model.tile.Rotation;
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 import carcassonne.model.tile.TilePile;
 
 import java.awt.*;
@@ -26,7 +26,7 @@ public class FakeGame implements DataToModel {
     private boolean             finished;
     private boolean             currentTileConfirmed;
     private boolean             followerFriendly;           //determines if a tile has a vacant place for follower
-    private TileDirections lastFollowerTileDirections;
+    private TileDirection lastFollowerTileDirection;
     private FollowerMap         currentTileFollowerMap;
 
     public FakeGame() {
@@ -34,8 +34,8 @@ public class FakeGame implements DataToModel {
         realGame.setTable(table);
     }
 
-    public TileDirections    getLastFollowerTileDirections() {
-        return lastFollowerTileDirections;
+    public TileDirection getLastFollowerTileDirection() {
+        return lastFollowerTileDirection;
     }
 
     public int getPlayerScore() {
@@ -53,8 +53,8 @@ public class FakeGame implements DataToModel {
     }
 
     @Override
-    public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
-        lastFollowerTileDirections = direction;
+    public void turnActions(int x, int y, Rotation angle, TileDirection direction) {
+        lastFollowerTileDirection = direction;
         realGame.turnActions(x, y, angle, direction);
     }
 

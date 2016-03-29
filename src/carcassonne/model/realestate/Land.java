@@ -3,7 +3,7 @@ package carcassonne.model.realestate;
 import carcassonne.model.FakePlayer;
 import carcassonne.model.Player;
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,9 +43,9 @@ class Land extends RealEstate {
 
         Player helper = new FakePlayer();
         for (Tile tile: tilesWithCity) {
-            Set<TileDirections> disjointCitiesDirections = oneDirectionPerDisjointCity(tile);
+            Set<TileDirection> disjointCitiesDirections = oneDirectionPerDisjointCity(tile);
 
-            for (TileDirections direction: disjointCitiesDirections) {
+            for (TileDirection direction: disjointCitiesDirections) {
                 tile = tile.placeFollower(helper, direction);
                 citiesOnLand.add(RealEstate.getInstance(tile));
             }
@@ -60,17 +60,17 @@ class Land extends RealEstate {
     }
 
     /*
-     * Returns a set of TileDirections, one TileDirection per disjoint city
+     * Returns a set of TileDirection, one TileDirection per disjoint city
      */
-    private Set<TileDirections> oneDirectionPerDisjointCity(Tile tile) {
-        Set<TileDirections> directionsToCheck = new HashSet<>(Arrays.asList(
-                TileDirections.WEST, TileDirections.EAST, TileDirections.NORTH, TileDirections.SOUTH));
+    private Set<TileDirection> oneDirectionPerDisjointCity(Tile tile) {
+        Set<TileDirection> directionsToCheck = new HashSet<>(Arrays.asList(
+                TileDirection.WEST, TileDirection.EAST, TileDirection.NORTH, TileDirection.SOUTH));
 
         /*
          * One tile can have two disjoint city Feature sets, so every tile should be checked twice
          */
-        Set<TileDirections> remainingDirectionsToCheck = new HashSet<>(directionsToCheck);
-        Set<TileDirections> disjointCitiesDirections = addOneCityDirection(tile, directionsToCheck);
+        Set<TileDirection> remainingDirectionsToCheck = new HashSet<>(directionsToCheck);
+        Set<TileDirection> disjointCitiesDirections = addOneCityDirection(tile, directionsToCheck);
 
         remainingDirectionsToCheck.removeAll(disjointCitiesDirections);
         disjointCitiesDirections.addAll(addOneCityDirection(tile, remainingDirectionsToCheck));
@@ -78,9 +78,9 @@ class Land extends RealEstate {
         return  disjointCitiesDirections;
     }
 
-    private Set<TileDirections> addOneCityDirection(Tile tile, Set<TileDirections> directionsToCheck) {
-        Set<TileDirections> disjointCitiesDirections = new HashSet<>();
-        for (TileDirections tileDirection: directionsToCheck) {
+    private Set<TileDirection> addOneCityDirection(Tile tile, Set<TileDirection> directionsToCheck) {
+        Set<TileDirection> disjointCitiesDirections = new HashSet<>();
+        for (TileDirection tileDirection: directionsToCheck) {
             if (tile.getFeature(tileDirection).isCity()) {
                 disjointCitiesDirections.add(tileDirection);
                 disjointCitiesDirections.addAll(tile.getDestinations(tileDirection));

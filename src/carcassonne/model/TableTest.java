@@ -78,18 +78,18 @@ public class TableTest {
         Tile expected = Tile.getInstance(1, 0, TileName.CLOISTER);
         table.placeTile(expected);
         table.placeTile(Tile.getInstance(2, 0, TileName.CLOISTER));
-        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(2, 0, TileDirections.WEST));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(2, 0, TileDirection.WEST));
         table.placeTile(Tile.getInstance(1, 1, TileName.CLOISTER));
-        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, 1, TileDirections.NORTH));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, 1, TileDirection.NORTH));
         table.placeTile(Tile.getInstance(1, -1, TileName.CLOISTER));
-        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, -1, TileDirections.SOUTH));
-        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(0, 0, TileDirections.EAST));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(1, -1, TileDirection.SOUTH));
+        assertEquals("Neighbouring tile by tile direction", expected, table.getNeighbouringTile(0, 0, TileDirection.EAST));
     }
 
     @Test
     public void getNeighbourNotExistThenNullTile() {
         assertTrue("If neighbour does not exist then return NullTile",
-                table.getNeighbouringTile(0, 0, TileDirections.EEN) instanceof NullTile);
+                table.getNeighbouringTile(0, 0, TileDirection.EEN) instanceof NullTile);
 
     }
 }

@@ -1,7 +1,7 @@
 package carcassonne.model.realestate;
 
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,11 +28,11 @@ class Cloister extends RealEstate {
 
     @Override
     void addTileAndConnectedTiles(Tile tile) {
-        putTile(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+        putTile(tile, new HashSet<>(Collections.singletonList(TileDirection.CENTER)));
         for (int x = tile.getX() - 1; x < tile.getX() + 2; x++) {
             for (int y = tile.getY() - 1; y < tile.getY() + 2; y++) {
                 if (!super.getTable().getTile(x, y).isNull()) {
-                    putTile(super.getTable().getTile(x, y), new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+                    putTile(super.getTable().getTile(x, y), new HashSet<>(Collections.singletonList(TileDirection.CENTER)));
                 }
             }
         }
@@ -43,7 +43,7 @@ class Cloister extends RealEstate {
         for (int x = getFirstX() - 1; x < getFirstX() + 2; x++) {
             for (int y = getFirstY() - 1; y < getFirstY() + 2; y++) {
                 if (tile.getX() == x && tile.getY() == y)
-                    putTile(tile, new HashSet<>(Collections.singletonList(TileDirections.CENTER)));
+                    putTile(tile, new HashSet<>(Collections.singletonList(TileDirection.CENTER)));
             }
         }
     }

@@ -42,14 +42,14 @@ public class TilePlacingHelper {
 
         for (Rotation rotation: Rotation.values()) {
             for (Coordinates coordinate: eligibleTiles) {
-                Set<TileDirections> directionsToCompare = new HashSet<>(Arrays.asList(
-                        TileDirections.SOUTH, TileDirections.NORTH, TileDirections.EAST, TileDirections.WEST));
+                Set<TileDirection> directionsToCompare = new HashSet<>(Arrays.asList(
+                        TileDirection.SOUTH, TileDirection.NORTH, TileDirection.EAST, TileDirection.WEST));
 
                 /*
                  * Continuity should be checked for every tile that is a neighbour
                  */
                 boolean continuityBroken = false;
-                for (TileDirections direction: directionsToCompare) {
+                for (TileDirection direction: directionsToCompare) {
                     Tile neighbour = table.getNeighbouringTile(coordinate.getX(), coordinate.getY(), direction);
                     if (!neighbour.isNull()) {
                         if (!neighbour.isContinuous(tile, direction)) {

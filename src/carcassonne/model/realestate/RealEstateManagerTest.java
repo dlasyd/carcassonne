@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.util.*;
 
 import static carcassonne.model.tile.Rotation.*;
-import static carcassonne.model.tile.TileDirections.*;
+import static carcassonne.model.tile.TileDirection.*;
 import static carcassonne.model.tile.TileName.*;
 import static org.junit.Assert.*;
 
@@ -49,7 +49,7 @@ public class RealEstateManagerTest {
 
     }
 
-    public void placeTile(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirections tileDirection) {
+    public void placeTile(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirection tileDirection) {
         Tile tile = Tile.getInstance(x, y);
         tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
         tile = tile.turnRight(rotation);
@@ -221,7 +221,7 @@ public class RealEstateManagerTest {
         tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
 
 
-        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap<>();
+        Map<Tile, Set<TileDirection>> expectedRealEstate = new HashMap<>();
         expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(SOUTH, SSE, SSW )));
         expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(SSW, SSE, SOUTH, EES, EEN, EAST)));
         expectedRealEstate.put(tile_0_1, new HashSet<>(Arrays.asList(SSW, SSE, SOUTH, EES, EEN, EAST)));
@@ -234,7 +234,7 @@ public class RealEstateManagerTest {
         placeTile(1, 1, TileName.CITY3,    Rotation.DEG_0);
         placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);
 
-        Map<Tile, Set<TileDirections>> antonRealEstate;
+        Map<Tile, Set<TileDirection>> antonRealEstate;
 
         ArrayList<RealEstate> antons = new ArrayList<>(manager.getAssets(anton));
         antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
@@ -365,12 +365,12 @@ public class RealEstateManagerTest {
         tile_2_m1 = tile_2_m1.turnRight(DEG_90);
 
 
-        Map<Tile, Set<TileDirections>> expectedRealEstate = new HashMap<>();
+        Map<Tile, Set<TileDirection>> expectedRealEstate = new HashMap<>();
         expectedRealEstate.put(tile_1_m1, new HashSet<>(Arrays.asList(SOUTH, EAST)));
         expectedRealEstate.put(tile_2_m1, new HashSet<>(Collections.singletonList(WEST)));
 
         ArrayList<RealEstate> antons;
-        Map<Tile, Set<TileDirections>> antonRealEstate;
+        Map<Tile, Set<TileDirection>> antonRealEstate;
 
         assertTrue("Part of real estate", manager.isPartOfRealEstate(testedTile, NORTH));
         antons = new ArrayList<>(manager.getAssets(anton));

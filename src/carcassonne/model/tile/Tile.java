@@ -33,7 +33,7 @@ public abstract class Tile {
     }
 
     public abstract boolean isNull();
-    public abstract boolean isContinuous(Tile tile, TileDirections direction);
+    public abstract boolean isContinuous(Tile tile, TileDirection direction);
     public abstract boolean featureEqual(Tile roadTile);
     public abstract boolean directionsEqual(Tile referenceTile);
     public abstract Tile    turnRight(Rotation angle);
@@ -41,24 +41,24 @@ public abstract class Tile {
 
     public abstract Tile setCoordinates(int x, int y);
     abstract Tile placeFollower(Player player, Feature feature);
-    public abstract Tile placeFollower(Player player, TileDirections direction);
+    public abstract Tile placeFollower(Player player, TileDirection direction);
     public abstract Tile returnFollowerToPlayer();
-    abstract void addFeature(Feature feature, TileDirections direction);
-    public abstract void addFeature(Feature feature, TileDirections... directions);
+    abstract void addFeature(Feature feature, TileDirection direction);
+    public abstract void addFeature(Feature feature, TileDirection... directions);
 
     //<editor-fold desc="Getters">
-    public abstract LinkedHashSet<TileDirections> getFeatureTileDirections(Feature feature);
+    public abstract LinkedHashSet<TileDirection> getFeatureTileDirections(Feature feature);
     public abstract Rotation         getCurrentRotation();
     public abstract Coordinates      getCoordinates();
     public abstract int              getX();
     public abstract int              getY();
-    public abstract TileDirections[] getUnoccupiedDirections();
+    public abstract TileDirection[] getUnoccupiedDirections();
     public abstract TileName         getName();
     public abstract Feature                 getOccupiedFeature();
     public abstract Player                  getFollowerOwner();
-    public abstract Feature                 getFeature(TileDirections direction);
-    public abstract Set<TileDirections>     getDestinations(TileDirections tileDirection);
-    public abstract Set<TileDirections>     getOccupiedFeatureDirections();
+    public abstract Feature                 getFeature(TileDirection direction);
+    public abstract Set<TileDirection>     getDestinations(TileDirection tileDirection);
+    public abstract Set<TileDirection>     getOccupiedFeatureDirections();
     public abstract Set<Feature>            getFeatures();
 
     public abstract boolean hasFollower();
@@ -66,9 +66,9 @@ public abstract class Tile {
     public abstract boolean hasCoordinates();
     abstract boolean hasCloister();
 
-    public abstract TileDirections getFollowerTileDirection();
+    public abstract TileDirection getFollowerTileDirection();
 
-    public abstract boolean featureBordersWith(Feature feature, Set<TileDirections> tileDirections);
+    public abstract boolean featureBordersWith(Feature feature, Set<TileDirection> tileDirections);
 
 
     //</editor-fold>

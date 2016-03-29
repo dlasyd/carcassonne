@@ -5,7 +5,7 @@ import carcassonne.controller.GameDataBuilder;
 import carcassonne.controller.WindowLogic;
 import carcassonne.model.tile.Rotation;
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 import carcassonne.model.tile.TilePile;
 
 import java.awt.*;
@@ -42,7 +42,7 @@ public class Game implements DataToModel{
      * direction should correspond to a rotated tile
      */
     @Override
-    public void turnActions(int x, int y, Rotation angle, TileDirections direction) {
+    public void turnActions(int x, int y, Rotation angle, TileDirection direction) {
         Tile tile = getCurrentTile();
         tile = tile.setCoordinates(x, y);
         tile = tile.turnRight(angle);

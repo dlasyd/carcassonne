@@ -54,12 +54,12 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public TileDirections getFollowerTileDirection() {
+    public TileDirection getFollowerTileDirection() {
         return null;
     }
 
     @Override
-    public boolean featureBordersWith(Feature feature, Set<TileDirections> tileDirections) {
+    public boolean featureBordersWith(Feature feature, Set<TileDirection> tileDirections) {
         return false;
     }
 
@@ -70,35 +70,35 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public Tile placeFollower(Player player, TileDirections direction) {
+    public Tile placeFollower(Player player, TileDirection direction) {
 
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    void addFeature(Feature feature, TileDirections direction) {
+    void addFeature(Feature feature, TileDirection direction) {
 
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    public void addFeature(Feature feature, TileDirections... directions) {
+    public void addFeature(Feature feature, TileDirection... directions) {
 
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    public LinkedHashSet<TileDirections> getFeatureTileDirections(Feature feature) {
+    public LinkedHashSet<TileDirection> getFeatureTileDirections(Feature feature) {
         return null;
     }
 
     @Override
-    public Set<TileDirections> getDestinations(TileDirections tileDirection) {
+    public Set<TileDirection> getDestinations(TileDirection tileDirection) {
         throw new RuntimeException("The tile is Null");
     }
 
     @Override
-    public Set<TileDirections> getOccupiedFeatureDirections() {
+    public Set<TileDirection> getOccupiedFeatureDirections() {
         throw new RuntimeException("The tile is Null");
     }
 
@@ -123,12 +123,12 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public Feature getFeature(TileDirections direction) {
+    public Feature getFeature(TileDirection direction) {
         return null;
     }
 
     @Override
-    public TileDirections[] getUnoccupiedDirections() {
+    public TileDirection[] getUnoccupiedDirections() {
         throw new RuntimeException("The tile is Null");
     }
 
@@ -160,7 +160,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public boolean isContinuous(Tile tile, TileDirections direction) {
+    public boolean isContinuous(Tile tile, TileDirection direction) {
         return false;
     }
 

@@ -1,7 +1,7 @@
 package carcassonne.model.realestate;
 
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 import carcassonne.model.Feature.Feature;
 
 import java.util.Set;
@@ -21,10 +21,10 @@ class Castle extends RealEstate{
             Set<Tile> tiles = super.getTileSet();
             outer:
             for (Tile tile : tiles) {
-                Set<TileDirections> directions = tilesAndFeatureTileDirections.get(tile);
-                for (TileDirections direction : directions) {
+                Set<TileDirection> directions = elements.getTileDirectionSet(tile);
+                for (TileDirection direction : directions) {
                     Tile neighbour = super.getTable().getNeighbouringTile(tile.getX(), tile.getY(), direction);
-                    if (!tilesAndFeatureTileDirections.containsKey(neighbour)) {
+                    if (!elements.contains(neighbour)) {
                         finished = false;
                         break outer;
                     }
@@ -39,9 +39,9 @@ class Castle extends RealEstate{
 
     int getPoints() {
         int result = 0;
-        for (Tile tile: tilesAndFeatureTileDirections.keySet()) {
+        for (Tile tile: elements.getTileSet()) {
             result += 1;
-            Feature castleOrWithShield = tile.getFeature(tilesAndFeatureTileDirections.get(tile).iterator().next());
+            Feature castleOrWithShield = tile.getFeature(elements.getTileDirectionSet(tile).iterator().next());
             if (castleOrWithShield.hasShield())
                 result +=1;
 

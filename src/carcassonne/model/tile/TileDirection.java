@@ -2,7 +2,7 @@ package carcassonne.model.tile;
 
 import java.util.*;
 
-public enum TileDirections {
+public enum TileDirection {
     /*
      * WWN = WEST WEST NORTH
      * NNW = NORTH NORTH WEST
@@ -10,7 +10,7 @@ public enum TileDirections {
      */
     SOUTH, NORTH, EAST, WEST, WWN, NNW, NNE, EEN, CENTER, SSE, SSW, WWS, EES;
 
-    public TileDirections getNeighbour() {
+    public TileDirection getNeighbour() {
         switch (this) {
             case SOUTH:
                 return NORTH;
@@ -41,8 +41,8 @@ public enum TileDirections {
         return CENTER;
     }
 
-    public Set<TileDirections> getEdge() {
-        Set<TileDirections> result = new HashSet<>();
+    public Set<TileDirection> getEdge() {
+        Set<TileDirection> result = new HashSet<>();
         switch (this) {
             case NORTH:
             case NNW:
@@ -68,10 +68,10 @@ public enum TileDirections {
         return result;
     }
 
-    public TileDirections turnRight(Rotation angle) {
-        List<TileDirections> congruentNorth = new ArrayList<>(Arrays.asList(NORTH, EAST, SOUTH, WEST));
-        List<TileDirections> congruentNNE   = new ArrayList<>(Arrays.asList(NNE, EES, SSW, WWN));
-        List<TileDirections> congruentNNW   = new ArrayList<>(Arrays.asList(NNW, EEN, SSE, WWS));
+    public TileDirection turnRight(Rotation angle) {
+        List<TileDirection> congruentNorth = new ArrayList<>(Arrays.asList(NORTH, EAST, SOUTH, WEST));
+        List<TileDirection> congruentNNE   = new ArrayList<>(Arrays.asList(NNE, EES, SSW, WWN));
+        List<TileDirection> congruentNNW   = new ArrayList<>(Arrays.asList(NNW, EEN, SSE, WWS));
 
         int numberOf90Rotations = angle.ordinal();
 
@@ -95,11 +95,11 @@ public enum TileDirections {
                 return this;
         }
         assert false;
-        return TileDirections.CENTER;
+        return TileDirection.CENTER;
     }
 
-    public Collection<TileDirections> getAdjacentDirections() {
-        HashSet<TileDirections> result = new HashSet<>();
+    public Collection<TileDirection> getAdjacentDirections() {
+        HashSet<TileDirection> result = new HashSet<>();
         switch (this) {
             case SOUTH:
                 result.add(SSW);

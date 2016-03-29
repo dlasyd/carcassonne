@@ -4,7 +4,7 @@ import carcassonne.controller.GameWindowLogic;
 import carcassonne.controller.WindowLogic;
 import carcassonne.model.realestate.RealEstateManager;
 import carcassonne.model.tile.Coordinates;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.FakeWindow;
 import carcassonne.view.ViewWindow;
@@ -486,8 +486,8 @@ public class ModelToControllerTest {
         fakeGame.getTilePile().addTile(CITY1);
         prepareFakeGame();
         turnActions(0, -1, 0.5, 0.15);
-        assertTrue("Follower placed to right position", Arrays.asList(TileDirections.SOUTH, TileDirections.SSE,
-                TileDirections.SSW).contains(fakeGame.getLastFollowerTileDirections()));
+        assertTrue("Follower placed to right position", Arrays.asList(TileDirection.SOUTH, TileDirection.SSE,
+                TileDirection.SSW).contains(fakeGame.getLastFollowerTileDirection()));
     }
 
     @Test
@@ -496,7 +496,7 @@ public class ModelToControllerTest {
         fakeGame.getTilePile().addTile(CITY1);
         prepareFakeGame();
         turnActions(0, -1);
-        assertEquals("Follower placed to right position", null, fakeGame.getLastFollowerTileDirections());
+        assertEquals("Follower placed to right position", null, fakeGame.getLastFollowerTileDirection());
     }
 
     @Test

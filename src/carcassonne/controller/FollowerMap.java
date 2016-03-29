@@ -1,6 +1,6 @@
 package carcassonne.controller;
 
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
  * Created by Andrey on 01/02/16.
  */
 public class FollowerMap {
-    private final Map<FollowerMultipliers, TileDirections> multipliersToFeatureMap = new HashMap<>();
+    private final Map<FollowerMultipliers, TileDirection> multipliersToFeatureMap = new HashMap<>();
 
-    public void put(double[] xyMultipliers, TileDirections direction) {
+    public void put(double[] xyMultipliers, TileDirection direction) {
         multipliersToFeatureMap.put(new FollowerMultipliers(xyMultipliers), direction);
     }
 
@@ -25,7 +25,7 @@ public class FollowerMap {
         return result;
     }
 
-    public TileDirections getDirection(double[] multipliers0Rotation) {
+    public TileDirection getDirection(double[] multipliers0Rotation) {
         return multipliersToFeatureMap.get(new FollowerMultipliers(multipliers0Rotation));
     }
 

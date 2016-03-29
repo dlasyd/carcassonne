@@ -5,7 +5,7 @@ import carcassonne.model.Feature.Feature;
 import carcassonne.model.tile.Coordinates;
 import carcassonne.model.tile.Rotation;
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 import carcassonne.view.DrawablePlacedFollower;
 import carcassonne.view.DrawableTile;
 import carcassonne.view.PlacedFollower;
@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static carcassonne.model.tile.TileDirections.*;
+import static carcassonne.model.tile.TileDirection.*;
 
 /**
  * This is a part of Carcassonne project.
@@ -200,11 +200,11 @@ public class GameWindowLogic implements WindowLogic {
         if (temporaryFollowerDisplayed) {
             drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
                     currentFollowerLocation, gameData.getPlayerColor(), currentTileRotation));
-            TileDirections direction = currentTileFollowerMap.getDirection(currentFollowerLocation);
+            TileDirection direction = currentTileFollowerMap.getDirection(currentFollowerLocation);
             if (direction == null)
                 throw new RuntimeException("Trying to place follower on illegal position in controller");
 
-            TileDirections rotatedDirection = direction.turnRight(currentTileRotation);
+            TileDirection rotatedDirection = direction.turnRight(currentTileRotation);
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, rotatedDirection);
         } else
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
@@ -225,8 +225,8 @@ public class GameWindowLogic implements WindowLogic {
      *<p>Parameters determine a position of a follower within temporary tile in the coordinate system where
      * top left corner of a tile is the origin.</p>
      * <p>If follower cannot be placed in the current moment, method will invoke clickOnCurrentTile()</p>
-     * @param xMultiplier Tile size relative X multiplier such that relativeX = xMultiplier * tileSize;
-     * @param yMultiplier Tile size relative Y multiplier such that relativeY = yMultiplier * tileSize;
+     * @param xMultiplier Tile nubmerOfTiles relative X multiplier such that relativeX = xMultiplier * tileSize;
+     * @param yMultiplier Tile nubmerOfTiles relative Y multiplier such that relativeY = yMultiplier * tileSize;
      */
     @Override
     public void clickOnCurrentTile(double xMultiplier, double yMultiplier) {
@@ -363,7 +363,7 @@ public class GameWindowLogic implements WindowLogic {
             FollowerMap result = new FollowerMap();
             Set<Feature> features = tile.getFeatures();
             for (Feature feature: features) {
-                TileDirections direction = tile.getFeatureTileDirections(feature)
+                TileDirection direction = tile.getFeatureTileDirections(feature)
                         .iterator().next();
                 if (getOwnershipChecker().locationIsLegal(currentTileX, currentTileY, currentTileRotation, direction))
                     result.put(getTileSizeRelativeMultipliers(tile, feature), direction);
@@ -376,7 +376,7 @@ public class GameWindowLogic implements WindowLogic {
             /*
              * get 1 direction pre Feature
              */
-            LinkedHashSet<TileDirections> directions= tile.getFeatureTileDirections(feature);
+            LinkedHashSet<TileDirection> directions= tile.getFeatureTileDirections(feature);
 
             if (feature.isCity()) {
                 directions.removeAll(Arrays.asList(NNE, NNW, EES, EEN, WWS, WWN, SSE, SSW));
@@ -386,7 +386,7 @@ public class GameWindowLogic implements WindowLogic {
                 }
             }
 
-            TileDirections direction = directions.iterator().next();
+            TileDirection direction = directions.iterator().next();
 
             /*
              * Basic rule
@@ -461,10 +461,10 @@ public class GameWindowLogic implements WindowLogic {
                 case CITY1RWE:
                 case CITY1RSWE:
                     if (feature.isRoad() && directions.size() == 2) {
-                        if (directions.contains(TileDirections.WEST) && directions.contains(TileDirections.EAST)) {
+                        if (directions.contains(TileDirection.WEST) && directions.contains(TileDirection.EAST)) {
                             xyMultipliers[0] = 0.5;
                             xyMultipliers[1] = 0.5;
-                        } else if (directions.contains(TileDirections.WEST)) {
+                        } else if (directions.contains(TileDirection.WEST)) {
                             xyMultipliers[0] = 0.4;
                             xyMultipliers[1] = 0.6;
                         } else {
@@ -472,15 +472,15 @@ public class GameWindowLogic implements WindowLogic {
                             xyMultipliers[1] = 0.6;
                         }
                     } else if((feature.isRoad() && directions.size() == 1) ) {
-                        if (directions.contains(TileDirections.WEST)) {
+                        if (directions.contains(TileDirection.WEST)) {
                             xyMultipliers[0] = 0.3;
                             xyMultipliers[1] = 0.6;
-                        } else if (directions.contains(TileDirections.EAST)) {
+                        } else if (directions.contains(TileDirection.EAST)) {
                             xyMultipliers[0] = 0.8;
                             xyMultipliers[1] = 0.6;
                         }
 
-                    } else if(feature.isLand() && directions.contains(TileDirections.WWN)) {
+                    } else if(feature.isLand() && directions.contains(TileDirection.WWN)) {
                         xyMultipliers[0] = 0.15;
                         xyMultipliers[1] = 0.35;
                     }
@@ -496,7 +496,7 @@ public class GameWindowLogic implements WindowLogic {
                     if (feature.isCity()) {
                         xyMultipliers[0] = 0.5;
                         xyMultipliers[1] = 0.45;
-                    } else if (directions.contains(TileDirections.NORTH)) {
+                    } else if (directions.contains(TileDirection.NORTH)) {
                         xyMultipliers[0] = 0.5;
                         xyMultipliers[1] = 0.0;
                     } else {
@@ -535,7 +535,7 @@ public class GameWindowLogic implements WindowLogic {
                         if (directions.size() == 3) {
                             xyMultipliers[0] = 0.6;
                             xyMultipliers[1] = 0.85;
-                        } else if (directions.contains(TileDirections.SSW)) {
+                        } else if (directions.contains(TileDirection.SSW)) {
                             xyMultipliers[0] = 0.25;
                             xyMultipliers[1] = 0.95;
                         } else {
@@ -561,7 +561,7 @@ public class GameWindowLogic implements WindowLogic {
                     if (feature.isRoad()) {
                         xyMultipliers[0] = 0.4;
                         xyMultipliers[1] = 0.4;
-                    } else if (feature.isLand() && directions.contains(TileDirections.SSW)) {
+                    } else if (feature.isLand() && directions.contains(TileDirection.SSW)) {
                         xyMultipliers[0] = 0.15;
                         xyMultipliers[1] = 0.85;
                     } else {

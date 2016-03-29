@@ -2,7 +2,7 @@ package carcassonne.model.realestate;
 
 import carcassonne.model.*;
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -217,7 +217,7 @@ public class RealEstateManager {
      * According to the rules of the game, Cloisters should be excluded from this check.
      *
      */
-    public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirections direction) {
+    public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirection direction) {
         return
         realEstateMap.keySet().stream()
                 .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))

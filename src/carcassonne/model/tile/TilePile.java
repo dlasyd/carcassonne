@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static carcassonne.model.Feature.FeatureType.*;
-import static carcassonne.model.tile.TileDirections.*;
+import static carcassonne.model.tile.TileDirection.*;
 import static carcassonne.model.tile.TileName.*;
 import static carcassonne.model.tile.TileName.CLOISTER;
 

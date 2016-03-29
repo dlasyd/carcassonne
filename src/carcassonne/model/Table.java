@@ -86,7 +86,7 @@ public class Table implements OwnershipChecker{
     }
 
     @Override
-    public boolean locationIsLegal(int currentTileX, int currentTileY, Rotation angle, TileDirections direction) {
+    public boolean locationIsLegal(int currentTileX, int currentTileY, Rotation angle, TileDirection direction) {
         Tile temporaryTile = currentTile.setCoordinates(currentTileX, currentTileY).turnRight(angle);
         direction = direction.turnRight(angle);
         return !realEstateManager.isPartOfRealEstate(temporaryTile, direction);
@@ -126,7 +126,7 @@ public class Table implements OwnershipChecker{
             return Tile.getNullInstance();
     }
 
-    public Tile getNeighbouringTile(int x, int y, TileDirections direction) {
+    public Tile getNeighbouringTile(int x, int y, TileDirection direction) {
         switch (direction) {
             case NNE:
             case NNW:

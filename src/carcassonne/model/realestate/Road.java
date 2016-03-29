@@ -1,7 +1,7 @@
 package carcassonne.model.realestate;
 
 import carcassonne.model.tile.Tile;
-import carcassonne.model.tile.TileDirections;
+import carcassonne.model.tile.TileDirection;
 import carcassonne.model.tile.TileName;
 
 import java.util.Map;
@@ -29,7 +29,7 @@ class Road extends RealEstate {
         if (super.finished)
             return true;
         else {
-            Map<Tile, Set<TileDirections>> realEstateData = super.getTilesAndFeatureTileDirections();
+            Map<Tile, Set<TileDirection>> realEstateData = super.getTilesAndFeatureTileDirections();
 
             /*
              * two ends case
@@ -53,6 +53,6 @@ class Road extends RealEstate {
     }
 
     int getPoints() {
-            return tilesAndFeatureTileDirections.size();
+            return elements.nubmerOfTiles();
     }
 }
