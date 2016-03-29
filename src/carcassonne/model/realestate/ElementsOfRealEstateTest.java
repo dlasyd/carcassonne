@@ -6,9 +6,7 @@ import carcassonne.model.tile.TileName;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 import static carcassonne.model.tile.TileDirection.*;
 import static org.junit.Assert.*;
@@ -34,12 +32,12 @@ public class ElementsOfRealEstateTest {
         assertFalse(element.contains(Tile.getInstance(1, 2, TileName.CITY1RSE)));
     }
 
-//    @Test(expected = RuntimeException.class)
-//    public void addingSameTile_thenRuntimeException() {
-//        element = element
-//                .add(tile, direction)
-//                .add(tile, direction);
-//    }
+    @Test(expected = RuntimeException.class)
+    public void addingSameTile_thenRuntimeException() {
+        element = element
+                .add(tile, direction)
+                .add(tile, direction);
+    }
 
     @Test
     public void addSecondTile() {
@@ -67,6 +65,15 @@ public class ElementsOfRealEstateTest {
         element = element.add(tile, CENTER, EAST, WEST);
 
         assertEquals(new HashSet<>(Arrays.asList(CENTER, EAST, WEST)), element.getTileDirectionSet(tile));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void exceptionAddingSetWithDuplicate() {
+        element = element.add(tile, direction);
+        HashMap<Tile, Set<TileDirection>> tileSetHashMap = new HashMap<>();
+        tileSetHashMap.put(tile2, new HashSet<>(Arrays.asList(CENTER, EAST)));
+        tileSetHashMap.put(tile, new HashSet<>(Arrays.asList(NORTH, WEST, EAST)));
+        element = element.addAll(tileSetHashMap);
     }
 }
 

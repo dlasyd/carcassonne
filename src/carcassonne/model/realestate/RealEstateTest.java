@@ -4,6 +4,7 @@ import carcassonne.model.*;
 import carcassonne.model.Feature.Feature;
 import carcassonne.model.Feature.FeatureType;
 import carcassonne.model.tile.*;
+import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -142,6 +143,14 @@ public class RealEstateTest {
         exception.expect(RuntimeException.class);
         tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         RealEstate.getInstance(tile_0_0);
+    }
+
+    @Test
+    public void createRealEstate() {
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0 = tile_1_0.placeFollower(new Player(), TileDirection.EAST);
+        RealEstate realEstate = RealEstate.getInstance(tile_1_0);
+        assertEquals(new HashSet(Arrays.asList(tile_1_0)), realEstate.getTileSet());
     }
 
     @Test

@@ -9,26 +9,22 @@ import java.util.*;
 /*
  * Table on which table games are played, not a table that has rows and columns
  */
-public class Table implements OwnershipChecker{
+public class Table implements OwnershipChecker {
+    private static Table table;
     /*
      * firstTile is always the same and should be placed in the center of the table before the game starts
      */
     private final Tile firstTile = Tile.getInstance(0, 0, TileName.CITY1RWE);
-    private static Table table;
-    private Tile                currentTile;
-    private Tile                tilePlacedLast;
-    private RealEstateManager   realEstateManager;
-    private final TilePlacingHelper             tilePlacementHelper;
-    private final Set<PlacedFollower>           placedFollowers = new HashSet<>();
-    private final HashMap<Coordinates, Tile>    placedTiles = new HashMap<>();
+    private final TilePlacingHelper tilePlacementHelper;
+    private final Set<PlacedFollower> placedFollowers = new HashSet<>();
+    private final HashMap<Coordinates, Tile> placedTiles = new HashMap<>();
+    private Tile currentTile;
+    private Tile tilePlacedLast;
+    private RealEstateManager realEstateManager;
 
     public Table() {
         tilePlacementHelper = new TilePlacingHelper(this);
         placeTile(firstTile);
-    }
-
-    public void setRealEstateManager(RealEstateManager realEstateManager) {
-        this.realEstateManager = realEstateManager;
     }
 
     static Table getInstance() {
@@ -37,21 +33,21 @@ public class Table implements OwnershipChecker{
         return table;
     }
 
+    public void setRealEstateManager(RealEstateManager realEstateManager) {
+        this.realEstateManager = realEstateManager;
+    }
+
     /*
      * tile should be rotated according to user input
      */
     public void placeTile(Tile tile) {
-        tilePlacedLast = tile;
-        if (placedTiles.containsKey(tile.getCoordinates()))
-            throw new RuntimeException("Trying to place tile on an occupied space");
+        exceptionIfInvalidTile(tile);
 
+        tilePlacedLast = tile;
         placedTiles.put(tilePlacedLast.getCoordinates(), tilePlacedLast);
         tilePlacementHelper.setPlacedTiles(new HashMap<>(placedTiles));
-        tilePlacementHelper.update(tilePlacedLast);
 
         if (tilePlacedLast.hasFollower()) {
-            if (realEstateManager.isPartOfRealEstate(tilePlacedLast, tilePlacedLast.getFollowerTileDirection()))
-                throw new RuntimeException("Cannot place follower on existing real estate");
             placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getOccupiedFeature()));
             realEstateManager.createAsset(tilePlacedLast.getFollowerOwner(), tilePlacedLast);
         }
@@ -59,9 +55,19 @@ public class Table implements OwnershipChecker{
         notifyObservers(tilePlacedLast);
     }
 
+    private void exceptionIfInvalidTile(Tile tile) {
+        if (placedTiles.containsKey(tile.getCoordinates()))
+            throw new RuntimeException("Trying to place tile on an occupied space");
+        if (tile.hasFollower() && realEstateManager.isPartOfRealEstate(tile, tile.getFollowerTileDirection())) {
+            throw new RuntimeException("Cannot place follower on existing real estate");
+        }
+    }
+
     private void notifyObservers(Tile tile) {
         if (realEstateManager != null)
             realEstateManager.update(tile);
+        if (tilePlacementHelper != null)
+            tilePlacementHelper.update(tile);
     }
 
     /*
@@ -74,15 +80,6 @@ public class Table implements OwnershipChecker{
                 iterator.remove();
             }
         }
-    }
-
-    /*
-     * Used by Game's method dragTile. An instance of Game uses it's instance of TilePile to
-     * get a new tile and passes it to table using this method
-     */
-    void setCurrentTile(Tile currentTile) {
-        this.currentTile = currentTile;
-        tilePlacementHelper.update(currentTile);
     }
 
     @Override
@@ -101,11 +98,20 @@ public class Table implements OwnershipChecker{
         return currentTile;
     }
 
+    /*
+     * Used by Game's method dragTile. An instance of Game uses it's instance of TilePile to
+     * get a new tile and passes it to table using this method
+     */
+    void setCurrentTile(Tile currentTile) {
+        this.currentTile = currentTile;
+        tilePlacementHelper.update(currentTile);
+    }
+
     Tile getPreviouslyPlacedTile() {
         return tilePlacedLast;
     }
 
-    Map<Coordinates,Set<Rotation>> getPossibleTileLocationsAndRotations() {
+    Map<Coordinates, Set<Rotation>> getPossibleTileLocationsAndRotations() {
         return tilePlacementHelper.getCoordinatesToRotationMap();
     }
 
@@ -114,7 +120,7 @@ public class Table implements OwnershipChecker{
     }
 
 
-    public HashMap<Coordinates,Tile> getPlacedTiles() {
+    public HashMap<Coordinates, Tile> getPlacedTiles() {
         return new HashMap<>(placedTiles);
     }
 

@@ -12,7 +12,8 @@ import java.util.*;
 public class ElementsOfRealEstate {
     private Map<Tile, Set<TileDirection>> tilesToDirections = new HashMap();
 
-    public ElementsOfRealEstate() {}
+    public ElementsOfRealEstate() {
+    }
 
     private ElementsOfRealEstate(ElementsOfRealEstate element, Tile newTile, Set<TileDirection> directions) {
         this.tilesToDirections = new HashMap<>(element.tilesToDirections);
@@ -22,20 +23,23 @@ public class ElementsOfRealEstate {
     private ElementsOfRealEstate(ElementsOfRealEstate element, Map<Tile, Set<TileDirection>> tilesMap) {
         this.tilesToDirections = new HashMap<>(element.tilesToDirections);
         for (Tile tile : tilesMap.keySet()) {
-//            if (tilesToDirections.containsKey(tile))
-//                throw new RuntimeException("Cannot add because tile has already been added");
             tilesToDirections.put(tile, tilesMap.get(tile));
         }
     }
+
     public ElementsOfRealEstate add(Tile tile, TileDirection... direction) {
         return add(tile, new HashSet<>(Arrays.asList(direction)));
     }
 
     public ElementsOfRealEstate add(Tile tile, Set<TileDirection> directions) {
-        //TODO uncomment code later
-//        if (tilesToDirections.containsKey(tile))
-//            throw new RuntimeException("Cannot add because tile has already been added");
-        return new ElementsOfRealEstate(this, tile, directions);
+        Map<Tile, Set<TileDirection>> map = new HashMap<>();
+        map.put(tile, directions);
+        return addAll(map);
+    }
+
+    public ElementsOfRealEstate addAll(Map<Tile, Set<TileDirection>> tilesToTileDirections) {
+        tilesToTileDirections.keySet().forEach(this::exceptionIfDuplicate);
+        return new ElementsOfRealEstate(this, tilesToTileDirections);
     }
 
     public Set<Tile> getTileSet() {
@@ -53,15 +57,19 @@ public class ElementsOfRealEstate {
         return new HashSet<>(tilesToDirections.get(tile));
     }
 
-    public ElementsOfRealEstate addAll(Map<Tile, Set<TileDirection>> tilesToTileDirections) {
-        return new ElementsOfRealEstate(this, tilesToTileDirections);
-    }
 
-    public int nubmerOfTiles() {
+    public int numberOfTiles() {
         return tilesToDirections.size();
     }
 
-    public Map<Tile,Set<TileDirection>> getElementsMap() {
+    public Map<Tile, Set<TileDirection>> getElementsMap() {
         return new HashMap<>(tilesToDirections);
     }
+
+    private void exceptionIfDuplicate(Tile tile) {
+        if (tilesToDirections.containsKey(tile))
+            throw new RuntimeException("Cannot add because tile has already been added");
+    }
 }
+
+

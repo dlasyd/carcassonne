@@ -53,6 +53,6 @@ class Road extends RealEstate {
     }
 
     int getPoints() {
-            return elements.nubmerOfTiles();
+            return elements.numberOfTiles();
     }
 }

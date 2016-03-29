@@ -98,7 +98,7 @@ public abstract class RealEstate {
 
         for (TileDirection tileDirection : occupiedFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirection);
-            if (!neighbour.isNull()) {
+            if (!neighbour.isNull() && !elements.contains(neighbour)) {
                 Util.addLinkedSetElement(adjacentTiles, neighbour, neighbour.getDestinations(tileDirection.getNeighbour()));
                 Util.addAllSetElements(adjacentTiles, findAdjacentTiles(neighbour, tileDirection.getNeighbour(), new HashSet<>()));
             }
@@ -327,7 +327,7 @@ public abstract class RealEstate {
     abstract int getPoints();
 
     int getNumberOfTiles() {
-        return elements.nubmerOfTiles();
+        return elements.numberOfTiles();
     }
 
     Map<Tile, Set<TileDirection>> getTilesAndFeatureTileDirections() {
