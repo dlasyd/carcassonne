@@ -45,7 +45,7 @@ public class Game implements DataToModel{
     public void turnActions(int x, int y, Rotation angle, TileDirection direction) {
         Tile tile = getCurrentTile();
         tile = tile.setCoordinates(x, y);
-        tile = tile.turnRight(angle);
+        tile = tile.turnClockwise(angle);
         if (direction != null)
             tile = tile.placeFollower(getCurrentPlayer(), direction);
         table.placeTile(tile);

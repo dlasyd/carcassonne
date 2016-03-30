@@ -133,7 +133,7 @@ public class NullTile extends Tile{
     }
 
     @Override
-    public Tile turnRight(Rotation angle) {
+    public Tile turnClockwise(Rotation angle) {
         throw new RuntimeException("The tile is Null");
 
     }

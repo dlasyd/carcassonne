@@ -354,7 +354,7 @@ public class TileTest {
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
         tile = tile.placeFollower(new Player(), EAST);
-        tile = tile.turnRight(Rotation.DEG_90);
+        tile = tile.turnClockwise(Rotation.DEG_90);
         Set<TileDirection> expected = new HashSet<>(Arrays.asList(SOUTH, SSE, EES, EAST));
         assertEquals("TileDirection of rotated tile", expected, tile.getOccupiedFeatureDirections());
     }
@@ -365,7 +365,7 @@ public class TileTest {
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
         tile = tile.placeFollower(new Player(), EAST);
-        tile = tile.turnRight(Rotation.DEG_270);
+        tile = tile.turnClockwise(Rotation.DEG_270);
         Set<TileDirection> expected = new HashSet<>(Arrays.asList(NORTH, WWN, NNW, WEST));
         assertEquals("TileDirection of rotated tile", expected, tile.getOccupiedFeatureDirections());
     }
@@ -376,7 +376,7 @@ public class TileTest {
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, CENTER);
         tile = tile.placeFollower(new Player(), CENTER);
-        tile = tile.turnRight(Rotation.DEG_270);
+        tile = tile.turnClockwise(Rotation.DEG_270);
         Set<TileDirection> expected = new HashSet<>(Collections.singletonList(CENTER));
         assertEquals("TileDirection of rotating CENTER and END", expected, tile.getOccupiedFeatureDirections());
     }
@@ -386,7 +386,7 @@ public class TileTest {
         Feature feature = Feature.createFeature(FeatureType.CITY);
         Tile tile = Tile.getInstance(0, 0);
         tile.addFeature(feature, EAST,EEN, NNE, NORTH);
-        tile = tile.turnRight(Rotation.DEG_90);
+        tile = tile.turnClockwise(Rotation.DEG_90);
         Set<TileDirection> expected = new HashSet<>(Arrays.asList(SOUTH, SSE, EES, EAST));
         assertEquals("TileDirection of rotated tile", expected, tile.getDestinations(SOUTH));
     }
@@ -401,7 +401,7 @@ public class TileTest {
         roadTile.addFeature(feature1, SOUTH, EAST);
         roadTile.addFeature(feature2, EES, SSE);
         roadTile.addFeature(feature3, roadTile.getUnoccupiedDirections());
-        roadTile = roadTile.turnRight(Rotation.DEG_90);
+        roadTile = roadTile.turnClockwise(Rotation.DEG_90);
 
         Tile expectedTile = Tile.getInstance(2,0);
         expectedTile.addFeature(feature1, SOUTH, WEST);
@@ -422,7 +422,7 @@ public class TileTest {
     public void smallCityContinuous() {
         Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
         Tile tile2 = Tile.getInstance(TileName.CITY1);
-        tile2 = tile2.turnRight(Rotation.DEG_180);
+        tile2 = tile2.turnClockwise(Rotation.DEG_180);
         assertEquals("Small city is continuous", true, tile1.isContinuous(tile2, TileDirection.SOUTH));
     }
 
@@ -442,9 +442,9 @@ public class TileTest {
     @Test
     public void rotationChangesWhenTurned() {
         Tile tile1 = Tile.getInstance(0, 0, TileName.CITY1);
-        tile1 = tile1.turnRight(Rotation.DEG_180);
+        tile1 = tile1.turnClockwise(Rotation.DEG_180);
         assertEquals("Rotation saved after turn", Rotation.DEG_180, tile1.getCurrentRotation());
-        tile1 = tile1.turnRight(Rotation.DEG_270);
+        tile1 = tile1.turnClockwise(Rotation.DEG_270);
         assertEquals("Rotation saved after turn", Rotation.DEG_90, tile1.getCurrentRotation());
     }
 

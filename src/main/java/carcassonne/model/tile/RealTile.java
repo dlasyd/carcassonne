@@ -49,7 +49,7 @@ public class RealTile extends Tile {
     }
 
     @Override
-    public Tile turnRight(Rotation angle) {
+    public Tile turnClockwise(Rotation angle) {
         RealTile newTile = new RealTile(this);
         newTile.rotateValueSet(newTile.featureToTileDirections, angle);
         newTile.rotateKeys(newTile.propertyConnectionMap, angle);

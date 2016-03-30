@@ -44,7 +44,7 @@ public class RealEstateManagerTest {
     public void placeTile(int x, int y, TileName tileName, Rotation rotation) {
         Tile tile = Tile.getInstance(x, y);
         tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
-        tile = tile.turnRight(rotation);
+        tile = tile.turnClockwise(rotation);
         table.placeTile(tile);
 
     }
@@ -52,7 +52,7 @@ public class RealEstateManagerTest {
     public void placeTile(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirection tileDirection) {
         Tile tile = Tile.getInstance(x, y);
         tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
-        tile = tile.turnRight(rotation);
+        tile = tile.turnClockwise(rotation);
         tile = tile.placeFollower(player, tileDirection);
         table.placeTile(tile);
 
@@ -91,7 +91,7 @@ public class RealEstateManagerTest {
     @Test
     public void createAsset() {
         tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
         tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
 
         placeTile(1, 0, TileName.ROAD2SW, Rotation.DEG_180);
@@ -109,7 +109,7 @@ public class RealEstateManagerTest {
     @Test
     public void isPartOfRealEstate() {
         tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
         tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
         placeTile(1, 0, TileName.ROAD2SW, Rotation.DEG_180, anton, EAST);
         placeTile(2, 0, TileName.ROAD2SW, Rotation.DEG_0);
@@ -120,9 +120,9 @@ public class RealEstateManagerTest {
     @Test
     public void isPartOfRealEstate_castle() {
         tile_0_m1 = tile_0_m1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_m1 = tile_0_m1.turnRight(DEG_270);
+        tile_0_m1 = tile_0_m1.turnClockwise(DEG_270);
         tile_m1_m1 = tile_m1_m1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_m1_m1 = tile_m1_m1.turnRight(DEG_90);
+        tile_m1_m1 = tile_m1_m1.turnClockwise(DEG_90);
         placeTile(0, -1, TileName.CITY2NW, Rotation.DEG_270, anton, SOUTH);
 
         assertTrue ("Part of real estate", manager.isPartOfRealEstate(tile_m1_m1, EAST));
@@ -142,11 +142,11 @@ public class RealEstateManagerTest {
     @Test
     public void assetUnionThreesomeSameTile() {
         tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
         tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_2_0 = tile_2_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.turnClockwise(DEG_180);
         tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1 = tile_0_1.turnRight(DEG_180);
+        tile_0_1 = tile_0_1.turnClockwise(DEG_180);
         tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
         tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
 
@@ -171,11 +171,11 @@ public class RealEstateManagerTest {
     @Test
     public void assetUnionThreesomeStepByStep() {
         tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
         tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_2_0 = tile_2_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.turnClockwise(DEG_180);
         tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1 = tile_0_1.turnRight(DEG_180);
+        tile_0_1 = tile_0_1.turnClockwise(DEG_180);
         tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
         tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
 
@@ -212,11 +212,11 @@ public class RealEstateManagerTest {
     @Test
     public void realEstateChangeOwner2to1() {
         tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0 = tile_1_0.turnRight(DEG_180);
+        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
         tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY2NWR));
-        tile_2_0 = tile_2_0.turnRight(DEG_180);
+        tile_2_0 = tile_2_0.turnClockwise(DEG_180);
         tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1 = tile_0_1.turnRight(DEG_180);
+        tile_0_1 = tile_0_1.turnClockwise(DEG_180);
         tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
         tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
 
@@ -354,15 +354,15 @@ public class RealEstateManagerTest {
 
         Tile testedTile = Tile.getInstance(1, 0);
         testedTile = testedTile.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        testedTile = testedTile.turnRight(DEG_90);
+        testedTile = testedTile.turnClockwise(DEG_90);
 
         Tile tile_1_m1 = Tile.getInstance(1, -1);
         tile_1_m1 = tile_1_m1.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_m1 = tile_1_m1.turnRight(DEG_270);
+        tile_1_m1 = tile_1_m1.turnClockwise(DEG_270);
         tile_1_m1 = tile_1_m1.placeFollower(anton, EAST);
         tile_2_m1 = Tile.getInstance(2, -1);
         tile_2_m1 = tile_2_m1.copyFeatures(TilePile.getReferenceTile(CITY3R));
-        tile_2_m1 = tile_2_m1.turnRight(DEG_90);
+        tile_2_m1 = tile_2_m1.turnClockwise(DEG_90);
 
 
         Map<Tile, Set<TileDirection>> expectedRealEstate = new HashMap<>();
@@ -387,6 +387,37 @@ public class RealEstateManagerTest {
         antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
         assertEquals("RealEstate unchanged", expectedRealEstate, antonRealEstate);
     }
+
+    // TODO move to RealEstateManagerTest
+    /*
+    @Test
+    public void followerOnOccupiedRealEstateThenRuntimeException() {
+        exception.expect(RuntimeException.class);
+        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_1_0 = tile_1_0.turnClockwise(Rotation.DEG_180);
+        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
+        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
+        tile_2_0 = tile_2_0.turnClockwise(Rotation.DEG_90);
+
+        createAndAddToTable(1, 0, TileName.ROAD2SW, Rotation.DEG_180, new Player(), EAST);
+        createAndAddToTable(2, 0, TileName.ROAD2NS, Rotation.DEG_90);
+        createAndAddToTable(3, 0, TileName.ROAD2SW, Rotation.DEG_0, new Player(), WEST);
+
+    }
+
+    */
+//    //TODO ? move to realEstateManager
+//    @Test
+//    public void sameWhenUnion() {
+//        Player andrey = new Player();
+//        Player anton = new Player();
+//
+//        createAndAddToTable(1, 0, TileName.ROAD2NS, Rotation.DEG_90, andrey, EAST);
+//        createAndAddToTable(3, 0, TileName.ROAD2NS, Rotation.DEG_90, anton, EAST);
+//        createAndAddToTable(2, 0, TileName.ROAD2NS, Rotation.DEG_90);
+//        assertEquals("Players should have same real estate object", manager.getAssets(anton), manager.getAssets(andrey));
+//    }
+
 
 
 }

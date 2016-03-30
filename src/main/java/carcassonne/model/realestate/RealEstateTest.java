@@ -26,7 +26,7 @@ public class RealEstateTest {
     public Tile tile;
     public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
     public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2, tile_2_1, tile_1_2, tile_3_2;
-    public Tile tile_2_2, tile_3_1;
+    public Tile tile_2_2, tile_3_1, tile_1_3, tile_1_4;
     public RealEstate realEstate, realEstate2;
     public RealEstateManager manager;
     public Player anton = new Player();
@@ -38,23 +38,6 @@ public class RealEstateTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
     private Table mockTable;
-
-    public Tile createAndAddToTable(int x, int y, TileName tileName, Rotation rotation) {
-        Tile tile = Tile.getInstance(x, y, tileName);
-        tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
-        tile = tile.turnRight(rotation);
-        simpleTable.placeTile(tile);
-        return tile;
-    }
-
-    public Tile createAndAddToTable(int x, int y, TileName tileName, Rotation rotation, Player player, TileDirection tileDirection) {
-        Tile tile = Tile.getInstance(x, y, tileName);
-        tile = tile.copyFeatures(TilePile.getReferenceTile(tileName));
-        tile = tile.turnRight(rotation);
-        tile = tile.placeFollower(player, tileDirection);
-        simpleTable.placeTile(tile);
-        return tile;
-    }
 
     @Before
     public void setUp() {
@@ -223,29 +206,12 @@ public class RealEstateTest {
         assertEquals("Added tiles, first has follower, second does not", expectedSet, realEstate.getTileSet());
     }
 
-    // TODO move to RealEstateManagerTest
-    @Test
-    public void followerOnOccupiedRealEstateThenRuntimeException() {
-        exception.expect(RuntimeException.class);
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_1_0 = tile_1_0.turnRight(Rotation.DEG_180);
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2SW));
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(TileName.ROAD2NS));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
-
-        createAndAddToTable(1, 0, TileName.ROAD2SW, Rotation.DEG_180, new Player(), EAST);
-        createAndAddToTable(2, 0, TileName.ROAD2NS, Rotation.DEG_90);
-        createAndAddToTable(3, 0, TileName.ROAD2SW, Rotation.DEG_0, new Player(), WEST);
-
-    }
-
-
     @Test
     public void addThirdTileToPropertyFollowerOnFirst() {
         tile_1_0 = Tile.getInstance(1, 0, ROAD4)
                 .placeFollower(new Player(), TileDirection.EAST);
-        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS).turnRight(Rotation.DEG_90);
-        tile_3_0 = Tile.getInstance(3, 0, ROAD2NS).turnRight(Rotation.DEG_90);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS).turnClockwise(Rotation.DEG_90);
+        tile_3_0 = Tile.getInstance(3, 0, ROAD2NS).turnClockwise(Rotation.DEG_90);
 
         List<Tile> expected = Arrays.asList(tile_1_0, tile_2_0, tile_3_0);
 
@@ -256,10 +222,10 @@ public class RealEstateTest {
     public void addThirdTileToPropertyFollowerOnSecond() {
         tile_1_0 = Tile.getInstance(1, 0, ROAD4);
         tile_2_0 = Tile.getInstance(2, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90)
+                .turnClockwise(Rotation.DEG_90)
                 .placeFollower(new Player(), TileDirection.EAST);
         tile_3_0 = Tile.getInstance(3, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
 
         List<Tile> expected = Arrays.asList(tile_1_0, tile_2_0, tile_3_0);
 
@@ -274,7 +240,7 @@ public class RealEstateTest {
         tile_1_0 = Tile.getInstance(1, 0, ROAD4);
         tile_3_0 = Tile.getInstance(3, 0, ROAD4);
         tile_2_0 = Tile.getInstance(2, 0, ROAD2SW)
-                .turnRight(Rotation.DEG_90)
+                .turnClockwise(Rotation.DEG_90)
                 .placeFollower(new Player(), TileDirection.EAST);
 
         List<Tile> expected = Arrays.asList(tile_1_0, tile_3_0, tile_2_0);
@@ -291,11 +257,11 @@ public class RealEstateTest {
         tile_1_0 = Tile.getInstance(1, 0, ROAD4);
         tile_5_0 = Tile.getInstance(5, 0, ROAD4);
         tile_2_0 = Tile.getInstance(2, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_4_0 = Tile.getInstance(4, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_3_0 = Tile.getInstance(3, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90)
+                .turnClockwise(Rotation.DEG_90)
                 .placeFollower(new Player(), TileDirection.EAST);
 
         List<Tile> expected = Arrays.asList(tile_1_0, tile_2_0, tile_4_0, tile_5_0, tile_3_0);
@@ -310,14 +276,14 @@ public class RealEstateTest {
     public void createPropertyFromPreviousThreeToTheLeft() {
         tile_1_0 = Tile.getInstance(1, 0, ROAD4);
         tile_2_0 = Tile.getInstance(2, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_3_0 = Tile.getInstance(3, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_5_0 = Tile.getInstance(5, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_6_0 = Tile.getInstance(6, 0, ROAD4);
         tile_4_0 = Tile.getInstance(4, 0, ROAD2NS)
-                .turnRight(Rotation.DEG_90)
+                .turnClockwise(Rotation.DEG_90)
                 .placeFollower(new Player(), TileDirection.EAST);
 
         List<Tile> expected = Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_5_0, tile_6_0, tile_4_0);
@@ -340,9 +306,9 @@ public class RealEstateTest {
     @Test
     public void createPropertyFromLessComplexPreviousTilePlacement() {
         tile_1_m1 = Tile.getInstance(1, -1, CITY3)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_1_m2 = Tile.getInstance(1, -2, CITY2WE)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_1_0 = Tile.getInstance(1, 0, CITY1).placeFollower(new Player(), TileDirection.NORTH);
 
         tile_2_m1 = Tile.getInstance(2, -1, CITY2NW);
@@ -354,12 +320,12 @@ public class RealEstateTest {
     @Test
     public void createPropertyFromComplexPreviousTilePlacement() {
         tile_1_m1 = Tile.getInstance(1, -1, CITY3)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_1_m2 = Tile.getInstance(1, -2, CITY2WE)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_2_m1 = Tile.getInstance(2, -1, CITY2NW);
         tile_2_m2 = Tile.getInstance(2, -2, CITY2NW)
-                .turnRight(Rotation.DEG_180);
+                .turnClockwise(Rotation.DEG_180);
         tile_3_m2 = Tile.getInstance(3, -2, CITY2WE);
         tile_1_0 = Tile.getInstance(1, 0, CITY1)
                 .placeFollower(new Player(), TileDirection.NORTH);
@@ -372,12 +338,12 @@ public class RealEstateTest {
     @Test
     public void loopedRoadProperty() {
         tile_1_1 = Tile.getInstance(1, 1, ROAD2SW)
-                .turnRight(Rotation.DEG_180);
+                .turnClockwise(Rotation.DEG_180);
         tile_2_0 = Tile.getInstance(2, 0, ROAD2SW);
         tile_2_1 = Tile.getInstance(2, 1, ROAD2SW)
-                .turnRight(Rotation.DEG_90);
+                .turnClockwise(Rotation.DEG_90);
         tile_1_0 = Tile.getInstance(1, 0, ROAD2SW)
-                .turnRight(Rotation.DEG_270)
+                .turnClockwise(Rotation.DEG_270)
                 .placeFollower(new Player(), EAST);
 
 
@@ -386,94 +352,21 @@ public class RealEstateTest {
                 new HashSet<>(expected), placeAndUpdate(expected).getTileSet());
     }
 
-    /*
-     * When tile is placed on the table, it should be added to all real estate object that are appropriate.
-     * This is relevant for next few tests
-     */
-    @Test
-    public void addingTileToRealEstate() {
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
-        tile_2_0 = tile_2_0.placeFollower(new Player(), TileDirection.EAST);
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_3_0 = tile_3_0.turnRight(Rotation.DEG_90);
-        table.placeTile(tile_1_0);
-        realEstate = RealEstate.getInstance(tile_2_0, null);
-        manager.addAsset(new Player(), realEstate);
-        table.placeTile(tile_3_0);
-
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
-        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
-    }
-
-    @Test
-    public void addToTableDoNotAddToRealEstate() {
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
-        tile_2_0 = tile_2_0.placeFollower(new Player(), TileDirection.EAST);
-        tile_2_m1 = tile_2_m1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_m1 = tile_2_m1.turnRight(Rotation.DEG_90);
-        table.placeTile(tile_1_0);
-        table.placeTile(tile_2_0);
-        realEstate = RealEstate.getInstance(tile_2_0, null);
-        manager.addAsset(new Player(), realEstate);
-        table.placeTile(tile_2_m1);
-
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0));
-        assertEquals("Two tiles are added", expected, realEstate.getTileSet());
-    }
-
-    @Test
-    public void addingTileToRealEstateNotNearCreationTile() {
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_1_0 = tile_1_0.placeFollower(new Player(), TileDirection.EAST);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_3_0 = tile_3_0.turnRight(Rotation.DEG_90);
-        table.placeTile(tile_1_0);
-        table.placeTile(tile_2_0);
-        realEstate = RealEstate.getInstance(tile_1_0, null);
-        manager.addAsset(new Player(), realEstate);
-        table.placeTile(tile_3_0);
-
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0));
-        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
-    }
-
     @Test
     public void addingTileToRealEstateFarFromCreationTile() {
+        tile_3_0 = Tile.getInstance(3, 0, ROAD2NS)
+                .turnClockwise(Rotation.DEG_90);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS)
+                .turnClockwise(Rotation.DEG_90);
+        tile_1_0 = Tile.getInstance(1, 0, ROAD4)
+                .placeFollower(new Player(), TileDirection.EAST);
+        tile_4_0 = Tile.getInstance(4, 0, ROAD2NS)
+                .turnClockwise(Rotation.DEG_90);
 
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_1_0 = tile_1_0.placeFollower(new Player(), TileDirection.EAST);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_3_0 = tile_3_0.turnRight(Rotation.DEG_90);
-        tile_4_0 = tile_4_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_4_0 = tile_4_0.turnRight(Rotation.DEG_90);
-        table.placeTile(tile_3_0);
-        table.placeTile(tile_2_0);
-        table.placeTile(tile_1_0);
-        realEstate = RealEstate.getInstance(tile_1_0, null);
-        RealEstateManager manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
-        manager.addAsset(new Player(), realEstate);
-        table.placeTile(tile_4_0);
 
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_3_0, tile_4_0));
-        assertEquals("Three tiles are added", expected, realEstate.getTileSet());
+        List<Tile> expected = Arrays.asList(tile_3_0, tile_2_0, tile_1_0, tile_4_0);
+        assertEquals("Three tiles are added",
+                new HashSet<>(expected), placeAndUpdate(expected).getTileSet());
     }
 
     @Test
@@ -481,260 +374,143 @@ public class RealEstateTest {
         /*
          * 3x3 road square cycle
          */
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_0 = tile_1_0.turnRight(Rotation.DEG_270);
-        tile_1_2 = tile_1_2.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_2 = tile_1_2.turnRight(Rotation.DEG_180);
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_3_2 = tile_3_2.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_3_2 = tile_3_2.turnRight(Rotation.DEG_90);
-
-        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_3_1 = tile_3_1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
-        tile_2_2 = tile_2_2.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_2 = tile_2_2.turnRight(Rotation.DEG_90);
-
-        table.placeTile(tile_1_0);
-        tile_1_0 = tile_1_0.placeFollower(new Player(), EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, null);
-
-        RealEstateManager manager = new RealEstateManager(table);
-        manager.addAsset(new Player(), realEstate);
-        table.setRealEstateManager(manager);
-
-        table.placeTile(tile_2_0);
-        table.placeTile(tile_3_0);
-        table.placeTile(tile_3_1);
-        table.placeTile(tile_3_2);
-        table.placeTile(tile_2_2);
-        table.placeTile(tile_1_2);
-        table.placeTile(tile_1_1);
-
-
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_1, tile_1_2, tile_2_0, tile_2_2,
-                tile_3_0, tile_3_1, tile_3_2));
-        assertEquals("Road loop added to real estate", expected, realEstate.getTileSet());
-    }
-
-    @Test
-    public void placeTileThenAddAdjacentTiles() {
-        /*
-         * 3x3 road square cycle
-         */
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_0 = tile_1_0.turnRight(Rotation.DEG_270);
-        tile_1_2 = tile_1_2.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_2 = tile_1_2.turnRight(Rotation.DEG_180);
-        tile_3_0 = tile_3_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_3_2 = tile_3_2.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_3_2 = tile_3_2.turnRight(Rotation.DEG_90);
-
-        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_3_1 = tile_3_1.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
-        tile_2_2 = tile_2_2.copyFeatures(TilePile.getReferenceTile(ROAD2NS));
-        tile_2_2 = tile_2_2.turnRight(Rotation.DEG_90);
-
-        table.placeTile(tile_1_0);
-        tile_1_0 = tile_1_0.placeFollower(new Player(), EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_0, null);
-
-        RealEstateManager manager = new RealEstateManager(table);
-        manager.addAsset(new Player(), realEstate);
-        table.setRealEstateManager(manager);
-        table.placeTile(tile_3_0);
-        table.placeTile(tile_3_1);
-        table.placeTile(tile_3_2);
-        table.placeTile(tile_2_2);
-        table.placeTile(tile_1_2);
-
-
-        table.placeTile(tile_2_0);
-        table.placeTile(tile_1_1);
-
-        Set<Tile> expected = new HashSet<>(Arrays.asList(tile_1_0, tile_1_1, tile_1_2, tile_2_0, tile_2_2,
-                tile_3_0, tile_3_1, tile_3_2));
-        assertEquals("Road loop added to real estate", expected, realEstate.getTileSet());
-    }
-
-    @Test
-    public void sameWhenUnion() {
-        Player andrey = new Player();
-        Player anton = new Player();
-
-        createAndAddToTable(1, 0, TileName.ROAD2NS, Rotation.DEG_90, andrey, EAST);
-        createAndAddToTable(3, 0, TileName.ROAD2NS, Rotation.DEG_90, anton, EAST);
-        createAndAddToTable(2, 0, TileName.ROAD2NS, Rotation.DEG_90);
-        assertEquals("Players should have same real estate object", manager.getAssets(anton), manager.getAssets(andrey));
-    }
-
-    @Test
-    public void checkTileDirectionsOfRealEstate() {
-        tile_1_0 = Tile.getInstance(1, 0, ROAD2SW);
-        tile_1_0 = tile_1_0.turnRight(Rotation.DEG_180);
+        tile_1_0 = Tile.getInstance(1, 0, ROAD2SW)
+                .turnClockwise(Rotation.DEG_270)
+                .placeFollower(new Player(), EAST);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS)
+                .turnClockwise(Rotation.DEG_90);
         tile_3_0 = Tile.getInstance(3, 0, ROAD2SW);
-        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS);
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
+        tile_3_1 = Tile.getInstance(3, 1, ROAD2NS);
+        tile_3_2 = Tile.getInstance(3, 2, ROAD2SW)
+                .turnClockwise(Rotation.DEG_90);
+        tile_2_2 = Tile.getInstance(2, 2, ROAD2NS)
+                .turnClockwise(Rotation.DEG_90);
+        tile_1_2 = Tile.getInstance(1, 2, ROAD2SW)
+                .turnClockwise(Rotation.DEG_180);
+        tile_1_1 = Tile.getInstance(1, 1, ROAD2NS);
 
-        Map<Tile, Set<TileDirection>> expected = new HashMap<>();
-        expected.put(tile_1_0, new HashSet<>(Arrays.asList(NORTH, EAST)));
-        expected.put(tile_3_0, new HashSet<>(Arrays.asList(WEST, SOUTH)));
-        expected.put(tile_2_0, new HashSet<>(Arrays.asList(WEST, EAST)));
 
-        createAndAddToTable(1, 0, TileName.ROAD2SW, Rotation.DEG_180, new Player(), TileDirection.EAST);
-        createAndAddToTable(3, 0, TileName.ROAD2SW, Rotation.DEG_0);
-        createAndAddToTable(2, 0, TileName.ROAD2NS, Rotation.DEG_90);
-
-        Set<RealEstate.ImmutableRealEstate> keys = manager.getRealEstateImmutableSet();
-        Map<Tile, Set<TileDirection>> realResult = new HashMap<>();
-        realResult = keys.iterator().next().getRealEstate().getTilesAndFeatureTileDirections();
-        assertEquals("Tiles and tile directions", expected, realResult);
-    }
-
-    @Test
-    public void completeRealEstateAddedProperly() {
-        table.setRealEstateManager(manager);
-
-        tile_1_0 = Tile.getInstance(1, 0, ROAD4);
-        tile_2_0 = Tile.getInstance(2, 0, ROAD4);
-
-        createAndAddToTable(1, 0, TileName.ROAD4, Rotation.DEG_0);
-        createAndAddToTable(2, 0, TileName.ROAD4, Rotation.DEG_0, new Player(), WEST);
-
-        Map<Tile, Set<TileDirection>> expected = new HashMap<>();
-        expected.put(tile_2_0, new HashSet<>(Collections.singletonList(WEST)));
-        expected.put(tile_1_0, new HashSet<>(Collections.singletonList(EAST)));
-
-        Map<Tile, Set<TileDirection>> tileToTileDirections = new HashMap<>();
-
-        /*
-         * TODO refactor this ugly thing
-         */
-        for (Player player : manager.getPlayerToFinishedRealEstate().keySet()) {
-            for (RealEstate.ImmutableRealEstate realEstate : manager.getPlayerToFinishedRealEstate().get(player)) {
-                tileToTileDirections = realEstate.getRealEstate().getTilesAndFeatureTileDirections();
-            }
-        }
-        Tile tile1 = null, tile2 = null;
-        for (Tile tile : expected.keySet()) {
-            if (tile.getCoordinates().equals(new Coordinates(2, 0)))
-                tile1 = tile;
-        }
-        for (Tile tile : tileToTileDirections.keySet()) {
-            if (tile.getCoordinates().equals(new Coordinates(2, 0)))
-                tile2 = tile;
-        }
-        boolean h = tile1.equals(tile2);
-        assertEquals("Equal tiles are equal", tile1, tile2);
-        assertEquals("Tile consist of correct tileDirections", expected, tileToTileDirections);
-    }
-
-    @Test
-    public void roadIsFinishedWhenTwoEnds() {
-        Player anton = new Player();
-        createAndAddToTable(1, 0, TileName.ROAD4, Rotation.DEG_180);
-        createAndAddToTable(2, 0, TileName.ROAD4, Rotation.DEG_0, anton, WEST);
-
-        assertEquals("Player has no unfinished real estate", false, manager.playerHasAssets(anton));
+        List<Tile> expected = Arrays.asList(tile_1_0, tile_2_0, tile_3_0,
+                tile_3_1, tile_3_2, tile_2_2, tile_1_2, tile_1_1);
+        assertEquals("Road loop added to real estate",
+                new HashSet<>(expected), placeAndUpdate(expected).getTileSet());
     }
 
     @Test
     public void tilesAddedToCloister() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CLOISTER));
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CLOISTER));
-        tile_1_1 = tile_1_1.placeFollower(new Player(), TileDirection.CENTER);
-        tile_1_2 = tile_1_2.copyFeatures(TilePile.getReferenceTile(CLOISTER));
-        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CLOISTER));
-        tile_2_2 = tile_2_2.copyFeatures(TilePile.getReferenceTile(CLOISTER));
+        tile_1_0 = Tile.getInstance(1, 0, CITY1RWE);
+        tile_1_1 = Tile.getInstance(1, 1, CLOISTER)
+                .placeFollower(new Player(), TileDirection.CENTER);
+        tile_0_1 = Tile.getInstance(0, 1, CLOISTER);
+        tile_2_0 = Tile.getInstance(2, 0, CLOISTER);
+        tile_1_2 = Tile.getInstance(1, 2, CLOISTER);
 
-        table.placeTile(tile_1_0);
-        RealEstate realEstate = RealEstate.getInstance(tile_1_1, null);
-        table.placeTile(tile_1_1);
-        RealEstateManager manager = new RealEstateManager(table);
-        manager.addAsset(new Player(), realEstate);
-        table.setRealEstateManager(manager);
-        table.placeTile(tile_0_1);
-        table.placeTile(tile_1_2);
-        table.placeTile(tile_2_2);
+        List<Tile> expected = Arrays.asList(tile_1_0, tile_1_1, tile_0_1, tile_1_2, tile_2_2);
 
-        Set<Tile> expectedSet = new HashSet<>();
-        expectedSet.add(table.getFirstTile());
-        expectedSet.add(tile_1_0);
-        expectedSet.add(tile_0_1);
-        expectedSet.add(tile_1_1);
-        expectedSet.add(tile_1_2);
-        expectedSet.add(tile_2_2);
+        assertEquals("Cloister has correct tiles",
+                new HashSet<>(expected), placeAndUpdate(expected).getTileSet());
+    }
 
-        assertEquals("Cloister has correct tiles", expectedSet, realEstate.getTileSet());
+    @Test
+    public void checkTileDirectionsOfRealEstate() {
+        tile_1_0 = Tile.getInstance(1, 0, ROAD2SW)
+                .turnClockwise(Rotation.DEG_180)
+                .placeFollower(new Player(), EAST);
+        tile_3_0 = Tile.getInstance(3, 0, ROAD2SW);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD2NS)
+                .turnClockwise(Rotation.DEG_90);
+
+        Map<Tile, Set<TileDirection>> expected = new LinkedHashMap<>();
+        expected.put(tile_1_0, new HashSet<>(Arrays.asList(NORTH, EAST)));
+        expected.put(tile_3_0, new HashSet<>(Arrays.asList(WEST, SOUTH)));
+        expected.put(tile_2_0, new HashSet<>(Arrays.asList(WEST, EAST)));
+
+        Map<Tile, Set<TileDirection>> realResult = placeAndUpdate(new ArrayList<>(expected.keySet()))
+                .getTilesAndFeatureTileDirections();
+        assertEquals("Tiles and tile directions", expected, realResult);
+    }
+
+    //TODO real estate equality test
+
+    @Test
+    public void roadIsFinishedWhenTwoEnds() {
+        tile_1_0 = Tile.getInstance(1, 0, ROAD4);
+        tile_2_0 = Tile.getInstance(2, 0, CITY1RWE)
+                .placeFollower(new Player(), WEST);
+
+        realEstate = placeAndUpdate(Arrays.asList(tile_1_0, tile_2_0));
+        assertFalse("Player has no unfinished real estate", realEstate.isFinished());
     }
 
     @Test
     public void landNoFinishedCity() {
-        createAndAddToTable(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirection.SOUTH);
-        manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no points", 0, anton.getCurrentPoints());
+        tile_1_2 = Tile.getInstance(1, 2, CITY1)
+                .placeFollower(new Player(), SOUTH);
+        realEstate = placeAndUpdate(Arrays.asList(tile_1_2));
+        assertFalse("Land is not finished", realEstate.isFinished());
     }
 
     @Test
-    public void landFinishedAndUnfinishedCity() {
-        createAndAddToTable(1, 1, TileName.CITY1, Rotation.DEG_180);
-        createAndAddToTable(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirection.SOUTH);
-        createAndAddToTable(1, 3, TileName.CITY1, Rotation.DEG_180);
-        manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no points", 3, anton.getCurrentPoints());
+    public void landFinishedAndUnfinishedCity_countPoints() {
+        tile_1_1 = Tile.getInstance(1, 1, CITY1).turnClockwise(Rotation.DEG_180);
+        tile_1_2 = Tile.getInstance(1, 2, CITY1).placeFollower(new Player(), SOUTH);
+        tile_1_3 = Tile.getInstance(1, 3, CITY1).turnClockwise(Rotation.DEG_180);
+
+        realEstate = placeAndUpdate(Arrays.asList(tile_1_1, tile_1_2, tile_1_3));
+        assertEquals(3, realEstate.getPoints());
     }
 
     @Test
-    public void landFinishedCity() {
-        createAndAddToTable(1, 0, TileName.CLOISTER, Rotation.DEG_0);
-        createAndAddToTable(1, 1, TileName.CITY1, Rotation.DEG_180);
-        createAndAddToTable(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirection.SOUTH);
-        manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no points", 3, anton.getCurrentPoints());
+    public void landFinishedCity_countPoints() {
+        tile_1_0 = Tile.getInstance(1, 0, CLOISTER);
+        tile_1_1 = Tile.getInstance(1, 1, CITY1).turnClockwise(Rotation.DEG_180);
+        tile_1_2 = Tile.getInstance(1, 2, CITY1).placeFollower(new Player(), SOUTH);
+
+        realEstate = placeAndUpdate(Arrays.asList(tile_1_0, tile_1_1, tile_1_2));
+        assertEquals(3, realEstate.getPoints());
     }
 
     @Test
-    public void land2FinishedCities() {
-        createAndAddToTable(1, 1, TileName.CITY1, Rotation.DEG_180);
-        createAndAddToTable(1, 2, TileName.CITY1, Rotation.DEG_0, anton, TileDirection.SOUTH);
-        createAndAddToTable(1, 3, TileName.CITY1, Rotation.DEG_180);
-        createAndAddToTable(1, 4, TileName.CITY1, Rotation.DEG_0);
-        manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Player has no points", 6, anton.getCurrentPoints());
+    public void land2FinishedCities_countPoints() {
+        tile_1_1 = Tile.getInstance(1, 1, CITY1).turnClockwise(Rotation.DEG_180);
+        tile_1_2 = Tile.getInstance(1, 2, CITY1).placeFollower(new Player(), SOUTH);
+        tile_1_3 = Tile.getInstance(1, 3, CITY1).turnClockwise(Rotation.DEG_180);
+        tile_1_4 = Tile.getInstance(1, 4, CITY1);
+
+        realEstate = placeAndUpdate(Arrays.asList(tile_1_1, tile_1_2, tile_1_3, tile_1_4));
+        assertEquals(6, realEstate.getPoints());
     }
 
     @Test
-    public void landWith2FinishedCitiesRussianG() {
-        createAndAddToTable(1, 2, TileName.CITY11NE, Rotation.DEG_0, anton, SOUTH);
-        createAndAddToTable(1, 1, TileName.CITY1, Rotation.DEG_180);
-        createAndAddToTable(2, 2, TileName.CITY1, Rotation.DEG_270);
-        manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Two castles are finished", 6, anton.getCurrentPoints());
+    public void landWith2FinishedCitiesRussianG_countPoints() {
+        tile_1_2 = Tile.getInstance(1, 2, CITY11NE).placeFollower(new Player(), SOUTH);
+        tile_1_1 = Tile.getInstance(1, 1, CITY1).turnClockwise(Rotation.DEG_180);
+        tile_2_2 = Tile.getInstance(2, 2, CITY1).turnClockwise(Rotation.DEG_270);
+
+        realEstate = placeAndUpdate(Arrays.asList(tile_1_2, tile_1_1, tile_2_2));
+        assertEquals(6, realEstate.getPoints());
     }
 
     @Test
-    public void castleWithOneShield() {
-        createAndAddToTable(1, 1, TileName.CITY1, Rotation.DEG_180, anton, SOUTH);
-        createAndAddToTable(1, 2, TileName.CITY2NWS, Rotation.DEG_0);
-        createAndAddToTable(0, 2, TileName.CITY1, Rotation.DEG_90);
-        assertEquals("Three tile castle with one shield is 8 points", 8, anton.getCurrentPoints());
+    public void castleWithOneShield_countPoints() {
+        tile_1_1 = Tile.getInstance(1, 1, CITY1)
+                .turnClockwise(Rotation.DEG_180).placeFollower(new Player(), SOUTH);
+        tile_1_2 = Tile.getInstance(1, 2, CITY2NWS);
+        tile_0_2 = Tile.getInstance(0, 2, CITY1).turnClockwise(Rotation.DEG_90);
+
+        realEstate = placeAndUpdate(Arrays.asList(tile_1_1, tile_1_2, tile_0_2));
+        assertEquals("Three tile castle with one shield is 8 points", 8, realEstate.getPoints());
     }
 
     @Test
-    public void twoCloistersNextToEachOtherArePossible() {
+    public void twoCloistersNextToEachOtherArePossible_countPoints() {
         createAndAddToTable(1, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
         createAndAddToTable(2, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
         assertEquals("Anton has 5 followers", 5, anton.getNumberOfFollowers());
     }
 
     @Test
-    public void bigUnfinishedCastleGivesALotOfPoints() {
+    public void bigUnfinishedCastleGivesALotOfPoints_countPoints() {
         createAndAddToTable(0, -1, TileName.CITY11WE, Rotation.DEG_90);
         createAndAddToTable(0, -2, TileName.CITY2WES, Rotation.DEG_90);
         createAndAddToTable(0, -3, TileName.CITY4, Rotation.DEG_0);
@@ -743,62 +519,58 @@ public class RealEstateTest {
         createAndAddToTable(0, -4, TileName.CITY3R, Rotation.DEG_90);
         createAndAddToTable(1, -4, TileName.CITY2NWSR, Rotation.DEG_270);
         createAndAddToTable(-1, -4, TileName.CITY1RSWE, Rotation.DEG_180);
-        createAndAddToTable(0, -5, TileName.CITY2WE, Rotation.DEG_90, anton, SOUTH);
-        manager.addPointsForUnfinishedRealEstate();
-        assertEquals("Anton has 12 points for unfinished castle", 12, anton.getCurrentPoints());
+
+        realEstate = placeAndUpdate(Tile.getInstance(0, -5, CITY2WE)
+                .turnClockwise(Rotation.DEG_90)
+                .placeFollower(new Player(), SOUTH));
+        assertEquals("Anton has 12 points for unfinished castle", 12, realEstate.getPoints());
     }
 
     @Test
-    public void cloisterWithRoadConnectedToLand() {
-        exception.expect(RuntimeException.class);
-        createAndAddToTable(1, 0, TileName.CLOISTERR, Rotation.DEG_90, anton, SOUTH);
-        createAndAddToTable(0, 1, TileName.CLOISTERR, Rotation.DEG_90, anton, SSE);
+    public void loopedRoadWithCrossroadsFinished_countPoints() {
+        createAndAddToTable(1, 1, ROAD2SW, Rotation.DEG_270);
+        realEstate = placeAndUpdate(Tile.getInstance(2, 1, ROAD2SW).placeFollower(new Player(), SOUTH));
+        realEstate.update(createAndAddToTable(2, 2, ROAD3, Rotation.DEG_180));
+        realEstate.update(createAndAddToTable(1, 2, ROAD2SW, Rotation.DEG_180));
+
+        assertEquals("4 points for finished road", 4, realEstate.getPoints());
+    }
+
+    @Test
+    public void cloistersCloseToEachOther_finishCorrectly_countPoints() {
+        createAndAddToTable(0, -1, CITY1RSE, Rotation.DEG_180);
+        createAndAddToTable(1, 0, ROAD4, Rotation.DEG_0);
+        realEstate = placeAndUpdate(Tile.getInstance(1, -1, CLOISTERR).placeFollower(new Player(), CENTER));
+        realEstate.update(createAndAddToTable(0, -2, CITY2NWSR, Rotation.DEG_0));
+        realEstate.update(createAndAddToTable(2, 0, CITY3SR, Rotation.DEG_90));
+        realEstate.update(createAndAddToTable(1, -2, ROAD2SW, Rotation.DEG_90));
+        realEstate.update(createAndAddToTable(2, -2, CLOISTER, Rotation.DEG_0));
+        realEstate.update(createAndAddToTable(2, -1, CITY11NE, Rotation.DEG_90));
+
+        assertEquals("9 points for one finished cloister", 9, realEstate.getPoints());
     }
 
     @Test
     public void correctLandWhenCloisterWithRoad() {
         tile_0_0 = Tile.getInstance(0, 0, CITY1RWE);
-        tile_1_0 = Tile.getInstance(1, 0, ROAD2NS);
-        tile_1_0 = tile_1_0.turnRight(Rotation.DEG_90);
-        tile_2_0 = Tile.getInstance(2, 0, CLOISTERR);
-        tile_2_0 = tile_2_0.turnRight(Rotation.DEG_90);
+        tile_1_0 = Tile.getInstance(1, 0, ROAD2NS)
+                .turnClockwise(Rotation.DEG_90);
+        tile_2_0 = Tile.getInstance(2, 0, CLOISTERR)
+                .turnClockwise(Rotation.DEG_90)
+                .placeFollower(new Player(), SOUTH);
 
         Map<Tile, Set<TileDirection>> expectedRealEstate = new HashMap<>();
-        expectedRealEstate.put(tile_0_0, new HashSet<>(Arrays.asList(WWN, EEN, WWS, EES, SOUTH, SSW, SSE)));
-        expectedRealEstate.put(tile_1_0, new HashSet<>(Arrays.asList(WWN, EEN, SSE, SSW, SOUTH, WWS, EES, NNE, NNW, NORTH)));
-        expectedRealEstate.put(tile_2_0, new HashSet<>(Arrays.asList(WWN, NNW, NORTH, NNE, EEN, EAST,
-                EES, SSE, SOUTH, SSW, WWS)));
+        expectedRealEstate.put(tile_0_0, new HashSet<>(
+                Arrays.asList(WWN, EEN, WWS, EES, SOUTH, SSW, SSE)));
+        expectedRealEstate.put(tile_1_0, new HashSet<>(
+                Arrays.asList(WWN, EEN, SSE, SSW, SOUTH, WWS, EES, NNE, NNW, NORTH)));
+        expectedRealEstate.put(tile_2_0, new HashSet<>(
+                Arrays.asList(WWN, NNW, NORTH, NNE, EEN, EAST, EES, SSE, SOUTH, SSW, WWS)));
 
-        createAndAddToTable(1, 0, TileName.ROAD2NS, Rotation.DEG_90);
-        createAndAddToTable(2, 0, TileName.CLOISTERR, Rotation.DEG_90, anton, SOUTH);
-
-        ArrayList<RealEstate> antons = new ArrayList<>(manager.getAssets(anton));
-        Map<Tile, Set<TileDirection>> antonRealEstate = antons.get(0).getTilesAndFeatureTileDirections();
+        Map<Tile, Set<TileDirection>> antonRealEstate = placeAndUpdate(
+                Arrays.asList(tile_0_0, tile_1_0, tile_2_0)).getTilesAndFeatureTileDirections();
 
         assertEquals("Anton has specific asset", expectedRealEstate, antonRealEstate);
-    }
-
-    @Test
-    public void loopedRoadWithCrossroadsFinished() {
-        createAndAddToTable(1, 1, ROAD2SW, Rotation.DEG_270);
-        createAndAddToTable(2, 1, ROAD2SW, Rotation.DEG_0, anton, SOUTH);
-        createAndAddToTable(2, 2, ROAD3, Rotation.DEG_180);
-        createAndAddToTable(1, 2, ROAD2SW, Rotation.DEG_180);
-
-        assertEquals("Anton gets 4 points for finished road", 4, anton.getCurrentPoints());
-    }
-
-    @Test
-    public void cloistersCloseToEachOther_finishCorrectly() {
-        createAndAddToTable(0, -1, CITY1RSE, Rotation.DEG_180);
-        createAndAddToTable(1, 0, ROAD4, Rotation.DEG_0);
-        createAndAddToTable(1, -1, CLOISTERR, Rotation.DEG_0, anton, CENTER);
-        createAndAddToTable(0, -2, CITY2NWSR, Rotation.DEG_0);
-        createAndAddToTable(2, 0, CITY3SR, Rotation.DEG_90);
-        createAndAddToTable(1, -2, ROAD2SW, Rotation.DEG_90);
-        createAndAddToTable(2, -2, CLOISTER, Rotation.DEG_0, anton, CENTER);
-        createAndAddToTable(2, -1, CITY11NE, Rotation.DEG_90);
-        assertEquals("Anton gets 9 points for one finished cloister", 9, anton.getCurrentPoints());
     }
 
     private RealEstate placeAndUpdate(List<Tile> expected) {
@@ -813,6 +585,28 @@ public class RealEstateTest {
         }
         assert (realEstate != null);
         return realEstate;
+    }
+
+    private RealEstate placeAndUpdate(Tile tile) {
+        return placeAndUpdate(Collections.singletonList(tile));
+    }
+
+    private Tile createAndAddToTable(int x, int y, TileName tileName, Rotation rotation) {
+        Tile tile = Tile.getInstance(x, y, tileName)
+                .copyFeatures(TilePile.getReferenceTile(tileName))
+                .turnClockwise(rotation);
+        simpleTable.placeTile(tile);
+        return tile;
+    }
+
+    private Tile createAndAddToTable
+            (int x, int y, TileName tileName, Rotation rotation, Player player, TileDirection tileDirection) {
+        Tile tile = Tile.getInstance(x, y, tileName)
+                .copyFeatures(TilePile.getReferenceTile(tileName))
+                .turnClockwise(rotation)
+                .placeFollower(player, tileDirection);
+        simpleTable.placeTile(tile);
+        return tile;
     }
 
     private class SimpleTable implements TilesOnTable {

@@ -36,7 +36,7 @@ public abstract class Tile {
     public abstract boolean isContinuous(Tile tile, TileDirection direction);
     public abstract boolean featureEqual(Tile roadTile);
     public abstract boolean directionsEqual(Tile referenceTile);
-    public abstract Tile    turnRight(Rotation angle);
+    public abstract Tile turnClockwise(Rotation angle);
     public abstract Tile    copyFeatures(Tile referenceTile);
 
     public abstract Tile setCoordinates(int x, int y);

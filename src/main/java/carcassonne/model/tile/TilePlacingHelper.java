@@ -63,7 +63,7 @@ public class TilePlacingHelper {
                     Util.addLinkedSetElement(coordinatesToRotationMap, coordinate, rotation);
 
             }
-            tile = tile.turnRight(Rotation.DEG_90);
+            tile = tile.turnClockwise(Rotation.DEG_90);
         }
         coordinatesToRotationMap.keySet().removeAll(placedTiles.keySet());
     }
