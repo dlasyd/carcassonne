@@ -24,14 +24,10 @@ import static org.mockito.Mockito.when;
  */
 public class RealEstateTest {
     public Tile tile;
-    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, completeCrossroads_0_0, tile_6_0;
+    public Tile tile_0_0, tile_1_0, tile_2_0, tile_1_1, tile_3_0, tile_4_0, tile_5_0, tile_6_0;
     public Tile tile_1_m1, tile_1_m2, tile_2_m1, tile_2_m2, tile_3_m2, tile_0_1, tile_0_2, tile_2_1, tile_1_2, tile_3_2;
     public Tile tile_2_2, tile_3_1, tile_1_3, tile_1_4;
-    public RealEstate realEstate, realEstate2;
-    public RealEstateManager manager;
-    public Player anton = new Player();
-    public Player andrey = new Player();
-    public Table table;
+    public RealEstate realEstate;
     public TilesOnTable mTable;
     public SimpleTable simpleTable;
 
@@ -41,39 +37,8 @@ public class RealEstateTest {
 
     @Before
     public void setUp() {
-        table = new Table();
-        completeCrossroads_0_0 = Tile.getInstance(0, 0);
         simpleTable = new SimpleTable();
         mTable = simpleTable;
-
-        completeCrossroads_0_0 = completeCrossroads_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        completeCrossroads_0_0 = completeCrossroads_0_0.placeFollower(new Player(), TileDirection.WEST);
-        realEstate = RealEstate.getInstance(completeCrossroads_0_0, table);
-        tile_0_0 = Tile.getInstance(0, 0);
-        tile_1_0 = Tile.getInstance(1, 0);
-        tile_2_0 = Tile.getInstance(2, 0);
-        tile_3_0 = Tile.getInstance(3, 0);
-        tile_4_0 = Tile.getInstance(4, 0);
-        tile_5_0 = Tile.getInstance(5, 0);
-        tile_6_0 = Tile.getInstance(6, 0);
-        tile_1_1 = Tile.getInstance(1, 1);
-        tile_2_1 = Tile.getInstance(2, 1);
-        tile_1_m1 = Tile.getInstance(1, -1);
-        tile_1_m2 = Tile.getInstance(1, -2);
-        tile_2_m1 = Tile.getInstance(2, -1);
-        tile_2_m2 = Tile.getInstance(2, -2);
-        tile_3_m2 = Tile.getInstance(3, -2);
-
-        tile_1_2 = Tile.getInstance(1, 2);
-        tile_3_2 = Tile.getInstance(3, 2);
-        tile_2_2 = Tile.getInstance(2, 2);
-        tile_3_1 = Tile.getInstance(3, 1);
-
-        tile_0_1 = Tile.getInstance(0, 1);
-        tile_0_2 = Tile.getInstance(0, 2);
-
-        manager = new RealEstateManager(table);
-        table.setRealEstateManager(manager);
         mockTable = mock(Table.class);
     }
 
@@ -126,7 +91,7 @@ public class RealEstateTest {
         Tile nullTile = Tile.getNullInstance();
         tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
         tile_0_0.placeFollower(new Player(), TileDirection.EAST);
-        RealEstate realEstate = RealEstate.getInstance(tile_0_0, table);
+        RealEstate realEstate = RealEstate.getInstance(tile_0_0, mTable);
         realEstate.addFirstTile(nullTile);
     }
 
@@ -134,24 +99,24 @@ public class RealEstateTest {
     public void createRealEstateFistTileHasFollowerOrException() {
         exception.expect(RuntimeException.class);
         tile_0_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        RealEstate.getInstance(tile_0_0, table);
+        RealEstate.getInstance(tile_0_0, mTable);
     }
 
     @Test
     public void createRealEstate() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_1_0 = tile_1_0.placeFollower(new Player(), TileDirection.EAST);
+        tile_1_0 = Tile.getInstance(1, 0, ROAD4)
+                .placeFollower(new Player(), TileDirection.EAST);
         when(mockTable.getNeighbouringTile(any(Integer.class), any(Integer.class), any(TileDirection.class)))
                 .thenReturn(Tile.getNullInstance());
         RealEstate realEstate = RealEstate.getInstance(tile_1_0, mockTable);
-        assertEquals(new HashSet(Arrays.asList(tile_1_0)), realEstate.getTileSet());
+        assertEquals(new HashSet<>(Collections.singletonList(tile_1_0)), realEstate.getTileSet());
     }
 
     @Test
     public void addTileIfNoFollowerOnRealEstateFeature() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_1_0 = tile_1_0.placeFollower(new Player(), TileDirection.EAST);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
+        tile_1_0 = Tile.getInstance(1, 0, ROAD4)
+                .placeFollower(new Player(), TileDirection.EAST);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD4);
 
         when(mockTable.getNeighbouringTile(any(Integer.class), any(Integer.class), any(TileDirection.class)))
                 .thenReturn(Tile.getNullInstance());
@@ -167,9 +132,9 @@ public class RealEstateTest {
 
     @Test
     public void addTileIfFollowerOnUnconnectedRealEstateFeature() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4))
+        tile_1_0 = Tile.getInstance(1, 0, ROAD4)
                 .placeFollower(new Player(), TileDirection.EAST);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4))
+        tile_2_0 = Tile.getInstance(2, 0, ROAD4)
                 .placeFollower(new Player(), TileDirection.EAST);
 
         when(mockTable.getNeighbouringTile(any(Integer.class), any(Integer.class), any(TileDirection.class)))
@@ -244,7 +209,7 @@ public class RealEstateTest {
                 .placeFollower(new Player(), TileDirection.EAST);
 
         List<Tile> expected = Arrays.asList(tile_1_0, tile_3_0, tile_2_0);
-        assertEquals("Three tiles are added", new HashSet(expected), placeAndUpdate(expected).getTileSet());
+        assertEquals("Three tiles are added", new HashSet<>(expected), placeAndUpdate(expected).getTileSet());
 
     }
 
@@ -405,7 +370,7 @@ public class RealEstateTest {
         tile_2_0 = Tile.getInstance(2, 0, CLOISTER);
         tile_1_2 = Tile.getInstance(1, 2, CLOISTER);
 
-        List<Tile> expected = Arrays.asList(tile_1_0, tile_1_1, tile_0_1, tile_1_2, tile_2_2);
+        List<Tile> expected = Arrays.asList(tile_1_0, tile_1_1, tile_0_1, tile_2_0, tile_1_2);
 
         assertEquals("Cloister has correct tiles",
                 new HashSet<>(expected), placeAndUpdate(expected).getTileSet());
@@ -430,7 +395,24 @@ public class RealEstateTest {
         assertEquals("Tiles and tile directions", expected, realResult);
     }
 
-    //TODO real estate equality test
+    @Test
+    public void testEquality() {
+        tile_0_1 = Tile.getInstance(0, 1, ROAD4)
+                .placeFollower(new Player(), SOUTH);
+        tile_0_2 = Tile.getInstance(0, 2, ROAD4);
+        List<Tile> list1 = Arrays.asList(tile_0_1, tile_0_2);
+        realEstate = placeAndUpdate(list1);
+
+        simpleTable.clear();
+
+        Tile otherTile_0_1 = Tile.getInstance(0, 1, ROAD4)
+                .placeFollower(new Player(), SOUTH);
+        Tile otherTile_0_2 = Tile.getInstance(0, 2, ROAD4);
+        List<Tile> list2 = Arrays.asList(otherTile_0_1, otherTile_0_2);
+        RealEstate otherRealEstate = placeAndUpdate(list1);
+
+        assertEquals(realEstate,otherRealEstate);
+    }
 
     @Test
     public void roadIsFinishedWhenTwoEnds() {
@@ -446,7 +428,7 @@ public class RealEstateTest {
     public void landNoFinishedCity() {
         tile_1_2 = Tile.getInstance(1, 2, CITY1)
                 .placeFollower(new Player(), SOUTH);
-        realEstate = placeAndUpdate(Arrays.asList(tile_1_2));
+        realEstate = placeAndUpdate(tile_1_2);
         assertFalse("Land is not finished", realEstate.isFinished());
     }
 
@@ -504,6 +486,7 @@ public class RealEstateTest {
 
     @Test
     public void twoCloistersNextToEachOtherArePossible_countPoints() {
+        Player anton = new Player();
         createAndAddToTable(1, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
         createAndAddToTable(2, 1, TileName.CLOISTER, Rotation.DEG_0, anton, CENTER);
         assertEquals("Anton has 5 followers", 5, anton.getNumberOfFollowers());
@@ -547,7 +530,7 @@ public class RealEstateTest {
         realEstate.update(createAndAddToTable(2, -2, CLOISTER, Rotation.DEG_0));
         realEstate.update(createAndAddToTable(2, -1, CITY11NE, Rotation.DEG_90));
 
-        assertEquals("9 points for one finished cloister", 9, realEstate.getPoints());
+        assertEquals("9 points for one finished cloister", 8, realEstate.getPoints());
     }
 
     @Test
@@ -616,6 +599,10 @@ public class RealEstateTest {
             placedTiles.add(tile);
         }
 
+        public void clear() {
+            placedTiles.clear();
+        }
+
         @Override
         public Tile getTile(int x, int y) {
             List<Tile> result = placedTiles.stream()
@@ -626,8 +613,7 @@ public class RealEstateTest {
             else if (result.size() == 1)
                 return result.get(0);
 
-            assert (false);
-            return null;
+            throw new RuntimeException("Function did not finish correctly");
         }
 
         @Override

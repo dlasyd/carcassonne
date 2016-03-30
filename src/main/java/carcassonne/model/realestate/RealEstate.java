@@ -120,7 +120,7 @@ public abstract class RealEstate {
         for (TileDirection direction : currentTileFeatureDirections) {
             Tile neighbour = table.getNeighbouringTile(startTile.getX(), startTile.getY(), direction);
 
-            if (!neighbour.isNull() && !visitedTiles.contains(neighbour)) {
+            if (!neighbour.isNull() && !visitedTiles.contains(neighbour) && !elements.contains(neighbour)) {
                 visitedTiles.add(neighbour);
                 result.put(neighbour, neighbour.getDestinations(direction.getNeighbour()));
                 result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), visitedTiles));
@@ -299,9 +299,7 @@ public abstract class RealEstate {
         return hashCode;
     }
 
-    /*
-     * Getters and setters begin
-     */
+    //<editor-fold desc="Getters and setters">
     int getFirstX() {
         return firstTile.getX();
     }
@@ -339,9 +337,7 @@ public abstract class RealEstate {
     public boolean isCloister() {
         return false;
     }
-    /*
-     * Getters and setters end
-     */
+    //</editor-fold>
 
     /*
      * Every RealEstate instance is mutable, so a corresponding immutableRealEstate instance is used

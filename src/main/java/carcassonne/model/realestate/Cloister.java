@@ -33,8 +33,10 @@ class Cloister extends RealEstate {
         putTile(tile, new HashSet<>(Collections.singletonList(TileDirection.CENTER)));
         for (int x = tile.getX() - 1; x < tile.getX() + 2; x++) {
             for (int y = tile.getY() - 1; y < tile.getY() + 2; y++) {
-                if (!super.getTable().getTile(x, y).isNull()) {
-                    putTile(super.getTable().getTile(x, y), new HashSet<>(Collections.singletonList(TileDirection.CENTER)));
+                Tile t = super.getTable().getTile(x, y);
+                if (!t.isNull() && !t.equals(tile)) {
+                    putTile(getTable().getTile(x, y),
+                            new HashSet<>(Collections.singletonList(TileDirection.CENTER)));
                 }
             }
         }
