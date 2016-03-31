@@ -13,6 +13,8 @@ import static carcassonne.model.tile.Rotation.*;
 import static carcassonne.model.tile.TileDirection.*;
 import static carcassonne.model.tile.TileName.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * This is a part of Carcassonne project.
@@ -39,6 +41,8 @@ public class RealEstateManagerTest {
     public Feature feature = Feature.createFeature(FeatureType.CITY);
     public Table table;
     public RealEstateManager manager;
+    public RealEstate mockRE, otherMockRE;
+    private RealEstate.ImmutableRealEstate mockIRE, otherMockIRE;
 
 
     public void placeTile(int x, int y, TileName tileName, Rotation rotation) {
@@ -63,25 +67,27 @@ public class RealEstateManagerTest {
         table = new Table();
         manager = new RealEstateManager(table);
         table.setRealEstateManager(manager);
+        mockRE = mock(RealEstate.class);
+        otherMockRE = mock(RealEstate.class);
+        mockIRE = mock(RealEstate.ImmutableRealEstate.class);
+        otherMockIRE = mock(RealEstate.ImmutableRealEstate.class);
+        connectMockREtoIRE();
     }
 
     @Test
-    public void playerHasRealEstate() {
-        table = new Table();
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        tile_1_0 = tile_1_0.placeFollower(anton, EAST);
-        realEstate = RealEstate.getInstance(tile_1_0, null);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD4));
-        table.setRealEstateManager(manager);
+    public void addRealEstate() {
+        manager.addAsset(anton, mockRE);
+        assertEquals(new HashSet<>(Collections.singletonList(mockRE)), manager.getAssets(anton));
+    }
 
-        tile_2_0 = tile_2_0.placeFollower(anton, EAST);
-        realEstate2 = RealEstate.getInstance(tile_2_0, null);
+    @Test
+    public void playerHasTwoRealEstates() {
         Set<RealEstate> expectedSet = new HashSet<>();
-        expectedSet.add(realEstate);
-        expectedSet.add(realEstate2);
+        expectedSet.add(mockRE);
+        expectedSet.add(otherMockRE);
 
-        manager.addAsset(anton, realEstate);
-        manager.addAsset(anton, realEstate2);
+        manager.addAsset(anton, mockRE);
+        manager.addAsset(anton, otherMockRE);
         assertEquals("Player has set of Real estate", expectedSet, manager.getAssets(anton));
     }
 
@@ -139,62 +145,62 @@ public class RealEstateManagerTest {
         assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
     }
 
-    @Test
-    public void assetUnionThreesomeSameTile() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_2_0 = tile_2_0.turnClockwise(DEG_180);
-        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1 = tile_0_1.turnClockwise(DEG_180);
-        tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
+//    @Test
+//    public void assetUnionThreesomeSameTile() {
+//        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+//        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
+//        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+//        tile_2_0 = tile_2_0.turnClockwise(DEG_180);
+//        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+//        tile_0_1 = tile_0_1.turnClockwise(DEG_180);
+//        tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+//        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
+//
+//        placeTile(1, 0, TileName.CITY1RWE, Rotation.DEG_180, anton, SOUTH);
+//        placeTile(2, 0, TileName.CITY1RWE, Rotation.DEG_180, andrey, SOUTH);
+//        placeTile(0, 1, TileName.CITY2NW,  Rotation.DEG_180, lena, EAST);
+//        placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);
+//
+//        placeTile(1, 1, TileName.CITY3, Rotation.DEG_0);
+//
+//        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
+//                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+//        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(anton),
+//                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+//        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(lena),
+//                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+//        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
+//        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(lena));
+//        assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
+//    }
 
-        placeTile(1, 0, TileName.CITY1RWE, Rotation.DEG_180, anton, SOUTH);
-        placeTile(2, 0, TileName.CITY1RWE, Rotation.DEG_180, andrey, SOUTH);
-        placeTile(0, 1, TileName.CITY2NW,  Rotation.DEG_180, lena, EAST);
-        placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);
-
-        placeTile(1, 1, TileName.CITY3, Rotation.DEG_0);
-
-        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
-                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
-        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(anton),
-                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
-        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(lena),
-                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
-        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
-        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(lena));
-        assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
-    }
-
-    @Test
-    public void assetUnionThreesomeStepByStep() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
-        tile_2_0 = tile_2_0.turnClockwise(DEG_180);
-        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_0_1 = tile_0_1.turnClockwise(DEG_180);
-        tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
-        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
-
-        placeTile(1, 0, TileName.CITY1RWE, Rotation.DEG_180, anton, SOUTH);
-        placeTile(0, 1, TileName.CITY2NW,  Rotation.DEG_180, lena, EAST);
-        placeTile(1, 1, TileName.CITY3,    Rotation.DEG_0);     //first union
-        placeTile(2, 0, TileName.CITY1RWE, Rotation.DEG_180, andrey, SOUTH);
-        placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);     //second union
-
-        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
-                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
-        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(anton),
-                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
-        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(lena),
-                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
-        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
-        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(lena));
-        assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
-    }
+//    @Test
+//    public void assetUnionThreesomeStepByStep() {
+//        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+//        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
+//        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(CITY1RWE));
+//        tile_2_0 = tile_2_0.turnClockwise(DEG_180);
+//        tile_0_1 = tile_0_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+//        tile_0_1 = tile_0_1.turnClockwise(DEG_180);
+//        tile_2_1 = tile_2_1.copyFeatures(TilePile.getReferenceTile(CITY2NW));
+//        tile_1_1 = tile_1_1.copyFeatures(TilePile.getReferenceTile(CITY3));
+//
+//        placeTile(1, 0, TileName.CITY1RWE, Rotation.DEG_180, anton, SOUTH);
+//        placeTile(0, 1, TileName.CITY2NW,  Rotation.DEG_180, lena, EAST);
+//        placeTile(1, 1, TileName.CITY3,    Rotation.DEG_0);     //first union
+//        placeTile(2, 0, TileName.CITY1RWE, Rotation.DEG_180, andrey, SOUTH);
+//        placeTile(2, 1, TileName.CITY2NW,  Rotation.DEG_0);     //second union
+//
+//        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(andrey),
+//                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+//        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(anton),
+//                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+//        assertTrue("The real estate is correct", RealEstateManager.assetSetContainsRealEstateWithTileSet(manager.getAssets(lena),
+//                new HashSet<>(Arrays.asList(tile_1_0, tile_2_0, tile_1_1, tile_2_1, tile_0_1))));
+//        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(andrey));
+//        assertEquals("Players have same property set", manager.getAssets(anton), manager.getAssets(lena));
+//        assertEquals("Players have same property set", manager.getAssets(lena), manager.getAssets(andrey));
+//    }
 
     //TODO check me using debug
     @Test
@@ -420,4 +426,11 @@ public class RealEstateManagerTest {
 
 
 
+
+    private void connectMockREtoIRE() {
+        when(mockRE.getImmutableRealEstate()).thenReturn(mockIRE);
+        when(mockIRE.getRealEstate()).thenReturn(mockRE);
+        when(otherMockRE.getImmutableRealEstate()).thenReturn(otherMockIRE);
+        when(otherMockIRE.getRealEstate()).thenReturn(otherMockRE);
+    }
 }

@@ -21,36 +21,36 @@ public class RealEstateManager {
         this.table = table;
     }
 
-    boolean playerHasAssets(Player player) {
+    public boolean playerHasAssets(Player player) {
         return playerToRealEstateSetMap.containsKey(player);
     }
 
     //<editor-fold desc="Getters">
-    Set<RealEstate> getAssets(Player player) {
+    public Set<RealEstate> getAssets(Player player) {
         return playerToRealEstateSetMap.get(player).stream()
                 .map(RealEstate.ImmutableRealEstate::getRealEstate)
                 .collect(Collectors.toSet());
     }
 
 
-    Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToFinishedRealEstate() {
+    public Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToFinishedRealEstate() {
         return new HashMap<>(playerToFinishedRealEstate);
     }
 
-    Map<RealEstate.ImmutableRealEstate, Set<Player>> getRealEstateMap() {
+    public Map<RealEstate.ImmutableRealEstate, Set<Player>> getRealEstateMap() {
         return new HashMap<>(realEstateMap);
     }
 
-    Set<RealEstate.ImmutableRealEstate> getRealEstateImmutableSet() {
+    public Set<RealEstate.ImmutableRealEstate> getRealEstateImmutableSet() {
         return new HashSet<>(realEstateMap.keySet());
     }
 
-    Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToRealEstateSetMap() {
-        return playerToRealEstateSetMap;
+    public Map<Player, Set<RealEstate.ImmutableRealEstate>> getPlayerToRealEstateSetMap() {
+        return new HashMap<>(playerToRealEstateSetMap);
     }
     //</editor-fold>
 
-    void addAsset(Player player, RealEstate realEstate) {
+    public void addAsset(Player player, RealEstate realEstate) {
         Util.addLinkedSetElement(playerToRealEstateSetMap, player, realEstate.getImmutableRealEstate());
         realEstateMap.put(realEstate.getImmutableRealEstate(), new HashSet<>(Collections.singletonList(player)));
     }
@@ -76,6 +76,37 @@ public class RealEstateManager {
         }
         realEstateUnion();
         finishedRealEstate();
+    }
+
+
+    /*
+     * This method is run by an instance that implements OwnershipChecker interface to check
+     * whether or not a possible follower position should be displayed and
+     * by the table instance to check if Runtime Exception should be thrown
+     *
+     * According to the rules of the game, Cloisters should be excluded from this check.
+     *
+     */
+    public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirection direction) {
+        return
+                realEstateMap.keySet().stream()
+                        .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
+                        .map(immutableRealEstate -> {
+                            RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
+                            temporaryRealEstate.update(tilePlacedLast);
+                            return temporaryRealEstate.contains(tilePlacedLast, direction);})
+                        .reduce(false, (acc, element) -> acc = element || acc);
+    }
+
+    public void addPointsForUnfinishedRealEstate() {
+        for (RealEstate.ImmutableRealEstate currentImmutableRE: realEstateMap.keySet()) {
+            int points = currentImmutableRE.getRealEstate().getPoints();
+            for (Player player: realEstateMap.get(currentImmutableRE)) {
+                Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
+                Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
+                player.increaseCurrentPoints(points);
+            }
+        }
     }
 
     /*
@@ -174,6 +205,15 @@ public class RealEstateManager {
     }
 
     /*
+     * Used by mergeRealEstate()
+     */
+    private boolean assetSetContainsRealEstateWithTileSet(Set<RealEstate> assets, HashSet<Tile> tiles) {
+        return assets.stream()
+                .map(realEstate -> realEstate.getTileSet().equals(tiles))
+                .reduce(false, (acc, element) -> element || acc);
+    }
+
+    /*
      * Used by realEstateUnion()
      */
     private Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> findDuplicatesInSet(Set<RealEstate.ImmutableRealEstate> data) {
@@ -199,44 +239,4 @@ public class RealEstateManager {
         }
     }
 
-    /*
-     * Used by mergeRealEstate()
-     */
-    public static boolean assetSetContainsRealEstateWithTileSet(Set<RealEstate> assets, HashSet<Tile> tiles) {
-        return assets.stream()
-                .map(realEstate -> realEstate.getTileSet().equals(tiles))
-                .reduce(false, (acc, element) -> element || acc);
-    }
-
-    /*
-     * This method is run by an instance that implements OwnershipChecker interface to check
-     * whether or not a possible follower position should be displayed and
-     * by the table instance to check if Runtime Exception should be thrown
-     *
-     * According to the rules of the game, Cloisters should be excluded from this check.
-     *
-     */
-    public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirection direction) {
-        return
-        realEstateMap.keySet().stream()
-                .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
-                .map(immutableRealEstate -> {
-                    RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
-                    temporaryRealEstate.update(tilePlacedLast);
-                    return temporaryRealEstate.contains(tilePlacedLast, direction);})
-                .reduce(false, (acc, element) -> acc = element || acc);
-    }
-
-    public void addPointsForUnfinishedRealEstate() {
-        for (RealEstate.ImmutableRealEstate currentImmutableRE: realEstateMap.keySet()) {
-            int points = currentImmutableRE.getRealEstate().getPoints();
-            for (Player player: realEstateMap.get(currentImmutableRE)) {
-                Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
-                Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
-                player.increaseCurrentPoints(points);
-            }
-        }
-
-
-    }
 }

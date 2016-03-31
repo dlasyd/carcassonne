@@ -55,20 +55,6 @@ public class Table implements OwnershipChecker, TilesOnTable {
         notifyObservers(tilePlacedLast);
     }
 
-    private void exceptionIfInvalidTile(Tile tile) {
-        if (placedTiles.containsKey(tile.getCoordinates()))
-            throw new RuntimeException("Trying to place tile on an occupied space");
-        if (tile.hasFollower() && realEstateManager.isPartOfRealEstate(tile, tile.getFollowerTileDirection())) {
-            throw new RuntimeException("Cannot place follower on existing real estate");
-        }
-    }
-
-    private void notifyObservers(Tile tile) {
-        if (realEstateManager != null)
-            realEstateManager.update(tile);
-        if (tilePlacementHelper != null)
-            tilePlacementHelper.update(tile);
-    }
 
     /*
      * Invoked by finishedRealEstate() method of RealEstateManager
@@ -94,7 +80,7 @@ public class Table implements OwnershipChecker, TilesOnTable {
         return firstTile;
     }
 
-    Tile getCurrentTile() {
+    public Tile getCurrentTile() {
         return currentTile;
     }
 
@@ -102,20 +88,20 @@ public class Table implements OwnershipChecker, TilesOnTable {
      * Used by Game's method dragTile. An instance of Game uses it's instance of TilePile to
      * get a new tile and passes it to table using this method
      */
-    void setCurrentTile(Tile currentTile) {
+    public void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
         tilePlacementHelper.update(currentTile);
     }
 
-    Tile getPreviouslyPlacedTile() {
+    public Tile getPreviouslyPlacedTile() {
         return tilePlacedLast;
     }
 
-    Map<Coordinates, Set<Rotation>> getPossibleTileLocationsAndRotations() {
+    public Map<Coordinates, Set<Rotation>> getPossibleTileLocationsAndRotations() {
         return tilePlacementHelper.getCoordinatesToRotationMap();
     }
 
-    Set<PlacedFollower> getPlacedFollowers() {
+    public Set<PlacedFollower> getPlacedFollowers() {
         return new HashSet<>(placedFollowers);
     }
 
@@ -141,4 +127,19 @@ public class Table implements OwnershipChecker, TilesOnTable {
         realEstateManager.addPointsForUnfinishedRealEstate();
     }
     //</editor-fold>
+
+    private void exceptionIfInvalidTile(Tile tile) {
+        if (placedTiles.containsKey(tile.getCoordinates()))
+            throw new RuntimeException("Trying to place tile on an occupied space");
+        if (tile.hasFollower() && realEstateManager.isPartOfRealEstate(tile, tile.getFollowerTileDirection())) {
+            throw new RuntimeException("Cannot place follower on existing real estate");
+        }
+    }
+
+    private void notifyObservers(Tile tile) {
+        if (realEstateManager != null)
+            realEstateManager.update(tile);
+        if (tilePlacementHelper != null)
+            tilePlacementHelper.update(tile);
+    }
 }
