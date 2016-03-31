@@ -71,6 +71,10 @@ public class RealEstateManager {
      * Update method is called by table object when a new tile is placed on the table
      */
     public void update(Tile tile) {
+//        if (tilePlacedLast.hasFollower()) {
+//            placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getOccupiedFeature()));
+//            realEstateManager.createAsset(tilePlacedLast.getFollowerOwner(), tilePlacedLast);
+//        }
         for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
             realEstate.getRealEstate().update(tile);
         }

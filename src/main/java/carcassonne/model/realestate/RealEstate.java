@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
  * to each other. Represents Land, Roads, Castles and Cloisters from the rules of Carcassonne.
  */
 public abstract class RealEstate {
+    private final ImmutableRealEstate immutableRealEstate;
     boolean finished = false;
     ElementsOfRealEstate elements = new ElementsOfRealEstate();
     TilesOnTable table;
-    private final ImmutableRealEstate immutableRealEstate;
     private Tile firstTile;
 
-    RealEstate(Tile tile, TilesOnTable table) {
+    public RealEstate(Tile tile, TilesOnTable table) {
         if (!tile.hasFollower())
             throw new RuntimeException("Cannot create real estate from tile without a follower");
         firstTile = tile;
@@ -31,14 +31,9 @@ public abstract class RealEstate {
         addFirstTile(tile);
     }
 
-    RealEstate(RealEstate realEstate) {
-        this(realEstate.getFirstTile(), realEstate.table);
-        this.elements = realEstate.elements;
-    }
-
     static RealEstate getCopy(RealEstate realEstate) {
         //TODO
-        return RealEstate.getInstance(realEstate.firstTile, null);
+        return RealEstate.getInstance(realEstate.firstTile, realEstate.table);
     }
 
     static RealEstate getInstance(Tile tile, TilesOnTable table) {
@@ -67,8 +62,9 @@ public abstract class RealEstate {
         addTileAndConnectedTiles(tile);
     }
 
-    void update(Tile tile) {
-        addIfCanBeConnectedToRealEstate(tile);
+    public void update(Tile tile) {
+        if (!tile.equals(firstTile))
+            addIfCanBeConnectedToRealEstate(tile);
     }
 
     private void checkArguments(Tile tile) {
@@ -293,7 +289,7 @@ public abstract class RealEstate {
     @Override
     public int hashCode() {
         int hashCode = 1043;
-        for (Tile tile: elements.getTileSet()) {
+        for (Tile tile : elements.getTileSet()) {
             hashCode += 10 * tile.hashCode();
         }
         return hashCode;

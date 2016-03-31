@@ -43,7 +43,7 @@ class Cloister extends RealEstate {
     }
 
     @Override
-    void update(Tile tile) {
+    public void update(Tile tile) {
         for (int x = getFirstX() - 1; x < getFirstX() + 2; x++) {
             for (int y = getFirstY() - 1; y < getFirstY() + 2; y++) {
                 if (tile.getX() == x && tile.getY() == y)
