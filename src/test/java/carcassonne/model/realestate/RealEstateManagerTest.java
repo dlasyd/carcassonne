@@ -114,9 +114,9 @@ public class RealEstateManagerTest {
 
     @Test
     public void isPartOfRealEstate() {
-        tile_1_0 = tile_1_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
-        tile_1_0 = tile_1_0.turnClockwise(DEG_180);
-        tile_2_0 = tile_2_0.copyFeatures(TilePile.getReferenceTile(ROAD2SW));
+        tile_1_0 = Tile.getInstance(1, 0, ROAD2SW)
+                .turnClockwise(DEG_180);
+        tile_2_0 = Tile.getInstance(2, 0, ROAD2SW);
         placeTile(1, 0, TileName.ROAD2SW, Rotation.DEG_180, anton, EAST);
         placeTile(2, 0, TileName.ROAD2SW, Rotation.DEG_0);
         assertTrue("Part of real estate", manager.isPartOfRealEstate(tile_2_0, WEST));
