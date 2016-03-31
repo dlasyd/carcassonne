@@ -32,7 +32,6 @@ public abstract class RealEstate {
     }
 
     static RealEstate getCopy(RealEstate realEstate) {
-        //TODO
         return RealEstate.getInstance(realEstate.firstTile, realEstate.table);
     }
 
