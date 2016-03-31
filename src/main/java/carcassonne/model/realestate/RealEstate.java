@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  * to each other. Represents Land, Roads, Castles and Cloisters from the rules of Carcassonne.
  */
 public abstract class RealEstate {
+    protected final boolean temporary;
     private final ImmutableRealEstate immutableRealEstate;
     boolean finished = false;
     ElementsOfRealEstate elements = new ElementsOfRealEstate();
@@ -27,12 +28,19 @@ public abstract class RealEstate {
             throw new RuntimeException("Cannot create real estate from tile without a follower");
         firstTile = tile;
         this.table = table;
+        this.temporary = false;
         immutableRealEstate = new ImmutableRealEstate(this, tile);
         addFirstTile(tile);
     }
 
-    static RealEstate getCopy(RealEstate realEstate) {
-        return RealEstate.getInstance(realEstate.firstTile, realEstate.table);
+    public RealEstate(Tile tile, TilesOnTable table, boolean temporary) {
+        if (!tile.hasFollower())
+            throw new RuntimeException("Cannot create real estate from tile without a follower");
+        this.firstTile = tile;
+        this.table = table;
+        this.immutableRealEstate = new ImmutableRealEstate(this, tile);
+        this.temporary = temporary;
+        addFirstTile(tile);
     }
 
     static RealEstate getInstance(Tile tile, TilesOnTable table) {
@@ -44,6 +52,21 @@ public abstract class RealEstate {
             return new Land(tile, table);
 
         return new Castle(tile, table);
+    }
+
+    public RealEstate getTemporaryRealEstate() {
+//        Tile tile = realEstate.getFirstTile();
+//        if (tile.getOccupiedFeature() instanceof RoadPiece)
+//            return new Road(tile, table, false);
+//        if (tile.getOccupiedFeature() instanceof CloisterPiece)
+//            return new Cloister(tile, table, false);
+//        if (tile.getOccupiedFeature() instanceof LandPiece)
+//            return new Land(tile, table, false);
+//
+//        return new Castle(tile, table, false);
+
+        return RealEstate.getInstance(this.firstTile, this.table);
+
     }
 
     TilesOnTable getTable() {
