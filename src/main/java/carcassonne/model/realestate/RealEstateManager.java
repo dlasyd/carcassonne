@@ -92,14 +92,20 @@ public class RealEstateManager {
      *
      */
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirection direction) {
-        boolean result =
-                realEstateMap.keySet().stream()
-                        .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
-                        .map(immutableRealEstate -> immutableRealEstate.getRealEstate()
-                                .contains(tilePlacedLast, direction))
-                        .reduce(false, (acc, element) -> acc = element || acc);
-
-        return result;
+//        boolean result =
+//                realEstateMap.keySet().stream()
+//                        .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
+//                        .map(immutableRealEstate -> immutableRealEstate.getRealEstate()
+//                                .contains(tilePlacedLast, direction))
+//                        .reduce(false, (acc, element) -> acc = element || acc);
+        return
+        realEstateMap.keySet().stream()
+                .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
+                .map(immutableRealEstate -> {
+                    RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
+                    temporaryRealEstate.update(tilePlacedLast);
+                    return temporaryRealEstate.contains(tilePlacedLast, direction);})
+                .reduce(false, (acc, element) -> acc = element || acc);
     }
 
     public void addPointsForUnfinishedRealEstate() {
