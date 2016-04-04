@@ -556,6 +556,25 @@ public class RealEstateTest {
         assertEquals("Anton has specific asset", expectedRealEstate, antonRealEstate);
     }
 
+    @Test
+    public void testContainsTile_WhenDoesNotContainsTile() {
+        tile_2_0 = Tile.getInstance(2, 0, CLOISTERR)
+                .placeFollower(new Player(), SOUTH);
+        RealEstate realEstate = RealEstate.getInstance(tile_2_0, mTable);
+        assertFalse(realEstate.containsTile(Tile.getInstance(1, 2, CITY1RSWE)));
+    }
+
+    @Test public void
+    containsTile_should_return_true_when_contains_tile () {
+        tile_1_0 = Tile.getInstance(1, 0, ROAD2NS);
+        tile_2_0 = Tile.getInstance(2, 0, CLOISTER)
+                .placeFollower(new Player(), CENTER);
+        RealEstate realEstate = RealEstate.getInstance(tile_2_0, mTable);
+        realEstate.update(tile_1_0);
+
+        assertTrue(realEstate.containsTile(tile_1_0));
+    }
+
     private RealEstate placeAndUpdate(List<Tile> expected) {
         RealEstate realEstate = null;
 

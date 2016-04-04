@@ -66,6 +66,23 @@ public abstract class RealEstate {
             addIfCanBeConnectedToRealEstate(tile);
     }
 
+
+    public boolean containsTile(Tile tile) {
+        return elements.contains(tile);
+    }
+
+    public boolean contains(Tile tilePlacedLast, TileDirection direction) {
+        boolean result = false;
+        for (Tile tile : elements.getTileSet()) {
+            if (tile.equals(tilePlacedLast)) {
+                result = elements.getTileDirectionSet(tile).contains(direction);
+            }
+            if (result)
+                break;
+        }
+        return result;
+    }
+
     private void checkArguments(Tile tile) {
         if (tile.isNull())
             throw new RuntimeException("Trying to add a NULL tile");
@@ -253,18 +270,6 @@ public abstract class RealEstate {
         return result;
     }
 
-
-    public boolean contains(Tile tilePlacedLast, TileDirection direction) {
-        boolean result = false;
-        for (Tile tile : elements.getTileSet()) {
-            if (tile.equals(tilePlacedLast)) {
-                result = elements.getTileDirectionSet(tile).contains(direction);
-            }
-            if (result)
-                break;
-        }
-        return result;
-    }
 
     /*
      * Method used by child class Cloister

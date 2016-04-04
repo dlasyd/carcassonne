@@ -75,7 +75,7 @@ public class RealEstateManager {
 //            placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getOccupiedFeature()));
 //            realEstateManager.createAsset(tilePlacedLast.getFollowerOwner(), tilePlacedLast);
 //        }
-        for (RealEstate.ImmutableRealEstate realEstate: realEstateMap.keySet()) {
+        for (RealEstate.ImmutableRealEstate realEstate : realEstateMap.keySet()) {
             realEstate.getRealEstate().update(tile);
         }
         realEstateUnion();
@@ -84,34 +84,25 @@ public class RealEstateManager {
 
 
     /*
-     * This method is run by an instance that implements OwnershipChecker interface to check
-     * whether or not a possible follower position should be displayed and
-     * by the table instance to check if Runtime Exception should be thrown
-     *
      * According to the rules of the game, Cloisters should be excluded from this check.
-     *
      */
     public boolean isPartOfRealEstate(Tile tilePlacedLast, TileDirection direction) {
-//        boolean result =
-//                realEstateMap.keySet().stream()
-//                        .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
-//                        .map(immutableRealEstate -> immutableRealEstate.getRealEstate()
-//                                .contains(tilePlacedLast, direction))
-//                        .reduce(false, (acc, element) -> acc = element || acc);
         return
-        realEstateMap.keySet().stream()
-                .filter(immutableRE -> ! (immutableRE.getRealEstate() instanceof Cloister))
-                .map(immutableRealEstate -> {
-                    RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
-                    temporaryRealEstate.update(tilePlacedLast);
-                    return temporaryRealEstate.contains(tilePlacedLast, direction);})
-                .reduce(false, (acc, element) -> acc = element || acc);
+                realEstateMap.keySet().stream()
+                        .filter(immutableRE -> !(immutableRE.getRealEstate() instanceof Cloister))
+                        .map(immutableRealEstate -> {
+                            RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
+                            if (!temporaryRealEstate.containsTile(tilePlacedLast))
+                                temporaryRealEstate.update(tilePlacedLast);
+                            return temporaryRealEstate.contains(tilePlacedLast, direction);
+                        })
+                        .reduce(false, (acc, element) -> acc = element || acc);
     }
 
     public void addPointsForUnfinishedRealEstate() {
-        for (RealEstate.ImmutableRealEstate currentImmutableRE: realEstateMap.keySet()) {
+        for (RealEstate.ImmutableRealEstate currentImmutableRE : realEstateMap.keySet()) {
             int points = currentImmutableRE.getRealEstate().getPoints();
-            for (Player player: realEstateMap.get(currentImmutableRE)) {
+            for (Player player : realEstateMap.get(currentImmutableRE)) {
                 Util.addLinkedSetElement(playerToFinishedRealEstate, player, currentImmutableRE);
                 Util.removeSetElement(playerToRealEstateSetMap, player, currentImmutableRE);
                 player.increaseCurrentPoints(points);
@@ -145,8 +136,8 @@ public class RealEstateManager {
                         player.increaseCurrentPoints(points);
                         removeFollowersFromFinishedRealEstate(currentImmutableRE.getRealEstate(), player);
                     }
-            realEstateMap.remove(currentImmutableRE);
-        });
+                    realEstateMap.remove(currentImmutableRE);
+                });
     }
 
     /*
@@ -158,7 +149,7 @@ public class RealEstateManager {
             table.removeFollowerFromTile(realEstate.getFirstTile().getCoordinates());
             return;
         }
-        for (Tile tile: realEstate.getTileSet()) {
+        for (Tile tile : realEstate.getTileSet()) {
             if (tile.hasFollower() &&
                     tile.getFollowerOwner() == player &&
                     realEstate.getTilesAndFeatureTileDirections().get(tile)
@@ -204,13 +195,13 @@ public class RealEstateManager {
         realEstateMap.keySet().removeAll(duplicateRealEstate);
         realEstateMap.put(masterRealEstate, ownersOfDuplicateRealEstate);
 
-        for (Player player: new HashSet<>(playerToRealEstateSetMap.keySet())) {
-            for (RealEstate.ImmutableRealEstate toRemove: duplicateRealEstate) {
+        for (Player player : new HashSet<>(playerToRealEstateSetMap.keySet())) {
+            for (RealEstate.ImmutableRealEstate toRemove : duplicateRealEstate) {
                 Util.removeSetElement(playerToRealEstateSetMap, player, toRemove);
             }
         }
 
-        for (Player player: ownersOfDuplicateRealEstate)
+        for (Player player : ownersOfDuplicateRealEstate)
             Util.addLinkedSetElement(playerToRealEstateSetMap, player, masterRealEstate);
     }
 
@@ -229,7 +220,7 @@ public class RealEstateManager {
     private Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> findDuplicatesInSet(Set<RealEstate.ImmutableRealEstate> data) {
         Set<LinkedHashSet<RealEstate.ImmutableRealEstate>> result = new LinkedHashSet<>();
         LinkedHashSet<RealEstate.ImmutableRealEstate> duplicatesFound = new LinkedHashSet<>();
-        for (RealEstate.ImmutableRealEstate comparedRealEstate: data) {
+        for (RealEstate.ImmutableRealEstate comparedRealEstate : data) {
             duplicatesFound.addAll(data.stream()
                     .filter(someRealEstate -> comparedRealEstate.getRealEstate().equals(someRealEstate.getRealEstate()))
                     .collect(Collectors.toList()));
