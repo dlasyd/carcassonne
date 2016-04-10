@@ -71,20 +71,23 @@ public class GameWindowLogic implements WindowLogic {
      */
     @Override
     public void clickOnPossibleLocation(int x, int y) {
-        /*
-         * Things that are checked as part of window logic:
-         * 1) if the tile is already on the table and logical coordinates are the same,
-         * should not do anything. Otherwise the rotation of tile will be changed;
-         */
         if (tileShouldBePlaced(x, y)) {
             updateCurrentTileCoordinates(x, y);
-            currentTileOnTheTable = true;
-            setConfirmTileButtonEnabled(true);
-            currentTileRotation = getNewRotation(x, y);
-            getCurrentTile().setRotation(currentTileRotation);
+            tilePlacedWindowState();
+            setCurrentTileRotation(x, y);
         }
         disableTilePreview();
         repaintWindow();
+    }
+
+    private void tilePlacedWindowState() {
+        currentTileOnTheTable = true;
+        setConfirmTileButtonEnabled(true);
+    }
+
+    private void setCurrentTileRotation(int x, int y) {
+        currentTileRotation = getNewRotation(x, y);
+        getCurrentTile().setRotation(currentTileRotation);
     }
 
     private void updateCurrentTileCoordinates(int x, int y) {
@@ -170,6 +173,44 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void updateEndTurnButton() {
+        endTurnLog();
+        sendDataToModel();
+        endTurnWindowState();
+        checkIfGameIsFinished();
+
+    }
+
+    private void checkIfGameIsFinished() {
+        if (gameEnded)
+            gameWindow.displayEndgameWindow();
+    }
+
+    private void sendDataToModel() {
+        if (temporaryFollowerDisplayed) {
+            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, getFollowerDirection());
+        } else
+            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
+    }
+
+    private void endTurnWindowState() {
+        gameWindow.setEndTurnButtonEnabled(false);
+        currentTileOnTheTable = false;
+        canFollowerBePlaced = false;
+        temporaryFollowerDisplayed = false;
+        currentTileRotation = Rotation.DEG_0;
+    }
+
+    private TileDirection getFollowerDirection() {
+        drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
+                currentFollowerLocation, gameData.getPlayerColor(), currentTileRotation));
+        TileDirection direction = currentTileFollowerMap.getDirection(currentFollowerLocation);
+        if (direction == null)
+            throw new RuntimeException("Trying to place follower on illegal position in controller");
+
+        return direction.turnRight(currentTileRotation);
+    }
+
+    private void endTurnLog() {
         if (LOG) {
             System.out.println("\n--------------");
             System.out.println("--------------");
@@ -187,30 +228,7 @@ public class GameWindowLogic implements WindowLogic {
             System.out.println("--");
 
             debugTurnActions.stream().forEach(System.out::println);
-
-
         }
-        if (temporaryFollowerDisplayed) {
-            drawablePlacedFollowers.add(new DrawablePlacedFollower(new Coordinates(currentTileX, currentTileY),
-                    currentFollowerLocation, gameData.getPlayerColor(), currentTileRotation));
-            TileDirection direction = currentTileFollowerMap.getDirection(currentFollowerLocation);
-            if (direction == null)
-                throw new RuntimeException("Trying to place follower on illegal position in controller");
-
-            TileDirection rotatedDirection = direction.turnRight(currentTileRotation);
-            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, rotatedDirection);
-        } else
-            dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
-
-        gameWindow.setEndTurnButtonEnabled(false);
-        currentTileOnTheTable = false;
-        canFollowerBePlaced = false;
-        temporaryFollowerDisplayed = false;
-        currentTileRotation = Rotation.DEG_0;
-        if (gameEnded)
-            gameWindow.displayEndgameWindow();
-
-        clickOnCurrentTile = 0;
     }
 
     /**
@@ -233,22 +251,25 @@ public class GameWindowLogic implements WindowLogic {
 
     @Override
     public void clickOnCurrentTile() {
-        if (!isCurrentTileOnTheTable()) {
-            return;
+        if (shouldRotateTile()) {
+            currentTileRotation = getNextPossibleRotation(currentTileRotation);
+            getCurrentTile().setRotation(currentTileRotation);
+            repaintWindow();
         }
+    }
 
-        if (isTileConfirmed()) {
-            return;
-        }
+    private boolean shouldRotateTile() {
+        return isCurrentTileOnTheTable() &&
+                !isTileConfirmed();
+    }
 
+    private Rotation getNextPossibleRotation(Rotation currentTileRotation) {
         while (true) {
             currentTileRotation = Rotation.values()[(currentTileRotation.ordinal() + 1) % 4];
             if (possibleCurrentTileRotations.contains(currentTileRotation))
                 break;
         }
-        getCurrentTile().setRotation(currentTileRotation);
-        repaintWindow();
-        clickOnCurrentTile++;
+        return currentTileRotation;
     }
 
     @Override
