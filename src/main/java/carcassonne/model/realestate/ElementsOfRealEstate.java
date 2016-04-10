@@ -15,11 +15,6 @@ public class ElementsOfRealEstate {
     public ElementsOfRealEstate() {
     }
 
-    private ElementsOfRealEstate(ElementsOfRealEstate element, Tile newTile, Set<TileDirection> directions) {
-        this.tilesToDirections = new HashMap<>(element.tilesToDirections);
-        this.tilesToDirections.put(newTile, directions);
-    }
-
     private ElementsOfRealEstate(ElementsOfRealEstate element, Map<Tile, Set<TileDirection>> tilesMap) {
         this.tilesToDirections = new HashMap<>(element.tilesToDirections);
         for (Tile tile : tilesMap.keySet()) {
@@ -32,6 +27,7 @@ public class ElementsOfRealEstate {
     }
 
     public ElementsOfRealEstate add(Tile tile, Set<TileDirection> directions) {
+        exceptionIfDuplicate(tile);
         Map<Tile, Set<TileDirection>> map = new HashMap<>();
         map.put(tile, directions);
         return addAll(map);

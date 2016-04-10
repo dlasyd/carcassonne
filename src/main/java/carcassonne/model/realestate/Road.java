@@ -21,9 +21,6 @@ class Road extends RealEstate {
         super(tile, table);
     }
 
-//    Road(Tile tile, TilesOnTable table, boolean temporary) {
-//        super(tile, table, temporary);
-//    }
     /*
      * Finished if
      * 1) looped

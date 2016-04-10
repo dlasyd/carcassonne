@@ -21,10 +21,6 @@ public class RealEstateManager {
         this.table = table;
     }
 
-    public boolean playerHasAssets(Player player) {
-        return playerToRealEstateSetMap.containsKey(player);
-    }
-
     //<editor-fold desc="Getters">
     public Set<RealEstate> getAssets(Player player) {
         return playerToRealEstateSetMap.get(player).stream()
@@ -71,10 +67,6 @@ public class RealEstateManager {
      * Update method is called by table object when a new tile is placed on the table
      */
     public void update(Tile tile) {
-//        if (tilePlacedLast.hasFollower()) {
-//            placedFollowers.add(new PlacedFollower(tilePlacedLast.getCoordinates(), tilePlacedLast.getOccupiedFeature()));
-//            realEstateManager.createAsset(tilePlacedLast.getFollowerOwner(), tilePlacedLast);
-//        }
         for (RealEstate.ImmutableRealEstate realEstate : realEstateMap.keySet()) {
             realEstate.getRealEstate().update(tile);
         }
@@ -90,12 +82,7 @@ public class RealEstateManager {
         return
                 realEstateMap.keySet().stream()
                         .filter(immutableRE -> !(immutableRE.getRealEstate() instanceof Cloister))
-                        .map(immutableRealEstate -> {
-                            RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
-                            if (!temporaryRealEstate.containsTile(tilePlacedLast))
-                                temporaryRealEstate.update(tilePlacedLast);
-                            return temporaryRealEstate.contains(tilePlacedLast, direction);
-                        })
+                        .map(immutableRealEstate -> updatedRealEstateContains(tilePlacedLast, direction, immutableRealEstate))
                         .reduce(false, (acc, element) -> acc = element || acc);
     }
 
@@ -108,6 +95,13 @@ public class RealEstateManager {
                 player.increaseCurrentPoints(points);
             }
         }
+    }
+
+    private Boolean updatedRealEstateContains(Tile tilePlacedLast, TileDirection direction, RealEstate.ImmutableRealEstate immutableRealEstate) {
+        RealEstate temporaryRealEstate = RealEstate.getCopy(immutableRealEstate.getRealEstate());
+        if (!temporaryRealEstate.containsTile(tilePlacedLast))
+            temporaryRealEstate.update(tilePlacedLast);
+        return temporaryRealEstate.contains(tilePlacedLast, direction);
     }
 
     /*

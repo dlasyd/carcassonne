@@ -66,6 +66,37 @@ public abstract class RealEstate {
             addIfCanBeConnectedToRealEstate(tile);
     }
 
+    /*
+     * (from the rules of the game)
+     * A legitimate owner is an owner who has the most followers placed on real estate.
+     * Real estate will have several legitimate owners if there is a tie.
+     */
+    public Set<Player> getLegitimateOwners() {
+        Map<Player, Integer> numberOfPlacedFollowers = new HashMap<>();
+        int maximumPlayerPresence = 1;
+        for (Tile tile : elements.getTileSet()) {
+            if (tile.hasFollower()) {
+                Player player = tile.getFollowerOwner();
+                if (numberOfPlacedFollowers.containsKey(player)) {
+                    int count = numberOfPlacedFollowers.get(player);
+                    count++;
+                    if (count > maximumPlayerPresence)
+                        maximumPlayerPresence = count;
+                    numberOfPlacedFollowers.put(player, count);
+                } else {
+                    numberOfPlacedFollowers.put(player, 1);
+                }
+            }
+        }
+
+        Set<Player> result = new HashSet<>();
+        for (Player player : numberOfPlacedFollowers.keySet()) {
+            if (numberOfPlacedFollowers.get(player) == maximumPlayerPresence)
+                result.add(player);
+        }
+        return result;
+    }
+
 
     public boolean containsTile(Tile tile) {
         return elements.contains(tile);
@@ -198,76 +229,6 @@ public abstract class RealEstate {
                 }
             }
         }
-    }
-
-    private Set<TileDirection> getNeighbourFeaturesContinuation(Tile neighbour, Tile recipient) {
-        Set<TileDirection> result = new HashSet<>();
-        TileDirection recipientBorder;
-        if (neighbour.getX() == recipient.getX()) {
-            if (neighbour.getY() == recipient.getY() + 1) {
-                recipientBorder = TileDirection.SOUTH;
-            } else if (neighbour.getY() == recipient.getY() - 1) {
-                recipientBorder = TileDirection.NORTH;
-            } else {
-                throw new RuntimeException("Trying to get continuation of Feature from illegally placed tiles");
-            }
-        } else if (neighbour.getY() == recipient.getY()) {
-            if (neighbour.getX() == recipient.getX() + 1) {
-                recipientBorder = TileDirection.EAST;
-            } else if (neighbour.getX() == recipient.getX() - 1) {
-                recipientBorder = TileDirection.WEST;
-            } else {
-                throw new RuntimeException("Trying to get continuation of Feature from illegally placed tiles");
-            }
-
-        } else {
-            throw new RuntimeException("Trying to get continuation of Feature from illegally placed tiles");
-        }
-
-        Set<TileDirection> neighbourFeatureDirections = elements.getTileDirectionSet(neighbour);
-        Set<TileDirection> edge = recipientBorder.getNeighbour().getEdge();
-
-        neighbourFeatureDirections.retainAll(edge);
-        /*
-         * neighbourFeatureDirections now contains TileDirection of Feature that continues onto recipient tile
-         * on the border with recipient tile
-         */
-
-        if (neighbourFeatureDirections.iterator().hasNext())
-            return recipient.getDestinations(neighbourFeatureDirections.iterator().next());
-
-        return result;
-    }
-
-    /*
-     * (from the rules of the game)
-     * A legitimate owner is an owner who has the most followers placed on real estate.
-     * Real estate will have several legitimate owners if there is a tie.
-     */
-    Set<Player> getLegitimateOwners() {
-        Map<Player, Integer> numberOfPlacedFollowers = new HashMap<>();
-        int maximumPlayerPresence = 1;
-        for (Tile tile : elements.getTileSet()) {
-            if (tile.hasFollower()) {
-                Player player = tile.getFollowerOwner();
-                if (numberOfPlacedFollowers.containsKey(player)) {
-                    int count = numberOfPlacedFollowers.get(player);
-                    count++;
-                    if (count > maximumPlayerPresence)
-                        maximumPlayerPresence = count;
-                    numberOfPlacedFollowers.put(player, count);
-                } else {
-                    numberOfPlacedFollowers.put(player, 1);
-                }
-            }
-        }
-
-        Set<Player> result = new HashSet<>();
-        for (Player player : numberOfPlacedFollowers.keySet()) {
-            if (numberOfPlacedFollowers.get(player) == maximumPlayerPresence)
-                result.add(player);
-        }
-        return result;
     }
 
 
