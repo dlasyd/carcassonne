@@ -58,31 +58,123 @@ public class GameWindowLogic implements WindowLogic {
             tilePreviewEnabled = true;
         }
 
-        updateUI();
+        updateWindow(gameData);
         updateDetailedResultTable();
-        tileConfirmed = false;
-        gameWindow.setConfirmTileButtonText("Confirm tile");
-        setConfirmTileButtonEnabled(false);
+        beginningOfTurnWindowState();
     }
 
-    /**
-     * This method must be invoked when an area that represents a tile possible location
-     * is clicked.
-     */
     @Override
     public void clickOnPossibleLocation(int x, int y) {
         if (tileShouldBePlaced(x, y)) {
             updateCurrentTileCoordinates(x, y);
-            tilePlacedWindowState();
             setCurrentTileRotation(x, y);
+            tilePlacedWindowState();
         }
-        disableTilePreview();
         repaintWindow();
+    }
+
+    @Override
+    public void clickOnCurrentTile(double xMultiplier, double yMultiplier) {
+        if (canFollowerBePlaced()) {
+            placeFollower(xMultiplier, yMultiplier);
+        } else {
+            clickOffCurrentTile();
+        }
+    }
+
+    @Override
+    public void clickOnCurrentTile() {
+        if (shouldRotateTile()) {
+            currentTileRotation = getNextPossibleRotation(currentTileRotation);
+            getCurrentTile().setRotation(currentTileRotation);
+            repaintWindow();
+        }
+    }
+
+    @Override
+    public void clickOffCurrentTile() {
+        if (temporaryFollowerDisplayed) {
+            temporaryFollowerDisplayed = false;
+        }
+    }
+
+    @Override
+    public void clickOnTileConfirmedButton() {
+        assert (currentTileOnTheTable);
+        if (tileConfirmed) {
+            tileUnconfirmWindowState();
+        } else {
+            tileConfirmedWindowState();
+            displayFollowerLocations();
+        }
+        repaintWindow();
+    }
+
+    @Override
+    public void clickOnEndTurnButton() {
+        endTurnLog();
+        sendDataToModel();
+        beginningOfTurnWindowState();
+        checkIfGameIsFinished();
+    }
+
+    @Override
+    public void finishGame() {
+        setConfirmTileButtonEnabled(false);
+        gameWindow.setEndTurnButtonEnabled(false);
+        gameWindow.setTilePreviewEnabled(false);
+        gameEnded = true;
+    }
+
+    @Override
+    public void pull() {
+        dataToModel.forceNotify();
+    }
+
+    @Override
+    public boolean shouldDisplayPossibleLocations() {
+        return isGameUnfinished();
+    }
+
+    private void displayFollowerLocations() {
+        if (gameData.getFollowers() != 0)
+            gameWindow.setPossibleFollowerLocations(currentTileFollowerMap.getMultipliers());
+        else
+            gameWindow.setPossibleFollowerLocations(new HashSet<>());
+    }
+
+    private void tileConfirmedWindowState() {
+        tileConfirmed = true;
+        canFollowerBePlaced = true;
+        currentTileFollowerMap = followerPlacingHelper.getFollowerLocations(gameData.getCurrentTile());
+        gameWindow.setConfirmTileButtonText("Relocate tile");
+        gameWindow.setEndTurnButtonEnabled(true);
+    }
+
+    private void tileUnconfirmWindowState() {
+        tileConfirmed = false;
+        canFollowerBePlaced = false;
+        temporaryFollowerDisplayed = false;
+        gameWindow.setConfirmTileButtonText("Confirm tile");
+        gameWindow.setEndTurnButtonEnabled(false);
+    }
+
+    private void beginningOfTurnWindowState() {
+        gameWindow.setConfirmTileButtonText("Confirm tile");
+        gameWindow.setEndTurnButtonEnabled(false);
+        currentTileRotation = Rotation.DEG_0;
+        tileConfirmed = false;
+        currentTileOnTheTable = false;
+        canFollowerBePlaced = false;
+        temporaryFollowerDisplayed = false;
+        setConfirmTileButtonEnabled(false);
     }
 
     private void tilePlacedWindowState() {
         currentTileOnTheTable = true;
         setConfirmTileButtonEnabled(true);
+        tilePreviewEnabled = false;
+        gameWindow.setTilePreviewEnabled(false);
     }
 
     private void setCurrentTileRotation(int x, int y) {
@@ -138,46 +230,8 @@ public class GameWindowLogic implements WindowLogic {
         return gameData.getPossibleLocationsAndRotations();
     }
 
-
-    private void disableTilePreview() {
-        gameWindow.setTilePreviewEnabled(false);
-        tilePreviewEnabled = false;
-    }
-
     private boolean clickedOnPlacedTile(int x, int y) {
         return isCurrentTileOnTheTable() && currentTileX == x && currentTileY == y;
-    }
-
-    @Override
-    public void updateTileConfirmedButton() {
-        assert (currentTileOnTheTable);
-        if (tileConfirmed) {
-            tileConfirmed = false;
-            canFollowerBePlaced = false;
-            temporaryFollowerDisplayed = false;
-            gameWindow.setConfirmTileButtonText("Confirm tile");
-            gameWindow.setEndTurnButtonEnabled(false);
-        } else {
-            tileConfirmed = true;
-            canFollowerBePlaced = true;
-            currentTileFollowerMap = followerPlacingHelper.getFollowerLocations(gameData.getCurrentTile());
-            gameWindow.setConfirmTileButtonText("Relocate tile");
-            if (gameData.getFollowers() != 0)
-                gameWindow.setPossibleFollowerLocations(currentTileFollowerMap.getMultipliers());
-            else
-                gameWindow.setPossibleFollowerLocations(new HashSet<>());
-            gameWindow.setEndTurnButtonEnabled(true);
-        }
-        repaintWindow();
-    }
-
-    @Override
-    public void updateEndTurnButton() {
-        endTurnLog();
-        sendDataToModel();
-        endTurnWindowState();
-        checkIfGameIsFinished();
-
     }
 
     private void checkIfGameIsFinished() {
@@ -190,14 +244,6 @@ public class GameWindowLogic implements WindowLogic {
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation, getFollowerDirection());
         } else
             dataToModel.turnActions(currentTileX, currentTileY, currentTileRotation);
-    }
-
-    private void endTurnWindowState() {
-        gameWindow.setEndTurnButtonEnabled(false);
-        currentTileOnTheTable = false;
-        canFollowerBePlaced = false;
-        temporaryFollowerDisplayed = false;
-        currentTileRotation = Rotation.DEG_0;
     }
 
     private TileDirection getFollowerDirection() {
@@ -231,33 +277,6 @@ public class GameWindowLogic implements WindowLogic {
         }
     }
 
-    /**
-     * Should be invoked when click on temporarily placed tile happens.
-     * <p>Parameters determine a position of a follower within temporary tile in the coordinate system where
-     * top left corner of a tile is the origin.</p>
-     * <p>If follower cannot be placed in the current moment, method will invoke clickOnCurrentTile()</p>
-     *
-     * @param xMultiplier Tile numberOfTiles relative X multiplier such that relativeX = xMultiplier * tileSize;
-     * @param yMultiplier Tile numberOfTiles relative Y multiplier such that relativeY = yMultiplier * tileSize;
-     */
-    @Override
-    public void clickOnCurrentTile(double xMultiplier, double yMultiplier) {
-        if (canFollowerBePlaced()) {
-            placeFollower(xMultiplier, yMultiplier);
-        } else {
-            clickOffCurrentTile();
-        }
-    }
-
-    @Override
-    public void clickOnCurrentTile() {
-        if (shouldRotateTile()) {
-            currentTileRotation = getNextPossibleRotation(currentTileRotation);
-            getCurrentTile().setRotation(currentTileRotation);
-            repaintWindow();
-        }
-    }
-
     private boolean shouldRotateTile() {
         return isCurrentTileOnTheTable() &&
                 !isTileConfirmed();
@@ -270,36 +289,6 @@ public class GameWindowLogic implements WindowLogic {
                 break;
         }
         return currentTileRotation;
-    }
-
-    @Override
-    public void clickOffCurrentTile() {
-        if (temporaryFollowerDisplayed) {
-            temporaryFollowerDisplayed = false;
-        }
-        clickOnCurrentTile = 0;
-    }
-    /*
-     * Methods that are invoked by action listeners of GameWindow
-     * END
-     */
-
-    @Override
-    public void finishGame() {
-        setConfirmTileButtonEnabled(false);
-        gameWindow.setEndTurnButtonEnabled(false);
-        gameWindow.setTilePreviewEnabled(false);
-        gameEnded = true;
-    }
-
-    @Override
-    public void pull() {
-        dataToModel.forceNotify();
-    }
-
-    @Override
-    public boolean displayPossibleLocations() {
-        return isGameUnfinished();
     }
 
     private void placeFollower(double xM, double yM) {
@@ -359,7 +348,7 @@ public class GameWindowLogic implements WindowLogic {
 
     //</editor-fold>
 
-    private void updateUI() {
+    private void updateWindow(GameData gameData) {
         gameWindow.setCurrentPlayerName(gameData.getName());
         gameWindow.setNumberOfFollowers("" + gameData.getFollowers());
         gameWindow.setCurrentPoints(gameData.getPoints());

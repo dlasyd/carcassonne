@@ -15,17 +15,17 @@ public interface WindowLogic {
 
     void clickOnPossibleLocation(int x, int y);
 
-    void updateTileConfirmedButton();
+    void clickOnTileConfirmedButton();
 
     void setDataToModel(DataToModel dataToModel);
 
     void pull();
 
-    void updateEndTurnButton();
+    void clickOnEndTurnButton();
 
     void finishGame();
 
-    boolean displayPossibleLocations();
+    boolean shouldDisplayPossibleLocations();
 
     int getCurrentTileX();
 

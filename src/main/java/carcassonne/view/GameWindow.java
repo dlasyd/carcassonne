@@ -88,8 +88,8 @@ public class GameWindow implements ViewWindow {
     }
 
     private void setListenersToButtons() {
-        buttonConfirm.addActionListener(event -> windowLogic.updateTileConfirmedButton());
-        buttonEndTurn.addActionListener(event -> windowLogic.updateEndTurnButton());
+        buttonConfirm.addActionListener(event -> windowLogic.clickOnTileConfirmedButton());
+        buttonEndTurn.addActionListener(event -> windowLogic.clickOnEndTurnButton());
     }
 
     private void setupButtons() {
@@ -433,7 +433,7 @@ public class GameWindow implements ViewWindow {
              * Sometimes possibleTileLocations is null for a moment when the window is displayed.
              * The programme works ok after.
              */
-            if (windowLogic.displayPossibleLocations() && possibleTileLocations != null) {
+            if (windowLogic.shouldDisplayPossibleLocations() && possibleTileLocations != null) {
                 for (Coordinates coordinates : possibleTileLocations) {
                     g.drawRect((int) (windowLocalX + tileSize * coordinates.getX() + rectangleMargin),
                             (int) (windowLocalY + tileSize * coordinates.getY() + rectangleMargin),

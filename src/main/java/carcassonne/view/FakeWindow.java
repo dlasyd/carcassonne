@@ -47,7 +47,7 @@ public class FakeWindow implements ViewWindow {
     public void pressEndTurnButton() {
         //windowLogic.clickOnPossibleLocation(fakeCoordinates[moveCounter][0], fakeCoordinates[moveCounter][1]);
         moveCounter++;
-        windowLogic.updateEndTurnButton();
+        windowLogic.clickOnEndTurnButton();
     }
 
     public void clickOnCurrentTile(double xM, double yM) {
@@ -55,7 +55,7 @@ public class FakeWindow implements ViewWindow {
     }
 
     public void pressConfirmTileButton() {
-        windowLogic.updateTileConfirmedButton();
+        windowLogic.clickOnTileConfirmedButton();
     }
 
     public void clickOnGamePanel() {
