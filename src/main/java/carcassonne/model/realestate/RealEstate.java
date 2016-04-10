@@ -73,28 +73,30 @@ public abstract class RealEstate {
      */
     public Set<Player> getLegitimateOwners() {
         Map<Player, Integer> numberOfPlacedFollowers = new HashMap<>();
-        int maximumPlayerPresence = 1;
-        for (Tile tile : elements.getTileSet()) {
-            if (tile.hasFollower()) {
-                Player player = tile.getFollowerOwner();
-                if (numberOfPlacedFollowers.containsKey(player)) {
-                    int count = numberOfPlacedFollowers.get(player);
-                    count++;
-                    if (count > maximumPlayerPresence)
-                        maximumPlayerPresence = count;
-                    numberOfPlacedFollowers.put(player, count);
-                } else {
-                    numberOfPlacedFollowers.put(player, 1);
-                }
-            }
-        }
-
-        Set<Player> result = new HashSet<>();
-        for (Player player : numberOfPlacedFollowers.keySet()) {
-            if (numberOfPlacedFollowers.get(player) == maximumPlayerPresence)
-                result.add(player);
-        }
+        elements.getTileSet().stream()
+                .filter(Tile::hasFollower)
+                .forEach(tile -> addPlayerToMap(numberOfPlacedFollowers, tile.getFollowerOwner()));
+        long maximumPlayerPresence = numberOfPlacedFollowers.entrySet().stream()
+                .map(entry -> entry.getValue())
+                .reduce(1, Integer::max);
+        Set<Player> result = numberOfPlacedFollowers.keySet().stream()
+                .filter(player -> numberOfPlacedFollowers.get(player) == maximumPlayerPresence)
+                .collect(Collectors.toSet());
         return result;
+    }
+
+    private int addPlayerToMap(Map<Player, Integer> numberOfPlacedFollowers, Player player) {
+        int maximumPlayerPresence = 1;
+        if (numberOfPlacedFollowers.containsKey(player)) {
+            int count = numberOfPlacedFollowers.get(player);
+            count++;
+            if (count > maximumPlayerPresence)
+                maximumPlayerPresence = count;
+            numberOfPlacedFollowers.put(player, count);
+        } else {
+            numberOfPlacedFollowers.put(player, 1);
+        }
+        return maximumPlayerPresence;
     }
 
 
