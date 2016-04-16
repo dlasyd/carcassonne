@@ -4,6 +4,7 @@ import carcassonne.model.tile.Tile;
 import carcassonne.model.tile.TileDirection;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Encapsulates information about tiles and tileDirections that belong to a specific realEstate.
@@ -48,11 +49,9 @@ public class ElementsOfRealEstate {
 
     public Set<TileDirection> getTileDirectionSet(Tile tile) {
         if (!tilesToDirections.containsKey(tile))
-            throw new RuntimeException("Trying to get realEstate specific " +
-                    "tile directions of tile that was not added");
+            throw new TileDoesNotExist();
         return new HashSet<>(tilesToDirections.get(tile));
     }
-
 
     public int numberOfTiles() {
         return tilesToDirections.size();
@@ -64,7 +63,29 @@ public class ElementsOfRealEstate {
 
     private void exceptionIfDuplicate(Tile tile) {
         if (tilesToDirections.containsKey(tile))
-            throw new RuntimeException("Cannot add because tile has already been added");
+            throw new AddingSameTile();
+    }
+
+    public ElementsOfRealEstate addFromSupplier(Supplier<Map<Tile, Set<TileDirection>>> supplier) {
+        return new ElementsOfRealEstate(this, supplier.get());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof ElementsOfRealEstate))
+            return false;
+
+        ElementsOfRealEstate other = (ElementsOfRealEstate) o;
+
+        return this.tilesToDirections.equals(other.tilesToDirections);
+    }
+
+    public static class AddingSameTile extends RuntimeException{
+    }
+
+    public static class TileDoesNotExist extends RuntimeException{
     }
 }
 

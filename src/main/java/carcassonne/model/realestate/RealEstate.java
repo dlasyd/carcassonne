@@ -61,6 +61,58 @@ public abstract class RealEstate {
         addTileAndConnectedTiles(tile);
     }
 
+    void addTileAndConnectedTiles(Tile tile) {
+        elements = elements.add(tile, tile.getOccupiedFeatureDirections());
+        addAdjacentTiles(tile);
+    }
+
+    private void checkArguments(Tile tile) {
+        if (tile.isNull())
+            throw new RuntimeException("Trying to add a NULL tile");
+        if (tile.getCoordinates() == null)
+            throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
+        if (!tile.isComplete())
+            throw new RuntimeException("Incomplete tile cannot be part of real estate");
+        if (!validCoordinates(tile))
+            throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
+        if (!addedFeatureUnoccupied(tile))
+            throw new RuntimeException("Trying to add occupied Feature to existing real estate");
+    }
+
+    private void addAdjacentTiles(Tile tile) {
+        Map<Tile, Set<TileDirection>> adjacentTiles = new HashMap<>();
+        Set<TileDirection> occupiedFeatureDirections = elements.getTileDirectionSet(tile);
+        assert (occupiedFeatureDirections != null);
+
+        for (TileDirection tileDirection : occupiedFeatureDirections) {
+            Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirection);
+            if (!neighbour.isNull() && !elements.contains(neighbour)) {
+//                elements = elements.add(neighbour, neighbour.getDestinations(tileDirection.getNeighbour()));
+                Util.addLinkedSetElement(adjacentTiles, neighbour, neighbour.getDestinations(tileDirection.getNeighbour()));
+                Util.addAllSetElements(adjacentTiles, findAdjacentTiles(neighbour, tileDirection.getNeighbour(), new HashSet<>()));
+            }
+        }
+
+        elements = elements.addAll(adjacentTiles);
+    }
+
+    private Map<Tile, Set<TileDirection>> findAdjacentTiles(Tile startTile, TileDirection directionWithFeature, Set<Tile> visitedTiles) {
+        Map<Tile, Set<TileDirection>> result = new HashMap<>();
+
+        Set<TileDirection> currentTileFeatureDirections = startTile.getDestinations(directionWithFeature);
+        currentTileFeatureDirections.removeAll(directionWithFeature.getEdge());
+        for (TileDirection direction : currentTileFeatureDirections) {
+            Tile neighbour = table.getNeighbouringTile(startTile.getX(), startTile.getY(), direction);
+
+            if (!neighbour.isNull() && !visitedTiles.contains(neighbour) && !elements.contains(neighbour)) {
+                visitedTiles.add(neighbour);
+                result.put(neighbour, neighbour.getDestinations(direction.getNeighbour()));
+                result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), visitedTiles));
+            }
+        }
+        return result;
+    }
+
     public void update(Tile tile) {
         if (!tile.equals(firstTile))
             addIfCanBeConnectedToRealEstate(tile);
@@ -99,7 +151,6 @@ public abstract class RealEstate {
         return maximumPlayerPresence;
     }
 
-
     public boolean containsTile(Tile tile) {
         return elements.contains(tile);
     }
@@ -112,64 +163,6 @@ public abstract class RealEstate {
             }
             if (result)
                 break;
-        }
-        return result;
-    }
-
-    private void checkArguments(Tile tile) {
-        if (tile.isNull())
-            throw new RuntimeException("Trying to add a NULL tile");
-        if (tile.getCoordinates() == null)
-            throw new RuntimeException("Tile with undefined coordinates cannot be part of real estate");
-        if (!tile.isComplete()) {
-            throw new RuntimeException("Incomplete tile cannot be part of real estate");
-        }
-        if (!validCoordinates(tile))
-            throw new RuntimeException("Real estate trying to add tile with duplicate or disjoint coordinates");
-        if (!addedFeatureUnoccupied(tile))
-            throw new RuntimeException("Trying to add occupied Feature to existing real estate");
-    }
-
-    /*
-     * Correct for City, Road and Land. Cloister class overrides this method
-     */
-    void addTileAndConnectedTiles(Tile tile) {
-        elements = elements.add(tile, tile.getOccupiedFeatureDirections());
-        addAdjacentTiles(tile);
-    }
-
-    private void addAdjacentTiles(Tile tile) {
-        Map<Tile, Set<TileDirection>> adjacentTiles = new HashMap<>();
-        Set<TileDirection> occupiedFeatureDirections = elements.getTileDirectionSet(tile);
-        assert (occupiedFeatureDirections != null);
-
-        for (TileDirection tileDirection : occupiedFeatureDirections) {
-            Tile neighbour = table.getNeighbouringTile(tile.getX(), tile.getY(), tileDirection);
-            if (!neighbour.isNull() && !elements.contains(neighbour)) {
-                Util.addLinkedSetElement(adjacentTiles, neighbour, neighbour.getDestinations(tileDirection.getNeighbour()));
-                Util.addAllSetElements(adjacentTiles, findAdjacentTiles(neighbour, tileDirection.getNeighbour(), new HashSet<>()));
-            }
-        }
-
-        elements = elements.addAll(adjacentTiles);
-    }
-
-    /*
-     * Method uses recursion
-     */
-    private Map<Tile, Set<TileDirection>> findAdjacentTiles(Tile startTile, TileDirection directionWithFeature, Set<Tile> visitedTiles) {
-        Map<Tile, Set<TileDirection>> result = new HashMap<>();
-
-        Set<TileDirection> currentTileFeatureDirections = startTile.getDestinations(directionWithFeature);
-        currentTileFeatureDirections.removeAll(directionWithFeature.getEdge());
-        for (TileDirection direction : currentTileFeatureDirections) {
-            Tile neighbour = table.getNeighbouringTile(startTile.getX(), startTile.getY(), direction);
-
-            if (!neighbour.isNull() && !visitedTiles.contains(neighbour) && !elements.contains(neighbour)) {
-                visitedTiles.add(neighbour);
-                result.put(neighbour, neighbour.getDestinations(direction.getNeighbour()));
-                result.putAll(findAdjacentTiles(neighbour, direction.getNeighbour(), visitedTiles));
-            }
         }
         return result;
     }
