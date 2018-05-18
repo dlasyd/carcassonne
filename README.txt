@@ -1,4 +1,3 @@
-Каркассон - настольная игра, правила можно найти тут: http://www.igroved.ru/games/carcasson/carcasson-classic/rules.html
+This project was created when I was learning java.
 
-Для создания GUI использовался SWING  и инструменты Intellij Idea для работы с ним. В программе использовались  MVC, builder, static factory, observer, null object.
-Для тестирования использовался  JUnit4.
+This is a computer version of a popular board game Carcassone. There is a GUI and a playable hot seat multiplayer for 2 people. All the rules of the game are implemented including counting points in the end.
